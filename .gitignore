@@ -1,0 +1,15 @@
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+.idea
+
+# Node Files #
+/node_modules
+/bower_components
+npm-debug.log
+
+# Typing #
+/src/typings/tsd/
+/typings/
+/tsd_typings/
