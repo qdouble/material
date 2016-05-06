@@ -11,7 +11,7 @@ import {LocationStrategy, HashLocationStrategy, Location} from '@angular/common'
 */
 export const ENVIRONMENT_PROVIDERS = [
   ...ELEMENT_PROBE_PROVIDERS
-]
+];
 
 /*
   Add custom _angular2_ providers here.
@@ -44,7 +44,7 @@ export const APPLICATION_DIRECTIVES = [
 */
 export const ENV_PROVIDERS = [
   ...ENVIRONMENT_PROVIDERS
-]
+];
 
 export const PROVIDERS = [
   ...NG_APPLICATION_PROVIDERS

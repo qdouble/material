@@ -13,6 +13,7 @@ const METADATA = {
 };
 
 module.exports = {
+  metadata: METADATA,
   entry: {
     vendor: './src/vendors.ts',
     main: './src/main.browser.ts'

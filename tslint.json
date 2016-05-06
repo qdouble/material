@@ -1,7 +1,4 @@
 {
-  "rulesDirectory": [
-    "node_modules/codelyzer/dist/src"
-  ],
   "rules": {
     "member-access": false,
     "member-ordering": [
@@ -32,7 +29,6 @@
         "variable-declaration": "space"
       }
     ],
-
     "ban": false,
     "curly": false,
     "forin": true,
@@ -74,7 +70,6 @@
       true,
       "check-module"
     ],
-
     "eofline": true,
     "indent": [
       true,
@@ -82,7 +77,7 @@
     ],
     "max-line-length": [
       true,
-      100
+      150
     ],
     "no-require-imports": false,
     "no-trailing-whitespace": true,
@@ -94,7 +89,6 @@
         "singleline": "never"
       }
     ],
-
     "align": false,
     "class-name": true,
     "comment-format": [
@@ -118,7 +112,10 @@
       "single",
       "avoid-escape"
     ],
-    "semicolon": [true, "always"],
+    "semicolon": [
+      true,
+      "always"
+    ],
     "variable-name": [
       true,
       "check-format",
@@ -132,20 +129,6 @@
       "check-operator",
       "check-separator",
       "check-type"
-    ],
-
-    "directive-selector-name": [true, "kebab-case"],
-    "component-selector-name": [true, "kebab-case"],
-    "directive-selector-type": [true, "attribute"],
-    "component-selector-type": [true, "element"],
-    "directive-selector-prefix": false,
-    "component-selector-prefix": false,
-    "host-parameter-decorator": true,
-    "input-parameter-decorator": true,
-    "output-parameter-decorator": true,
-    "attribute-parameter-decorator": false,
-    "input-property-directive": true,
-    "output-property-directive": true,
-    "call-forward-ref":true
+    ]
   }
 }
