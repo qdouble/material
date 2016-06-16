@@ -8,6 +8,11 @@ switch (process.env.NODE_ENV) {
   case 'testing':
     module.exports = require('./config/webpack.test');
     break;
+    case 'test':
+  case 'uni':
+  case 'universal':
+    module.exports = require('./config/webpack.universal.dev');
+    break;
   case 'dev':
   case 'development':
   default:

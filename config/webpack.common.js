@@ -3,6 +3,7 @@ const helpers = require('./helpers');
 
 // Webpack Plugins
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 
@@ -49,6 +50,11 @@ module.exports = {
         loader: 'raw-loader'
       },
       {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loaders: ['raw-loader', 'sass-loader'] // sass-loader not scss-loader
+      },
+      {
         test: /\.html$/,
         loader: 'raw-loader',
         exclude: [helpers.root('src/index.html')]
@@ -65,6 +71,7 @@ module.exports = {
       from: 'src/assets',
       to: 'assets'
     }]),
+    new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     })

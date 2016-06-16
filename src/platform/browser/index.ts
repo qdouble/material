@@ -1,9 +1,25 @@
-import {provide, PLATFORM_DIRECTIVES, PLATFORM_PIPES} from '@angular/core';
-import {ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from '@angular/router';
-import {FORM_PROVIDERS} from '@angular/common';
-import {HTTP_PROVIDERS, JSONP_PROVIDERS} from '@angular/http';
-import {ELEMENT_PROBE_PROVIDERS /*,ELEMENT_PROBE_PROVIDERS_PROD_MODE*/} from '@angular/platform-browser';
-import {LocationStrategy, HashLocationStrategy, Location} from '@angular/common';
+import { provide, PLATFORM_DIRECTIVES, PLATFORM_PIPES } from '@angular/core';
+// import { ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router';
+import { FORM_PROVIDERS } from '@angular/common';
+import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
+import { ELEMENT_PROBE_PROVIDERS /*,ELEMENT_PROBE_PROVIDERS_PROD_MODE*/} from '@angular/platform-browser';
+import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
+
+// import { provideRouter } from '@angular/router';
+import { provideRouter } from '@ngrx/router';
+import { provideStore } from "@ngrx/store";
+import { provideDB } from '@ngrx/db';
+import { connectRouterToStore } from '@ngrx/router-store';
+import { runEffects } from '@ngrx/effects';
+
+import { routes } from '../../app/routes';
+
+import schema from '../../app/db-schema';
+import reducer from '../../app/reducers';
+import effects from '../../app/effects';
+import services from '../../app/services';
+import actions from '../../app/actions';
+// import {APP_REDUCERS} from '../../app/reducers/reducers';
 
 
 /*
@@ -20,8 +36,15 @@ export const NG_APPLICATION_PROVIDERS = [
   ...FORM_PROVIDERS,
   ...HTTP_PROVIDERS,
   ...JSONP_PROVIDERS,
-  ...ROUTER_PROVIDERS,
-  provide(LocationStrategy, { useClass: HashLocationStrategy })
+  // ...ROUTER_PROVIDERS,
+  // provide(LocationStrategy, { useClass: HashLocationStrategy }),
+  provideStore(reducer),
+  runEffects(effects),
+  provideRouter(routes),
+  // connectRouterToStore(),
+  provideDB(schema),
+  services,
+  actions
 ];
 
 /*
@@ -35,7 +58,7 @@ export const APPLICATION_PIPES = [
   Add your custom directives here to be use anywhere.
 */
 export const APPLICATION_DIRECTIVES = [
-  ...ROUTER_DIRECTIVES
+  // ...ROUTER_DIRECTIVES
 ];
 
 
