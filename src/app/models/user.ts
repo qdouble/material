@@ -3,4 +3,8 @@ export interface User {
     username: string;
     email: string;
     password: string;
+    city: string;
+    State: string;
+    zipdCode: string;
+    phone: string;
 }

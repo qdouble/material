@@ -87,10 +87,23 @@ export class UserActions {
     }
 
     static LOGOUT = '[User] Logout';
-    logout(user: User): Action {
+    logout(): Action {
         return {
-            type: UserActions.LOGOUT,
-            payload: user
+            type: UserActions.LOGOUT
+        }
+    }
+
+    static LOGOUT_FAIL = '[User] Logout Fail';
+    logoutFail(): Action {
+        return {
+            type: UserActions.LOGOUT_FAIL
+        }
+    }
+    
+    static LOGOUT_SUCCESS = '[User] Logout Success';
+    logoutSuccess(): Action {
+        return {
+            type: UserActions.LOGOUT_SUCCESS
         }
     }
 

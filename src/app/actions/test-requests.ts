@@ -6,6 +6,27 @@ import { User } from '../models/user';
 @Injectable()
 
 export class TestRequestActions {
+    static CHECK_LOGIN_STATUS = '[Test Requests] Check Login Status'
+    checkLoginStatus(): Action{
+        return {
+            type: TestRequestActions.CHECK_LOGIN_STATUS
+        }
+    }
+
+    static CHECK_LOGIN_STATUS_FAIL = '[Test Requests] Check Login Status Fail'
+    checkLoginStatusFail(res: any): Action{
+        return {
+            type: TestRequestActions.CHECK_LOGIN_STATUS_FAIL
+        }
+    }
+
+    static CHECK_LOGIN_STATUS_SUCCESS = '[Test Requests] Check Login Status Success'
+    checkLoginStatusSuccess(res: any): Action{
+        return {
+            type: TestRequestActions.CHECK_LOGIN_STATUS_SUCCESS
+        }
+    }
+
     static SHOW_ALL_USERS = '[Test Requests] Show All Users'
     showAllUsers(): Action{
         return {

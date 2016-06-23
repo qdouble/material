@@ -3,7 +3,7 @@ import {
     ChangeDetectionStrategy, 
     ChangeDetectorRef,
     Input
-} from '@angular/core'
+} from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Validators } from '@angular/common';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, FormGroupName } from '@angular/forms';

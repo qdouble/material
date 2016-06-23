@@ -30,6 +30,16 @@ export class TestRequestEffects {
     private router: Router
   ) { }
 
+  @Effect() checkLoginStatus$ = this.updates$
+    .whenAction(TestRequestActions.CHECK_LOGIN_STATUS)
+    .map<Response>(toPayload)
+    .mergeMap(() => this.testService.checkLoginStatus()
+      .map((res:any) => this.testActions.checkLoginStatusSuccess(res.users))
+      .catch((res: Response) => Observable.of(
+        this.testActions.checkLoginStatusFail(res)
+      ))
+    )
+
   @Effect() showAllUsers$ = this.updates$
     .whenAction(TestRequestActions.SHOW_ALL_USERS)
     .map<Response>(toPayload)

@@ -11,6 +11,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@ngrx/router';
 import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http';
 // import { Database } from '@ngrx/db';
 
 
@@ -30,17 +31,6 @@ export class UserEffects {
     private router: Router
   ) { }
 
-  @Effect() login$ = this.updates$
-    .whenAction(UserActions.LOGIN)
-    .map<User>(toPayload)
-    .switchMap(user => this.userService.loginUser(user)
-      .map(res => this.userActions.loginSuccess(res))
-      .catch(() => Observable.of(
-        this.userActions.loginFail(user)
-      ))
-    )
-
-
   @Effect() check$ = this.updates$
     .whenAction(UserActions.CHECK_EMAIL)
     .map<string>(toPayload)
@@ -56,9 +46,29 @@ export class UserEffects {
     .whenAction(UserActions.GET_PROFILE)
     .map<string>(toPayload)
     .mergeMap(id => this.userService.getProfile(id)
-      .map((res:any)=> this.userActions.getProfileSuccess(res.user))
+      .map((res: any) => this.userActions.getProfileSuccess(res.user))
       .catch((res) => Observable.of(
         this.userActions.getProfileFail(res)
+      ))
+    )
+
+  @Effect() login$ = this.updates$
+    .whenAction(UserActions.LOGIN)
+    .map<User>(toPayload)
+    .switchMap(user => this.userService.loginUser(user)
+      .map(res => this.userActions.loginSuccess(res))
+      .catch(() => Observable.of(
+        this.userActions.loginFail(user)
+      ))
+    )
+
+  @Effect() logout$ = this.updates$
+    .whenAction(UserActions.LOGOUT)
+    .map<string>(toPayload)
+    .mergeMap(() => this.userService.logout()
+      .map(() => this.userActions.logoutSuccess())
+      .catch((res) => Observable.of(
+        this.userActions.logoutFail()
       ))
     )
 
@@ -78,7 +88,6 @@ export class UserEffects {
     .map<User>(toPayload)
     .mergeMap(user => this.userService.updateProfile(user)
       .map(res => this.userActions.updateProfileSuccess(res))
-      .do((res: any) => this.router.go(res.payload.redirectPath))
       .catch((res) => Observable.of(
         this.userActions.updateProfileFail(res)
       ))

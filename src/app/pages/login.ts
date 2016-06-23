@@ -16,8 +16,8 @@ import { UserActions } from '../actions';
   <main> 
     <form [formGroup]="f" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label>Username</label>
-        <input formControlName="username" type="text" class="form-control">
+        <label>Email address</label>
+        <input formControlName="email" type="email" class="form-control">
       </div>
       <div class="form-group">
         <label>Password</label>
@@ -34,7 +34,7 @@ export class Login {
   constructor(private store: Store<AppState>, private userActions: UserActions) {}
   
   f = new FormGroup({
-    username: new FormControl('registered@user.com'),
+    email: new FormControl('registered@user.com'),
     password: new FormControl('password')
   })
 

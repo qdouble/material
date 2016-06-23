@@ -29,6 +29,7 @@ export class ChildCmp {
   </header>
   
   <button (click)="onSubmit()">Show All Users</button>
+  <button (click)="checkLoginStatus()">Check Login Status</button>
   <pre>
   {{users$ | async | json }}
   {{user$ | async }}
@@ -59,15 +60,12 @@ export class TestRequests {
     })
   }
 
-  onSubmit() {
-    this.store.dispatch(this.testActions.showAllUsers());
+  checkLoginStatus(){
+    this.store.dispatch(this.testActions.checkLoginStatus());
   }
 
-  ngDoCheck() {
-    // console.log('hello');
-    // this.users$.subscribe(data => {
-    //   console.log(data);
-    // })
+  onSubmit() {
+    this.store.dispatch(this.testActions.showAllUsers());
   }
 
 }

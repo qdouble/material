@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 // import { ROUTER_DIRECTIVES } from '@angular/router';
-import { AppState } from './app-state.service.ts';
+import { Store } from '@ngrx/store';
+import { AppState } from './reducers';
+import { UserActions } from './actions';
 
 @Component({
   selector: 'app',
@@ -14,10 +16,13 @@ import { AppState } from './app-state.service.ts';
 })
 export class App {
 
-  constructor(public appState: AppState) { }
+  constructor(
+    private store: Store<AppState>,
+    private userActions: UserActions
+    ) { }
 
-  ngOnInit() {
-    console.log(`App state is ${JSON.stringify(this.appState.state)}`);
+  logout() {
+    this.store.dispatch(this.userActions.logout())
   }
   
 }
