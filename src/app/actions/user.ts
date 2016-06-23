@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
 import { User } from '../models/user';
 
@@ -21,18 +22,58 @@ export class UserActions {
         }
     }
 
+
     static CHECK_EMAIL_SUCCESS = '[User] Check Email Success';
-    checkEmailSuccess(email: string): Action {
+    checkEmailSuccess(res: Response): Action {
         return {
             type: UserActions.CHECK_EMAIL_SUCCESS,
-            payload: email
+            payload: res
         }
     }
-    
+
+    static GET_PROFILE = '[User] Get Profile';
+    getProfile(id: string): Action {
+        return {
+            type: UserActions.GET_PROFILE,
+            payload: id
+        }
+    }
+
+    static GET_PROFILE_FAIL = '[User] Get Profile Fail';
+    getProfileFail(user: Response): Action {
+        return {
+            type: UserActions.GET_PROFILE_FAIL,
+            payload: user
+        }
+    }
+    static GET_PROFILE_SUCCESS = '[User] Get Profile Success';
+    getProfileSuccess(user: Response): Action {
+        return {
+            type: UserActions.GET_PROFILE_SUCCESS,
+            payload: user
+        }
+    }
+
     static LOGIN = '[User] Login';
     login(user: User): Action {
         return {
             type: UserActions.LOGIN,
+            payload: user
+        }
+    }
+
+    static LOGIN_FAIL = '[User] Login Fail';
+    loginFail(user: User): Action {
+        return {
+            type: UserActions.LOGIN_FAIL,
+            payload: user
+        }
+    }
+
+    static LOGIN_SUCCESS = '[User] Login Success';
+    loginSuccess(user: User): Action {
+        return {
+            type: UserActions.LOGIN_SUCCESS,
             payload: user
         }
     }
@@ -44,12 +85,61 @@ export class UserActions {
             payload: message
         }
     }
-    
+
     static LOGOUT = '[User] Logout';
-    logout(user: User) : Action {
+    logout(user: User): Action {
         return {
             type: UserActions.LOGOUT,
             payload: user
         }
     }
+
+    static REGISTER = '[User] Register';
+    register(user: User): Action {
+        return {
+            type: UserActions.REGISTER,
+            payload: user
+        }
+    }
+
+    static REGISTER_FAIL = '[User] Register Fail';
+    registerFail(user: User): Action {
+        return {
+            type: UserActions.REGISTER_FAIL,
+            payload: user
+        }
+    }
+
+    static REGISTER_SUCCESS = '[User] Register Success';
+    registerSuccess(user: User): Action {
+        return {
+            type: UserActions.REGISTER_SUCCESS,
+            payload: user
+        }
+    }
+
+    static UPDATE_PROFILE = '[User] Update Profile';
+    updateProfile(user: User): Action {
+        return {
+            type: UserActions.UPDATE_PROFILE,
+            payload: user
+        }
+    }
+
+    static UPDATE_PROFILE_SUCCESS = '[User] Update Profile Success';
+    updateProfileSuccess(user: User): Action {
+        return {
+            type: UserActions.UPDATE_PROFILE_SUCCESS,
+            payload: user
+        }
+    }
+
+    static UPDATE_PROFILE_FAIL = '[User] Update Profile Fail';
+    updateProfileFail(user: User): Action {
+        return {
+            type: UserActions.UPDATE_PROFILE_FAIL,
+            payload: user
+        }
+    }
+
 }

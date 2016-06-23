@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import { FormControl, FormGroup, FormControlName, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { AppState } from '../reducers';
@@ -34,8 +34,8 @@ export class Login {
   constructor(private store: Store<AppState>, private userActions: UserActions) {}
   
   f = new FormGroup({
-    username: new FormControl(),
-    password: new FormControl()
+    username: new FormControl('registered@user.com'),
+    password: new FormControl('password')
   })
 
   onSubmit(){

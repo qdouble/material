@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import { FormControl, FormGroup, FormControlName, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 
 @Component ({
   selector: 'admin-login',
@@ -27,8 +27,8 @@ import { FormControl, FormGroup, FormControlName, REACTIVE_FORM_DIRECTIVES } fro
 
 export class AdminLogin {
   f = new FormGroup({
-    username: new FormControl(),
-    password: new FormControl()
+    username: new FormControl('registered@user.com'),
+    password: new FormControl('password')
   })
   onSubmit(){
     console.log(this.f.value)

@@ -8,42 +8,91 @@ import { UserActions } from '../actions';
 
 export interface UserState {
     ids: string[];
-    entities: { [id: string]: User};
+    entities: { [id: string]: User };
     loading: boolean;
-    loggedIn: boolean;
+    loaded: boolean;
+    user: { [id: string]: User }
 };
 
 const initialState: UserState = {
     ids: [],
     entities: {},
     loading: false,
-    loggedIn: false
+    loaded: false,
+    user: {}
 }
 
-export default function(state = initialState, action: Action): UserState {
+export default function (state = initialState, action: Action): UserState {
     switch (action.type) {
+
         case UserActions.CHECK_EMAIL:
-            const check = action.payload;
-
-            return Object.assign(state, {
-                check, loading: true
+            return Object.assign({}, state, {
+                loading: true
             });
-        case UserActions.CHECK_EMAIL_FAIL : {
-            const check = action.payload;
+
+        case UserActions.CHECK_EMAIL_FAIL: {
+            return Object.assign({}, state, {
+                loading: false
+            });
+        }
+
+        case UserActions.CHECK_EMAIL_SUCCESS: {
+            return Object.assign({}, state, {
+                loading: false
+            });
+        }
+
+        case UserActions.GET_PROFILE: {
+            return Object.assign({}, state, {
+                loading: true
+            });
+        }
+
+        case UserActions.GET_PROFILE_FAIL: {
+            return Object.assign({}, state, {
+                loading: false
+            });
+        }
+
+        case UserActions.GET_PROFILE_SUCCESS: {
+            const user: User = action.payload;
+
+
+            return Object.assign({}, state, {
+                loaded: true,
+                loading: false,
+                user: Object.assign({}, state.user, user)
+            });
 
         }
-        case UserActions.CHECK_EMAIL_SUCCESS : {
-            const check = action.payload;
 
-        }
         case UserActions.LOG_MESSAGE:
             return state;
+
         case UserActions.LOGIN:
+            const login = action.payload;
+
         case UserActions.LOGOUT:
+
         default: {
             return state;
         }
     }
+}
+
+export function getLoaded() {
+    return (state$: Observable<UserState>) => state$
+        .select(s => s.loaded)
+}
+
+export function getLoading() {
+    return (state$: Observable<UserState>) => state$
+        .select(s => s.loading)
+}
+
+export function getUser() {
+    return (state$: Observable<UserState>) => state$
+        .select(s => s.user);
 }
 
 export function getUserEntities() {

@@ -19,7 +19,6 @@ import reducer from '../../app/reducers';
 import effects from '../../app/effects';
 import services from '../../app/services';
 import actions from '../../app/actions';
-// import {APP_REDUCERS} from '../../app/reducers/reducers';
 
 
 /*
@@ -41,8 +40,8 @@ export const NG_APPLICATION_PROVIDERS = [
   provideStore(reducer),
   runEffects(effects),
   provideRouter(routes),
-  // connectRouterToStore(),
-  provideDB(schema),
+  connectRouterToStore(),
+  // provideDB(schema),
   services,
   actions
 ];

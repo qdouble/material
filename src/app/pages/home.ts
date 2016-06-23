@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import { FormControl, FormGroup, FormControlName, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -18,7 +18,7 @@ import { UserActions } from '../actions';
     <h2>Step 1: Choose How You Would Like to Receive Your Prize</h2>
     <p>-- Put Prize Option Here--</p>
     <h2> Step 2: Register or Extend Your Account</h2>
-    <form [formGroup]="f" (ngSubmit)="onSubmit()">
+    <form novalidate [formGroup]="f" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label>Email address</label>
         <input formControlName="email" type="email" class="form-control">
@@ -34,7 +34,7 @@ export class Homepage {
   constructor(private store: Store<AppState>, private userActions: UserActions) {}
   
   f = new FormGroup({
-    email: new FormControl()
+    email: new FormControl('qdouble@gmail.com')
   })
   
   onSubmit(){

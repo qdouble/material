@@ -9,18 +9,41 @@ import { combineReducers } from '@ngrx/store';
 import { routerReducer, RouterState } from '@ngrx/router-store';
 
 import userReducer, * as fromUser from './user';
+import testRequestReducer, * as fromTestRequests from './test-requests';
 
 export interface AppState {
-    user: fromUser.UserState
+    router: RouterState,
+    user: fromUser.UserState,
+    testRequests: fromTestRequests.TestRequestState
 }
 
 export default compose(storeLogger(), combineReducers) ({
-    user: userReducer
+    router: routerReducer,
+    user: userReducer,
+    testRequests: testRequestReducer
 });
 
 export function getUserState() {
     return (state$: Observable<AppState>) => state$
         .select(s => s.user);
+}
+
+export function getTestRequestState() {
+    return (state$: Observable<AppState>) => state$
+        .select(s => s.testRequests);
+}
+
+export function getTestRequestAllUsers() {
+    return compose(fromTestRequests.getAllUser(), getTestRequestState())
+}
+
+
+export function getUser() {
+    return compose(fromUser.getUser(), getUserState());
+}
+
+export function getUserLoaded() {
+    return compose(fromUser.getLoaded(), getUserState());
 }
 
 export function getUserEntities() {
