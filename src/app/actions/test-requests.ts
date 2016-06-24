@@ -27,6 +27,28 @@ export class TestRequestActions {
         }
     }
 
+    static GET_AFFILIATES = '[Test Requests] Get Affiliates'
+    getAffiliates(): Action{
+        return {
+            type: TestRequestActions.GET_AFFILIATES
+        }
+    }
+
+    static GET_AFFILIATES_FAIL = '[Test Requests] Get Affiliates Fail'
+    getAffiliatesFail(): Action{
+        return {
+            type: TestRequestActions.GET_AFFILIATES_FAIL
+        }
+    }
+
+    static GET_AFFILIATES_SUCCESS = '[Test Requests] Get Affiliates Success'
+    getAffiliatesSuccess(data: any): Action{
+        return {
+            type: TestRequestActions.GET_AFFILIATES_SUCCESS,
+            payload: data
+        }
+    }
+
     static SHOW_ALL_USERS = '[Test Requests] Show All Users'
     showAllUsers(): Action{
         return {

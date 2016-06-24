@@ -61,16 +61,14 @@ export default function (state = initialState, action: Action): UserState {
             return Object.assign({}, state, {
                 loaded: true,
                 loading: false,
-                user: Object.assign({}, state.user, user)
+                user: user
             });
 
         }
 
-        case UserActions.LOG_MESSAGE:
-            return state;
-
         case UserActions.LOGIN:
-            const login = action.payload;
+
+        case UserActions.LOGIN_SUCCESS:
 
         case UserActions.LOGOUT:
 
@@ -79,6 +77,7 @@ export default function (state = initialState, action: Action): UserState {
         }
     }
 }
+
 
 export function getLoaded() {
     return (state$: Observable<UserState>) => state$

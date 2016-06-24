@@ -3,7 +3,7 @@ import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { User } from '../models';
-import { AppState, getUser, getUserLoaded } from '../reducers';
+import { AppState, getUser, getUserId, getUserLoaded } from '../reducers';
 import { UserActions } from '../actions';
 import { ProfileForm } from '../components/profile-form';
 
@@ -28,7 +28,7 @@ export class Profile {
   loaded$: Observable<boolean>;
 
   constructor(private store: Store<AppState>, private userActions: UserActions) { 
-    this.store.dispatch(this.userActions.getProfile('5649e1a56412e3e085b432a7'));
+    this.store.dispatch(this.userActions.getProfile());
     this.user$ = store.let(getUser())
   }
 

@@ -7,14 +7,21 @@ import { TestRequestActions } from '../actions';
 
 export interface TestRequestState {
     allUsers: any;
+    affiliates: any;
 };
 
 const initialState: TestRequestState = {
-    allUsers: {}
+    allUsers: {},
+    affiliates: {}
 }
 
 export default function(state = initialState, action: Action): TestRequestState {
     switch (action.type) {
+
+        case TestRequestActions.GET_AFFILIATES_SUCCESS:
+            return Object.assign({}, state, {
+                affiliates: action.payload
+            });
 
         case TestRequestActions.SHOW_ALL_USERS:
             return Object.assign({}, state, {
@@ -36,6 +43,11 @@ export default function(state = initialState, action: Action): TestRequestState 
             return state;
         }
     }
+}
+
+export function getAffiliates() {
+    return (state$: Observable<TestRequestState>) => state$ 
+        .select(s => s.affiliates)
 }
 
 export function getAllUser() {

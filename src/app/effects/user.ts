@@ -45,7 +45,7 @@ export class UserEffects {
   @Effect() getProfile$ = this.updates$
     .whenAction(UserActions.GET_PROFILE)
     .map<string>(toPayload)
-    .mergeMap(id => this.userService.getProfile(id)
+    .mergeMap(() => this.userService.getProfile()
       .map((res: any) => this.userActions.getProfileSuccess(res.user))
       .catch((res) => Observable.of(
         this.userActions.getProfileFail(res)
@@ -57,6 +57,7 @@ export class UserEffects {
     .map<User>(toPayload)
     .switchMap(user => this.userService.loginUser(user)
       .map(res => this.userActions.loginSuccess(res))
+      .do((res: any) => res.payload.redirectPath ? this.router.go(res.payload.redirectPath) : null)
       .catch(() => Observable.of(
         this.userActions.loginFail(user)
       ))

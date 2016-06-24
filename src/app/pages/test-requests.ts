@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { AppState, getTestRequestAllUsers } from '../reducers';
+import { AppState, getTestRequestAllUsers, getTestRequestGetAffiliates } from '../reducers';
 import { TestRequestActions } from '../actions';
 
 @Component({
@@ -30,9 +30,10 @@ export class ChildCmp {
   
   <button (click)="onSubmit()">Show All Users</button>
   <button (click)="checkLoginStatus()">Check Login Status</button>
+  <button (click)="getAffiliates()">Get Affiliates</button>
   <pre>
   {{users$ | async | json }}
-  {{user$ | async }}
+  {{affiliates$ | async | json }}
   </pre>
   <child-cmp [user]="user$ | async"></child-cmp>
 
@@ -41,6 +42,7 @@ export class ChildCmp {
 
 export class TestRequests {
   users$: Observable<any>;
+  affiliates$: Observable<any>;
 
 
   constructor(
@@ -48,6 +50,7 @@ export class TestRequests {
     private testActions: TestRequestActions
   ) {
     this.users$ = store.let(getTestRequestAllUsers())
+    this.affiliates$ = store.let(getTestRequestGetAffiliates())
     // this.users$.subscribe(data => {
     //   console.log(data);
     // })
@@ -62,6 +65,10 @@ export class TestRequests {
 
   checkLoginStatus(){
     this.store.dispatch(this.testActions.checkLoginStatus());
+  }
+
+  getAffiliates(){
+    this.store.dispatch(this.testActions.getAffiliates());
   }
 
   onSubmit() {

@@ -32,10 +32,9 @@ export class UserActions {
     }
 
     static GET_PROFILE = '[User] Get Profile';
-    getProfile(id: string): Action {
+    getProfile(): Action {
         return {
-            type: UserActions.GET_PROFILE,
-            payload: id
+            type: UserActions.GET_PROFILE
         }
     }
 

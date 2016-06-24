@@ -33,6 +33,10 @@ export function getTestRequestState() {
         .select(s => s.testRequests);
 }
 
+export function getTestRequestGetAffiliates() {
+    return compose(fromTestRequests.getAffiliates(), getTestRequestState())
+}
+
 export function getTestRequestAllUsers() {
     return compose(fromTestRequests.getAllUser(), getTestRequestState())
 }
