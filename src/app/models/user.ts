@@ -3,8 +3,9 @@ export interface User {
     username?: string;
     email?: string;
     password?: string;
+    address?: string;
     city?: string;
     State?: string;
-    zipdCode?: string;
+    zipCode?: string;
     phone?: string;
 }
