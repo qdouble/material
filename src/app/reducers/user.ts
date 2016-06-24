@@ -7,16 +7,12 @@ import { User } from '../models';
 import { UserActions } from '../actions';
 
 export interface UserState {
-  ids: string[];
-  entities: { [id: string]: User };
   loading: boolean;
   loaded: boolean;
   user: User
 };
 
 const initialState: UserState = {
-  ids: [],
-  entities: {},
   loading: false,
   loaded: false,
   user: {}
@@ -75,7 +71,32 @@ export default function (state = initialState, action: Action): UserState {
       return Object.assign({}, state, {
         loaded: false,
         user: {}
-      })
+      });
+
+      case UserActions.UPDATE_PROFILE:
+        return Object.assign({}, state, {
+          loading: true
+        });
+
+    case UserActions.UPDATE_PROFILE_FAIL:
+      return Object.assign({}, state, {
+        loading: false
+      });
+
+    case UserActions.UPDATE_PROFILE_SUCCESS: 
+      const res = action.payload;
+
+      if (res.user) {
+        return Object.assign({}, state, {
+          loading: false,
+          user: res.user
+        });
+      }
+
+      return Object.assign({}, state, {
+        loading: false,
+        user: Object.assign({}, state.user)
+      });
 
     default: {
       return state;
@@ -97,9 +118,4 @@ export function getLoading() {
 export function getUser() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.user);
-}
-
-export function getUserEntities() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.entities);
 }

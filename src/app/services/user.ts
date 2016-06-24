@@ -28,7 +28,7 @@ export class UserService {
     }
 
     getProfile(): Observable<User> {
-        return this.http.get(`${API_USER_URL}/getUserProfile`, this.optionsNoPre)
+        return this.http.get(`${API_USER_URL}/getProfile`, this.optionsNoPre)
         .map(res => res.json())
     }
 
@@ -44,12 +44,12 @@ export class UserService {
     }
 
     registerUser(user: User): Observable<User> {
-        return this.http.post(`${API_USER_URL}/registerUser`, user)
+        return this.http.post(`${API_USER_URL}/registerUser`, user, this.options)
         .map(res => res.json())
     }
 
     updateProfile(user: User): Observable<User> {
-        return this.http.post(`${API_USER_URL}/updateUserProfile`, user)
+        return this.http.post(`${API_USER_URL}/updateProfile`, user, this.options)
         .map(res => res.json())
     }
 }

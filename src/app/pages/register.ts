@@ -90,30 +90,49 @@ import { UserActions } from '../actions';
 
 export class Register {
 
-  constructor(private store: Store<AppState>, private userActions: UserActions){}
+  RANDOM_NUM = Math.floor((Math.random() * 100000) + 1);
 
-  f = new FormGroup({  
-    email: new FormControl('new@user.com'),
-    confirmEmail: new FormControl('new@user.com'),
-    username: new FormControl('myUserName'),
-    password: new FormControl('password'),
-    confirmPassword: new FormControl('password'),
-    firstName: new FormControl('First Name'),
-    lastName: new FormControl('Last Name'),
-    address: new FormControl('123 Street'),
-    city: new FormControl('myCity'),
-    State: new FormControl('Nevada'),
-    zipCode: new FormControl('12345'),
-    country: new FormControl('USA'),
-    phone: new FormControl('305-837-2832'),
-    birthday: new FormControl('01/01/1999'),
-    paypal: new FormControl('new@user.com'),
-    agree: new FormControl(true)
+  email = new FormControl(`new${this.RANDOM_NUM}@user.com`);
+  confirmEmail = new FormControl(`new${this.RANDOM_NUM}@user.com`);
+  username = new FormControl(`myUserName${this.RANDOM_NUM}`);
+  password = new FormControl('password');
+  confirmPassword = new FormControl('password');
+  firstName = new FormControl('First Name');
+  lastName = new FormControl('Last Name');
+  address = new FormControl('123 Street');
+  city = new FormControl('myCity');
+  State = new FormControl('Nevada');
+  zipCode = new FormControl('12345');
+  country = new FormControl('USA');
+  phone = new FormControl('305-837-2832');
+  birthday = new FormControl('01/01/1999');
+  paypal = new FormControl('new@user.com');
+  agree = new FormControl(true)
+
+  f = new FormGroup({
+    email: this.email,
+    confirmEmail: this.confirmEmail,
+    username: this.username,
+    password: this.password,
+    confirmPassword: this.confirmPassword,
+    firstName: this.firstName,
+    lastName: this.lastName,
+    address: this.address,
+    city: this.city,
+    State: this.State,
+    zipCode: this.zipCode,
+    country: this.country,
+    phone: this.phone,
+    birthday: this.birthday,
+    paypal: this.paypal,
+    agree: this.agree
   })
 
+  constructor(private store: Store<AppState>, private userActions: UserActions) { }
+
+
+
   onSubmit() {
-    this.store.dispatch(this.userActions.register(this.f.value))
-    console.log('this.f.value: ', this.f.value)
-    console.log('this.f: ', this.f)
+    this.store.dispatch(this.userActions.register(this.f.value));
   }
 }

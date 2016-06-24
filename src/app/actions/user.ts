@@ -139,10 +139,10 @@ export class UserActions {
     }
 
     static UPDATE_PROFILE_SUCCESS = '[User] Update Profile Success';
-    updateProfileSuccess(user: User): Action {
+    updateProfileSuccess(res: any): Action {
         return {
             type: UserActions.UPDATE_PROFILE_SUCCESS,
-            payload: user
+            payload: res
         }
     }
 

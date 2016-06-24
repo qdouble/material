@@ -79,7 +79,7 @@ export class UserEffects {
     .map<User>(toPayload)
     .mergeMap(user => this.userService.registerUser(user)
       .map(res => this.userActions.registerSuccess(res))
-      .do((res: any) => this.router.go(res.payload.redirectPath))
+      .do((res: any) => res.payload.redirectPath ? this.router.go(res.payload.redirectPath) : null)
       .catch((res) => Observable.of(
         this.userActions.registerFail(res)
       ))
