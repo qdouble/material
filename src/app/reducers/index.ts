@@ -46,6 +46,10 @@ export function getUser() {
     return compose(fromUser.getUser(), getUserState());
 }
 
+export function getUserEntryEmail() {
+    return compose(fromUser.getEntryEmail(), getUserState());
+}
+
 export function getUserLoaded() {
     return compose(fromUser.getLoaded(), getUserState());
 }

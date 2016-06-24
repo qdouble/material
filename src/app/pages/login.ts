@@ -2,10 +2,10 @@ import {Component} from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { AppState } from '../reducers';
+import { AppState, getUserEntryEmail } from '../reducers';
 import { UserActions } from '../actions';
 
-@Component ({
+@Component({
   selector: 'login',
   directives: [REACTIVE_FORM_DIRECTIVES],
   template: `
@@ -31,14 +31,23 @@ import { UserActions } from '../actions';
 })
 
 export class Login {
-  constructor(private store: Store<AppState>, private userActions: UserActions) {}
-  
+  entryEmail$: Observable<string>;
+  email = new FormControl('registered@user.com');
+  password = new FormControl('password');
+
   f = new FormGroup({
-    email: new FormControl('registered@user.com'),
-    password: new FormControl('password')
+    email: this.email,
+    password: this.password
   })
 
-  onSubmit(){
+  constructor(private store: Store<AppState>, private userActions: UserActions) { 
+    this.entryEmail$ = store.let(getUserEntryEmail());
+    this.entryEmail$.take(1).subscribe(email => {
+      if (email) this.email.updateValue(email)
+    });
+  }
+
+  onSubmit() {
     this.store.dispatch(this.userActions.login(this.f.value));
   }
 }

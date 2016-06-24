@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { AppState } from '../reducers';
+import { AppState, getUserEntryEmail } from '../reducers';
 import { UserActions } from '../actions';
 
 @Component({
@@ -87,7 +87,7 @@ import { UserActions } from '../actions';
 })
 
 export class Register {
-
+  entryEmail$: Observable<string>;
   RANDOM_NUM = Math.floor((Math.random() * 100000) + 1);
 
   email = new FormControl(`new${this.RANDOM_NUM}@user.com`);
@@ -126,7 +126,12 @@ export class Register {
     agree: this.agree
   })
 
-  constructor(private store: Store<AppState>, private userActions: UserActions) { }
+  constructor(private store: Store<AppState>, private userActions: UserActions) {
+    this.entryEmail$ = store.let(getUserEntryEmail());
+    this.entryEmail$.take(1).subscribe(email => {
+      if (email) this.email.updateValue(email)
+    });
+  }
 
   onSubmit() {
     this.store.dispatch(this.userActions.register(this.f.value));
