@@ -38,9 +38,6 @@ export class Homepage {
   })
   
   onSubmit(){
-    console.log('this.f.value', this.f.value)
-    
-    this.store.dispatch(this.userActions.checkEmail(this.f.controls['email'].value))
-    console.log('this.f', this.f)
+    this.store.dispatch(this.userActions.checkEmail(this.f.controls['email'].value));
   }
 }

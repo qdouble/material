@@ -49,15 +49,11 @@ export class TestRequests {
     private store: Store<AppState>,
     private testActions: TestRequestActions
   ) {
-    this.users$ = store.let(getTestRequestAllUsers())
-    this.affiliates$ = store.let(getTestRequestGetAffiliates())
-    // this.users$.subscribe(data => {
-    //   console.log(data);
-    // })
+    this.users$ = store.let(getTestRequestAllUsers());
+    this.affiliates$ = store.let(getTestRequestGetAffiliates());
   }
 
   ngOnInit() {
-    // this.users$ = store.let(getTestRequestAllUsers())
     this.users$.subscribe(data => {
       console.log(data);
     })

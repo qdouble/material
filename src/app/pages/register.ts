@@ -81,8 +81,6 @@ import { UserActions } from '../actions';
       </div>
     <button type="submit">Register</button>
     </form>
-    <br>
-    <pre>{{f.value | json  }}</pre>
   </main>
   
   `
@@ -105,7 +103,7 @@ export class Register {
   zipCode = new FormControl('12345');
   country = new FormControl('USA');
   phone = new FormControl('305-837-2832');
-  birthday = new FormControl('01/01/1999');
+  birthday = new FormControl('1999-01-01');
   paypal = new FormControl('new@user.com');
   agree = new FormControl(true)
 
@@ -129,8 +127,6 @@ export class Register {
   })
 
   constructor(private store: Store<AppState>, private userActions: UserActions) { }
-
-
 
   onSubmit() {
     this.store.dispatch(this.userActions.register(this.f.value));
