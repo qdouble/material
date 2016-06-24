@@ -68,6 +68,7 @@ export class UserEffects {
     .map<string>(toPayload)
     .mergeMap(() => this.userService.logout()
       .map(() => this.userActions.logoutSuccess())
+      .do(() => this.router.go(''))
       .catch((res) => Observable.of(
         this.userActions.logoutFail()
       ))

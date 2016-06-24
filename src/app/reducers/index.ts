@@ -50,6 +50,10 @@ export function getUserLoaded() {
     return compose(fromUser.getLoaded(), getUserState());
 }
 
+export function getUserLoading() {
+    return compose(fromUser.getLoading(), getUserState());
+}
+
 export function getUserEntities() {
     return compose(fromUser.getUserEntities(), getUserState());
 }

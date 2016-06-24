@@ -3,7 +3,7 @@ import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { User } from '../models';
-import { AppState, getUser, getUserId, getUserLoaded } from '../reducers';
+import { AppState, getUser, getUserLoaded, getUserLoading } from '../reducers';
 import { UserActions } from '../actions';
 import { ProfileForm } from '../components/profile-form';
 
@@ -17,19 +17,21 @@ import { ProfileForm } from '../components/profile-form';
       <h1>Profile</h1>
     </header>
     <main>
-      <profile-form [user]="user$ | async" (updateProfile)="onSubmit($event)"></profile-form>
+      <profile-form [user]="user$ | async" [loaded]="loaded$ | async" (updateProfile)="onSubmit($event)"></profile-form>
     </main>
 
     `
 })
 
 export class Profile {
-  user$: Observable<{[id: string]: User}>;
+  user$: Observable<User>;
   loaded$: Observable<boolean>;
+  loading$: Observable<boolean>;
 
   constructor(private store: Store<AppState>, private userActions: UserActions) { 
     this.store.dispatch(this.userActions.getProfile());
-    this.user$ = store.let(getUser())
+    this.user$ = store.let(getUser());
+    this.loaded$ = store.let(getUserLoaded())
   }
 
   onSubmit(form) {

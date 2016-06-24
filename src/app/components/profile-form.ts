@@ -2,12 +2,13 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Validators } from '@angular/common';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, FormGroupName } from '@angular/forms';
+import { User } from '../models';
 
 @Component({
   selector: 'profile-form',
   directives: [REACTIVE_FORM_DIRECTIVES],
   template: `
-    
+    <div *ngIf="loaded">
       <form [formGroup]="f" (ngSubmit)="updateProfile.emit(f.value)">
         <div class="form-group">
           <label>Your Username:</label>
@@ -39,12 +40,13 @@ import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, FormGroupName } from 
         </div>
         <button type="submit">Update Profile</button>
       </form>
-    
+    </div>
     `
 })
 
 export class ProfileForm {
-  @Input() user;
+  @Input() user: User;
+  @Input() loaded: boolean;
   @Output() updateProfile = new EventEmitter();
   f = new FormGroup({
     username: new FormControl(),
@@ -55,5 +57,14 @@ export class ProfileForm {
     zipCode: new FormControl(),
     phone: new FormControl()
   });
+
+  ngOnInit() {
+    console.log('user:', this.user);
+    console.log('user.username:', this.user.username)
+  }
+  ngDoCheck() {
+    console.log('user:', this.user);
+    console.log('user.username:', this.user.username)
+  }
 
 }

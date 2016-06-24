@@ -9,14 +9,18 @@ import  { API_ADMIN_URL, API_USER_URL } from './constants';
 @Injectable()
 export class UserService {
     headers = new Headers();
-    postHeaders: any;
+    noPreFlightHeaders = new Headers();
     options = new RequestOptions({
         headers: this.headers,
         withCredentials: true
     })
+    optionsNoPre = new RequestOptions({
+        headers: this.noPreFlightHeaders,
+        withCredentials: true
+    })
     constructor(private http: Http) {
         this.headers.append('Content-Type', 'application/json');
-        this.postHeaders = {headers: this.headers};
+        this.noPreFlightHeaders.append('Content-Type', 'text/plain');
     }
     checkEmail(email: string): Observable<User> {
         return this.http.get(`${API_USER_URL}/checkUserEmail?email=${email}`, this.options)
@@ -24,7 +28,7 @@ export class UserService {
     }
 
     getProfile(): Observable<User> {
-        return this.http.get(`${API_USER_URL}/getUserProfile`, this.options)
+        return this.http.get(`${API_USER_URL}/getUserProfile`, this.optionsNoPre)
         .map(res => res.json())
     }
 
@@ -35,8 +39,8 @@ export class UserService {
     }
 
     logout(): Observable<User> {
-        return this.http.get(`${API_USER_URL}/logout`, this.options)
-        .map(res => res.json())
+        return this.http.get(`${API_USER_URL}/logout`, this.optionsNoPre)
+        .map(res => res.text())
     }
 
     registerUser(user: User): Observable<User> {
