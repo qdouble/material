@@ -36,7 +36,7 @@ export class UserEffects {
     .map<string>(toPayload)
     .mergeMap(email => this.userService.checkEmail(email)
       .map((res: any) => this.userActions.checkEmailSuccess(res))
-      .do((res: any) => this.router.go(res.payload.redirectPath))
+      .do((res: any) => res.payload.redirectPath ? this.router.go(res.payload.redirectPath) : null)
       .catch(() => Observable.of(
         this.userActions.checkEmailFail(email)
       ))
