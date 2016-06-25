@@ -139,7 +139,9 @@ export class Register {
     birthday: this.birthday,
     paypal: this.paypal,
     agree: this.agree
-  })
+  }, {}, Validators.compose(
+    [CustomValidators.compare('email', 'confirmEmail', 'compareEmail'),
+    CustomValidators.compare('password', 'confirmPassword', 'comparePassword')]) )
 
   constructor(private store: Store<AppState>, private userActions: UserActions) {
     this.entryEmail$ = store.let(getUserEntryEmail());
@@ -150,5 +152,6 @@ export class Register {
 
   onSubmit() {
     this.store.dispatch(this.userActions.register(this.f.value));
+
   }
 }
