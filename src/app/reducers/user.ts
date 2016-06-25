@@ -65,9 +65,13 @@ export default function (state = initialState, action: Action): UserState {
     }
 
     case UserActions.LOGIN_SUCCESS:
-      return Object.assign({}, state, {
-        loaded: true
-      })
+      if (action.payload.user) {
+        return Object.assign({}, state, {
+          loaded: true
+        })
+      }
+
+      return state;
 
 
     case UserActions.LOGOUT_SUCCESS:
