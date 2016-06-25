@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { AppState, getUserEntryEmail } from '../reducers';
 import { UserActions } from '../actions';
+import { CustomValidators, RegexValues } from '../validators';
 
 @Component({
   selector: 'register',
@@ -29,11 +30,11 @@ import { UserActions } from '../actions';
       </div>
       <div class="form-group">
         <label>Password</label>
-        <input formControlName="password" class="form-control">
+        <input formControlName="password" type="password" class="form-control">
       </div>
       <div class="form-group">
         <label>Confirm Password</label>
-        <input formControlName="confirmPassword" class="form-control">
+        <input formControlName="confirmPassword" type="password" class="form-control">
       </div>
       <div class="form-group">
         <label>First Name</label>
@@ -79,7 +80,7 @@ import { UserActions } from '../actions';
         <label>I agree to the Terms and Conditions</label>
         <input formControlName="agree" type="checkbox" class="form-control">
       </div>
-    <button type="submit">Register</button>
+    <button type="submit" [disabled]="!f.valid">Register</button>
     </form>
   </main>
   
@@ -90,22 +91,36 @@ export class Register {
   entryEmail$: Observable<string>;
   RANDOM_NUM = Math.floor((Math.random() * 100000) + 1);
 
-  email = new FormControl(`new${this.RANDOM_NUM}@user.com`);
-  confirmEmail = new FormControl(`new${this.RANDOM_NUM}@user.com`);
-  username = new FormControl(`myUserName${this.RANDOM_NUM}`);
-  password = new FormControl('password');
-  confirmPassword = new FormControl('password');
-  firstName = new FormControl('First Name');
-  lastName = new FormControl('Last Name');
-  address = new FormControl('123 Street');
-  city = new FormControl('myCity');
-  State = new FormControl('Nevada');
-  zipCode = new FormControl('12345');
-  country = new FormControl('USA');
-  phone = new FormControl('305-837-2832');
-  birthday = new FormControl('1999-01-01');
-  paypal = new FormControl('new@user.com');
-  agree = new FormControl(true)
+  email = new FormControl(`new${this.RANDOM_NUM}@user.com`,
+    [Validators.required, Validators.pattern(RegexValues.email)]);
+  confirmEmail = new FormControl(`new${this.RANDOM_NUM}@user.com`,
+    [Validators.required, Validators.pattern(RegexValues.email)]);
+  username = new FormControl(`myUserName${this.RANDOM_NUM}`,
+    [Validators.required, Validators.pattern(RegexValues.username)]);
+  password = new FormControl('password',
+    [Validators.required, Validators.pattern(RegexValues.password)]);
+  confirmPassword = new FormControl('password',
+    [Validators.required, Validators.pattern(RegexValues.password)]);
+  firstName = new FormControl('First Name',
+    [Validators.required, Validators.pattern(RegexValues.nameValue)]);
+  lastName = new FormControl('Last Name',
+    [Validators.required, Validators.pattern(RegexValues.nameValue)]);
+  address = new FormControl('123 Street',
+    [Validators.required, Validators.pattern(RegexValues.address)]);
+  city = new FormControl('myCity',
+    [Validators.required, Validators.pattern(RegexValues.address)]);
+  State = new FormControl('Nevada',
+    [Validators.required, Validators.pattern(RegexValues.address)]);
+  zipCode = new FormControl('12345',
+    [Validators.required, Validators.pattern(RegexValues.zipCode)]);
+  country = new FormControl('USA',
+    [Validators.required, Validators.pattern(RegexValues.address)]);
+  phone = new FormControl('305-837-2832',
+    [Validators.required, Validators.pattern(RegexValues.phone)]);
+  birthday = new FormControl('1999-01-01', Validators.required);
+  paypal = new FormControl('new@user.com',
+    Validators.pattern(RegexValues.email));
+  agree = new FormControl(null, CustomValidators.isTrue)
 
   f = new FormGroup({
     email: this.email,

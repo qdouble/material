@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { AppState, getUserEntryEmail } from '../reducers';
 import { UserActions } from '../actions';
+import { RegexValues } from '../validators';
 
 @Component({
   selector: 'login',
@@ -23,7 +24,7 @@ import { UserActions } from '../actions';
         <label>Password</label>
         <input formControlName="password" type="password" class="form-control">
       </div>
-      <button type="submit">Login</button>
+      <button [disabled]="!f.valid" type="submit">Login</button>
     </form> 
   </main>
   
@@ -32,15 +33,17 @@ import { UserActions } from '../actions';
 
 export class Login {
   entryEmail$: Observable<string>;
-  email = new FormControl('registered@user.com');
-  password = new FormControl('password');
+  email = new FormControl('registered@user.com', [Validators.required,
+    Validators.pattern(RegexValues.email)]);
+  password = new FormControl('password', [Validators.required,
+    Validators.pattern(RegexValues.password)]);
 
   f = new FormGroup({
     email: this.email,
     password: this.password
   })
 
-  constructor(private store: Store<AppState>, private userActions: UserActions) { 
+  constructor(private store: Store<AppState>, private userActions: UserActions) {
     this.entryEmail$ = store.let(getUserEntryEmail());
     this.entryEmail$.take(1).subscribe(email => {
       if (email) this.email.updateValue(email)

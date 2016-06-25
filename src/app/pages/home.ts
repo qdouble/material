@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { AppState } from '../reducers';
 import { UserActions } from '../actions';
+import { RegexValues } from '../validators';
 
-@Component ({
+@Component({
   selector: 'home',
   directives: [REACTIVE_FORM_DIRECTIVES],
   template: `
@@ -21,8 +22,8 @@ import { UserActions } from '../actions';
     <form novalidate [formGroup]="f" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label>Email address</label>
-        <input formControlName="email" type="email" class="form-control">
-        <button type="submit">Submit</button>
+        <input formControlName="email" type="text" class="form-control">
+        <button type="submit" [disabled]="!f.valid">Submit</button>
       </div>
     </form>
   </main>
@@ -31,13 +32,14 @@ import { UserActions } from '../actions';
 })
 
 export class Homepage {
-  constructor(private store: Store<AppState>, private userActions: UserActions) {}
-  
+  constructor(private store: Store<AppState>, private userActions: UserActions) { }
+
+
   f = new FormGroup({
-    email: new FormControl('qdouble@gmail.com')
+    email: new FormControl('qdouble@gmail.com', [Validators.required, Validators.pattern(RegexValues.email)])
   })
-  
-  onSubmit(){
+
+  onSubmit() {
     this.store.dispatch(this.userActions.checkEmail(this.f.controls['email'].value));
   }
 }

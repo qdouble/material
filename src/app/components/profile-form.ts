@@ -38,7 +38,7 @@ import { User } from '../models';
           <label>Your Phone Number:</label>
           <input formControlName="phone" class="form-control">
         </div>
-        <button type="submit">Update Profile</button>
+        <button [disabled]="!f.valid" type="submit">Update Profile</button>
       </form>
     </div>
     `
