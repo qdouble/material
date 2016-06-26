@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, AbstractControl } from '@angular/forms';
-import { ValidatorFn } from '@angular/forms/src/directives/validators';
+import { AsyncValidatorFn, ValidatorFn } from '@angular/forms/src/directives/validators';
 
 export class CustomValidators {
 
@@ -8,10 +8,10 @@ export class CustomValidators {
       let c1 = group.controls[c1Key] || { value: null };
       let c2 = group.controls[c2Key] || { value: null };
       var val: string = group.value;
-      var compareError = {}
-      compareError[errorMsg] = true;
+      var error = {}
+      error[errorMsg] = true;
       return (c1.value !== c2.value) ?
-                 compareError :
+                 error :
                  null;
     };
   }
@@ -23,5 +23,5 @@ export class CustomValidators {
       }
     }
   }
-
+  
 }

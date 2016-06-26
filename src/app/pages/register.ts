@@ -4,11 +4,13 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { AppState, getUserEntryEmail } from '../reducers';
 import { UserActions } from '../actions';
-import { CustomValidators, RegexValues } from '../validators';
+import { CustomValidators, DebounceInputControlValueAccessor,
+  RegexValues, UsernameValidator } from '../validators';
 
 @Component({
   selector: 'register',
-  directives: [REACTIVE_FORM_DIRECTIVES],
+  directives: [REACTIVE_FORM_DIRECTIVES, DebounceInputControlValueAccessor],
+  providers: [UsernameValidator],
   template: `
   
   <header>
@@ -26,7 +28,7 @@ import { CustomValidators, RegexValues } from '../validators';
       </div>
       <div class="form-group">
         <label>Username</label>
-        <input formControlName="username" class="form-control">
+        <input [debounceTime]="300" formControlName="username" class="form-control">
       </div>
       <div class="form-group">
         <label>Password</label>
@@ -88,6 +90,8 @@ import { CustomValidators, RegexValues } from '../validators';
 })
 
 export class Register {
+  f: FormGroup;
+  username: FormControl;
   entryEmail$: Observable<string>;
   RANDOM_NUM = Math.floor((Math.random() * 100000) + 1);
 
@@ -95,8 +99,6 @@ export class Register {
     [Validators.required, Validators.pattern(RegexValues.email)]);
   confirmEmail = new FormControl(`new${this.RANDOM_NUM}@user.com`,
     [Validators.required, Validators.pattern(RegexValues.email)]);
-  username = new FormControl(`myUserName${this.RANDOM_NUM}`,
-    [Validators.required, Validators.pattern(RegexValues.username)]);
   password = new FormControl('password',
     [Validators.required, Validators.pattern(RegexValues.password)]);
   confirmPassword = new FormControl('password',
@@ -120,38 +122,48 @@ export class Register {
   birthday = new FormControl('1999-01-01', Validators.required);
   paypal = new FormControl('new@user.com',
     Validators.pattern(RegexValues.email));
-  agree = new FormControl(null, CustomValidators.isTrue)
+  agree = new FormControl(true, CustomValidators.isTrue)
 
-  f = new FormGroup({
-    email: this.email,
-    confirmEmail: this.confirmEmail,
-    username: this.username,
-    password: this.password,
-    confirmPassword: this.confirmPassword,
-    firstName: this.firstName,
-    lastName: this.lastName,
-    address: this.address,
-    city: this.city,
-    State: this.State,
-    zipCode: this.zipCode,
-    country: this.country,
-    phone: this.phone,
-    birthday: this.birthday,
-    paypal: this.paypal,
-    agree: this.agree
-  }, {}, Validators.compose(
-    [CustomValidators.compare('email', 'confirmEmail', 'compareEmail'),
-    CustomValidators.compare('password', 'confirmPassword', 'comparePassword')]) )
+  constructor(
+    private store: Store<AppState>,
+    private userActions: UserActions,
+    private userValidator: UsernameValidator
+  ) {
 
-  constructor(private store: Store<AppState>, private userActions: UserActions) {
     this.entryEmail$ = store.let(getUserEntryEmail());
     this.entryEmail$.take(1).subscribe(email => {
       if (email) this.email.updateValue(email)
     });
+
+    this.username = new FormControl(`myUserName${this.RANDOM_NUM}`,
+      [Validators.required, Validators.pattern(RegexValues.username)],
+      userValidator.usernameTaken);
+
+    this.f = new FormGroup({
+      email: this.email,
+      confirmEmail: this.confirmEmail,
+      username: this.username,
+      password: this.password,
+      confirmPassword: this.confirmPassword,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      address: this.address,
+      city: this.city,
+      State: this.State,
+      zipCode: this.zipCode,
+      country: this.country,
+      phone: this.phone,
+      birthday: this.birthday,
+      paypal: this.paypal,
+      agree: this.agree,
+      hidden: new FormControl(true)
+    }, {}, Validators.compose(
+      [CustomValidators.compare('email', 'confirmEmail', 'compareEmail'),
+        CustomValidators.compare('password', 'confirmPassword', 'comparePassword')]))
   }
 
   onSubmit() {
     this.store.dispatch(this.userActions.register(this.f.value));
-
   }
+
 }
