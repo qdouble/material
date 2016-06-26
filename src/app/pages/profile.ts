@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { User } from '../models';
 import { AppState, getUser, getUserLoaded, getUserLoading } from '../reducers';
 import { UserActions } from '../actions';
-import { ProfileForm } from '../components/profile-form';
 import { RegexValues } from '../validators';
 import { INPUT_FIELDS } from '../components';
 
