@@ -1,26 +1,27 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-// import { ROUTER_DIRECTIVES } from '@angular/router';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState, getUserLoaded, getUserLoading } from './reducers';
 import { UserActions } from './actions';
 
+import { RouterPatch } from './effects';
+
 @Component({
   selector: 'app-menu',
+  directives: [ROUTER_DIRECTIVES],
   template: `
   
-    <a *ngIf="!loggedIn" linkTo="/">Home</a>
-    <a *ngIf="!loggedIn" linkTo="/login">Login</a>
-    <a *ngIf="!loggedIn" linkTo="/register">Register</a>
-    <a *ngIf="loggedIn" linkTo="/profile">Profile</a>
-    
+    <a [hidden]="loggedIn" routerLink="">Home</a>
+    <a [hidden]="loggedIn" routerLink="login">Login</a>
+    <a [hidden]="loggedIn" routerLink="register">Register</a>
+    <a [hidden]="!loggedIn" routerLink="profile">Profile</a>
     <button *ngIf="loggedIn" (click)="logout.emit()">Logout</button>
   
   `
 })
 
 export class AppMenu{
-  @Input() loggedIn: boolean;
   @Output() logout = new EventEmitter();
 }
 
@@ -29,7 +30,7 @@ export class AppMenu{
   pipes: [],
   providers: [],
   directives: [
-    // ROUTER_DIRECTIVES // Enable for new router
+    ROUTER_DIRECTIVES,
     AppMenu
   ],
   styles: [require('./app.scss')],
@@ -41,13 +42,13 @@ export class AppMenu{
     </nav>
   </header>
   <main>
-    <route-view></route-view>
+    <router-outlet></router-outlet>
   </main>
   <footer>
   <br><br>
   User Loaded: {{userLoaded$ | async}}<br>
   User Loading: {{userLoading$ | async}}<br>
-  <a linkTo="/test-requests">Test Requests</a>
+  <a routerLink="test-requests">Test Requests</a>
   </footer>
 
   `
@@ -55,13 +56,19 @@ export class AppMenu{
 export class App {
   userLoading$: Observable<boolean>;
   userLoaded$: Observable<boolean>;
+  loggedIn: boolean;
 
   constructor(
     private store: Store<AppState>,
-    private userActions: UserActions
+    private userActions: UserActions,
+    private router: Router
     ) { 
-      this.userLoaded$ = store.let(getUserLoaded())
-      this.userLoading$ = store.let(getUserLoading())
+      this.userLoaded$ = store.let(getUserLoaded());
+      this.userLoading$ = store.let(getUserLoading());
+
+      RouterPatch.navigateByUrl.subscribe((url: string) => {
+        this.router.navigateByUrl(url)
+      })
     }
 
   logout() {

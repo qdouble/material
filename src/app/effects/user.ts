@@ -8,7 +8,7 @@ import 'rxjs/add/operator/switchMapTo';
 import 'rxjs/add/operator/toArray';
 import 'rxjs/add/observable/of';
 import { Injectable } from '@angular/core';
-import { Router } from '@ngrx/router';
+import { Router } from '@angular/router';
 import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
@@ -20,6 +20,8 @@ import { UserService } from '../services';
 import { User } from '../models/user';
 import { UserActions } from '../actions';
 
+import { RouterPatch as router } from './'
+
 @Injectable()
 
 export class UserEffects {
@@ -27,8 +29,7 @@ export class UserEffects {
     private updates$: StateUpdates<AppState>,
     private userService: UserService,
     // private db: Database,
-    private userActions: UserActions,
-    private router: Router
+    private userActions: UserActions
   ) { }
 
   @Effect() check$ = this.updates$
@@ -36,7 +37,8 @@ export class UserEffects {
     .map<string>(toPayload)
     .mergeMap(email => this.userService.checkEmail(email)
       .map((res: any) => this.userActions.checkEmailSuccess(res))
-      .do((res: any) => res.payload.redirectPath ? this.router.go(res.payload.redirectPath) : null)
+      .do((res: any) => res.payload.redirectPath ?
+        router.navigateByUrl.next(res.payload.redirectPath) : null)
       .catch(() => Observable.of(
         this.userActions.checkEmailFail(email)
       ))
@@ -57,7 +59,8 @@ export class UserEffects {
     .map<User>(toPayload)
     .switchMap(user => this.userService.loginUser(user)
       .map(res => this.userActions.loginSuccess(res))
-      .do((res: any) => res.payload.redirectPath ? this.router.go(res.payload.redirectPath) : null)
+      .do((res: any) => res.payload.redirectPath ?
+        router.navigateByUrl.next(res.payload.redirectPath) : null)
       .catch(() => Observable.of(
         this.userActions.loginFail(user)
       ))
@@ -68,7 +71,7 @@ export class UserEffects {
     .map<string>(toPayload)
     .mergeMap(() => this.userService.logout()
       .map(() => this.userActions.logoutSuccess())
-      .do(() => this.router.go(''))
+      .do(() => router.navigateByUrl.next(''))
       .catch((res) => Observable.of(
         this.userActions.logoutFail()
       ))
@@ -79,7 +82,8 @@ export class UserEffects {
     .map<User>(toPayload)
     .mergeMap(user => this.userService.registerUser(user)
       .map(res => this.userActions.registerSuccess(res))
-      .do((res: any) => res.payload.redirectPath ? this.router.go(res.payload.redirectPath) : null)
+      .do((res: any) => res.payload.redirectPath ?
+        router.navigateByUrl.next(res.payload.redirectPath) : null)
       .catch((res) => Observable.of(
         this.userActions.registerFail(res)
       ))

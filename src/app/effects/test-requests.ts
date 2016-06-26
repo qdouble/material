@@ -9,7 +9,6 @@ import 'rxjs/add/operator/toArray';
 import 'rxjs/add/observable/of';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { Router } from '@ngrx/router';
 import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 // import { Database } from '@ngrx/db';
@@ -26,8 +25,7 @@ export class TestRequestEffects {
     private updates$: StateUpdates<AppState>,
     private testService: TestRequestService,
     // private db: Database,
-    private testActions: TestRequestActions,
-    private router: Router
+    private testActions: TestRequestActions
   ) { }
 
   @Effect() checkLoginStatus$ = this.updates$

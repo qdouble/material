@@ -1,12 +1,10 @@
 import { provide, PLATFORM_DIRECTIVES, PLATFORM_PIPES } from '@angular/core';
-// import { ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router';
 import { FORM_PROVIDERS } from '@angular/common';
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
 import { ELEMENT_PROBE_PROVIDERS /*,ELEMENT_PROBE_PROVIDERS_PROD_MODE*/} from '@angular/platform-browser';
 import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
 
-// import { provideRouter } from '@angular/router';
-import { provideRouter } from '@ngrx/router';
+import { provideRouter } from '@angular/router';
 import { provideStore } from "@ngrx/store";
 import { provideDB } from '@ngrx/db';
 import { connectRouterToStore } from '@ngrx/router-store';
@@ -19,6 +17,8 @@ import reducer from '../../app/reducers';
 import effects from '../../app/effects';
 import services from '../../app/services';
 import actions from '../../app/actions';
+
+import { RouterPatch } from '../../app/effects';
 
 
 /*
@@ -37,6 +37,7 @@ export const NG_APPLICATION_PROVIDERS = [
   ...JSONP_PROVIDERS,
   // ...ROUTER_PROVIDERS,
   // provide(LocationStrategy, { useClass: HashLocationStrategy }),
+  RouterPatch,
   provideStore(reducer),
   runEffects(effects),
   provideRouter(routes),

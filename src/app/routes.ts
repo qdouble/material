@@ -1,38 +1,35 @@
-import { Routes } from '@ngrx/router';
+import { RouterConfig } from '@angular/router';
 import { Homepage } from "./pages/home";
 import { Login } from './pages/login';
 import { Profile } from './pages/profile';
 import { Register } from './pages/register';
 import { TestRequests } from './pages/test-requests';
 
-export const routes: Routes = [
+export const routes: RouterConfig = [
   {
-    path: '/',
-    component:  Homepage
+    path: '',
+    redirectTo: 'home',
+    terminal: true
   },
   {
-    path: '/login',
+    path: 'home',
+    component:  Homepage,
+    terminal: true
+  },
+  {
+    path: 'login',
     component:  Login
   },
   {
-    path: '/profile',
+    path: 'profile',
     component:  Profile
   },
   {
-    path: '/register',
+    path: 'register',
     component:  Register
   },
   {
-    path: '/test-requests',
+    path: 'test-requests',
     component:  TestRequests
-  },
-  {
-   path: '/admin',
-   loadComponent: () => new Promise(resolve => {
-     (require as any).ensure([], require => {
-       resolve(require('./pages/admin/login').AdminLogin)
-     })
-   })
   }
 ];
-
