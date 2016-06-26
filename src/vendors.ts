@@ -11,14 +11,12 @@ import '@angular/platform-browser-dynamic';
 import '@angular/core';
 import '@angular/common';
 import '@angular/http';
-// import '@angular/router';
+import '@angular/router';
 
 import '@ngrx/core';
 import '@ngrx/db';
 import '@ngrx/effects';
-import '@ngrx/router';
 import '@ngrx/store';
-import '@ngrx/router-store';
 
 // RxJS
 import 'rxjs/add/operator/map';

@@ -6,19 +6,16 @@ import { Observable } from 'rxjs/Observable';
 import { compose } from '@ngrx/core/compose';
 import { storeLogger } from 'ngrx-store-logger';
 import { combineReducers } from '@ngrx/store';
-import { routerReducer, RouterState } from '@ngrx/router-store';
 
 import userReducer, * as fromUser from './user';
 import testRequestReducer, * as fromTestRequests from './test-requests';
 
 export interface AppState {
-    router: RouterState,
     user: fromUser.UserState,
     testRequests: fromTestRequests.TestRequestState
 }
 
 export default compose(storeLogger(), combineReducers) ({
-    router: routerReducer,
     user: userReducer,
     testRequests: testRequestReducer
 });

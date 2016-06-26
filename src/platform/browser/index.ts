@@ -7,7 +7,6 @@ import { LocationStrategy, HashLocationStrategy, Location } from '@angular/commo
 import { provideRouter } from '@angular/router';
 import { provideStore } from "@ngrx/store";
 import { provideDB } from '@ngrx/db';
-import { connectRouterToStore } from '@ngrx/router-store';
 import { runEffects } from '@ngrx/effects';
 
 import { routes } from '../../app/routes';
@@ -41,7 +40,6 @@ export const NG_APPLICATION_PROVIDERS = [
   provideStore(reducer),
   runEffects(effects),
   provideRouter(routes),
-  connectRouterToStore(),
   // provideDB(schema),
   services,
   actions
