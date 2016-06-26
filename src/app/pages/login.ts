@@ -1,14 +1,16 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+
 import { AppState, getUserEntryEmail } from '../reducers';
 import { UserActions } from '../actions';
 import { RegexValues } from '../validators';
+import { INPUT_FIELDS } from '../components';
 
 @Component({
   selector: 'login',
-  directives: [REACTIVE_FORM_DIRECTIVES],
+  directives: [REACTIVE_FORM_DIRECTIVES, INPUT_FIELDS],
   template: `
   
   <header>
@@ -16,14 +18,8 @@ import { RegexValues } from '../validators';
   </header>
   <main> 
     <form [formGroup]="f" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label>Email address</label>
-        <input formControlName="email" type="email" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input formControlName="password" type="password" class="form-control">
-      </div>
+      <email-input [label]="'Email Address'" [controlName]="'email'" [form]="f"></email-input>
+      <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
       <button [disabled]="!f.valid" type="submit">Login</button>
     </form> 
   </main>
@@ -33,10 +29,9 @@ import { RegexValues } from '../validators';
 
 export class Login {
   entryEmail$: Observable<string>;
-  email = new FormControl('registered@user.com', [Validators.required,
+  email = new FormControl('', [Validators.required,
     Validators.pattern(RegexValues.email)]);
-  password = new FormControl('password', [Validators.required,
-    Validators.pattern(RegexValues.password)]);
+  password = new FormControl('password', Validators.required);
 
   f = new FormGroup({
     email: this.email,

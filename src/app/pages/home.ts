@@ -6,10 +6,11 @@ import { Observable } from 'rxjs/Observable';
 import { AppState } from '../reducers';
 import { UserActions } from '../actions';
 import { RegexValues } from '../validators';
+import { INPUT_FIELDS } from '../components';
 
 @Component({
   selector: 'home',
-  directives: [REACTIVE_FORM_DIRECTIVES],
+  directives: [REACTIVE_FORM_DIRECTIVES, INPUT_FIELDS],
   template: `
   
   <header>
@@ -20,11 +21,8 @@ import { RegexValues } from '../validators';
     <p>-- Put Prize Option Here--</p>
     <h2> Step 2: Register or Extend Your Account</h2>
     <form novalidate [formGroup]="f" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label>Email address</label>
-        <input formControlName="email" type="text" class="form-control">
-        <button type="submit" [disabled]="!f.valid">Submit</button>
-      </div>
+      <email-input [error]="''" [label]="'Email Address'" [controlName]="'email'" 
+        [form]="f" [submit]="'Submit'" ></email-input>
     </form>
   </main>
   
@@ -36,7 +34,8 @@ export class Homepage {
 
 
   f = new FormGroup({
-    email: new FormControl('qdouble@gmail.com', [Validators.required, Validators.pattern(RegexValues.email)])
+    email: new FormControl('registered@user.com',
+      [Validators.required, Validators.pattern(RegexValues.email)])
   })
 
   onSubmit() {

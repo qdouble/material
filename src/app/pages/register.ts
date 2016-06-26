@@ -6,10 +6,15 @@ import { AppState, getUserEntryEmail } from '../reducers';
 import { UserActions } from '../actions';
 import { CustomValidators, DebounceInputControlValueAccessor,
   RegexValues, UsernameValidator } from '../validators';
+import { INPUT_FIELDS } from '../components';
 
 @Component({
   selector: 'register',
-  directives: [REACTIVE_FORM_DIRECTIVES, DebounceInputControlValueAccessor],
+  directives: [
+    REACTIVE_FORM_DIRECTIVES,
+    DebounceInputControlValueAccessor,
+    INPUT_FIELDS
+  ],
   providers: [UsernameValidator],
   template: `
   
@@ -18,66 +23,30 @@ import { CustomValidators, DebounceInputControlValueAccessor,
   </header>
   <main>
     <form [formGroup]="f" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label>E-Mail Address</label>
-        <input formControlName="email" class="form-control">
+      <email-input [label]="'Email Address'" [controlName]="'email'" [form]="f"></email-input>
+      <email-input [label]="'Confirm E-mail Address'" [controlName]="'confirmEmail'" [form]="f"></email-input>
+      <div [hidden]="!f.errors?.compareEmail || confirmEmail.pristine" class="alert alert-danger">
+        Email addresses do not match.
       </div>
-      <div class="form-group">
-        <label>Confirm E-mail Address</label>
-        <input formControlName="confirmEmail" class="form-control">
+      <debounce-input [label]="'Username'" [controlName]="'username'" [form]="f"></debounce-input>
+      <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
+      <password-input [label]="'Confirm Password'" [controlName]="'confirmPassword'" [form]="f"></password-input>
+      <div [hidden]="!f.errors?.comparePassword || confirmPassword.pristine" class="alert alert-danger">
+        Passwords do not match.
       </div>
-      <div class="form-group">
-        <label>Username</label>
-        <input [debounceTime]="300" formControlName="username" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input formControlName="password" type="password" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Confirm Password</label>
-        <input formControlName="confirmPassword" type="password" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>First Name</label>
-        <input formControlName="firstName" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Last Name</label>
-        <input formControlName="lastName" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Street Address</label>
-        <input formControlName="address" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>City</label>
-        <input formControlName="city" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>State</label>
-        <input formControlName="State" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>ZipCode</label>
-        <input formControlName="zipCode" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Country</label>
-        <input formControlName="country" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Phone Number</label>
-        <input formControlName="phone" class="form-control">
-      </div>
+      <text-input [label]="'First Name'" [controlName]="'firstName'" [form]="f"></text-input>
+      <text-input [label]="'Last Name'" [controlName]="'lastName'" [form]="f"></text-input>
+      <text-input [label]="'Street Address'" [controlName]="'address'" [form]="f"></text-input>
+      <text-input [label]="'City'" [controlName]="'city'" [form]="f"></text-input>
+      <text-input [label]="'State'" [controlName]="'State'" [form]="f"></text-input>
+      <text-input [label]="'Zip Code'" [controlName]="'zipCode'" [form]="f"></text-input>
+      <text-input [label]="'Country'" [controlName]="'country'" [form]="f"></text-input>
+      <text-input [label]="'Phone Number'" [controlName]="'phone'" [form]="f"></text-input>
       <div class="form-group">
         <label>Birthday</label>
         <input type="date" formControlName="birthday" class="form-control">
       </div>
-      <div class="form-group">
-        <label>PayPal</label>
-        <input formControlName="paypal" class="form-control">
-      </div>
+      <email-input [label]="'PayPal email address'" [controlName]="'paypal'" [form]="f"></email-input>
       <div class="form-group">
         <label>I agree to the Terms and Conditions</label>
         <input formControlName="agree" type="checkbox" class="form-control">

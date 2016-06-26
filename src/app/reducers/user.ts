@@ -75,10 +75,7 @@ export default function (state = initialState, action: Action): UserState {
 
 
     case UserActions.LOGOUT_SUCCESS:
-      return Object.assign({}, state, {
-        loaded: false,
-        user: {}
-      });
+      return Object.assign({}, state, initialState);
 
     case UserActions.UPDATE_PROFILE:
       return Object.assign({}, state, {
