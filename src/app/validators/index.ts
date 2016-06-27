@@ -4,7 +4,7 @@ import { RegexValues } from './regexValues';
 import { UsernameValidator } from './usernameValidator';
 
 export {
-    CustomValidators, 
+    CustomValidators,
     DebounceInputControlValueAccessor,
     RegexValues,
     UsernameValidator

@@ -1,3 +1,4 @@
+/* tslint:disable: member-ordering */
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mapTo';
@@ -19,7 +20,7 @@ import { UserService } from '../services';
 import { User } from '../models/user';
 import { UserActions } from '../actions';
 
-import { RouterPatch as router } from './'
+import { RouterPatch as router } from './';
 
 @Injectable()
 
@@ -30,7 +31,7 @@ export class UserEffects {
     private userActions: UserActions
   ) { }
 
-  @Effect() check$ = this.updates$
+  @Effect() checkEmail$ = this.updates$
     .whenAction(UserActions.CHECK_EMAIL)
     .map<string>(toPayload)
     .mergeMap(email => this.userService.checkEmail(email)
@@ -42,6 +43,16 @@ export class UserEffects {
       ))
     );
 
+  @Effect() checkLoggedIn$ = this.updates$
+    .whenAction(UserActions.CHECK_LOGGED_IN)
+    .map<string>(toPayload)
+    .mergeMap(() => this.userService.checkLoggedIn()
+      .map((res: any) => this.userActions.checkLoggedInSuccess(res))
+      .catch((res) => Observable.of(
+        this.userActions.checkLoggedInFail(res)
+      ))
+    );
+
   @Effect() getProfile$ = this.updates$
     .whenAction(UserActions.GET_PROFILE)
     .map<string>(toPayload)
@@ -50,7 +61,7 @@ export class UserEffects {
       .catch((res) => Observable.of(
         this.userActions.getProfileFail(res)
       ))
-    )
+    );
 
   @Effect() login$ = this.updates$
     .whenAction(UserActions.LOGIN)
@@ -62,7 +73,7 @@ export class UserEffects {
       .catch(() => Observable.of(
         this.userActions.loginFail(user)
       ))
-    )
+    );
 
   @Effect() logout$ = this.updates$
     .whenAction(UserActions.LOGOUT)
@@ -73,7 +84,7 @@ export class UserEffects {
       .catch((res) => Observable.of(
         this.userActions.logoutFail()
       ))
-    )
+    );
 
   @Effect() register$ = this.updates$
     .whenAction(UserActions.REGISTER)

@@ -1,3 +1,4 @@
+/* tslint:disable: variable-name */
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -13,23 +14,23 @@ import { INPUT_FIELDS } from '../components';
   directives: [REACTIVE_FORM_DIRECTIVES, INPUT_FIELDS],
   template: `
 
-    <header>
-      <h1>Profile</h1>
-    </header>
-    <main>
-      <form [formGroup]="f" (ngSubmit)="onSubmit()">
-        <text-input [label]="'Your Username:'" [controlName]="'username'" [form]="f"></text-input>
-        <email-input [label]="'Your Email Address:'" [controlName]="'email'" [form]="f"></email-input>
-        <text-input [label]="'Your Address:'" [controlName]="'address'" [form]="f"></text-input>
-        <text-input [label]="'Your City:'" [controlName]="'city'" [form]="f"></text-input>
-        <text-input [label]="'Your State:'" [controlName]="'State'" [form]="f"></text-input>
-        <text-input [label]="'Your Zip Code:'" [controlName]="'zipCode'" [form]="f"></text-input>
-        <text-input [label]="'Phone Number:'" [controlName]="'phone'" [form]="f"></text-input>
-        <button type="submit" [disabled]="!f.valid">Update Profile</button>
-      </form>
-    </main>
-    
-    `
+  <header>
+    <h1>Profile</h1>
+  </header>
+  <main>
+    <form [formGroup]="f" (ngSubmit)="onSubmit()">
+      <text-input [label]="'Your Username:'" [controlName]="'username'" [form]="f"></text-input>
+      <email-input [label]="'Your Email Address:'" [controlName]="'email'" [form]="f"></email-input>
+      <text-input [label]="'Your Address:'" [controlName]="'address'" [form]="f"></text-input>
+      <text-input [label]="'Your City:'" [controlName]="'city'" [form]="f"></text-input>
+      <text-input [label]="'Your State:'" [controlName]="'State'" [form]="f"></text-input>
+      <text-input [label]="'Your Zip Code:'" [controlName]="'zipCode'" [form]="f"></text-input>
+      <text-input [label]="'Phone Number:'" [controlName]="'phone'" [form]="f"></text-input>
+      <button type="submit" [disabled]="!f.valid">Update Profile</button>
+    </form>
+  </main>
+
+  `
 })
 
 export class Profile {
@@ -65,7 +66,7 @@ export class Profile {
   constructor(private store: Store<AppState>, private userActions: UserActions) {
     this.store.dispatch(this.userActions.getProfile());
     this.user$ = store.let(getUser());
-    this.loaded$ = store.let(getUserLoaded())
+    this.loaded$ = store.let(getUserLoaded());
   }
 
   onSubmit(form) {
@@ -81,7 +82,7 @@ export class Profile {
       this.State.updateValue(user.State);
       this.zipCode.updateValue(user.zipCode);
       this.phone.updateValue(user.phone);
-    })
+    });
   }
 
 }

@@ -11,8 +11,8 @@ import userReducer, * as fromUser from './user';
 import testRequestReducer, * as fromTestRequests from './test-requests';
 
 export interface AppState {
-    user: fromUser.UserState,
-    testRequests: fromTestRequests.TestRequestState
+    user: fromUser.UserState;
+    testRequests: fromTestRequests.TestRequestState;
 }
 
 export default compose(storeLogger(), combineReducers) ({
@@ -31,13 +31,12 @@ export function getTestRequestState() {
 }
 
 export function getTestRequestGetAffiliates() {
-    return compose(fromTestRequests.getAffiliates(), getTestRequestState())
+    return compose(fromTestRequests.getAffiliates(), getTestRequestState());
 }
 
 export function getTestRequestAllUsers() {
-    return compose(fromTestRequests.getAllUser(), getTestRequestState())
+    return compose(fromTestRequests.getAllUser(), getTestRequestState());
 }
-
 
 export function getUser() {
     return compose(fromUser.getUser(), getUserState());
@@ -55,4 +54,10 @@ export function getUserLoading() {
     return compose(fromUser.getLoading(), getUserState());
 }
 
+export function getUserLoginChecked() {
+    return compose(fromUser.getLoginChecked(), getUserState());
+}
 
+export function getUserLoggedIn() {
+    return compose(fromUser.getLoggedIn(), getUserState());
+}

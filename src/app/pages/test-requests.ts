@@ -16,14 +16,14 @@ import { TestRequestActions } from '../actions';
 })
 
 export class ChildCmp {
-  @Input() user
+  @Input() user;
 }
 
 @Component({
   selector: 'test-requests',
   directives: [REACTIVE_FORM_DIRECTIVES, ChildCmp],
   template: `
-  
+
   <header>
   <h1>Test Requests</h1>
   </header>
@@ -56,14 +56,14 @@ export class TestRequests {
   ngOnInit() {
     this.users$.subscribe(data => {
       console.log(data);
-    })
+    });
   }
 
-  checkLoginStatus(){
+  checkLoginStatus() {
     this.store.dispatch(this.testActions.checkLoginStatus());
   }
 
-  getAffiliates(){
+  getAffiliates() {
     this.store.dispatch(this.testActions.getAffiliates());
   }
 

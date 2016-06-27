@@ -1,12 +1,14 @@
 import { provide, PLATFORM_DIRECTIVES, PLATFORM_PIPES } from '@angular/core';
 import { FORM_PROVIDERS } from '@angular/common';
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
-import { ELEMENT_PROBE_PROVIDERS /*,ELEMENT_PROBE_PROVIDERS_PROD_MODE*/} from '@angular/platform-browser';
+import { ELEMENT_PROBE_PROVIDERS
+  /*,ELEMENT_PROBE_PROVIDERS_PROD_MODE*/
+} from '@angular/platform-browser';
 import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
-import {disableDeprecatedForms, provideForms} from '@angular/forms';
+import { disableDeprecatedForms, provideForms } from '@angular/forms';
 
 import { provideRouter } from '@angular/router';
-import { provideStore } from "@ngrx/store";
+import { provideStore } from '@ngrx/store';
 import { provideDB } from '@ngrx/db';
 import { runEffects } from '@ngrx/effects';
 

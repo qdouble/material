@@ -3,12 +3,12 @@ import { TestRequestService } from './test-requests';
 import { UserService } from './user';
 
 export {
-    TestRequestService,
-    UserService
+  TestRequestService,
+  UserService
 }
 
 export default [
-    HTTP_PROVIDERS,
-    TestRequestService,
-    UserService
+  HTTP_PROVIDERS,
+  TestRequestService,
+  UserService
 ];

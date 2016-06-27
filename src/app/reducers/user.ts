@@ -1,3 +1,4 @@
+/* tslint:disable: no-switch-case-fall-through */
 import '@ngrx/core/add/operator/select';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
@@ -10,15 +11,19 @@ export interface UserState {
   entryEmail: string;
   loading: boolean;
   loaded: boolean;
-  user: User
+  loginChecked: boolean;
+  loggedIn: boolean;
+  user: User;
 };
 
 const initialState: UserState = {
   entryEmail: null,
   loading: false,
   loaded: false,
+  loginChecked: false,
+  loggedIn: false,
   user: {}
-}
+};
 
 export default function (state = initialState, action: Action): UserState {
   switch (action.type) {
@@ -38,6 +43,20 @@ export default function (state = initialState, action: Action): UserState {
     case UserActions.CHECK_EMAIL_SUCCESS: {
       return Object.assign({}, state, {
         loading: false
+      });
+    }
+
+    case UserActions.CHECK_LOGGED_IN_SUCCESS: {
+      const userId = action.payload;
+      if (userId === '0') {
+        return Object.assign({}, state, {
+          loginChecked: true,
+          loggedIn: false
+        });
+      }
+      return Object.assign({}, state, {
+        loginChecked: true,
+        loggedIn: true
       });
     }
 
@@ -65,12 +84,11 @@ export default function (state = initialState, action: Action): UserState {
     }
 
     case UserActions.LOGIN_SUCCESS:
-      if (action.payload.user) {
+      if (action.payload.success) {
         return Object.assign({}, state, {
-          loaded: true
-        })
+          loggedIn: true
+        });
       }
-
       return state;
 
 
@@ -105,17 +123,17 @@ export default function (state = initialState, action: Action): UserState {
     case UserActions.REGISTER:
       return Object.assign({}, state, {
         loading: true
-      })
+      });
 
     case UserActions.REGISTER_FAIL:
       return Object.assign({}, state, {
         loading: false
-      })
+      });
 
     case UserActions.REGISTER_SUCCESS:
       return Object.assign({}, state, {
         loading: false
-      })
+      });
 
     default: {
       return state;
@@ -125,17 +143,27 @@ export default function (state = initialState, action: Action): UserState {
 
 export function getEntryEmail() {
   return (state$: Observable<UserState>) => state$
-    .select(s => s.entryEmail)
+    .select(s => s.entryEmail);
 }
 
 export function getLoaded() {
   return (state$: Observable<UserState>) => state$
-    .select(s => s.loaded)
+    .select(s => s.loaded);
 }
 
 export function getLoading() {
   return (state$: Observable<UserState>) => state$
-    .select(s => s.loading)
+    .select(s => s.loading);
+}
+
+export function getLoginChecked() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.loginChecked);
+}
+
+export function getLoggedIn() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.loggedIn);
 }
 
 export function getUser() {
