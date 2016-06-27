@@ -4,27 +4,9 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState, getUserLoaded, getUserLoading, getUserLoggedIn, getUserLoginChecked } from './reducers';
 import { UserActions } from './actions';
-
 import { RouterPatch } from './effects';
-
-@Component({
-  selector: 'app-menu',
-  directives: [ROUTER_DIRECTIVES],
-  template: `
-  
-    <a [hidden]="loggedIn" routerLink="">Home</a>
-    <a [hidden]="loggedIn" routerLink="login">Login</a>
-    <a [hidden]="loggedIn" routerLink="register">Register</a>
-    <a [hidden]="!loggedIn" routerLink="profile">Profile</a>
-    <button [hidden]="!loggedIn" (click)="logout.emit()">Logout</button>
-
-  `
-})
-
-export class AppMenu{
-  @Input() loggedIn: boolean;
-  @Output() logout = new EventEmitter();
-}
+import { AppMenu } from './app-menu.component';
+import { AppFooter } from './app-footer.component';
 
 @Component({
   selector: 'app',
@@ -32,11 +14,12 @@ export class AppMenu{
   providers: [],
   directives: [
     ROUTER_DIRECTIVES,
-    AppMenu
+    AppMenu,
+    AppFooter
   ],
   styles: [require('./app.scss')],
   template: `
-  
+
   <header>
     <nav>
       <app-menu [loggedIn]="userLoggedIn$ | async" (logout)="logout()"></app-menu>
@@ -46,6 +29,8 @@ export class AppMenu{
     <router-outlet></router-outlet>
   </main>
   <footer>
+  <br>
+    <app-footer></app-footer>
   <br><br>
   User Loaded: {{userLoaded$ | async}}<br>
   User Loading: {{userLoading$ | async}}<br>
@@ -64,20 +49,20 @@ export class App {
     private store: Store<AppState>,
     private userActions: UserActions,
     private router: Router
-    ) { 
-      this.userLoaded$ = store.let(getUserLoaded());
-      this.userLoading$ = store.let(getUserLoading());
-      this.userLoggedIn$ = store.let(getUserLoggedIn());
+  ) {
+    this.userLoaded$ = store.let(getUserLoaded());
+    this.userLoading$ = store.let(getUserLoading());
+    this.userLoggedIn$ = store.let(getUserLoggedIn());
 
-      RouterPatch.navigateByUrl.subscribe((url: string) => {
-        this.router.navigateByUrl(url)
-      })
+    RouterPatch.navigateByUrl.subscribe((url: string) => {
+      this.router.navigateByUrl(url)
+    })
 
-      this.store.dispatch(this.userActions.checkLoggedIn());
-    }
+    this.store.dispatch(this.userActions.checkLoggedIn());
+  }
 
   logout() {
     this.store.dispatch(this.userActions.logout())
   }
-  
+
 }
