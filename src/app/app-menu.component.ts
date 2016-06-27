@@ -28,7 +28,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
   `
 })
 
-export class AppMenu{
+export class AppMenu {
   @Input() loggedIn: boolean;
   @Output() logout = new EventEmitter();
 }

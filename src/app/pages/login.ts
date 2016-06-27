@@ -35,12 +35,12 @@ export class Login {
   f = new FormGroup({
     email: this.email,
     password: this.password
-  })
+  });
 
   constructor(private store: Store<AppState>, private userActions: UserActions) {
     this.entryEmail$ = store.let(getUserEntryEmail());
     this.entryEmail$.take(1).subscribe(email => {
-      if (email) this.email.updateValue(email)
+      if (email) this.email.updateValue(email);
     });
   }
 

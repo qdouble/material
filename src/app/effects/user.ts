@@ -1,3 +1,4 @@
+/* tslint:disable: member-ordering */
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mapTo';
@@ -19,7 +20,7 @@ import { UserService } from '../services';
 import { User } from '../models/user';
 import { UserActions } from '../actions';
 
-import { RouterPatch as router } from './'
+import { RouterPatch as router } from './';
 
 @Injectable()
 
@@ -50,7 +51,7 @@ export class UserEffects {
       .catch((res) => Observable.of(
         this.userActions.checkLoggedInFail(res)
       ))
-    )
+    );
 
   @Effect() getProfile$ = this.updates$
     .whenAction(UserActions.GET_PROFILE)
@@ -60,7 +61,7 @@ export class UserEffects {
       .catch((res) => Observable.of(
         this.userActions.getProfileFail(res)
       ))
-    )
+    );
 
   @Effect() login$ = this.updates$
     .whenAction(UserActions.LOGIN)
@@ -72,7 +73,7 @@ export class UserEffects {
       .catch(() => Observable.of(
         this.userActions.loginFail(user)
       ))
-    )
+    );
 
   @Effect() logout$ = this.updates$
     .whenAction(UserActions.LOGOUT)
@@ -83,7 +84,7 @@ export class UserEffects {
       .catch((res) => Observable.of(
         this.userActions.logoutFail()
       ))
-    )
+    );
 
   @Effect() register$ = this.updates$
     .whenAction(UserActions.REGISTER)

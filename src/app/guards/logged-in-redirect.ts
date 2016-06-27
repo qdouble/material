@@ -8,13 +8,13 @@ import { AppState, getUserLoggedIn } from '../reducers';
 @Injectable()
 
 export class LoggedInRedirectGuard implements CanActivate {
-  loggedIn$: Observable<boolean>
+  loggedIn$: Observable<boolean>;
   loggedIn: boolean;
   constructor(private store: Store<AppState>, private router: Router) {
     this.loggedIn$ = store.let(getUserLoggedIn());
     this.loggedIn$.subscribe(val => {
-      this.loggedIn = val
-    })
+      this.loggedIn = val;
+    });
   }
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (this.loggedIn) {

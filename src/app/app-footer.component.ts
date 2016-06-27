@@ -16,6 +16,6 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
   `
 })
 
-export class AppFooter{
+export class AppFooter {
   @Input() loggedIn: boolean;
 }

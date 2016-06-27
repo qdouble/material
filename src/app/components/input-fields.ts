@@ -12,10 +12,12 @@ import { DebounceInputControlValueAccessor } from '../validators';
       <input type="email" [formControl]="dynamicControl" class="form-control">
       <button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
     </div>
-    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || !dynamicControl.errors?.required" class="alert alert-danger">
+    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
+      !dynamicControl.errors?.required" class="alert alert-danger">
       {{label}} is required.
     </div>
-    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || dynamicControl.errors?.required" class="alert alert-danger">
+    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
+      dynamicControl.errors?.required" class="alert alert-danger">
       {{errorMessage}}
     </div>    
     `
@@ -47,10 +49,12 @@ export class EmailInput {
       <input type="text" [formControl]="dynamicControl" class="form-control">
       <button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
     </div>
-    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || !dynamicControl.errors?.required" class="alert alert-danger">
+    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
+      !dynamicControl.errors?.required" class="alert alert-danger">
       {{label}} is required.
     </div>
-    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || dynamicControl.errors?.required" class="alert alert-danger">
+    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
+      dynamicControl.errors?.required" class="alert alert-danger">
       {{errorMessage}}
     </div> 
     `
@@ -81,10 +85,12 @@ export class TextInput {
       <input [debounceTime]="300" type="text" [formControl]="dynamicControl" class="form-control">
       <button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
     </div>
-    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || !dynamicControl.errors?.required" class="alert alert-danger">
+    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
+      !dynamicControl.errors?.required" class="alert alert-danger">
       {{label}} is required.
     </div>
-    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || dynamicControl.errors?.required" class="alert alert-danger">
+    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
+      dynamicControl.errors?.required" class="alert alert-danger">
       {{errorMessage}}
     </div> 
     `
@@ -115,10 +121,12 @@ export class DebounceInput {
       <input type="password" [formControl]="dynamicControl" class="form-control">
       <button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
     </div>
-    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || !dynamicControl.errors?.required" class="alert alert-danger">
+    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
+      !dynamicControl.errors?.required" class="alert alert-danger">
       {{label}} is required.
     </div>
-    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || dynamicControl.errors?.required" class="alert alert-danger">
+    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
+      dynamicControl.errors?.required" class="alert alert-danger">
       {{errorMessage}}
     </div> 
     `
@@ -139,4 +147,4 @@ export class PasswordInput {
   }
 }
 
-export const INPUT_FIELDS = [EmailInput, TextInput, PasswordInput, DebounceInput]
+export const INPUT_FIELDS = [EmailInput, TextInput, PasswordInput, DebounceInput];

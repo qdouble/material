@@ -2,7 +2,13 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState, getUserLoaded, getUserLoading, getUserLoggedIn, getUserLoginChecked } from './reducers';
+import {
+  AppState,
+  getUserLoaded,
+  getUserLoading,
+  getUserLoggedIn,
+  getUserLoginChecked
+} from './reducers';
 import { UserActions } from './actions';
 import { RouterPatch } from './effects';
 import { AppMenu } from './app-menu.component';
@@ -55,14 +61,14 @@ export class App {
     this.userLoggedIn$ = store.let(getUserLoggedIn());
 
     RouterPatch.navigateByUrl.subscribe((url: string) => {
-      this.router.navigateByUrl(url)
-    })
+      this.router.navigateByUrl(url);
+    });
 
     this.store.dispatch(this.userActions.checkLoggedIn());
   }
 
   logout() {
-    this.store.dispatch(this.userActions.logout())
+    this.store.dispatch(this.userActions.logout());
   }
 
 }

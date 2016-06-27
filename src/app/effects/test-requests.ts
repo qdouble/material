@@ -1,3 +1,4 @@
+/* tslint:disable: member-ordering */
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mapTo';
@@ -34,7 +35,7 @@ export class TestRequestEffects {
       .catch((res: Response) => Observable.of(
         this.testActions.checkLoginStatusFail(res)
       ))
-    )
+    );
 
   @Effect() getAffiliates$ = this.updates$
     .whenAction(TestRequestActions.GET_AFFILIATES)
@@ -44,7 +45,7 @@ export class TestRequestEffects {
       .catch((res: Response) => Observable.of(
         this.testActions.getAffiliatesFail()
       ))
-    )
+    );
 
   @Effect() showAllUsers$ = this.updates$
     .whenAction(TestRequestActions.SHOW_ALL_USERS)
@@ -54,6 +55,6 @@ export class TestRequestEffects {
       .catch((res: Response) => Observable.of(
         this.testActions.showAllUsersFail(res)
       ))
-    )
+    );
 }
 

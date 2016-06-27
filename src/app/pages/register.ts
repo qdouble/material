@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+/* tslint:disable: variable-name */
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -24,14 +25,17 @@ import { INPUT_FIELDS } from '../components';
   <main>
     <form [formGroup]="f" (ngSubmit)="onSubmit()">
       <email-input [label]="'Email Address'" [controlName]="'email'" [form]="f"></email-input>
-      <email-input [label]="'Confirm E-mail Address'" [controlName]="'confirmEmail'" [form]="f"></email-input>
+      <email-input [label]="'Confirm E-mail Address'" [controlName]="'confirmEmail'" [form]="f">
+      </email-input>
       <div [hidden]="!f.errors?.compareEmail || !confirmEmail.valid" class="alert alert-danger">
         Email addresses do not match.
       </div>
       <debounce-input [label]="'Username'" [controlName]="'username'" [form]="f"></debounce-input>
       <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
-      <password-input [label]="'Confirm Password'" [controlName]="'confirmPassword'" [form]="f"></password-input>
-      <div [hidden]="!f.errors?.comparePassword || !confirmPassword.valid" class="alert alert-danger">
+      <password-input [label]="'Confirm Password'" [controlName]="'confirmPassword'" [form]="f">
+      </password-input>
+      <div [hidden]="!f.errors?.comparePassword || 
+        !confirmPassword.valid" class="alert alert-danger">
         Passwords do not match.
       </div>
       <text-input [label]="'First Name'" [controlName]="'firstName'" [form]="f"></text-input>
@@ -46,7 +50,8 @@ import { INPUT_FIELDS } from '../components';
         <label>Birthday</label>
         <input type="date" formControlName="birthday" class="form-control">
       </div>
-      <email-input [label]="'PayPal email address'" [controlName]="'paypal'" [form]="f"></email-input>
+      <email-input [label]="'PayPal email address'" [controlName]="'paypal'" [form]="f">
+      </email-input>
       <div class="form-group">
         <label>I agree to the Terms and Conditions</label>
         <input formControlName="agree" type="checkbox" class="form-control">
@@ -63,7 +68,7 @@ export class Register {
   username: FormControl;
   entryEmail$: Observable<string>;
   RANDOM_NUM = Math.floor((Math.random() * 100000) + 1);
-  RANDOM_EMAIL = `new${this.RANDOM_NUM}@user.com`
+  RANDOM_EMAIL = `new${this.RANDOM_NUM}@user.com`;
 
   email = new FormControl(`${this.RANDOM_EMAIL}`,
     [Validators.required, Validators.pattern(RegexValues.email)]);
@@ -92,7 +97,7 @@ export class Register {
   birthday = new FormControl('1999-01-01', Validators.required);
   paypal = new FormControl('new@user.com',
     Validators.pattern(RegexValues.email));
-  agree = new FormControl(true, CustomValidators.isTrue)
+  agree = new FormControl(true, CustomValidators.isTrue);
 
   constructor(
     private store: Store<AppState>,
@@ -102,7 +107,7 @@ export class Register {
 
     this.entryEmail$ = store.let(getUserEntryEmail());
     this.entryEmail$.take(1).subscribe(email => {
-      if (email) this.email.updateValue(email)
+      if (email) this.email.updateValue(email);
     });
 
     this.username = new FormControl(`myUserName${this.RANDOM_NUM}`,
@@ -129,7 +134,7 @@ export class Register {
       hidden: new FormControl(true)
     }, {}, Validators.compose(
       [CustomValidators.compare('email', 'confirmEmail', 'compareEmail'),
-        CustomValidators.compare('password', 'confirmPassword', 'comparePassword')]))
+        CustomValidators.compare('password', 'confirmPassword', 'comparePassword')]));
   }
 
   onSubmit() {

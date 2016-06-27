@@ -16,7 +16,7 @@ import { TestRequestActions } from '../actions';
 })
 
 export class ChildCmp {
-  @Input() user
+  @Input() user;
 }
 
 @Component({
@@ -56,7 +56,7 @@ export class TestRequests {
   ngOnInit() {
     this.users$.subscribe(data => {
       console.log(data);
-    })
+    });
   }
 
   checkLoginStatus() {

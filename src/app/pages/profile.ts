@@ -1,3 +1,4 @@
+/* tslint:disable: variable-name */
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -65,7 +66,7 @@ export class Profile {
   constructor(private store: Store<AppState>, private userActions: UserActions) {
     this.store.dispatch(this.userActions.getProfile());
     this.user$ = store.let(getUser());
-    this.loaded$ = store.let(getUserLoaded())
+    this.loaded$ = store.let(getUserLoaded());
   }
 
   onSubmit(form) {
@@ -81,7 +82,7 @@ export class Profile {
       this.State.updateValue(user.State);
       this.zipCode.updateValue(user.zipCode);
       this.phone.updateValue(user.phone);
-    })
+    });
   }
 
 }

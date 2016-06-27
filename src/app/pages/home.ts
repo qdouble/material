@@ -29,13 +29,12 @@ import { INPUT_FIELDS } from '../components';
 })
 
 export class Homepage {
-  constructor(private store: Store<AppState>, private userActions: UserActions) { }
-
-
   f = new FormGroup({
     email: new FormControl('registered@user.com',
       [Validators.required, Validators.pattern(RegexValues.email)])
-  })
+  });
+
+  constructor(private store: Store<AppState>, private userActions: UserActions) { }
 
   onSubmit() {
     this.store.dispatch(this.userActions.checkEmail(this.f.controls['email'].value));

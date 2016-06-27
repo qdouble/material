@@ -25,7 +25,7 @@ import {
   TermsAndConditions,
   TestRequests,
   ViewOffers
-}  from './pages'
+}  from './pages';
 
 export const routes: RouterConfig = [
   {

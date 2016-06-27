@@ -1,3 +1,4 @@
+/* tslint:disable */
 import {Component, Directive, Provider, forwardRef, Input, ElementRef, Renderer} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';

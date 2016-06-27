@@ -18,7 +18,7 @@ import { INPUT_FIELDS } from '../components';
   <main>
   </main>
 
-    `
+  `
 })
 
 export class Offers {

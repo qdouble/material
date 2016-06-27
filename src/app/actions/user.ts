@@ -1,3 +1,4 @@
+/* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
@@ -11,7 +12,7 @@ export class UserActions {
     return {
       type: UserActions.CHECK_EMAIL,
       payload: email
-    }
+    };
   }
 
   static CHECK_EMAIL_FAIL = '[User] Check Email Fail';
@@ -19,7 +20,7 @@ export class UserActions {
     return {
       type: UserActions.CHECK_EMAIL_FAIL,
       payload: email
-    }
+    };
   }
 
 
@@ -28,37 +29,37 @@ export class UserActions {
     return {
       type: UserActions.CHECK_EMAIL_SUCCESS,
       payload: res
-    }
+    };
   }
 
-  static CHECK_LOGGED_IN = '[User] Check Logged In'
+  static CHECK_LOGGED_IN = '[User] Check Logged In';
   checkLoggedIn(): Action {
     return {
       type: UserActions.CHECK_LOGGED_IN
-    }
+    };
   }
 
-  static CHECK_LOGGED_IN_FAIL = '[User] Check Logged In Fail'
+  static CHECK_LOGGED_IN_FAIL = '[User] Check Logged In Fail';
   checkLoggedInFail(res: any): Action {
     return {
       type: UserActions.CHECK_LOGGED_IN_FAIL,
       payload: res
-    }
+    };
   }
 
-  static CHECK_LOGGED_IN_SUCCESS = '[User] Check Logged In Success'
+  static CHECK_LOGGED_IN_SUCCESS = '[User] Check Logged In Success';
   checkLoggedInSuccess(res: any): Action {
     return {
       type: UserActions.CHECK_LOGGED_IN_SUCCESS,
       payload: res
-    }
+    };
   }
 
   static GET_PROFILE = '[User] Get Profile';
   getProfile(): Action {
     return {
       type: UserActions.GET_PROFILE
-    }
+    };
   }
 
   static GET_PROFILE_FAIL = '[User] Get Profile Fail';
@@ -66,14 +67,14 @@ export class UserActions {
     return {
       type: UserActions.GET_PROFILE_FAIL,
       payload: user
-    }
+    };
   }
   static GET_PROFILE_SUCCESS = '[User] Get Profile Success';
   getProfileSuccess(user: Response): Action {
     return {
       type: UserActions.GET_PROFILE_SUCCESS,
       payload: user
-    }
+    };
   }
 
   static LOGIN = '[User] Login';
@@ -81,7 +82,7 @@ export class UserActions {
     return {
       type: UserActions.LOGIN,
       payload: user
-    }
+    };
   }
 
   static LOGIN_FAIL = '[User] Login Fail';
@@ -89,7 +90,7 @@ export class UserActions {
     return {
       type: UserActions.LOGIN_FAIL,
       payload: user
-    }
+    };
   }
 
   static LOGIN_SUCCESS = '[User] Login Success';
@@ -97,7 +98,7 @@ export class UserActions {
     return {
       type: UserActions.LOGIN_SUCCESS,
       payload: user
-    }
+    };
   }
 
   static LOG_MESSAGE = '[User] Log Message';
@@ -105,28 +106,28 @@ export class UserActions {
     return {
       type: UserActions.LOG_MESSAGE,
       payload: message
-    }
+    };
   }
 
   static LOGOUT = '[User] Logout';
   logout(): Action {
     return {
       type: UserActions.LOGOUT
-    }
+    };
   }
 
   static LOGOUT_FAIL = '[User] Logout Fail';
   logoutFail(): Action {
     return {
       type: UserActions.LOGOUT_FAIL
-    }
+    };
   }
 
   static LOGOUT_SUCCESS = '[User] Logout Success';
   logoutSuccess(): Action {
     return {
       type: UserActions.LOGOUT_SUCCESS
-    }
+    };
   }
 
   static REGISTER = '[User] Register';
@@ -134,7 +135,7 @@ export class UserActions {
     return {
       type: UserActions.REGISTER,
       payload: user
-    }
+    };
   }
 
   static REGISTER_FAIL = '[User] Register Fail';
@@ -142,7 +143,7 @@ export class UserActions {
     return {
       type: UserActions.REGISTER_FAIL,
       payload: user
-    }
+    };
   }
 
   static REGISTER_SUCCESS = '[User] Register Success';
@@ -150,7 +151,7 @@ export class UserActions {
     return {
       type: UserActions.REGISTER_SUCCESS,
       payload: user
-    }
+    };
   }
 
   static UPDATE_PROFILE = '[User] Update Profile';
@@ -158,7 +159,7 @@ export class UserActions {
     return {
       type: UserActions.UPDATE_PROFILE,
       payload: user
-    }
+    };
   }
 
   static UPDATE_PROFILE_SUCCESS = '[User] Update Profile Success';
@@ -166,7 +167,7 @@ export class UserActions {
     return {
       type: UserActions.UPDATE_PROFILE_SUCCESS,
       payload: res
-    }
+    };
   }
 
   static UPDATE_PROFILE_FAIL = '[User] Update Profile Fail';
@@ -174,7 +175,7 @@ export class UserActions {
     return {
       type: UserActions.UPDATE_PROFILE_FAIL,
       payload: user
-    }
+    };
   }
 
 }

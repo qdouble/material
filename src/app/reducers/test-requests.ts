@@ -13,7 +13,7 @@ export interface TestRequestState {
 const initialState: TestRequestState = {
   allUsers: {},
   affiliates: {}
-}
+};
 
 export default function (state = initialState, action: Action): TestRequestState {
   switch (action.type) {
@@ -47,10 +47,10 @@ export default function (state = initialState, action: Action): TestRequestState
 
 export function getAffiliates() {
   return (state$: Observable<TestRequestState>) => state$
-    .select(s => s.affiliates)
+    .select(s => s.affiliates);
 }
 
 export function getAllUser() {
   return (state$: Observable<TestRequestState>) => state$
-    .select(s => s.allUsers)
+    .select(s => s.allUsers);
 }
