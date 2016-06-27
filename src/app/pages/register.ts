@@ -28,7 +28,6 @@ import { INPUT_FIELDS } from '../components';
       <div [hidden]="!f.errors?.compareEmail || !confirmEmail.valid" class="alert alert-danger">
         Email addresses do not match.
       </div>
-      hidden: {{(!f.errors?.compareEmail || (!confirmEmail?.errors?.required && !confirmEmail?.errors?.required))}}
       <debounce-input [label]="'Username'" [controlName]="'username'" [form]="f"></debounce-input>
       <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
       <password-input [label]="'Confirm Password'" [controlName]="'confirmPassword'" [form]="f"></password-input>

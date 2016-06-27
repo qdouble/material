@@ -2,7 +2,6 @@
  * Providers provided by Angular
  */
 import {bootstrap} from '@angular/platform-browser-dynamic';
-import {disableDeprecatedForms, provideForms} from '@angular/forms';
 /*
 * Platform and Environment
 * our providers/directives/pipes
@@ -28,8 +27,6 @@ export function main(initialHmrState?: any): Promise<any> {
     ...DIRECTIVES,
     ...PIPES,
     ...APP_PROVIDERS,
-    disableDeprecatedForms(),
-    provideForms()
   ])
   .catch(err => console.error(err));
 

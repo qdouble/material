@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
-// import { Database } from '@ngrx/db';
 
 
 import { AppState } from '../reducers';
@@ -28,7 +27,6 @@ export class UserEffects {
   constructor(
     private updates$: StateUpdates<AppState>,
     private userService: UserService,
-    // private db: Database,
     private userActions: UserActions
   ) { }
 
@@ -98,12 +96,5 @@ export class UserEffects {
         this.userActions.updateProfileFail(res)
       ))
     );
-
-  // @Effect() checkRedirect$ = this.updates$
-  //     .whenAction(UserActions.CHECK_EMAIL_SUCCESS)
-  //     .map<any>(toPayload)
-  //     .filter(res => res != '')
-  //     .do(res => this.router.go(res.redirectPath))
-  //     .filter(() => false)
 
 }

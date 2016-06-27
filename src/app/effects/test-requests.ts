@@ -11,7 +11,6 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
-// import { Database } from '@ngrx/db';
 
 import { AppState } from '../reducers';
 import { TestRequestActions } from '../actions';
@@ -24,7 +23,6 @@ export class TestRequestEffects {
   constructor(
     private updates$: StateUpdates<AppState>,
     private testService: TestRequestService,
-    // private db: Database,
     private testActions: TestRequestActions
   ) { }
 
@@ -57,7 +55,5 @@ export class TestRequestEffects {
         this.testActions.showAllUsersFail(res)
       ))
     )
-
-
 }
 

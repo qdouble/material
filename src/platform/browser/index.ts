@@ -3,6 +3,7 @@ import { FORM_PROVIDERS } from '@angular/common';
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
 import { ELEMENT_PROBE_PROVIDERS /*,ELEMENT_PROBE_PROVIDERS_PROD_MODE*/} from '@angular/platform-browser';
 import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
+import {disableDeprecatedForms, provideForms} from '@angular/forms';
 
 import { provideRouter } from '@angular/router';
 import { provideStore } from "@ngrx/store";
@@ -10,14 +11,11 @@ import { provideDB } from '@ngrx/db';
 import { runEffects } from '@ngrx/effects';
 
 import { routes } from '../../app/routes';
-
 import schema from '../../app/db-schema';
 import reducer from '../../app/reducers';
 import effects from '../../app/effects';
 import services from '../../app/services';
 import actions from '../../app/actions';
-
-import { RouterPatch } from '../../app/effects';
 
 
 /*
@@ -36,7 +34,8 @@ export const NG_APPLICATION_PROVIDERS = [
   ...JSONP_PROVIDERS,
   // ...ROUTER_PROVIDERS,
   // provide(LocationStrategy, { useClass: HashLocationStrategy }),
-  RouterPatch,
+  disableDeprecatedForms(),
+  provideForms(),
   provideStore(reducer),
   runEffects(effects),
   provideRouter(routes),

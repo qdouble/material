@@ -24,11 +24,9 @@ export class DebounceInputControlValueAccessor implements ControlValueAccessor {
   }
   
   ngAfterViewInit() {
-    console.log('this.debounceTime = '+this.debounceTime);
     Observable.fromEvent(this._elementRef.nativeElement, 'keyup')
       .debounceTime(this.debounceTime)
       .subscribe((event: any) => {
-        console.log('event');
         this.onChange(event.target.value);
       })
   }
