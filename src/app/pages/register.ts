@@ -25,13 +25,14 @@ import { INPUT_FIELDS } from '../components';
     <form [formGroup]="f" (ngSubmit)="onSubmit()">
       <email-input [label]="'Email Address'" [controlName]="'email'" [form]="f"></email-input>
       <email-input [label]="'Confirm E-mail Address'" [controlName]="'confirmEmail'" [form]="f"></email-input>
-      <div [hidden]="!f.errors?.compareEmail || confirmEmail.pristine" class="alert alert-danger">
+      <div [hidden]="!f.errors?.compareEmail || !confirmEmail.valid" class="alert alert-danger">
         Email addresses do not match.
       </div>
+      hidden: {{(!f.errors?.compareEmail || (!confirmEmail?.errors?.required && !confirmEmail?.errors?.required))}}
       <debounce-input [label]="'Username'" [controlName]="'username'" [form]="f"></debounce-input>
       <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
       <password-input [label]="'Confirm Password'" [controlName]="'confirmPassword'" [form]="f"></password-input>
-      <div [hidden]="!f.errors?.comparePassword || confirmPassword.pristine" class="alert alert-danger">
+      <div [hidden]="!f.errors?.comparePassword || !confirmPassword.valid" class="alert alert-danger">
         Passwords do not match.
       </div>
       <text-input [label]="'First Name'" [controlName]="'firstName'" [form]="f"></text-input>
@@ -63,10 +64,11 @@ export class Register {
   username: FormControl;
   entryEmail$: Observable<string>;
   RANDOM_NUM = Math.floor((Math.random() * 100000) + 1);
+  RANDOM_EMAIL = `new${this.RANDOM_NUM}@user.com`
 
-  email = new FormControl(`new${this.RANDOM_NUM}@user.com`,
+  email = new FormControl(`${this.RANDOM_EMAIL}`,
     [Validators.required, Validators.pattern(RegexValues.email)]);
-  confirmEmail = new FormControl(`new${this.RANDOM_NUM}@user.com`,
+  confirmEmail = new FormControl(`${this.RANDOM_EMAIL}`,
     [Validators.required, Validators.pattern(RegexValues.email)]);
   password = new FormControl('password',
     [Validators.required, Validators.pattern(RegexValues.password)]);
