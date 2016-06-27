@@ -47,16 +47,9 @@ export default function (state = initialState, action: Action): UserState {
     }
 
     case UserActions.CHECK_LOGGED_IN_SUCCESS: {
-      const userId = action.payload;
-      if (userId === '0') {
-        return Object.assign({}, state, {
-          loginChecked: true,
-          loggedIn: false
-        });
-      }
       return Object.assign({}, state, {
         loginChecked: true,
-        loggedIn: true
+        loggedIn: !!action.payload
       });
     }
 
@@ -73,14 +66,11 @@ export default function (state = initialState, action: Action): UserState {
     }
 
     case UserActions.GET_PROFILE_SUCCESS: {
-      const user: User = action.payload;
-
       return Object.assign({}, state, {
         loaded: true,
         loading: false,
-        user: user
+        user: action.payload
       });
-
     }
 
     case UserActions.LOGIN_SUCCESS:
@@ -90,7 +80,6 @@ export default function (state = initialState, action: Action): UserState {
         });
       }
       return state;
-
 
     case UserActions.LOGOUT_SUCCESS:
       return Object.assign({}, state, initialState);
