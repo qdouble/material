@@ -17,7 +17,7 @@ import { INPUT_FIELDS } from '../components';
   ],
   providers: [UsernameValidator],
   template: `
-  
+
   <header>
     <h1>Registration</h1>
   </header>
@@ -54,7 +54,7 @@ import { INPUT_FIELDS } from '../components';
     <button type="submit" [disabled]="!f.valid">Register</button>
     </form>
   </main>
-  
+
   `
 })
 

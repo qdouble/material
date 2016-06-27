@@ -38,7 +38,6 @@ export function getTestRequestAllUsers() {
     return compose(fromTestRequests.getAllUser(), getTestRequestState())
 }
 
-
 export function getUser() {
     return compose(fromUser.getUser(), getUserState());
 }

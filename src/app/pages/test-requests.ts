@@ -23,7 +23,7 @@ export class ChildCmp {
   selector: 'test-requests',
   directives: [REACTIVE_FORM_DIRECTIVES, ChildCmp],
   template: `
-  
+
   <header>
   <h1>Test Requests</h1>
   </header>
@@ -59,11 +59,11 @@ export class TestRequests {
     })
   }
 
-  checkLoginStatus(){
+  checkLoginStatus() {
     this.store.dispatch(this.testActions.checkLoginStatus());
   }
 
-  getAffiliates(){
+  getAffiliates() {
     this.store.dispatch(this.testActions.getAffiliates());
   }
 

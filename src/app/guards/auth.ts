@@ -8,18 +8,18 @@ import { AppState, getUserLoggedIn } from '../reducers';
 @Injectable()
 
 export class AuthGuard implements CanActivate {
-    loggedIn$: Observable<boolean>
-    loggedIn: boolean;
-    constructor(private store: Store<AppState>, private router: Router) {
-        this.loggedIn$ = store.let(getUserLoggedIn());
-        this.loggedIn$.subscribe(val => {
-            this.loggedIn = val
-        })
+  loggedIn$: Observable<boolean>
+  loggedIn: boolean;
+  constructor(private store: Store<AppState>, private router: Router) {
+    this.loggedIn$ = store.let(getUserLoggedIn());
+    this.loggedIn$.subscribe(val => {
+      this.loggedIn = val
+    })
+  }
+  canActivate() {
+    if (!this.loggedIn) {
+      this.router.navigateByUrl('login');
     }
-    canActivate() {
-        if (!this.loggedIn) {
-            this.router.navigateByUrl('login');
-        }
-        return this.loggedIn;
-    }
+    return this.loggedIn;
+  }
 }

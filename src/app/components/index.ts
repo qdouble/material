@@ -1,5 +1,5 @@
 import {INPUT_FIELDS} from './input-fields';
 
 export {
-    INPUT_FIELDS
+  INPUT_FIELDS
 }
