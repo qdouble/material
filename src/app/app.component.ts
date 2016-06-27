@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState, getUserLoaded, getUserLoading } from './reducers';
+import { AppState, getUserLoaded, getUserLoading, getUserLoggedIn, getUserLoginChecked } from './reducers';
 import { UserActions } from './actions';
 
 import { RouterPatch } from './effects';
@@ -39,7 +39,7 @@ export class AppMenu{
   
   <header>
     <nav>
-      <app-menu [loggedIn]="userLoaded$ | async" (logout)="logout()"></app-menu>
+      <app-menu [loggedIn]="userLoggedIn$ | async" (logout)="logout()"></app-menu>
     </nav>
   </header>
   <main>
@@ -57,6 +57,7 @@ export class AppMenu{
 export class App {
   userLoading$: Observable<boolean>;
   userLoaded$: Observable<boolean>;
+  userLoggedIn$: Observable<boolean>;
   loggedIn: boolean;
 
   constructor(
@@ -66,10 +67,13 @@ export class App {
     ) { 
       this.userLoaded$ = store.let(getUserLoaded());
       this.userLoading$ = store.let(getUserLoading());
+      this.userLoggedIn$ = store.let(getUserLoggedIn());
 
       RouterPatch.navigateByUrl.subscribe((url: string) => {
         this.router.navigateByUrl(url)
       })
+
+      this.store.dispatch(this.userActions.checkLoggedIn());
     }
 
   logout() {

@@ -27,13 +27,17 @@ export class UserService {
         .map(res => res.json())
     }
 
+    checkLoggedIn(): Observable<any> {
+        return this.http.get(`${API_USER_URL}/loggedIn`, this.optionsNoPre)
+        .map(res => res.text())
+    }
+
     getProfile(): Observable<User> {
         return this.http.get(`${API_USER_URL}/getProfile`, this.optionsNoPre)
         .map(res => res.json())
     }
 
     loginUser(user: User): Observable<User> {
-        console.log(this.options);
         return this.http.post(`${API_USER_URL}/login`, user, this.options)
         .map(res => res.json())
     }

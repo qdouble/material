@@ -55,4 +55,10 @@ export function getUserLoading() {
     return compose(fromUser.getLoading(), getUserState());
 }
 
+export function getUserLoginChecked() {
+    return compose(fromUser.getLoginChecked(), getUserState());
+}
 
+export function getUserLoggedIn() {
+    return compose(fromUser.getLoggedIn(), getUserState());
+}

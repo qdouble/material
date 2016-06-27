@@ -30,7 +30,7 @@ export class UserEffects {
     private userActions: UserActions
   ) { }
 
-  @Effect() check$ = this.updates$
+  @Effect() checkEmail$ = this.updates$
     .whenAction(UserActions.CHECK_EMAIL)
     .map<string>(toPayload)
     .mergeMap(email => this.userService.checkEmail(email)
@@ -41,6 +41,16 @@ export class UserEffects {
         this.userActions.checkEmailFail(email)
       ))
     );
+
+  @Effect() checkLoggedIn$ = this.updates$
+    .whenAction(UserActions.CHECK_LOGGED_IN)
+    .map<string>(toPayload)
+    .mergeMap(() => this.userService.checkLoggedIn()
+      .map((res: any) => this.userActions.checkLoggedInSuccess(res))
+      .catch((res) => Observable.of(
+        this.userActions.checkLoggedInFail(res)
+      ))
+    )
 
   @Effect() getProfile$ = this.updates$
     .whenAction(UserActions.GET_PROFILE)

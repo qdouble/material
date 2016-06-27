@@ -10,6 +10,8 @@ export interface UserState {
   entryEmail: string;
   loading: boolean;
   loaded: boolean;
+  loginChecked: boolean;
+  loggedIn: boolean;
   user: User
 };
 
@@ -17,6 +19,8 @@ const initialState: UserState = {
   entryEmail: null,
   loading: false,
   loaded: false,
+  loginChecked: false,
+  loggedIn: false,
   user: {}
 }
 
@@ -39,6 +43,20 @@ export default function (state = initialState, action: Action): UserState {
       return Object.assign({}, state, {
         loading: false
       });
+    }
+
+    case UserActions.CHECK_LOGGED_IN_SUCCESS: {
+      const userId = action.payload;
+      if (userId == "0") {
+        return Object.assign({}, state, {
+          loginChecked: true,
+          loggedIn: false
+        })
+      }
+      return Object.assign({}, state, {
+        loginChecked: true,
+        loggedIn: true
+      })
     }
 
     case UserActions.GET_PROFILE: {
@@ -65,12 +83,11 @@ export default function (state = initialState, action: Action): UserState {
     }
 
     case UserActions.LOGIN_SUCCESS:
-      if (action.payload.user) {
+      if (action.payload.success) {
         return Object.assign({}, state, {
-          loaded: true
+          loggedIn: true
         })
       }
-
       return state;
 
 
@@ -136,6 +153,16 @@ export function getLoaded() {
 export function getLoading() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.loading)
+}
+
+export function getLoginChecked() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.loginChecked)
+}
+
+export function getLoggedIn() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.loggedIn)
 }
 
 export function getUser() {

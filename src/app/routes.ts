@@ -1,4 +1,8 @@
 import { RouterConfig } from '@angular/router';
+
+import { AuthGuard } from './guards';
+import { LoggedInRedirectGuard } from './guards';
+
 import { Homepage } from "./pages/home";
 import { Login } from './pages/login';
 import { Profile } from './pages/profile';
@@ -14,22 +18,26 @@ export const routes: RouterConfig = [
   {
     path: 'home',
     component:  Homepage,
-    terminal: true
+    canActivate: [LoggedInRedirectGuard]
   },
   {
     path: 'login',
-    component:  Login
+    component:  Login,
+    canActivate: [LoggedInRedirectGuard]
   },
   {
     path: 'profile',
-    component:  Profile
+    component:  Profile,
+    canActivate: [AuthGuard]
   },
   {
     path: 'register',
-    component:  Register
+    component:  Register,
+    canActivate: [LoggedInRedirectGuard]
   },
   {
     path: 'test-requests',
-    component:  TestRequests
+    component:  TestRequests,
+    canActivate: [AuthGuard]
   }
 ];

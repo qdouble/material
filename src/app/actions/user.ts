@@ -31,6 +31,29 @@ export class UserActions {
         }
     }
 
+    static CHECK_LOGGED_IN = '[User] Check Logged In'
+    checkLoggedIn(): Action {
+        return {
+            type: UserActions.CHECK_LOGGED_IN
+        }
+    }
+
+    static CHECK_LOGGED_IN_FAIL = '[User] Check Logged In Fail'
+    checkLoggedInFail(res: any): Action {
+        return {
+            type: UserActions.CHECK_LOGGED_IN_FAIL,
+            payload: res
+        }
+    }
+
+    static CHECK_LOGGED_IN_SUCCESS = '[User] Check Logged In Success'
+    checkLoggedInSuccess(res: any): Action {
+        return {
+            type: UserActions.CHECK_LOGGED_IN_SUCCESS,
+            payload: res
+        }
+    }
+
     static GET_PROFILE = '[User] Get Profile';
     getProfile(): Action {
         return {
