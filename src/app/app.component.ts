@@ -16,12 +16,13 @@ import { RouterPatch } from './effects';
     <a [hidden]="loggedIn" routerLink="login">Login</a>
     <a [hidden]="loggedIn" routerLink="register">Register</a>
     <a [hidden]="!loggedIn" routerLink="profile">Profile</a>
-    <button *ngIf="loggedIn" (click)="logout.emit()">Logout</button>
-  
+    <button [hidden]="!loggedIn" (click)="logout.emit()">Logout</button>
+
   `
 })
 
 export class AppMenu{
+  @Input() loggedIn: boolean;
   @Output() logout = new EventEmitter();
 }
 
