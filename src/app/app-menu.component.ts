@@ -6,7 +6,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
   directives: [ROUTER_DIRECTIVES],
   template: `
 
-  <span [hidden]="loggedIn">
+  <span *ngIf="!loggedIn">
     <a routerLink="">Home</a>
     <a routerLink="login">Login</a>
     <a routerLink="register">Register</a>
@@ -15,7 +15,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
     <a routerLink="faq">FAQ</a>
     <a routerLink="proof-pic-gallery">Proof Pic Gallery</a>
   </span>
-  <span [hidden]="!loggedIn">
+  <span *ngIf="loggedIn">
     <a routerLink="status">Status</a>
     <a routerLink="offers">Offers</a>
     <a routerLink="order">Order</a>
@@ -23,7 +23,7 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
     <a routerLink="profile">Profile</a>
   </span>
   <a routerLink="promotions">Promotions</a>
-  <button [hidden]="!loggedIn" (click)="logout.emit()">Logout</button>
+  <button *ngIf="loggedIn" (click)="logout.emit()">Logout</button>
 
   `
 })

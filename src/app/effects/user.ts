@@ -14,7 +14,6 @@ import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
 
-
 import { AppState } from '../reducers';
 import { UserService } from '../services';
 import { User } from '../models/user';
