@@ -1,9 +1,6 @@
 import { provide, PLATFORM_DIRECTIVES, PLATFORM_PIPES } from '@angular/core';
 import { FORM_PROVIDERS } from '@angular/common';
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
-import { ELEMENT_PROBE_PROVIDERS
-  /*,ELEMENT_PROBE_PROVIDERS_PROD_MODE*/
-} from '@angular/platform-browser';
 import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
 import { disableDeprecatedForms, provideForms } from '@angular/forms';
 
@@ -24,7 +21,7 @@ import actions from '../../app/actions';
   Add custom env providers here.
 */
 export const ENVIRONMENT_PROVIDERS = [
-  ...ELEMENT_PROBE_PROVIDERS
+
 ];
 
 /*
