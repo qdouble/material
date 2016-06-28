@@ -1,4 +1,4 @@
-import { HTTP_PROVIDERS } from '@angular/http';
+// import { HTTP_PROVIDERS } from '@angular/http';
 import { TestRequestService } from './test-requests';
 import { UserService } from './user';
 
@@ -8,7 +8,7 @@ export {
 }
 
 export default [
-  HTTP_PROVIDERS,
+  // HTTP_PROVIDERS,
   TestRequestService,
   UserService
 ];

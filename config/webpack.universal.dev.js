@@ -9,7 +9,7 @@ const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin
 const webpackMerge = require('webpack-merge');
 
 // Constants
-const ENV = process.env.ENV = process.env.NODE_ENV = 'univeral';
+const ENV = process.env.ENV = process.env.NODE_ENV = 'universal';
 
 var clientConfig = {
   target: 'web',
@@ -67,7 +67,15 @@ var commonConfig = {
         loader: 'raw-loader',
         exclude: [helpers.root('src/index.html')]
       }
-    ]
+    ],
+    preLoaders: [
+      // needed to lower the filesize of angular due to inline source-maps
+      { test: /\.js$/, loader: 'source-map-loader', exclude: [
+        // these packages have problems with their sourcemaps
+        helpers.root('node_modules/rxjs'),
+        helpers.root('node_modules/@angular'),
+      ]}
+    ],
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(true)
