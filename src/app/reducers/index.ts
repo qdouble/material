@@ -4,7 +4,7 @@ import 'rxjs/add/operator/let';
 import { Observable } from 'rxjs/Observable';
 
 import { compose } from '@ngrx/core/compose';
-// import { storeLogger } from 'ngrx-store-logger';
+import { storeLogger } from 'ngrx-store-logger';
 import { combineReducers } from '@ngrx/store';
 
 import userReducer, * as fromUser from './user';
@@ -16,7 +16,7 @@ export interface AppState {
 }
 
 export default compose(
-    // storeLogger(),
+    storeLogger(),
     combineReducers
     ) ({
     user: userReducer,

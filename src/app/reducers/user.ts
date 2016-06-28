@@ -121,7 +121,8 @@ export default function (state = initialState, action: Action): UserState {
 
     case UserActions.REGISTER_SUCCESS:
       return Object.assign({}, state, {
-        loading: false
+        loading: false,
+        loggedIn: action.payload.success
       });
 
     default: {
