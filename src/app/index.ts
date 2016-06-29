@@ -2,6 +2,7 @@ export * from './app.component.ts';
 
 import { RouterPatch } from '../app/effects';
 import { AuthGuard, LoggedInRedirectGuard } from '../app/guards';
+import { RESOLVE_DATA } from './resolve';
 // export * from './app-state.service.ts';
 
 // import {AppState} from './app-state.service.ts';
@@ -11,5 +12,6 @@ import { AuthGuard, LoggedInRedirectGuard } from '../app/guards';
 export const APP_PROVIDERS = [
   AuthGuard,
   LoggedInRedirectGuard,
-  RouterPatch
+  RouterPatch,
+  ...RESOLVE_DATA
 ];
