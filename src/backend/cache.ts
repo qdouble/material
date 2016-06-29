@@ -1,6 +1,6 @@
 
 
-var _fakeLRUcount = 0;
+let _fakeLRUcount = 0;
 export const fakeDemoRedisCache = {
   _cache: {},
   get: (key) => {

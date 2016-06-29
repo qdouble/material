@@ -31,6 +31,9 @@ import { INPUT_FIELDS } from '../components';
         Email addresses do not match.
       </div>
       <debounce-input [label]="'Username'" [controlName]="'username'" [form]="f"></debounce-input>
+      <div [hidden]="!username.errors?.usernameTaken" class="alert alert-danger">
+        Username has already been taken.
+      </div>
       <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
       <password-input [label]="'Confirm Password'" [controlName]="'confirmPassword'" [form]="f">
       </password-input>

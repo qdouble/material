@@ -1,6 +1,4 @@
-import '@ngrx/core/add/operator/select';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/let';
+
 import { Observable } from 'rxjs/Observable';
 
 import { compose } from '@ngrx/core/compose';
