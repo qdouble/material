@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
   loggedIn: boolean;
   constructor(private store: Store<AppState>, private router: Router) {
     this.loggedIn$ = store.let(getUserLoggedIn());
-    this.loggedIn$.take(1).subscribe(val => {
+    this.loggedIn$.subscribe(val => {
       this.loggedIn = val;
     });
   }
