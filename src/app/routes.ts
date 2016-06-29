@@ -31,7 +31,7 @@ export const routes: RouterConfig = [
   {
     path: '',
     redirectTo: 'home',
-    terminal: true
+    pathMatch: 'full'
   },
   {
     path: 'about-us',
