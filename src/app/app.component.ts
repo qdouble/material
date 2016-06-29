@@ -14,6 +14,28 @@ import { RouterPatch } from './effects';
 import { AppMenu } from './app-menu.component';
 import { AppFooter } from './app-footer.component';
 
+import {
+  AboutUs,
+  ContactUs,
+  FAQ,
+  Homepage,
+  HowItWorks,
+  Login,
+  Offers,
+  Order,
+  Profile,
+  PrivacyPolicy,
+  Promotions,
+  ProofPicGallery,
+  Register,
+  ReportSpam,
+  Status,
+  Support,
+  TermsAndConditions,
+  TestRequests,
+  ViewOffers
+}  from './pages';
+
 @Component({
   selector: 'app',
   pipes: [],
@@ -43,7 +65,28 @@ import { AppFooter } from './app-footer.component';
   <a routerLink="test-requests">Test Requests</a>
   </footer>
 
-  `
+  `,
+  precompile: [
+    AboutUs,
+    ContactUs,
+    FAQ,
+    Homepage,
+    HowItWorks,
+    Login,
+    Offers,
+    Order,
+    Profile,
+    PrivacyPolicy,
+    Promotions,
+    ProofPicGallery,
+    Register,
+    ReportSpam,
+    Status,
+    Support,
+    TermsAndConditions,
+    TestRequests,
+    ViewOffers
+  ]
 })
 export class App {
   userLoading$: Observable<boolean>;
