@@ -85,14 +85,13 @@ export class TextInput {
       <input [debounceTime]="300" type="text" [formControl]="dynamicControl" class="form-control">
       <button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
     </div>
-    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
+    <div [hidden]="dynamicControl.pristine || 
       !dynamicControl.errors?.required" class="alert alert-danger">
       {{label}} is required.
     </div>
-    <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
-      dynamicControl.errors?.required" class="alert alert-danger">
+    <div [hidden]="!dynamicControl.errors?.pattern" class="alert alert-danger">
       {{errorMessage}}
-    </div> 
+    </div>
     `
 })
 
