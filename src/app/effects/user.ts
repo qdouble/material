@@ -33,7 +33,7 @@ export class UserEffects {
   @Effect() checkEmail$ = this.updates$
     .whenAction(UserActions.CHECK_EMAIL)
     .map<string>(toPayload)
-    .mergeMap(email => this.userService.checkEmail(email)
+    .switchMap(email => this.userService.checkEmail(email)
       .map((res: any) => this.userActions.checkEmailSuccess(res))
       .do((res: any) => res.payload.redirectPath ?
         router.navigateByUrl.next(res.payload.redirectPath) : null)
@@ -45,7 +45,7 @@ export class UserEffects {
   @Effect() checkLoggedIn$ = this.updates$
     .whenAction(UserActions.CHECK_LOGGED_IN)
     .map<string>(toPayload)
-    .mergeMap(() => this.userService.checkLoggedIn()
+    .switchMap(() => this.userService.checkLoggedIn()
       .map((res: any) => this.userActions.checkLoggedInSuccess(res))
       .catch((res) => Observable.of(
         this.userActions.checkLoggedInFail(res)
@@ -55,7 +55,7 @@ export class UserEffects {
   @Effect() getProfile$ = this.updates$
     .whenAction(UserActions.GET_PROFILE)
     .map<string>(toPayload)
-    .mergeMap(() => this.userService.getProfile()
+    .switchMap(() => this.userService.getProfile()
       .map((res: any) => this.userActions.getProfileSuccess(res.user))
       .catch((res) => Observable.of(
         this.userActions.getProfileFail(res)
@@ -77,7 +77,7 @@ export class UserEffects {
   @Effect() logout$ = this.updates$
     .whenAction(UserActions.LOGOUT)
     .map<string>(toPayload)
-    .mergeMap(() => this.userService.logout()
+    .switchMap(() => this.userService.logout()
       .map(() => this.userActions.logoutSuccess())
       .do(() => router.navigateByUrl.next(''))
       .catch((res) => Observable.of(
@@ -88,7 +88,7 @@ export class UserEffects {
   @Effect() register$ = this.updates$
     .whenAction(UserActions.REGISTER)
     .map<User>(toPayload)
-    .mergeMap(user => this.userService.registerUser(user)
+    .switchMap(user => this.userService.registerUser(user)
       .map(res => this.userActions.registerSuccess(res))
       .do((res: any) => res.payload.redirectPath ?
         router.navigateByUrl.next(res.payload.redirectPath) : null)
@@ -100,7 +100,7 @@ export class UserEffects {
   @Effect() updateProfile$ = this.updates$
     .whenAction(UserActions.UPDATE_PROFILE)
     .map<User>(toPayload)
-    .mergeMap(user => this.userService.updateProfile(user)
+    .switchMap(user => this.userService.updateProfile(user)
       .map(res => this.userActions.updateProfileSuccess(res))
       .catch((res) => Observable.of(
         this.userActions.updateProfileFail(res)
