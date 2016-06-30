@@ -1,7 +1,7 @@
-import { CustomValidators } from './customValidators';
+import { CustomValidators } from './custom-validators';
 import { DebounceInputControlValueAccessor } from './debounce-input';
-import { RegexValues } from './regexValues';
-import { UsernameValidator } from './usernameValidator';
+import { RegexValues } from './regex-values';
+import { UsernameValidator } from './username-validator';
 
 export {
     CustomValidators,

@@ -1,5 +1,5 @@
-import { GetUserProfile } from './getUserProfile';
-import { ShowAllUsers } from './showAllUsers';
+import { GetUserProfile } from './get-user-profile';
+import { ShowAllUsers } from './show-all-users';
 
 export {
   GetUserProfile,
