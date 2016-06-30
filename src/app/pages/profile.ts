@@ -3,6 +3,7 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { User } from '../models';
 import { AppState, getUser, getUserLoaded, getUserLoading } from '../reducers';
 import { UserActions } from '../actions';
@@ -37,6 +38,7 @@ export class Profile {
   user$: Observable<User>;
   loaded$: Observable<boolean>;
   loading$: Observable<boolean>;
+  loadedUser$: Subscription;
 
   username = new FormControl('', [Validators.required,
     Validators.pattern(RegexValues.username)]);
@@ -64,7 +66,6 @@ export class Profile {
   });
 
   constructor(private store: Store<AppState>, private userActions: UserActions) {
-    this.store.dispatch(this.userActions.getProfile());
     this.user$ = store.let(getUser());
     this.loaded$ = store.let(getUserLoaded());
   }
@@ -74,7 +75,7 @@ export class Profile {
   }
 
   ngOnInit() {
-    this.user$.subscribe((user: User) => {
+    this.loadedUser$ = this.user$.subscribe((user: User) => {
       this.username.updateValue(user.username);
       this.email.updateValue(user.email);
       this.address.updateValue(user.address);
@@ -85,4 +86,7 @@ export class Profile {
     });
   }
 
+  ngOnDestroy() {
+    this.loadedUser$.unsubscribe();
+  }
 }

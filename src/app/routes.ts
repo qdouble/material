@@ -1,4 +1,11 @@
 import { RouterConfig } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+
+import {
+  GetUserProfile,
+  ShowAllUsers
+} from './resolve';
+const testData = Observable.of(1, 2, 3);
 
 import {
   AuthGuard,
@@ -31,7 +38,7 @@ export const routes: RouterConfig = [
   {
     path: '',
     redirectTo: 'home',
-    terminal: true
+    pathMatch: 'full'
   },
   {
     path: 'about-us',
@@ -78,7 +85,8 @@ export const routes: RouterConfig = [
   {
     path: 'profile',
     component: Profile,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: [GetUserProfile]
   },
   {
     path: 'promotions',
@@ -114,7 +122,8 @@ export const routes: RouterConfig = [
   {
     path: 'test-requests',
     component: TestRequests,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: ShowAllUsers
   },
   {
     path: 'view-offers',

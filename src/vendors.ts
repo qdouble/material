@@ -41,6 +41,7 @@ import 'rxjs/add/operator/toArray';
 import 'rxjs/ReplaySubject';
 import 'rxjs/Observable';
 import 'rxjs/Subject';
+import 'rxjs/Subscription';
 
 if ('production' === ENV) {
   // Production

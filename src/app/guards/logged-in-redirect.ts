@@ -13,7 +13,7 @@ export class LoggedInRedirectGuard implements CanActivate {
   constructor(private store: Store<AppState>, private router: Router) {}
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     this.loggedIn$ = this.store.let(getUserLoggedIn());
-    this.loggedIn$.subscribe(val => {
+    this.loggedIn$.take(1).subscribe(val => {
       this.loggedIn = val;
     });
     if (this.loggedIn) {

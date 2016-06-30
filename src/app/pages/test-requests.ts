@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { AppState, getTestRequestAllUsers, getTestRequestGetAffiliates } from '../reducers';
@@ -21,7 +22,7 @@ export class ChildCmp {
 
 @Component({
   selector: 'test-requests',
-  directives: [REACTIVE_FORM_DIRECTIVES, ChildCmp],
+  directives: [REACTIVE_FORM_DIRECTIVES, ChildCmp, ROUTER_DIRECTIVES],
   template: `
 
   <header>
@@ -31,11 +32,12 @@ export class ChildCmp {
   <button (click)="onSubmit()">Show All Users</button>
   <button (click)="checkLoginStatus()">Check Login Status</button>
   <button (click)="getAffiliates()">Get Affiliates</button>
+ <button routerLink="">Go Profile from RouterLink</button>
   <pre>
   {{users$ | async | json }}
   {{affiliates$ | async | json }}
   </pre>
-  <child-cmp [user]="user$ | async"></child-cmp>
+  // <child-cmp [user]="user$ | async"></child-cmp>
 
   `
 })
@@ -46,15 +48,14 @@ export class TestRequests {
 
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private store: Store<AppState>,
+    private router: Router,
     private testActions: TestRequestActions
   ) {
     this.users$ = store.let(getTestRequestAllUsers());
     this.affiliates$ = store.let(getTestRequestGetAffiliates());
-  }
-
-  ngOnInit() {
-    this.users$.subscribe(data => {
+    this.activatedRoute.data.subscribe(data => {
       console.log(data);
     });
   }
