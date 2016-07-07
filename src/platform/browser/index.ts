@@ -1,6 +1,5 @@
 import { provide, PLATFORM_DIRECTIVES, PLATFORM_PIPES } from '@angular/core';
-import { FORM_PROVIDERS } from '@angular/common';
-import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
+import { HTTP_PROVIDERS } from '@angular/http';
 import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
 import { disableDeprecatedForms, provideForms } from '@angular/forms';
 
@@ -28,11 +27,7 @@ export const ENVIRONMENT_PROVIDERS = [
   Add custom _angular2_ providers here.
 */
 export const NG_APPLICATION_PROVIDERS = [
-  ...FORM_PROVIDERS,
-  ...HTTP_PROVIDERS,
-  ...JSONP_PROVIDERS,
-  // ...ROUTER_PROVIDERS,
-  // provide(LocationStrategy, { useClass: HashLocationStrategy }),
+  HTTP_PROVIDERS,
   disableDeprecatedForms(),
   provideForms(),
   provideStore(reducer),
@@ -54,7 +49,7 @@ export const APPLICATION_PIPES = [
   Add your custom directives here to be use anywhere.
 */
 export const APPLICATION_DIRECTIVES = [
-  // ...ROUTER_DIRECTIVES
+  
 ];
 
 
