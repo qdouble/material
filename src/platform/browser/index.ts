@@ -1,7 +1,6 @@
 import { provide, PLATFORM_DIRECTIVES, PLATFORM_PIPES } from '@angular/core';
 import { HTTP_PROVIDERS } from '@angular/http';
 import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
-import { disableDeprecatedForms, provideForms } from '@angular/forms';
 
 import { provideRouter } from '@angular/router';
 import { provideStore } from '@ngrx/store';
@@ -28,8 +27,6 @@ export const ENVIRONMENT_PROVIDERS = [
 */
 export const NG_APPLICATION_PROVIDERS = [
   HTTP_PROVIDERS,
-  disableDeprecatedForms(),
-  provideForms(),
   provideStore(reducer),
   runEffects(effects),
   provideRouter(routes),
@@ -49,7 +46,7 @@ export const APPLICATION_PIPES = [
   Add your custom directives here to be use anywhere.
 */
 export const APPLICATION_DIRECTIVES = [
-  
+
 ];
 
 

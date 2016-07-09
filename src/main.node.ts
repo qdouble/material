@@ -13,7 +13,6 @@ import {
 
 import { provideRouter } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
-import { disableDeprecatedForms, provideForms } from '@angular/forms';
 import { provideStore } from '@ngrx/store';
 import { runEffects } from '@ngrx/effects';
 
@@ -47,8 +46,6 @@ export function ngApp(req, res) {
       provideRouter(routes),
       NODE_LOCATION_PROVIDERS,
       provideStore(reducer),
-      disableDeprecatedForms(),
-      provideForms(),
       actions,
       runEffects(effects),
       services,
