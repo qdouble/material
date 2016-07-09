@@ -28,19 +28,17 @@ import { INPUT_FIELDS } from '../components';
 
 export class Login {
   entryEmail$: Observable<string>;
-  email = new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.email)]);
-  password = new FormControl('password', Validators.required);
 
   f = new FormGroup({
-    email: this.email,
-    password: this.password
+    email: new FormControl('', [Validators.required,
+    Validators.pattern(RegexValues.email)]),
+    password: new FormControl('password', Validators.required)
   });
 
   constructor(private store: Store<AppState>, private userActions: UserActions) {
     this.entryEmail$ = store.let(getUserEntryEmail());
     this.entryEmail$.take(1).subscribe(email => {
-      if (email) this.email.updateValue(email);
+      if (email) this.f.controls['email'].updateValue(email);
     });
   }
 

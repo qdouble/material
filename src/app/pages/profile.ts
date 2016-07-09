@@ -30,7 +30,6 @@ import { INPUT_FIELDS } from '../components';
       <button type="submit" [disabled]="!f.valid">Update Profile</button>
     </form>
   </main>
-
   `
 })
 
@@ -40,29 +39,21 @@ export class Profile {
   loading$: Observable<boolean>;
   loadedUser$: Subscription;
 
-  username = new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.username)]);
-  email = new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.email)]);
-  address = new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.address)]);
-  city = new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.address)]);
-  State = new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.address)]);
-  zipCode = new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.zipCode)]);
-  phone = new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.phone)]);
-
   f = new FormGroup({
-    username: this.username,
-    email: this.email,
-    address: this.address,
-    city: this.city,
-    State: this.State,
-    zipCode: this.zipCode,
-    phone: this.phone
+    username: new FormControl('', [Validators.required,
+    Validators.pattern(RegexValues.username)]),
+    email: new FormControl('', [Validators.required,
+    Validators.pattern(RegexValues.email)]),
+    address: new FormControl('', [Validators.required,
+    Validators.pattern(RegexValues.address)]),
+    city: new FormControl('', [Validators.required,
+    Validators.pattern(RegexValues.address)]),
+    State: new FormControl('', [Validators.required,
+    Validators.pattern(RegexValues.address)]),
+    zipCode: new FormControl('', [Validators.required,
+    Validators.pattern(RegexValues.zipCode)]),
+    phone: new FormControl('', [Validators.required,
+    Validators.pattern(RegexValues.phone)])
   });
 
   constructor(private store: Store<AppState>, private userActions: UserActions) {
@@ -76,13 +67,9 @@ export class Profile {
 
   ngOnInit() {
     this.loadedUser$ = this.user$.subscribe((user: User) => {
-      this.username.updateValue(user.username);
-      this.email.updateValue(user.email);
-      this.address.updateValue(user.address);
-      this.city.updateValue(user.city);
-      this.State.updateValue(user.State);
-      this.zipCode.updateValue(user.zipCode);
-      this.phone.updateValue(user.phone);
+      let loadedUser = Object.assign({}, user);
+      delete loadedUser['id'];
+      this.f.updateValue(loadedUser);
     });
   }
 
