@@ -62,6 +62,7 @@ import {
   <br><br>
   User Loaded: {{userLoaded$ | async}}<br>
   User Loading: {{userLoading$ | async}}<br>
+  User LoggedIn: {{ userLoggedIn$ | async }}
   <a routerLink="test-requests">Test Requests</a>
   </footer>
 

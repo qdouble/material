@@ -72,7 +72,7 @@ export default function (state = initialState, action: Action): UserState {
     }
 
     case UserActions.LOGIN_SUCCESS:
-      if (action.payload.success) {
+      if (action.payload.message_type === 'success') {
         return Object.assign({}, state, {
           loggedIn: true
         });
