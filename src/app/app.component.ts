@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 import {
   AppState,
   getUserLoaded,
@@ -14,28 +15,6 @@ import { RouterPatch } from './effects';
 import { AppMenu } from './app-menu.component';
 import { AppFooter } from './app-footer.component';
 
-import {
-  AboutUs,
-  ContactUs,
-  FAQ,
-  Homepage,
-  HowItWorks,
-  Login,
-  Offers,
-  Order,
-  Profile,
-  PrivacyPolicy,
-  Promotions,
-  ProofPicGallery,
-  Register,
-  ReportSpam,
-  Status,
-  Support,
-  TermsAndConditions,
-  TestRequests,
-  ViewOffers
-}  from './pages';
-
 @Component({
   selector: 'app',
   pipes: [],
@@ -43,7 +22,8 @@ import {
   directives: [
     ROUTER_DIRECTIVES,
     AppMenu,
-    AppFooter
+    AppFooter,
+    StoreLogMonitorComponent
   ],
   styles: [require('./app.scss')],
   template: `
@@ -56,6 +36,9 @@ import {
   <main>
     <router-outlet></router-outlet>
   </main>
+  <ngrx-store-log-monitor toggleCommand="ctrl-t" positionCommand="ctrl-m"
+    [expandEntries]="true">
+  </ngrx-store-log-monitor>
   <footer>
   <br>
     <app-footer></app-footer>
@@ -66,28 +49,7 @@ import {
   <a routerLink="test-requests">Test Requests</a>
   </footer>
 
-  `,
-  precompile: [
-    AboutUs,
-    ContactUs,
-    FAQ,
-    Homepage,
-    HowItWorks,
-    Login,
-    Offers,
-    Order,
-    Profile,
-    PrivacyPolicy,
-    Promotions,
-    ProofPicGallery,
-    Register,
-    ReportSpam,
-    Status,
-    Support,
-    TermsAndConditions,
-    TestRequests,
-    ViewOffers
-  ]
+  `
 })
 export class App {
   userLoading$: Observable<boolean>;
