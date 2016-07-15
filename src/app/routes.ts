@@ -37,8 +37,9 @@ import {
 export const routes: RouterConfig = [
   {
     path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    component: Homepage,
+    canActivate: [LoggedInRedirectGuard]
   },
   {
     path: 'about-us',
@@ -51,11 +52,6 @@ export const routes: RouterConfig = [
   {
     path: 'faq',
     component: FAQ,
-    canActivate: [LoggedInRedirectGuard]
-  },
-  {
-    path: 'home',
-    component: Homepage,
     canActivate: [LoggedInRedirectGuard]
   },
   {
@@ -129,5 +125,9 @@ export const routes: RouterConfig = [
     path: 'view-offers',
     component: ViewOffers,
     canActivate: [LoggedInRedirectGuard]
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];
