@@ -1,11 +1,11 @@
 /* tslint:disable: variable-name */
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { User } from '../models';
-import { AppState, getUser, getUserLoaded, getUserLoading } from '../reducers';
+import { AppState, getUser, getUserLoaded } from '../reducers';
 import { UserActions } from '../actions';
 import { RegexValues } from '../validators';
 import { INPUT_FIELDS } from '../components';
@@ -61,7 +61,7 @@ export class Profile {
     this.loaded$ = store.let(getUserLoaded());
   }
 
-  onSubmit(form) {
+  onSubmit() {
     this.store.dispatch(this.userActions.updateProfile(this.f.value));
   }
 

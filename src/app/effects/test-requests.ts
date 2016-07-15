@@ -34,7 +34,7 @@ export class TestRequestEffects {
     .switchMap(() => this.testService.getAffiliates()
       .map((res: any) => this.testActions.getAffiliatesSuccess(res.data))
       .catch((res: Response) => Observable.of(
-        this.testActions.getAffiliatesFail()
+        this.testActions.getAffiliatesFail(res)
       ))
     );
 

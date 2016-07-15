@@ -1,11 +1,9 @@
 import { RouterConfig } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 
 import {
   GetUserProfile,
   ShowAllUsers
 } from './resolve';
-const testData = Observable.of(1, 2, 3);
 
 import {
   AuthGuard,

@@ -1,9 +1,7 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
 
 import { AppState } from '../reducers';
 import { UserService } from '../services';
@@ -72,7 +70,7 @@ export class UserEffects {
       .map(() => this.userActions.logoutSuccess())
       .do(() => router.navigateByUrl.next(''))
       .catch((res) => Observable.of(
-        this.userActions.logoutFail()
+        this.userActions.logoutFail(res)
       ))
     );
 

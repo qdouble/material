@@ -6,7 +6,7 @@ import { User } from '../models';
 import { UserActions } from '../actions';
 
 export interface UserState {
-  entryEmail: string;
+  entryEmail: string | null;
   loading: boolean;
   loaded: boolean;
   loginChecked: boolean;

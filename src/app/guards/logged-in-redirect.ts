@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -11,7 +11,7 @@ export class LoggedInRedirectGuard implements CanActivate {
   loggedIn$: Observable<boolean>;
   loggedIn: boolean;
   constructor(private store: Store<AppState>, private router: Router) {}
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate() {
     this.loggedIn$ = this.store.let(getUserLoggedIn());
     this.loggedIn$.take(1).subscribe(val => {
       this.loggedIn = val;

@@ -2,7 +2,6 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
-import { User } from '../models/user';
 
 @Injectable()
 
@@ -17,14 +16,16 @@ export class TestRequestActions {
   static CHECK_LOGIN_STATUS_FAIL = '[Test Requests] Check Login Status Fail';
   checkLoginStatusFail(res: any): Action {
     return {
-      type: TestRequestActions.CHECK_LOGIN_STATUS_FAIL
+      type: TestRequestActions.CHECK_LOGIN_STATUS_FAIL,
+      payload: res
     };
   }
 
   static CHECK_LOGIN_STATUS_SUCCESS = '[Test Requests] Check Login Status Success';
   checkLoginStatusSuccess(res: any): Action {
     return {
-      type: TestRequestActions.CHECK_LOGIN_STATUS_SUCCESS
+      type: TestRequestActions.CHECK_LOGIN_STATUS_SUCCESS,
+      payload: res
     };
   }
 
@@ -36,9 +37,10 @@ export class TestRequestActions {
   }
 
   static GET_AFFILIATES_FAIL = '[Test Requests] Get Affiliates Fail';
-  getAffiliatesFail(): Action {
+  getAffiliatesFail(res: any): Action {
     return {
-      type: TestRequestActions.GET_AFFILIATES_FAIL
+      type: TestRequestActions.GET_AFFILIATES_FAIL,
+      payload: res
     };
   }
 

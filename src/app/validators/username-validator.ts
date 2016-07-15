@@ -1,6 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { AsyncValidatorFn, ValidatorFn } from '@angular/forms/src/directives/validators';
-import { Control } from '@angular/common';
+import { AsyncValidatorFn } from '@angular/forms/src/directives/validators';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';

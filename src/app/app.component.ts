@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -7,8 +7,7 @@ import {
   AppState,
   getUserLoaded,
   getUserLoading,
-  getUserLoggedIn,
-  getUserLoginChecked
+  getUserLoggedIn
 } from './reducers';
 import { UserActions } from './actions';
 import { RouterPatch } from './effects';
