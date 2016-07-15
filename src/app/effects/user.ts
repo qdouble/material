@@ -1,9 +1,7 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
 
 import { AppState } from '../reducers';
 import { UserService } from '../services';
@@ -26,8 +24,8 @@ export class UserEffects {
     .map<string>(toPayload)
     .switchMap(email => this.userService.checkEmail(email)
       .map((res: any) => this.userActions.checkEmailSuccess(res))
-      .do((res: any) => res.payload.redirectPath ?
-        router.navigateByUrl.next(res.payload.redirectPath) : null)
+      .do((res: any) => res.payload.redirectTo ?
+        router.navigateByUrl.next(res.payload.redirectTo) : null)
       .catch(() => Observable.of(
         this.userActions.checkEmailFail(email)
       ))
@@ -58,8 +56,8 @@ export class UserEffects {
     .map<User>(toPayload)
     .switchMap(user => this.userService.loginUser(user)
       .map(res => this.userActions.loginSuccess(res))
-      .do((res: any) => res.payload.redirectPath ?
-        router.navigateByUrl.next(res.payload.redirectPath) : null)
+      .do((res: any) => res.payload.redirectTo ?
+        router.navigateByUrl.next(res.payload.redirectTo) : null)
       .catch(() => Observable.of(
         this.userActions.loginFail(user)
       ))
@@ -72,7 +70,7 @@ export class UserEffects {
       .map(() => this.userActions.logoutSuccess())
       .do(() => router.navigateByUrl.next(''))
       .catch((res) => Observable.of(
-        this.userActions.logoutFail()
+        this.userActions.logoutFail(res)
       ))
     );
 
@@ -81,8 +79,8 @@ export class UserEffects {
     .map<User>(toPayload)
     .switchMap(user => this.userService.registerUser(user)
       .map(res => this.userActions.registerSuccess(res))
-      .do((res: any) => res.payload.redirectPath ?
-        router.navigateByUrl.next(res.payload.redirectPath) : null)
+      .do((res: any) => res.payload.redirectTo ?
+        router.navigateByUrl.next(res.payload.redirectTo) : null)
       .catch((res) => Observable.of(
         this.userActions.registerFail(res)
       ))

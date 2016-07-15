@@ -15,20 +15,21 @@ import '@angular/http';
 import '@angular/router';
 
 import '@ngrx/core';
+import '@ngrx/core/add/operator/select';
 import '@ngrx/db';
 import '@ngrx/effects';
 import '@ngrx/store';
-import '@ngrx/core/add/operator/select';
-
+import '@ngrx/store-devtools';
+import '@ngrx/store-log-monitor';
 import 'ngrx-store-logger';
 
 // RxJS
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/let';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mapTo';

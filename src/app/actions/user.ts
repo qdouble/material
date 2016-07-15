@@ -117,9 +117,10 @@ export class UserActions {
   }
 
   static LOGOUT_FAIL = '[User] Logout Fail';
-  logoutFail(): Action {
+  logoutFail(res: any): Action {
     return {
-      type: UserActions.LOGOUT_FAIL
+      type: UserActions.LOGOUT_FAIL,
+      payload: res
     };
   }
 

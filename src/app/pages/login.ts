@@ -27,7 +27,7 @@ import { INPUT_FIELDS } from '../components';
 })
 
 export class Login {
-  entryEmail$: Observable<string>;
+  entryEmail$: Observable<string | null>;
 
   f = new FormGroup({
     email: new FormControl('', [Validators.required,

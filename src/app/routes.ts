@@ -1,11 +1,9 @@
 import { RouterConfig } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 
 import {
   GetUserProfile,
   ShowAllUsers
 } from './resolve';
-const testData = Observable.of(1, 2, 3);
 
 import {
   AuthGuard,
@@ -37,8 +35,9 @@ import {
 export const routes: RouterConfig = [
   {
     path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    component: Homepage,
+    canActivate: [LoggedInRedirectGuard]
   },
   {
     path: 'about-us',
@@ -51,11 +50,6 @@ export const routes: RouterConfig = [
   {
     path: 'faq',
     component: FAQ,
-    canActivate: [LoggedInRedirectGuard]
-  },
-  {
-    path: 'home',
-    component: Homepage,
     canActivate: [LoggedInRedirectGuard]
   },
   {
@@ -129,5 +123,9 @@ export const routes: RouterConfig = [
     path: 'view-offers',
     component: ViewOffers,
     canActivate: [LoggedInRedirectGuard]
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];

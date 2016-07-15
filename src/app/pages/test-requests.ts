@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
-import { ROUTER_DIRECTIVES, Router, ActivatedRoute } from '@angular/router';
+import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { AppState, getTestRequestAllUsers, getTestRequestGetAffiliates } from '../reducers';
@@ -22,7 +21,7 @@ export class ChildCmp {
 
 @Component({
   selector: 'test-requests',
-  directives: [REACTIVE_FORM_DIRECTIVES, ChildCmp, ROUTER_DIRECTIVES],
+  directives: [ChildCmp, ROUTER_DIRECTIVES],
   template: `
 
   <header>
@@ -50,7 +49,6 @@ export class TestRequests {
   constructor(
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>,
-    private router: Router,
     private testActions: TestRequestActions
   ) {
     this.users$ = store.let(getTestRequestAllUsers());

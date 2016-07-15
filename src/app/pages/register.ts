@@ -69,7 +69,7 @@ import { INPUT_FIELDS } from '../components';
 export class Register {
   f: FormGroup;
   username: FormControl;
-  entryEmail$: Observable<string>;
+  entryEmail$: Observable<string | null>;
   RANDOM_NUM = Math.floor((Math.random() * 100000) + 1);
   RANDOM_EMAIL = `new${this.RANDOM_NUM}@user.com`;
 

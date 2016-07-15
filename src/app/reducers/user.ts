@@ -6,7 +6,7 @@ import { User } from '../models';
 import { UserActions } from '../actions';
 
 export interface UserState {
-  entryEmail: string;
+  entryEmail: string | null;
   loading: boolean;
   loaded: boolean;
   loginChecked: boolean;
@@ -72,7 +72,7 @@ export default function (state = initialState, action: Action): UserState {
     }
 
     case UserActions.LOGIN_SUCCESS:
-      if (action.payload.success) {
+      if (action.payload.message_type === 'success') {
         return Object.assign({}, state, {
           loggedIn: true
         });

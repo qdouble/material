@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
-import { User } from '../models';
 import { API_ADMIN_URL, API_USER_URL } from './constants';
 
 @Injectable()

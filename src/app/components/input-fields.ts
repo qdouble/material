@@ -1,4 +1,4 @@
-import { Component, Input, Output, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { FormGroup, AbstractControl, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 import { DebounceInputControlValueAccessor } from '../validators';
 
