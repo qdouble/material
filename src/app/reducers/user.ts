@@ -12,6 +12,7 @@ export interface UserState {
   loginChecked: boolean;
   loggedIn: boolean;
   user: User;
+  referredBy: string | null;
 };
 
 const initialState: UserState = {
@@ -20,7 +21,8 @@ const initialState: UserState = {
   loaded: false,
   loginChecked: false,
   loggedIn: false,
-  user: {}
+  user: {},
+  referredBy: null
 };
 
 export default function (state = initialState, action: Action): UserState {
@@ -81,6 +83,9 @@ export default function (state = initialState, action: Action): UserState {
 
     case UserActions.LOGOUT_SUCCESS:
       return Object.assign({}, state, initialState);
+
+    case UserActions.SET_REFERRED_BY:
+      return Object.assign({}, state, { referredBy: action.payload });
 
     case UserActions.UPDATE_PROFILE:
       return Object.assign({}, state, {
@@ -152,6 +157,11 @@ export function getLoginChecked() {
 export function getLoggedIn() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.loggedIn);
+}
+
+export function getReferredBy() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.referredBy);
 }
 
 export function getUser() {

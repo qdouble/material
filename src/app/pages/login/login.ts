@@ -1,29 +1,17 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { AppState, getUserEntryEmail } from '../reducers';
-import { UserActions } from '../actions';
-import { RegexValues } from '../validators';
-import { INPUT_FIELDS } from '../components';
+import { AppState, getUserEntryEmail } from '../../reducers';
+import { UserActions } from '../../actions';
+import { RegexValues } from '../../validators';
+import { INPUT_FIELDS } from '../../components';
 
 @Component({
   selector: 'login',
   directives: [REACTIVE_FORM_DIRECTIVES, INPUT_FIELDS],
-  template: `
-
-  <header>
-    <h1>Login</h1>
-  </header>
-  <main> 
-    <form [formGroup]="f" (ngSubmit)="onSubmit()">
-      <email-input [label]="'Email Address'" [controlName]="'email'" [form]="f"></email-input>
-      <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
-      <button [disabled]="!f.valid" type="submit">Login</button>
-    </form> 
-  </main>
-
-  `
+  template: require('./login.html')
 })
 
 export class Login {
@@ -35,7 +23,11 @@ export class Login {
     password: new FormControl('password', Validators.required)
   });
 
-  constructor(private store: Store<AppState>, private userActions: UserActions) {
+  constructor(
+    private route: ActivatedRoute,
+    private store: Store<AppState>,
+    private userActions: UserActions
+  ) {
     this.entryEmail$ = store.let(getUserEntryEmail());
     this.entryEmail$.take(1).subscribe(email => {
       if (email) this.f.controls['email'].updateValue(email);

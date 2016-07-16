@@ -1,26 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
+import { RequestBase } from './request-base';
 import { User } from '../models';
 import { API_USER_URL } from './constants';
 
 @Injectable()
-export class UserService {
-  headers = new Headers();
-  noPreFlightHeaders = new Headers();
-  options = new RequestOptions({
-    headers: this.headers,
-    withCredentials: true
-  });
-  optionsNoPre = new RequestOptions({
-    headers: this.noPreFlightHeaders,
-    withCredentials: true
-  });
-  constructor(private http: Http) {
-    this.headers.append('Content-Type', 'application/json');
-    this.noPreFlightHeaders.append('Content-Type', 'text/plain');
+export class UserService extends RequestBase {
+
+  constructor(public http: Http) {
+    super(http);
   }
+
   checkEmail(email: string): Observable<User> {
     return this.http.get(`${API_USER_URL}/checkUserEmail?email=${email}`, this.options)
       .map(res => res.json());

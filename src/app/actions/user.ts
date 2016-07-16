@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
-import { User } from '../models/user';
+import { User } from '../models';
 
 @Injectable()
 
@@ -152,6 +152,14 @@ export class UserActions {
     return {
       type: UserActions.REGISTER_SUCCESS,
       payload: user
+    };
+  }
+
+  static SET_REFERRED_BY = '[User] Set Referred By';
+  setReferredBy(username: string): Action {
+    return {
+      type: UserActions.SET_REFERRED_BY,
+      payload: username
     };
   }
 

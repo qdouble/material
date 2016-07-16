@@ -1,1 +1,2 @@
-export {User} from './user';
+export * from './prize';
+export * from './user';

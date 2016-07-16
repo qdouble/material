@@ -4,33 +4,16 @@ import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@a
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { User } from '../models';
-import { AppState, getUser, getUserLoaded } from '../reducers';
-import { UserActions } from '../actions';
-import { RegexValues } from '../validators';
-import { INPUT_FIELDS } from '../components';
+import { User } from '../../models';
+import { AppState, getUser, getUserLoaded } from '../../reducers';
+import { UserActions } from '../../actions';
+import { RegexValues } from '../../validators';
+import { INPUT_FIELDS } from '../../components';
 
 @Component({
   selector: 'profile',
   directives: [REACTIVE_FORM_DIRECTIVES, INPUT_FIELDS],
-  template: `
-
-  <header>
-    <h1>Profile</h1>
-  </header>
-  <main>
-    <form [formGroup]="f" (ngSubmit)="onSubmit()">
-      <text-input [label]="'Your Username:'" [controlName]="'username'" [form]="f"></text-input>
-      <email-input [label]="'Your Email Address:'" [controlName]="'email'" [form]="f"></email-input>
-      <text-input [label]="'Your Address:'" [controlName]="'address'" [form]="f"></text-input>
-      <text-input [label]="'Your City:'" [controlName]="'city'" [form]="f"></text-input>
-      <text-input [label]="'Your State:'" [controlName]="'State'" [form]="f"></text-input>
-      <text-input [label]="'Your Zip Code:'" [controlName]="'zipCode'" [form]="f"></text-input>
-      <text-input [label]="'Phone Number:'" [controlName]="'phone'" [form]="f"></text-input>
-      <button type="submit" [disabled]="!f.valid">Update Profile</button>
-    </form>
-  </main>
-  `
+  template: require('./profile.html')
 })
 
 export class Profile {
@@ -69,6 +52,8 @@ export class Profile {
     this.loadedUser$ = this.user$.subscribe((user: User) => {
       let loadedUser = Object.assign({}, user);
       delete loadedUser['id'];
+      delete loadedUser['currentSponsor'];
+      delete loadedUser['sponsorUsername'];
       this.f.updateValue(loadedUser);
     });
   }
