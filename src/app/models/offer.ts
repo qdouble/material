@@ -3,7 +3,7 @@ export interface Offer {
   displayName?: string;
   offerURL?: string;
   imageURL?: string;
-  featuredOffer?: boolean;
+  featured?: boolean;
   offerOrder?: number;
   description?: string;
   requirements?: string;

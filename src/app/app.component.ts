@@ -73,6 +73,14 @@ export class App implements AfterViewInit {
     });
   }
 
+  activatedEvent(event) {
+    console.log('Activated Event:', event);
+  }
+
+  deactivatedEvent(event) {
+    console.log('Deactivated Event', event);
+  }
+
   logout() {
     this.store.dispatch(this.userActions.logout());
   }
