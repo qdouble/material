@@ -6,7 +6,7 @@
   <prizes-display [prizes]="prizes$ | async" [form]="prizeForm">
   </prizes-display>
   <h2> Step 2: Register or Extend Your Account</h2>
-  <form novalidate [formGroup]="f" (ngSubmit)="onSubmit()">
+  <form novalidate [formGroup]="f" (ngSubmit)="submit()">
     <email-input [error]="''" [label]="'Email Address'" [controlName]="'email'" [form]="f" [submit]="'Submit'"></email-input>
   </form>
 </main>

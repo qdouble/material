@@ -45,7 +45,7 @@ export class Profile {
     this.loaded$ = store.let(getUserLoaded());
   }
 
-  onSubmit() {
+  submit() {
     this.store.dispatch(this.userActions.updateProfile(this.f.value));
   }
 

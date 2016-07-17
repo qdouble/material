@@ -141,7 +141,7 @@ export class Register {
       });
   }
 
-  onSubmit() {
+  submit() {
     this.store.dispatch(this.userActions.register(this.f.value));
   }
 

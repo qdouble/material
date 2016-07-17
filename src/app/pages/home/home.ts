@@ -45,7 +45,7 @@ export class Homepage {
     });
   }
 
-  onSubmit() {
+  submit() {
     this.store.dispatch(this.userActions.checkEmail(this.f.controls['email'].value));
     this.store.dispatch(this.prizeActions.selectPrize(this.prizeForm.value.selectedPrize));
   }
