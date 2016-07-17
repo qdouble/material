@@ -4,17 +4,19 @@ import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@a
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+
+
+import { PrizeActions, UserActions } from '../../actions';
+import { INPUT_FIELDS } from '../../components';
+import { Prize } from '../../models';
 import {
   AppState, getUserEntryEmail, getUserReferredBy,
   getPrizeSelected, getPrizeCollection, getPrizeLoaded
 } from '../../reducers';
-import { PrizeActions, UserActions } from '../../actions';
-import { Prize } from '../../models';
 import {
   CustomValidators, DebounceInputControlValueAccessor,
   RegexValues, UsernameValidator
 } from '../../validators';
-import { INPUT_FIELDS } from '../../components';
 
 @Component({
   selector: 'register',

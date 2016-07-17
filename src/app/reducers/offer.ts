@@ -1,9 +1,9 @@
 /* tslint:disable: no-switch-case-fall-through */
-import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 
-import { Offer } from '../models';
 import { OfferActions } from '../actions';
+import { Offer } from '../models';
 
 export interface OfferState {
   ids: string[];

@@ -1,5 +1,5 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { FormGroup, AbstractControl, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { ChangeDetectionStrategy , Component, Input } from '@angular/core';
+import { AbstractControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 
 @Component({
   selector: 'number-input',

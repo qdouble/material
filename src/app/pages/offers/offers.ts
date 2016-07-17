@@ -3,9 +3,11 @@ import { OfferRows } from './offer-rows';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { AppState, getOfferCollection, getOfferLoaded } from '../../reducers';
+
 import { OfferActions } from '../../actions';
 import { Offer } from '../../models';
+import { AppState, getOfferCollection, getOfferLoaded } from '../../reducers';
+
 @Component({
   selector: 'offers',
   directives: [OfferRows],
@@ -27,8 +29,8 @@ export class Offers {
   loadedSub: Subscription;
   lastLoad: any;
   constructor(
-    private store: Store<AppState>,
-    private offerActions: OfferActions
+    private offerActions: OfferActions,
+    private store: Store<AppState>
   ) {
     this.offers$ = this.store.let(getOfferCollection());
     this.loaded$ = this.store.let(getOfferLoaded());

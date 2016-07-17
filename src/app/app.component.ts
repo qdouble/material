@@ -3,6 +3,11 @@ import { Observable } from 'rxjs/Observable';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
+
+import { UserActions } from './actions';
+import { AppMenu } from './app-menu.component';
+import { AppFooter } from './app-footer.component';
+import { RouterPatch } from './effects';
 import {
   AppState,
   getUserLoaded,
@@ -10,10 +15,6 @@ import {
   getUserLoggedIn,
   getUserReferredBy
 } from './reducers';
-import { UserActions } from './actions';
-import { RouterPatch } from './effects';
-import { AppMenu } from './app-menu.component';
-import { AppFooter } from './app-footer.component';
 import { validateUserName } from './validators';
 
 @Component({

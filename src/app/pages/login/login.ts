@@ -3,10 +3,11 @@ import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@a
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { AppState, getUserEntryEmail } from '../../reducers';
+
 import { UserActions } from '../../actions';
-import { RegexValues } from '../../validators';
 import { INPUT_FIELDS } from '../../components';
+import { AppState, getUserEntryEmail } from '../../reducers';
+import { RegexValues } from '../../validators';
 
 @Component({
   selector: 'login',

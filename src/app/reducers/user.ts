@@ -2,8 +2,8 @@
 import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
 
-import { User } from '../models';
 import { UserActions } from '../actions';
+import { User } from '../models';
 
 export interface UserState {
   entryEmail: string | null;

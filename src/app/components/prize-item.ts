@@ -1,12 +1,10 @@
 import {
-  Component,
-  Input,
-  ChangeDetectionStrategy,
-  Output,
-  EventEmitter
+  ChangeDetectionStrategy, Component, EventEmitter,
+  Input, Output
 } from '@angular/core';
+import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+
 import { Prize } from '../models';
-import { FormGroup, FormControl, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 
 @Component({
   selector: 'prize-item',
