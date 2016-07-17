@@ -35,7 +35,7 @@ export class Login {
     });
   }
 
-  submit() {
+  submitForm() {
     this.store.dispatch(this.userActions.login(this.f.value));
   }
 }

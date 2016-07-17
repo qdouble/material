@@ -2,7 +2,7 @@
   <h1>Login</h1>
 </header>
 <main>
-  <form [formGroup]="f" (ngSubmit)="submit()">
+  <form [formGroup]="f" (ngSubmit)="submitForm()">
     <email-input [label]="'Email Address'" [controlName]="'email'" [form]="f"></email-input>
     <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
     <button [disabled]="!f.valid" type="submit">Login</button>

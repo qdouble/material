@@ -45,7 +45,7 @@ export class Profile implements OnDestroy, OnInit {
     this.loaded$ = store.let(getUserLoaded());
   }
 
-  submit() {
+  submitForm() {
     this.store.dispatch(this.userActions.updateProfile(this.f.value));
   }
 

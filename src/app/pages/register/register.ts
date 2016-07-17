@@ -141,7 +141,7 @@ export class Register implements OnDestroy, OnInit {
       });
   }
 
-  submit() {
+  submitForm() {
     this.store.dispatch(this.userActions.register(this.f.value));
   }
 

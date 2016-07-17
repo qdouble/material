@@ -2,7 +2,7 @@
   <h1>Profile</h1>
 </header>
 <main>
-  <form [formGroup]="f" (ngSubmit)="submit()">
+  <form [formGroup]="f" (ngSubmit)="submitForm()">
     <p *ngIf="(user$ | async)?.currentSponsor">
       Your sponsor is: {{(user$ | async)?.currentSponsor}}
     </p>
