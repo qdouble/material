@@ -2,8 +2,9 @@
 import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
 
-import { Prize } from '../models';
 import { PrizeActions } from '../actions';
+import { Prize } from '../models';
+
 
 export interface PrizeState {
   ids: string[];

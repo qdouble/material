@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { RequestBase } from './request-base';
-import { Offer } from '../models';
+
 import { API_USER_URL } from './constants';
+import { Offer } from '../models';
+import { RequestBase } from './request-base';
 
 @Injectable()
 export class OfferService extends RequestBase {

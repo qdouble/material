@@ -1,20 +1,22 @@
 /* tslint:disable: variable-name */
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+
+
+import { PrizeActions, UserActions } from '../../actions';
+import { INPUT_FIELDS } from '../../components';
+import { Prize } from '../../models';
 import {
   AppState, getUserEntryEmail, getUserReferredBy,
   getPrizeSelected, getPrizeCollection, getPrizeLoaded
 } from '../../reducers';
-import { PrizeActions, UserActions } from '../../actions';
-import { Prize } from '../../models';
 import {
   CustomValidators, DebounceInputControlValueAccessor,
   RegexValues, UsernameValidator
 } from '../../validators';
-import { INPUT_FIELDS } from '../../components';
 
 @Component({
   selector: 'register',
@@ -27,7 +29,7 @@ import { INPUT_FIELDS } from '../../components';
   template: require('./register.html')
 })
 
-export class Register {
+export class Register implements OnDestroy, OnInit {
   f: FormGroup;
   entryEmail$: Observable<string | null>;
   entryEmailSub: Subscription;
@@ -139,7 +141,7 @@ export class Register {
       });
   }
 
-  onSubmit() {
+  submit() {
     this.store.dispatch(this.userActions.register(this.f.value));
   }
 

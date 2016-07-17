@@ -1,8 +1,13 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
+
+import { UserActions } from './actions';
+import { AppMenu } from './app-menu.component';
+import { AppFooter } from './app-footer.component';
+import { RouterPatch } from './effects';
 import {
   AppState,
   getUserLoaded,
@@ -10,10 +15,6 @@ import {
   getUserLoggedIn,
   getUserReferredBy
 } from './reducers';
-import { UserActions } from './actions';
-import { RouterPatch } from './effects';
-import { AppMenu } from './app-menu.component';
-import { AppFooter } from './app-footer.component';
 import { validateUserName } from './validators';
 
 @Component({
@@ -27,33 +28,9 @@ import { validateUserName } from './validators';
     StoreLogMonitorComponent
   ],
   styles: [require('./app.scss')],
-  template: `
-
-  <header>
-    <nav>
-      <app-menu [loggedIn]="userLoggedIn$ | async" (logout)="logout()"></app-menu>
-    </nav>
-  </header>
-  <main>
-    <router-outlet></router-outlet>
-  </main>
-  <ngrx-store-log-monitor toggleCommand="ctrl-t" positionCommand="ctrl-m"
-    [expandEntries]="true">
-  </ngrx-store-log-monitor>
-  <footer>
-  <br>
-    <app-footer></app-footer>
-  <br><br>
-  User Loaded: {{userLoaded$ | async}}<br>
-  User Loading: {{userLoading$ | async}}<br>
-  User LoggedIn: {{ userLoggedIn$ | async }}<br>
-  User Referred by: {{ userReferredBy$ | async }}<br>
-  <a routerLink="test-requests">Test Requests</a>
-  </footer>
-
-  `
+  template: require('./app.component.html')
 })
-export class App {
+export class App implements AfterViewInit {
   userLoading$: Observable<boolean>;
   userLoaded$: Observable<boolean>;
   userLoggedIn$: Observable<boolean>;

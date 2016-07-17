@@ -13,9 +13,9 @@ import { RouterPatch as router } from './router-patch';
 
 export class PrizeEffects {
   constructor(
-    private updates$: StateUpdates<AppState>,
+    private prizeActions: PrizeActions,
     private prizeService: PrizeService,
-    private prizeActions: PrizeActions
+    private updates$: StateUpdates<AppState>
   ) { }
 
   @Effect() getPrizes$ = this.updates$

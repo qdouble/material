@@ -2,7 +2,7 @@
   <h1>Registration</h1>
 </header>
 <main>
-  <form [formGroup]="f" (ngSubmit)="onSubmit()">
+  <form [formGroup]="f" (ngSubmit)="submit()">
     <email-input [label]="'Email Address'" [controlName]="'email'" [form]="f"></email-input>
     <email-input [label]="'Confirm E-mail Address'" [controlName]="'confirmEmail'" [form]="f">
     </email-input>

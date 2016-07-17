@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+
+import { PrizeActions, UserActions } from '../../actions';
+import { INPUT_FIELDS, PrizesDisplay } from '../../components';
+import { Prize } from '../../models';
 import {
   AppState, getPrizeCollection, getPrizeLoading,
   getPrizeLoaded
 } from '../../reducers';
-import { PrizeActions, UserActions } from '../../actions';
-import { Prize } from '../../models';
 import { RegexValues } from '../../validators';
-import { INPUT_FIELDS, PrizesDisplay } from '../../components';
 
 @Component({
   selector: 'home',
@@ -19,7 +20,7 @@ import { INPUT_FIELDS, PrizesDisplay } from '../../components';
   template: require('./home.html')
 })
 
-export class Homepage {
+export class Homepage implements OnDestroy {
   prizes$: Observable<Prize>;
   prizesLoading$: Observable<boolean>;
   prizesLoaded$: Observable<boolean>;
@@ -31,10 +32,10 @@ export class Homepage {
   prizeForm = new FormGroup({});
 
   constructor(
+    private prizeActions: PrizeActions,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<AppState>,
-    private prizeActions: PrizeActions,
     private userActions: UserActions
   ) {
     this.prizes$ = this.store.let(getPrizeCollection());
@@ -44,7 +45,7 @@ export class Homepage {
     });
   }
 
-  onSubmit() {
+  submit() {
     this.store.dispatch(this.userActions.checkEmail(this.f.controls['email'].value));
     this.store.dispatch(this.prizeActions.selectPrize(this.prizeForm.value.selectedPrize));
   }

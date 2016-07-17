@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OfferRows } from './offer-rows';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { AppState, getOfferCollection, getOfferLoaded } from '../../reducers';
+
 import { OfferActions } from '../../actions';
 import { Offer } from '../../models';
+import { AppState, getOfferCollection, getOfferLoaded } from '../../reducers';
+
 @Component({
   selector: 'offers',
   directives: [OfferRows],
@@ -20,15 +22,15 @@ import { Offer } from '../../models';
   `
 })
 
-export class Offers {
+export class Offers implements OnInit {
   offers$: Observable<Offer[]>;
   loaded$: Observable<boolean>;
   loaded: boolean;
   loadedSub: Subscription;
   lastLoad: any;
   constructor(
-    private store: Store<AppState>,
-    private offerActions: OfferActions
+    private offerActions: OfferActions,
+    private store: Store<AppState>
   ) {
     this.offers$ = this.store.let(getOfferCollection());
     this.loaded$ = this.store.let(getOfferLoaded());

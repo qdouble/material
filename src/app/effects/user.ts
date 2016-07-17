@@ -4,9 +4,9 @@ import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 
 import { AppState } from '../reducers';
-import { UserService } from '../services';
 import { User } from '../models/user';
 import { UserActions } from '../actions';
+import { UserService } from '../services';
 
 import { RouterPatch as router } from './';
 
@@ -15,8 +15,8 @@ import { RouterPatch as router } from './';
 export class UserEffects {
   constructor(
     private updates$: StateUpdates<AppState>,
-    private userService: UserService,
-    private userActions: UserActions
+    private userActions: UserActions,
+    private userService: UserService
   ) { }
 
   @Effect() checkEmail$ = this.updates$

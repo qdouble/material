@@ -1,11 +1,6 @@
 import { RouterConfig } from '@angular/router';
 
 import {
-  GetUserProfile,
-  ShowAllUsers
-} from './resolve';
-
-import {
   AuthGuard,
   LoggedInRedirectGuard
 } from './guards';
@@ -31,6 +26,11 @@ import {
   TestRequests,
   ViewOffers
 }  from './pages';
+
+import {
+  GetUserProfile,
+  ShowAllUsers
+} from './resolve';
 
 export const routes: RouterConfig = [
   {

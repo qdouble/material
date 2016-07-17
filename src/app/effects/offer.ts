@@ -4,18 +4,18 @@ import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 
 import { AppState } from '../reducers';
-import { OfferService } from '../services';
-import { User } from '../models/user';
 import { OfferActions } from '../actions';
+import { OfferService } from '../services';
 import { RouterPatch as router } from './router-patch';
+import { User } from '../models/user';
 
 @Injectable()
 
 export class OfferEffects {
   constructor(
+    private offerActions: OfferActions,
     private updates$: StateUpdates<AppState>,
-    private offerService: OfferService,
-    private offerActions: OfferActions
+    private offerService: OfferService
   ) { }
 
   @Effect() getOffers$ = this.updates$

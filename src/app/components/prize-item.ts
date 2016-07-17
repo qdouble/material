@@ -1,12 +1,10 @@
 import {
-  Component,
-  Input,
-  ChangeDetectionStrategy,
-  Output,
-  EventEmitter
+  ChangeDetectionStrategy, Component, EventEmitter,
+  Input, OnChanges, Output
 } from '@angular/core';
+import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+
 import { Prize } from '../models';
-import { FormGroup, FormControl, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 
 @Component({
   selector: 'prize-item',
@@ -29,7 +27,7 @@ import { FormGroup, FormControl, REACTIVE_FORM_DIRECTIVES } from '@angular/forms
   `
 })
 
-export class PrizeItem {
+export class PrizeItem implements OnChanges {
   @Input() currentPrize;
   @Input() form: FormGroup;
   @Input() index: number;

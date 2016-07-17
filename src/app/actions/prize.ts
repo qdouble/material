@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
+
 import { Prize } from '../models';
 
 @Injectable()
