@@ -27,31 +27,7 @@ import { validateUserName } from './validators';
     StoreLogMonitorComponent
   ],
   styles: [require('./app.scss')],
-  template: `
-
-  <header>
-    <nav>
-      <app-menu [loggedIn]="userLoggedIn$ | async" (logout)="logout()"></app-menu>
-    </nav>
-  </header>
-  <main>
-    <router-outlet></router-outlet>
-  </main>
-  <ngrx-store-log-monitor toggleCommand="ctrl-t" positionCommand="ctrl-m"
-    [expandEntries]="true">
-  </ngrx-store-log-monitor>
-  <footer>
-  <br>
-    <app-footer></app-footer>
-  <br><br>
-  User Loaded: {{userLoaded$ | async}}<br>
-  User Loading: {{userLoading$ | async}}<br>
-  User LoggedIn: {{ userLoggedIn$ | async }}<br>
-  User Referred by: {{ userReferredBy$ | async }}<br>
-  <a routerLink="test-requests">Test Requests</a>
-  </footer>
-
-  `
+  template: require('./app.component.html')
 })
 export class App {
   userLoading$: Observable<boolean>;
