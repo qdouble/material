@@ -4,7 +4,7 @@
   </nav>
 </header>
 <main>
-  <router-outlet></router-outlet>
+  <router-outlet (activate)="activatedEvent($event)" (deactivate)="deactivatedEvent($event)"></router-outlet>
 </main>
 <ngrx-store-log-monitor toggleCommand="ctrl-t" positionCommand="ctrl-m" [expandEntries]="true">
 </ngrx-store-log-monitor>
