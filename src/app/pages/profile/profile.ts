@@ -1,5 +1,5 @@
 /* tslint:disable: variable-name */
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +17,7 @@ import { RegexValues } from '../../validators';
   template: require('./profile.html')
 })
 
-export class Profile {
+export class Profile implements OnDestroy, OnInit {
   user$: Observable<User>;
   loaded$: Observable<boolean>;
   loading$: Observable<boolean>;

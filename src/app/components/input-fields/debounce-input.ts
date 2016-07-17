@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import {  AbstractControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 
 import { DebounceInputControlValueAccessor } from '../../validators';
@@ -10,7 +10,7 @@ import { DebounceInputControlValueAccessor } from '../../validators';
   template: require('./debounce-input.html')
 })
 
-export class DebounceInput {
+export class DebounceInput implements OnInit {
   @Input() form: FormGroup;
   @Input() controlName: string;
   @Input() label: string;

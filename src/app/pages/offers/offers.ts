@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OfferRows } from './offer-rows';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -22,7 +22,7 @@ import { AppState, getOfferCollection, getOfferLoaded } from '../../reducers';
   `
 })
 
-export class Offers {
+export class Offers implements OnInit {
   offers$: Observable<Offer[]>;
   loaded$: Observable<boolean>;
   loaded: boolean;

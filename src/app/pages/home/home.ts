@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -20,7 +20,7 @@ import { RegexValues } from '../../validators';
   template: require('./home.html')
 })
 
-export class Homepage {
+export class Homepage implements OnDestroy {
   prizes$: Observable<Prize>;
   prizesLoading$: Observable<boolean>;
   prizesLoaded$: Observable<boolean>;

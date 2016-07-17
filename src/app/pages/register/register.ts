@@ -1,5 +1,5 @@
 /* tslint:disable: variable-name */
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -29,7 +29,7 @@ import {
   template: require('./register.html')
 })
 
-export class Register {
+export class Register implements OnDestroy, OnInit {
   f: FormGroup;
   entryEmail$: Observable<string | null>;
   entryEmailSub: Subscription;

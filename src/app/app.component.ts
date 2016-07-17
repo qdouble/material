@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -30,7 +30,7 @@ import { validateUserName } from './validators';
   styles: [require('./app.scss')],
   template: require('./app.component.html')
 })
-export class App {
+export class App implements AfterViewInit {
   userLoading$: Observable<boolean>;
   userLoaded$: Observable<boolean>;
   userLoggedIn$: Observable<boolean>;

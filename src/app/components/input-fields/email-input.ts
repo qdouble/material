@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy , Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy , Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 
 @Component({
@@ -8,7 +8,7 @@ import { AbstractControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/f
   template: require('./email-input.html')
 })
 
-export class EmailInput {
+export class EmailInput implements OnInit {
   @Input() form: FormGroup;
   @Input() controlName: string;
   @Input() label: string;
