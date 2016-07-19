@@ -38,6 +38,11 @@ export class UserService extends RequestBase {
       .map(res => res.text());
   }
 
+  recordClick(offerId: string): Observable<string> {
+    return this.http.post(`${API_USER_URL}/recordClick`, { 'id': offerId }, this.options)
+      .map(res => res.json());
+  }
+
   registerUser(user: User): Observable<User> {
     return this.http.post(`${API_USER_URL}/registerUser`, user, this.options)
       .map(res => res.json());

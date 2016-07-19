@@ -5,6 +5,8 @@ import {
   LoggedInRedirectGuard
 } from './guards';
 
+import { OfferRedirect } from './pages/offers';
+
 import {
   AboutUs,
   ContactUs,
@@ -66,6 +68,10 @@ export const routes: RouterConfig = [
     path: 'offers',
     component: Offers,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'offer-redirect',
+    component: OfferRedirect
   },
   {
     path: 'order',

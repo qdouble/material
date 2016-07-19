@@ -132,6 +132,29 @@ export class UserActions {
     };
   }
 
+  static RECORD_CLICK = '[User] Record Click';
+  recordClick(offerId: string): Action {
+    return {
+      type: UserActions.RECORD_CLICK,
+      payload: offerId
+    };
+  }
+
+  static RECORD_CLICK_FAIL = '[User] Record Click Fail';
+  recordClickFail(res: Response): Action {
+    return {
+      type: UserActions.RECORD_CLICK_FAIL
+    };
+  }
+
+  static RECORD_CLICK_SUCCESS = '[User] Record Click Success';
+  recordClickSuccess(redirect: string): Action {
+    return {
+      type: UserActions.RECORD_CLICK_SUCCESS,
+      payload: redirect
+    };
+  }
+
   static REGISTER = '[User] Register';
   register(user: User): Action {
     return {

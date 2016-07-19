@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 
-import { AppState } from '../reducers';
-import { User } from '../models/user';
 import { UserActions } from '../actions';
+import { openInNewTab } from '../helper';
+import { User } from '../models';
+import { AppState } from '../reducers';
 import { UserService } from '../services';
 
 import { RouterPatch as router } from './';
@@ -73,6 +74,18 @@ export class UserEffects {
         this.userActions.logoutFail(res)
       ))
     );
+
+  @Effect() recordClick$ = this.updates$
+  .whenAction(UserActions.RECORD_CLICK)
+  .map<string>(toPayload)
+  .switchMap(offer => this.userService.recordClick(offer)
+    .map(res => this.userActions.recordClickSuccess(res))
+    .do((res: any) => res.payload.redirectTo ?
+      window.location.replace(res.payload.redirectTo) : null)
+    .catch((res) => Observable.of(
+      this.userActions.recordClickFail(res)
+    ))
+  );
 
   @Effect() register$ = this.updates$
     .whenAction(UserActions.REGISTER)

@@ -68,8 +68,7 @@ export function getOfferSelected() {
 export function getOfferCollection() {
   return (state$: Observable<AppState>) => state$
     .let(getOfferIds())
-    .switchMap(offerId => state$.let(getOffers(offerId)))
-    .map(arr => arr.sort(compareOrder));
+    .switchMap(offerId => state$.let(getOffers(offerId)));
 }
 
 export function getPrizes(prizeIds: string[]) {

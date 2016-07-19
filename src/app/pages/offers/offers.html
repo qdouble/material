@@ -1,0 +1,6 @@
+ <header>
+    <h1>Offers</h1>
+  </header>
+  <main>
+    <offer-rows [offers]="offers$ | async" (goToOffer)="goToOffer($event)"></offer-rows>
+  </main>

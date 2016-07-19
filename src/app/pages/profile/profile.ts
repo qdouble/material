@@ -21,7 +21,7 @@ export class Profile implements OnDestroy, OnInit {
   user$: Observable<User>;
   loaded$: Observable<boolean>;
   loading$: Observable<boolean>;
-  loadedUser$: Subscription;
+  loadedUserSub: Subscription;
 
   f = new FormGroup({
     username: new FormControl('', [Validators.required,
@@ -50,7 +50,7 @@ export class Profile implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.loadedUser$ = this.user$.subscribe((user: User) => {
+    this.loadedUserSub = this.user$.subscribe((user: User) => {
       let loadedUser = Object.assign({}, user);
       delete loadedUser['id'];
       delete loadedUser['currentSponsor'];
@@ -60,6 +60,6 @@ export class Profile implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    this.loadedUser$.unsubscribe();
+    this.loadedUserSub.unsubscribe();
   }
 }

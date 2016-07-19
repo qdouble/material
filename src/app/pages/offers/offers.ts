@@ -4,27 +4,19 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { OfferActions } from '../../actions';
-import { compareFeatured, compareOrder } from '../../helper';
+import { OfferActions, UserActions } from '../../actions';
+import { compareFeatured, compareOrder, openInNewTab } from '../../helper';
 import { Offer } from '../../models';
 import { AppState, getOfferCollection, getOfferLoaded } from '../../reducers';
 
 @Component({
   selector: 'offers',
   directives: [OfferRows],
-  template: `
-
-  <header>
-    <h1>Offers</h1>
-  </header>
-  <main>
-    <offer-rows [offers]="offers$ | async"></offer-rows>
-  </main>
-  <!--<pre>{{offers$ | async | json}}</pre>-->
-  `
+  template: require('./offers.html')
 })
 
 export class Offers implements OnDestroy, OnInit {
+  offerE$: Observable<any>;
   offers$: Observable<Offer[]>;
   loaded$: Observable<boolean>;
   loaded: boolean;
@@ -32,10 +24,10 @@ export class Offers implements OnDestroy, OnInit {
   lastLoad: any;
   constructor(
     private offerActions: OfferActions,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private userActions: UserActions
   ) {
     this.offers$ = this.store.let(getOfferCollection());
-      // .map(offers => { return offers.sort(compareFeatured); });
     this.loaded$ = this.store.let(getOfferLoaded());
     this.loadedSub = this.loaded$.subscribe(loaded => {
       this.loaded = loaded;
@@ -46,6 +38,12 @@ export class Offers implements OnDestroy, OnInit {
       this.store.dispatch(this.offerActions.getOffers());
     }
   }
+
+  goToOffer(offerId) {
+    openInNewTab(`offer-redirect?id=${offerId}`);
+    // this.store.dispatch(this.userActions.recordClick(value));
+  }
+
   ngOnDestroy() {
     this.loadedSub.unsubscribe();
   }
