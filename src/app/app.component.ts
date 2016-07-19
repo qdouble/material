@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -30,11 +30,12 @@ import { validateUserName } from './validators';
   styles: [require('./app.scss')],
   template: require('./app.component.html')
 })
-export class App implements AfterViewInit {
+export class App implements AfterViewInit, OnInit {
   userLoading$: Observable<boolean>;
   userLoaded$: Observable<boolean>;
   userLoggedIn$: Observable<boolean>;
   userReferredBy$: Observable<string | null>;
+  loaded: boolean;
   loggedIn: boolean;
   referredBy: string;
 
@@ -65,6 +66,17 @@ export class App implements AfterViewInit {
         }
       });
     this.store.dispatch(this.userActions.checkLoggedIn());
+  }
+
+  ngOnInit() {
+    this.userLoaded$.subscribe(loaded => {
+      this.loaded = loaded;
+    });
+    this.userLoggedIn$.subscribe(loggedIn => {
+      if (loggedIn && !this.loaded) {
+        this.store.dispatch(this.userActions.getProfile());
+      }
+    });
   }
 
   ngAfterViewInit() {
