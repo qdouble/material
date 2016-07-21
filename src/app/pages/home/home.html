@@ -1,0 +1,12 @@
+<header>
+  <h1>Welcome to Offer System</h1>
+</header>
+<main>
+  <h2>Step 1: Choose How You Would Like to Receive Your Prize</h2>
+  <prizes-display [prizes]="prizes$ | async" [form]="prizeForm">
+  </prizes-display>
+  <h2> Step 2: Register or Extend Your Account</h2>
+  <form novalidate [formGroup]="f" (ngSubmit)="submitForm()">
+    <email-input [error]="''" [label]="'Email Address'" [controlName]="'email'" [form]="f" [submit]="'Submit'"></email-input>
+  </form>
+</main>

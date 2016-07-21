@@ -28,7 +28,7 @@ export class ChildCmp {
   <h1>Test Requests</h1>
   </header>
   
-  <button (click)="onSubmit()">Show All Users</button>
+  <button (click)="submitForm()">Show All Users</button>
   <button (click)="checkLoginStatus()">Check Login Status</button>
   <button (click)="getAffiliates()">Get Affiliates</button>
  <button routerLink="">Go Profile from RouterLink</button>
@@ -66,7 +66,7 @@ export class TestRequests {
     this.store.dispatch(this.testActions.getAffiliates());
   }
 
-  onSubmit() {
+  submitForm() {
     this.store.dispatch(this.testActions.showAllUsers());
   }
 

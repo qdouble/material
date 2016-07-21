@@ -1,1 +1,3 @@
-export {User} from './user';
+export * from './offer';
+export * from './prize';
+export * from './user';

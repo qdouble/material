@@ -60,7 +60,7 @@
     "@angular/compiler": "github:angular/compiler-builds",
     "@angular/core": "github:angular/core-builds",
     "@angular/forms": "github:angular/forms-builds",
-    "@angular/http": "2.0.0-rc.4",
+    "@angular/http": "github:angular/http-builds",
     "@angular/platform-browser": "github:angular/platform-browser-builds",
     "@angular/platform-browser-dynamic": "github:angular/platform-browser-dynamic-builds",
     "@angular/platform-server": "github:angular/platform-server-builds",
@@ -85,7 +85,7 @@
   "devDependencies": {
     "angular2-hmr": "~0.8.0",
     "awesome-typescript-loader": "~1.1.1",
-    "codelyzer": "~0.0.23",
+    "codelyzer": "~0.0.25",
     "compression-webpack-plugin": "^0.3.1",
     "copy-webpack-plugin": "^3.0.1",
     "css-loader": "^0.23.1",

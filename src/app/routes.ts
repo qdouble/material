@@ -1,14 +1,11 @@
 import { RouterConfig } from '@angular/router';
 
 import {
-  GetUserProfile,
-  ShowAllUsers
-} from './resolve';
-
-import {
   AuthGuard,
   LoggedInRedirectGuard
 } from './guards';
+
+import { OfferRedirect } from './pages/offers';
 
 import {
   AboutUs,
@@ -31,6 +28,11 @@ import {
   TestRequests,
   ViewOffers
 }  from './pages';
+
+import {
+  GetUserProfile,
+  ShowAllUsers
+} from './resolve';
 
 export const routes: RouterConfig = [
   {
@@ -66,6 +68,10 @@ export const routes: RouterConfig = [
     path: 'offers',
     component: Offers,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'offer-redirect',
+    component: OfferRedirect
   },
   {
     path: 'order',

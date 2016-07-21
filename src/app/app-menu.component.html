@@ -1,0 +1,18 @@
+<span *ngIf="!loggedIn">
+    <a routerLink="" preserveQueryParams>Home</a>
+    <a routerLink="login" preserveQueryParams>Login</a>
+    <a routerLink="register" preserveQueryParams>Register</a>
+    <a routerLink="view-offers" preserveQueryParams>View Offers</a>
+    <a routerLink="how-it-works" preserveQueryParams>How It Works</a>
+    <a routerLink="faq" preserveQueryParams>FAQ</a>
+    <a routerLink="proof-pic-gallery" preserveQueryParams>Proof Pic Gallery</a>
+  </span>
+<span *ngIf="loggedIn">
+    <a routerLink="status">Status</a>
+    <a routerLink="offers">Offers</a>
+    <a routerLink="order">Order</a>
+    <a routerLink="support">Support</a>
+    <a routerLink="profile">Profile</a>
+  </span>
+<a routerLink="promotions" preserveQueryParams>Promotions</a>
+<button *ngIf="loggedIn" (click)="logout.emit()">Logout</button>

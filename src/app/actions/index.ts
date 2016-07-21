@@ -1,10 +1,18 @@
-import { UserActions } from './user';
+import { OfferActions } from './offer';
+import { PrizeActions } from './prize';
 import { TestRequestActions } from './test-requests';
+import { UserActions } from './user';
 
 export {
-  UserActions, TestRequestActions
+  OfferActions,
+  PrizeActions,
+  TestRequestActions,
+  UserActions
 };
 
 export default [
-  UserActions, TestRequestActions
+  OfferActions,
+  PrizeActions,
+  TestRequestActions,
+  UserActions
 ];

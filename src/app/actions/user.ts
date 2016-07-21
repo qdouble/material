@@ -2,7 +2,8 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
-import { User } from '../models/user';
+
+import { User } from '../models';
 
 @Injectable()
 
@@ -131,6 +132,29 @@ export class UserActions {
     };
   }
 
+  static RECORD_CLICK = '[User] Record Click';
+  recordClick(offerId: string): Action {
+    return {
+      type: UserActions.RECORD_CLICK,
+      payload: offerId
+    };
+  }
+
+  static RECORD_CLICK_FAIL = '[User] Record Click Fail';
+  recordClickFail(res: Response): Action {
+    return {
+      type: UserActions.RECORD_CLICK_FAIL
+    };
+  }
+
+  static RECORD_CLICK_SUCCESS = '[User] Record Click Success';
+  recordClickSuccess(redirect: string): Action {
+    return {
+      type: UserActions.RECORD_CLICK_SUCCESS,
+      payload: redirect
+    };
+  }
+
   static REGISTER = '[User] Register';
   register(user: User): Action {
     return {
@@ -152,6 +176,14 @@ export class UserActions {
     return {
       type: UserActions.REGISTER_SUCCESS,
       payload: user
+    };
+  }
+
+  static SET_REFERRED_BY = '[User] Set Referred By';
+  setReferredBy(username: string): Action {
+    return {
+      type: UserActions.SET_REFERRED_BY,
+      payload: username
     };
   }
 

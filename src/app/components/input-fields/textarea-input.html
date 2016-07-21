@@ -1,0 +1,16 @@
+<div class="form-group">
+  <label>{{label}}</label>
+  <div>
+    <textarea rows="4" [cols]="50" [formControl]="dynamicControl" class="form-control"></textarea>
+    <div *ngIf="help"><em>{{help}}</em></div>
+  </div>
+  <button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
+</div>
+<div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
+      !dynamicControl.errors?.required" class="alert alert-danger">
+  {{label}} is required.
+</div>
+<div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
+      dynamicControl.errors?.required" class="alert alert-danger">
+  {{errorMessage}}
+</div>

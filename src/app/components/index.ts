@@ -1,5 +1,3 @@
-import { INPUT_FIELDS } from './input-fields';
-
-export {
-  INPUT_FIELDS
-}
+export * from './input-fields';
+export * from './prize-item';
+export * from './prizes-display';
