@@ -1,8 +1,11 @@
-import { AfterViewInit, Component, ChangeDetectorRef, OnInit } from '@angular/core';
+import {
+  AfterViewInit, Component, ChangeDetectorRef, OnInit,
+  ViewEncapsulation
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
+// import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 
 import { UserActions } from './actions';
 import { AppMenu } from './app-menu.component';
@@ -25,10 +28,11 @@ import { validateUserName } from './validators';
     ROUTER_DIRECTIVES,
     AppMenu,
     AppFooter,
-    StoreLogMonitorComponent
+    // StoreLogMonitorComponent
   ],
   styles: [require('./app.scss')],
-  template: require('./app.component.html')
+  template: require('./app.component.html'),
+  encapsulation: ViewEncapsulation.None
 })
 export class App implements AfterViewInit, OnInit {
   userLoading$: Observable<boolean>;
