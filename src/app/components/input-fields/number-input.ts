@@ -23,6 +23,6 @@ export class NumberInput implements OnInit {
 
   ngOnInit() {
     this.errorMessage = this.error || this.label + ' is invalid';
-    this.dynamicControl = this.form.controls[this.controlName];
+    this.dynamicControl = this.form.find(this.controlName);
   }
 }

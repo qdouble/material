@@ -105,13 +105,13 @@ export class Register implements OnDestroy, OnInit {
   ngOnInit() {
     this.entryEmail$ = this.store.let(getUserEntryEmail());
     this.entryEmailSub = this.entryEmail$.take(1).subscribe(email => {
-      if (email) this.f.controls['email'].updateValue(email);
+      if (email) this.f.find('email').updateValue(email);
     });
     this.referredBy$ = this.store.let(getUserReferredBy());
     this.referredBySub = this.referredBy$
       .filter(ref => ref !== null)
       .subscribe(ref => {
-        this.f.controls['referredBy'].updateValue(ref);
+        this.f.find('referredBy').updateValue(ref);
       });
     this.selectedPrize$ = this.store.let(getPrizeSelected());
     this.selectedPrizeSub = this.selectedPrize$
@@ -126,7 +126,7 @@ export class Register implements OnDestroy, OnInit {
                 console.log('Hello!');
                 console.log(prizes[0].id);
                 setTimeout(() => {
-                  this.f.controls['selectedPrize'].updateValue(prizes[0].id);
+                  this.f.find('selectedPrize').updateValue(prizes[0].id);
                 }, 1);
               }
             });
@@ -137,7 +137,7 @@ export class Register implements OnDestroy, OnInit {
             .filter(arr => arr.length > 0)
             .map((arr: Prize[]) => arr.map((item: Prize) => item.name));
         }
-        this.f.controls['selectedPrize'].updateValue(prize);
+        this.f.find('selectedPrize').updateValue(prize);
       });
   }
 
