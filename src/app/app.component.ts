@@ -4,6 +4,13 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { MdToolbar } from '@angular2-material/toolbar';
+import { MdButton } from '@angular2-material/button';
+import { MdCheckbox } from '@angular2-material/checkbox';
+import { MD_SIDENAV_DIRECTIVES } from '@angular2-material/sidenav';
+import { MD_LIST_DIRECTIVES } from '@angular2-material/list';
+import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
+import { MdIcon, MdIconRegistry } from '@angular2-material/icon';
 import { Store } from '@ngrx/store';
 // import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 
@@ -23,11 +30,18 @@ import { validateUserName } from './validators';
 @Component({
   selector: 'app',
   pipes: [],
-  providers: [],
+  providers: [MdIconRegistry],
   directives: [
-    ROUTER_DIRECTIVES,
     AppMenu,
     AppFooter,
+    MD_SIDENAV_DIRECTIVES,
+    MD_LIST_DIRECTIVES,
+    MD_CARD_DIRECTIVES,
+    MdToolbar,
+    MdButton,
+    MdCheckbox,
+    MdIcon,
+    ROUTER_DIRECTIVES,
     // StoreLogMonitorComponent
   ],
   styles: [require('./app.scss')],
