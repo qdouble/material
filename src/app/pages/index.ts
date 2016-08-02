@@ -4,7 +4,7 @@ import { FAQ } from './faq';
 import { Homepage } from './home';
 import { HowItWorks } from './how-it-works';
 import { Login } from './login';
-import { Offers } from './offers';
+import { OfferRedirect, Offers, OFFERS_COMMON } from './offers';
 import { Order } from  './order';
 import { PrivacyPolicy } from './privacy-policy';
 import { Profile } from './profile';
@@ -25,6 +25,7 @@ export {
   Homepage,
   HowItWorks,
   Login,
+  OfferRedirect,
   Offers,
   Order,
   PrivacyPolicy,
@@ -39,3 +40,30 @@ export {
   TestRequests,
   ViewOffers
 }
+
+export const PAGES_COMMON = [
+  OFFERS_COMMON
+];
+
+export const PAGES_COMPONENTS = [
+  AboutUs,
+  ContactUs,
+  FAQ,
+  Homepage,
+  HowItWorks,
+  Login,
+  OfferRedirect,
+  Offers,
+  Order,
+  PrivacyPolicy,
+  Profile,
+  Promotions,
+  ProofPicGallery,
+  Register,
+  ReportSpam,
+  Status,
+  Support,
+  TermsAndConditions,
+  TestRequests,
+  ViewOffers
+];

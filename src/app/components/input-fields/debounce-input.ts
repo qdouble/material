@@ -1,11 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import {  AbstractControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
-
-import { DebounceInputControlValueAccessor } from '../../validators';
+import {  AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'debounce-input',
-  directives: [REACTIVE_FORM_DIRECTIVES, DebounceInputControlValueAccessor],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: require('./debounce-input.html')
 })

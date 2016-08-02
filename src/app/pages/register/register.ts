@@ -1,30 +1,22 @@
 /* tslint:disable: variable-name */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-
 import { PrizeActions, UserActions } from '../../actions';
-import { INPUT_FIELDS } from '../../components';
 import { Prize } from '../../models';
 import {
   AppState, getUserEntryEmail, getUserReferredBy,
   getPrizeSelected, getPrizeCollection, getPrizeLoaded
 } from '../../reducers';
 import {
-  CustomValidators, DebounceInputControlValueAccessor,
-  RegexValues, UsernameValidator
+  CustomValidators, RegexValues, UsernameValidator
 } from '../../validators';
 
 @Component({
   selector: 'register',
-  directives: [
-    REACTIVE_FORM_DIRECTIVES,
-    DebounceInputControlValueAccessor,
-    INPUT_FIELDS
-  ],
   providers: [UsernameValidator],
   template: require('./register.html')
 })

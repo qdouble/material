@@ -7,7 +7,6 @@ import { AppState } from '../../reducers';
 
 @Component({
   selector: 'offer-redirect',
-  directives: [],
   template: `
   <header> <h1>Offer Redirect</h1> </header>
   `

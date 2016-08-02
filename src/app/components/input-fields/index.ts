@@ -1,12 +1,5 @@
-export * from './debounce-input';
-export * from './email-input';
-export * from './number-input';
-export * from './password-input';
-export * from './select-input';
-export * from './text-input';
-export * from './textarea-input';
-
 import { DebounceInput } from './debounce-input';
+import { DebounceInputControlValueAccessor } from '../../validators';
 import { EmailInput } from './email-input';
 import { NumberInput } from './number-input';
 import { PasswordInput } from './password-input';
@@ -16,6 +9,7 @@ import { TextareaInput } from './textarea-input';
 
 export const INPUT_FIELDS = [
   DebounceInput,
+  DebounceInputControlValueAccessor,
   EmailInput,
   NumberInput,
   PasswordInput,
