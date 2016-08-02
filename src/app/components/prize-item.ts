@@ -34,7 +34,7 @@ export class PrizeItem implements OnChanges {
   @Input() prize: Prize;
   @Output() selectPrize = new EventEmitter(false);
   ngOnChanges() {
-    if (this.prize && this.prize.id && !this.form.controls['selectedPrize']) {
+    if (this.prize && this.prize.id && !this.form.find('selectedPrize')) {
       this.form.addControl('selectedPrize', new FormControl(this.prize.id));
     }
   }

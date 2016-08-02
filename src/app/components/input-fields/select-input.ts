@@ -19,6 +19,6 @@ export class SelectInput implements OnInit {
   dynamicControl: AbstractControl;
 
   ngOnInit() {
-    this.dynamicControl = this.form.controls[this.controlName];
+    this.dynamicControl = this.form.find(this.controlName);
   }
 }

@@ -46,7 +46,7 @@ export class Homepage implements OnDestroy {
   }
 
   submitForm() {
-    this.store.dispatch(this.userActions.checkEmail(this.f.controls['email'].value));
+    this.store.dispatch(this.userActions.checkEmail(this.f.find('email').value));
     this.store.dispatch(this.prizeActions.selectPrize(this.prizeForm.value.selectedPrize));
   }
 

@@ -6,8 +6,8 @@ import { provideRouter } from '@angular/router';
 import { provideStore } from '@ngrx/store';
 import { provideDB } from '@ngrx/db';
 import { runEffects } from '@ngrx/effects';
-import { instrumentStore } from '@ngrx/store-devtools';
-import { useLogMonitor } from '@ngrx/store-log-monitor';
+// import { instrumentStore } from '@ngrx/store-devtools';
+// import { useLogMonitor } from '@ngrx/store-log-monitor';
 
 import { routes } from '../../app/routes';
 import schema from '../../app/db-schema';
@@ -31,12 +31,12 @@ export const NG_APPLICATION_PROVIDERS = [
   HTTP_PROVIDERS,
   provideForms(),
   provideStore(reducer),
-  instrumentStore({
-    monitor: useLogMonitor({
-            visible: true,
-            position: 'right'
-        })
-  }),
+  // instrumentStore({
+  //   monitor: useLogMonitor({
+  //           visible: true,
+  //           position: 'right'
+  //       })
+  // }),
   runEffects(effects),
   provideRouter(routes),
   // provideDB(schema),
