@@ -1,5 +1,7 @@
 import { NgModule, ApplicationRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 
 import { MdButton } from '@angular2-material/button';
 import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
@@ -13,12 +15,10 @@ import { MdToolbar } from '@angular2-material/toolbar';
 import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 
 import { APPLICATION_DIRECTIVES, PROVIDERS } from './platform/browser';
-import { PROJECT_DIRECTIVES } from './app/components';
+import { PROJECT_COMPONENT_DIRECTIVES } from './app/components';
 import { ENV_PROVIDERS } from './platform/environment';
 import { APP_PROVIDERS } from './app';
-
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
+import { DebounceInputControlValueAccessor } from './app/validators';
 
 import { App } from './app/app.component';
 import { routes } from './app/routes';
@@ -46,8 +46,9 @@ const MATERIAL_DESIGN_DIRECTIVES = [
     ...MATERIAL_DESIGN_DIRECTIVES,
     ...PAGES_COMMON,
     ...PAGES_COMPONENTS,
-    ...PROJECT_DIRECTIVES,
+    ...PROJECT_COMPONENT_DIRECTIVES,
     REACTIVE_FORM_DIRECTIVES,
+    DebounceInputControlValueAccessor,
     // StoreLogMonitorComponent
   ],
   providers: [
@@ -57,15 +58,16 @@ const MATERIAL_DESIGN_DIRECTIVES = [
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [
-    App,
     ...PAGES_COMPONENTS
-  ]
+  ],
+  bootstrap: [App]
 })
 
 export class MyAppModule {
   constructor(appRef: ApplicationRef) {
     // long form bootstrap (optional)
     // could, for example, check auth or client config or ... and then show a specific component 
-    appRef.bootstrap(App);
+    // appRef.bootstrap(App);
   }
+  ngDoBootstrap() {}
 };
