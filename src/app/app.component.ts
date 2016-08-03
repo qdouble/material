@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { UserActions } from './actions';
-import { RouterPatch } from './effects';
 import {
   AppState,
   getUserLoaded,
@@ -42,13 +41,6 @@ export class App implements AfterViewInit, OnInit {
     this.userLoading$ = store.let(getUserLoading());
     this.userLoggedIn$ = store.let(getUserLoggedIn());
     this.userReferredBy$ = store.let(getUserReferredBy());
-    RouterPatch.navigateByUrl.subscribe((url: string) => {
-      if ((url === 'login' || url === 'register') && this.referredBy) {
-        this.router.navigate([url], { queryParams: { ref: this.referredBy } });
-      } else {
-        this.router.navigateByUrl(url);
-      }
-    });
     this.router.routerState.queryParams
       .filter(param => param['ref'] !== undefined)
       .take(1)

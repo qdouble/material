@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import { AppState } from '../reducers';
 import { OfferActions } from '../actions';
 import { OfferService } from '../services';
-import { RouterPatch as router } from './router-patch';
 import { User } from '../models/user';
 
 @Injectable()
