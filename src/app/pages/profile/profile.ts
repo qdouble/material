@@ -50,10 +50,7 @@ export class Profile implements OnDestroy, OnInit {
   ngOnInit() {
     this.loadedUserSub = this.user$.subscribe((user: User) => {
       let loadedUser = Object.assign({}, user);
-      delete loadedUser['id'];
-      delete loadedUser['currentSponsor'];
-      delete loadedUser['sponsorUsername'];
-      this.f.updateValue(loadedUser);
+      this.f.patchValue(loadedUser);
     });
   }
 

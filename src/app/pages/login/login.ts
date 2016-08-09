@@ -29,7 +29,7 @@ export class Login {
   ) {
     this.entryEmail$ = store.let(getUserEntryEmail());
     this.entryEmail$.take(1).subscribe(email => {
-      if (email) this.f.find('email').updateValue(email);
+      if (email) this.f.find('email').setValue(email);
     });
   }
 
