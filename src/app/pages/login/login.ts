@@ -1,17 +1,15 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { UserActions } from '../../actions';
-import { INPUT_FIELDS } from '../../components';
 import { AppState, getUserEntryEmail } from '../../reducers';
 import { RegexValues } from '../../validators';
 
 @Component({
   selector: 'login',
-  directives: [REACTIVE_FORM_DIRECTIVES, INPUT_FIELDS],
   template: require('./login.html')
 })
 
@@ -31,7 +29,7 @@ export class Login {
   ) {
     this.entryEmail$ = store.let(getUserEntryEmail());
     this.entryEmail$.take(1).subscribe(email => {
-      if (email) this.f.find('email').updateValue(email);
+      if (email) this.f.find('email').setValue(email);
     });
   }
 

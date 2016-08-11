@@ -14,7 +14,7 @@ export class UserService extends RequestBase {
   }
 
   checkEmail(email: string): Observable<User> {
-    return this.http.get(`${API_USER_URL}/checkUserEmail?email=${email}`, this.options)
+    return this.http.get(`${API_USER_URL}/checkUserEmail?email=${email}`, this.optionsNoPre)
       .map(res => res.json());
   }
 

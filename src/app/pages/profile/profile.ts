@@ -1,19 +1,17 @@
 /* tslint:disable: variable-name */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { UserActions } from '../../actions';
-import { INPUT_FIELDS } from '../../components';
 import { User } from '../../models';
 import { AppState, getUser, getUserLoaded } from '../../reducers';
 import { RegexValues } from '../../validators';
 
 @Component({
   selector: 'profile',
-  directives: [REACTIVE_FORM_DIRECTIVES, INPUT_FIELDS],
   template: require('./profile.html')
 })
 
@@ -52,10 +50,7 @@ export class Profile implements OnDestroy, OnInit {
   ngOnInit() {
     this.loadedUserSub = this.user$.subscribe((user: User) => {
       let loadedUser = Object.assign({}, user);
-      delete loadedUser['id'];
-      delete loadedUser['currentSponsor'];
-      delete loadedUser['sponsorUsername'];
-      this.f.updateValue(loadedUser);
+      this.f.patchValue(loadedUser);
     });
   }
 

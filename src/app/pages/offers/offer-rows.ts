@@ -1,11 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Offer } from '../../models';
-import { OfferCard } from './offer-card';
 
 @Component({
   selector: 'offer-rows',
-  directives: [OfferCard],
   styles: [`offer-card-image { cursor: pointer }`],
   template: `
   <offer-card *ngFor="let offer of offers">

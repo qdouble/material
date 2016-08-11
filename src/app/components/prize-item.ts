@@ -2,14 +2,13 @@ import {
   ChangeDetectionStrategy, Component, EventEmitter,
   Input, OnChanges, Output
 } from '@angular/core';
-import { FormControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import { Prize } from '../models';
 
 @Component({
   selector: 'prize-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  directives: [REACTIVE_FORM_DIRECTIVES],
   styles: [`
   .prize-item {
     display: inline-block;

@@ -7,7 +7,6 @@ import { AppState } from '../reducers';
 import { PrizeService } from '../services';
 import { User } from '../models/user';
 import { PrizeActions } from '../actions';
-import { RouterPatch as router } from './router-patch';
 
 @Injectable()
 

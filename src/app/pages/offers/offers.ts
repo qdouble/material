@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { OfferRows } from './offer-rows';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -11,7 +10,6 @@ import { AppState, getOfferCollection, getOfferLoaded } from '../../reducers';
 
 @Component({
   selector: 'offers',
-  directives: [OfferRows],
   template: require('./offers.html')
 })
 

@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy , Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormGroup, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'number-input',
-  directives: [REACTIVE_FORM_DIRECTIVES],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: require('./number-input.html')
 })
