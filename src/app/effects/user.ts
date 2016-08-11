@@ -10,7 +10,6 @@ import { User } from '../models';
 import { AppState } from '../reducers';
 import { UserService } from '../services';
 
-import { RouterPatch as router } from './';
 
 @Injectable()
 
