@@ -48,7 +48,6 @@ export function ngApp(req, res) {
       actions,
       runEffects(effects),
       services,
-      RouterPatch,
       AuthGuard,
       LoggedInRedirectGuard
     ],
