@@ -5,7 +5,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "skipDefaultLibCheck": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,

@@ -18,6 +18,6 @@ export class DebounceInput implements OnInit {
 
   ngOnInit() {
     this.errorMessage = this.error || this.label + ' is invalid';
-    this.dynamicControl = this.form.find(this.controlName);
+    this.dynamicControl = this.form.get(this.controlName);
   }
 }

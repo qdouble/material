@@ -1,7 +1,6 @@
 import { provide, PLATFORM_DIRECTIVES, PLATFORM_PIPES } from '@angular/core';
 import { HTTP_PROVIDERS } from '@angular/http';
 // import { LocationStrategy, HashLocationStrategy, Location } from '@angular/common';
-import { provideForms } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { provideStore } from '@ngrx/store';
 import { provideDB } from '@ngrx/db';
@@ -29,7 +28,6 @@ export const ENVIRONMENT_PROVIDERS = [
 */
 export const NG_APPLICATION_PROVIDERS = [
   HTTP_PROVIDERS,
-  provideForms(),
   provideStore(reducer),
   // instrumentStore({
   //   monitor: useLogMonitor({

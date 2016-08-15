@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { Body } from '@angular/http/src/body';
 import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
@@ -18,7 +19,7 @@ export class UserService extends RequestBase {
       .map(res => res.json());
   }
 
-  checkLoggedIn(): Observable<any> {
+  checkLoggedIn(): Observable<string> {
     return this.http.get(`${API_USER_URL}/loggedIn`, this.optionsNoPre)
       .map(res => res.text());
   }
