@@ -20,7 +20,6 @@ import reducer from './app/reducers';
 import actions from './app/actions';
 import effects from './app/effects';
 import services from './app/services';
-import { RouterPatch } from './app/effects';
 
 import { AuthGuard, LoggedInRedirectGuard } from './app/guards';
 
