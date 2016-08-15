@@ -9,12 +9,18 @@
     "skipDefaultLibCheck": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noEmitHelpers": false
+    "noEmitHelpers": false,
+    "types": [
+      "body-parser",
+      "core-js",
+      "express",
+      "hammerjs",
+      "jasmine",
+      "node"
+    ]
   },
   "exclude": [
-    "node_modules",
-    "typings/main.d.ts",
-    "typings/main"
+    "node_modules"
   ],
   "filesGlob": [
     "./src/**/*.ts",
