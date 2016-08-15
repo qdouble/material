@@ -58,6 +58,7 @@
   "dependencies": {
     "@angular/common": "github:angular/common-builds",
     "@angular/compiler": "github:angular/compiler-builds",
+    "@angular/compiler-cli": "github:angular/compiler-cli-builds",
     "@angular/core": "github:angular/core-builds",
     "@angular/forms": "github:angular/forms-builds",
     "@angular/http": "github:angular/http-builds",
