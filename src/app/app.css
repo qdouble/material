@@ -1,0 +1,19 @@
+md-toolbar.md-primary {
+  background: #8BC34A !important; }
+
+#logoLevel {
+  font-weight: 500;
+  color: #fafdf7; }
+
+#logoUp {
+  font-weight: 600;
+  color: #f3f9ec; }
+
+#logoRewards {
+  font-weight: 300;
+  padding-left: 3px;
+  color: #f3f9ec; }
+
+#logoR {
+  font-weight: 500;
+  color: #f3f9ec; }

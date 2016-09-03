@@ -16,14 +16,13 @@ import { MdToolbarModule } from '@angular2-material/toolbar';
 import { Actions } from '@ngrx/effects';
 import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
-
-import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
+// import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 
 import { routes } from './routes';
 import { rootReducer } from './reducers';
-import effects from './effects';
-import services from './services';
-import actions from './actions';
+import { effects } from './effects';
+import { services } from './services';
+import { actions } from './actions';
 
 import { PROJECT_COMPONENT_DIRECTIVES } from './components';
 import { APP_PROVIDERS } from './app.providers';
@@ -71,4 +70,4 @@ import { PAGES_COMMON, PAGES_COMPONENTS } from './pages';
   bootstrap: [App]
 })
 
-export class MyAppModule {};
+export class MyAppModule { };

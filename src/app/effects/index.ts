@@ -3,7 +3,7 @@ import { PrizeEffects } from './prize';
 import { TestRequestEffects } from './test-requests';
 import { UserEffects } from './user';
 
-export default [
+export const effects = [
   OfferEffects,
   PrizeEffects,
   TestRequestEffects,

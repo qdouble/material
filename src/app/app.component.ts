@@ -18,8 +18,8 @@ import { validateUserName } from './validators';
 
 @Component({
   selector: 'app',
-  styles: [require('./app.scss')],
-  template: require('./app.component.html'),
+  styleUrls: ['./app.css'],
+  templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None
 })
 export class App implements AfterViewInit, OnInit {

@@ -22,7 +22,7 @@ const initialState: PrizeState = {
   selectedPrize: null
 };
 
-export default function (state = initialState, action: Action): PrizeState {
+export function prizeReducer (state = initialState, action: Action): PrizeState {
   switch (action.type) {
 
     case PrizeActions.GET_PRIZES:

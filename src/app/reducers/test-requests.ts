@@ -13,7 +13,7 @@ const initialState: TestRequestState = {
   affiliates: {}
 };
 
-export default function (state = initialState, action: Action): TestRequestState {
+export function testRequestReducer (state = initialState, action: Action): TestRequestState {
   switch (action.type) {
 
     case TestRequestActions.GET_AFFILIATES_SUCCESS:

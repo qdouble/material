@@ -10,7 +10,7 @@ import { AppState, getOfferCollection, getOfferLoaded } from '../../reducers';
 
 @Component({
   selector: 'offers',
-  template: require('./offers.html')
+  templateUrl: './offers.html'
 })
 
 export class Offers implements OnDestroy, OnInit {

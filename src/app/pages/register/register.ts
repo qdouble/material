@@ -18,7 +18,7 @@ import {
 @Component({
   selector: 'register',
   providers: [UsernameValidator],
-  template: require('./register.html')
+  template: './register.html'
 })
 
 export class Register implements OnDestroy, OnInit {

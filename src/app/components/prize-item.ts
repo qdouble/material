@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, EventEmitter,
-  Input, OnChanges, Output
+  Input, OnChanges, Output, SimpleChanges
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
@@ -16,14 +16,7 @@ import { Prize } from '../models';
   }
   img { max-width: 100px; }`
   ],
-  template: `
-  <span class="prize-item">
-    <img [src]="prize.imageUrl" [alt]="prize.name"><br>
-    {{prize.name}}<br>
-    <input type="radio" [formControl]="form.controls.selectedPrize" 
-      [value]="prize.id" ><br>
-  </span>
-  `
+  templateUrl: './prize-item.html'
 })
 
 export class PrizeItem implements OnChanges {
@@ -32,7 +25,7 @@ export class PrizeItem implements OnChanges {
   @Input() index: number;
   @Input() prize: Prize;
   @Output() selectPrize = new EventEmitter(false);
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.prize && this.prize.id && !this.form.get('selectedPrize')) {
       this.form.addControl('selectedPrize', new FormControl(this.prize.id));
     }

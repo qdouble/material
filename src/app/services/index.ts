@@ -10,7 +10,7 @@ export {
   UserService
 }
 
-export default [
+export const services = [
   OfferService,
   PrizeService,
   TestRequestService,

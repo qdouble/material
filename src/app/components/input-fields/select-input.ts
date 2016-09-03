@@ -4,7 +4,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'select-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: require('./select-input.html')
+  templateUrl: './select-input.html'
 })
 
 export class SelectInput implements OnInit {

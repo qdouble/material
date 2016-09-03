@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'offer-card',
-  template: require('./offer-card.html'),
-  styles: [require('./offer-card.scss')]
+  templateUrl: './offer-card.html',
+  styleUrls: ['./offer-card.css']
 })
 
 export class OfferCard {}

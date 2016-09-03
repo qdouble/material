@@ -10,7 +10,7 @@ import { RegexValues } from '../../validators';
 
 @Component({
   selector: 'login',
-  template: require('./login.html')
+  templateUrl: './login.html'
 })
 
 export class Login {

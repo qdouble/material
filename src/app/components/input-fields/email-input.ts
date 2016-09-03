@@ -4,7 +4,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'email-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: require('./email-input.html')
+  templateUrl: './email-input.html'
 })
 
 export class EmailInput implements OnInit {

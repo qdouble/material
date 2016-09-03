@@ -4,7 +4,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'textarea-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: require('./textarea-input.html')
+  templateUrl: './textarea-input.html'
 })
 
 export class TextareaInput implements OnInit {

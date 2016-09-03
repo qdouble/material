@@ -21,7 +21,7 @@ const initialState: OfferState = {
   selectedOffer: null
 };
 
-export default function (state = initialState, action: Action): OfferState {
+export function offerReducer (state = initialState, action: Action): OfferState {
   switch (action.type) {
 
     case OfferActions.GET_OFFERS:

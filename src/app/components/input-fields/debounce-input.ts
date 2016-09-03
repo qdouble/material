@@ -4,7 +4,7 @@ import {  AbstractControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'debounce-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: require('./debounce-input.html')
+  templateUrl: './debounce-input.html'
 })
 
 export class DebounceInput implements OnInit {
