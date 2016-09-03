@@ -9,7 +9,7 @@
     "sourceMap": true,
     "lib": ["es5", "dom"],
     "strictNullChecks": false,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "types": [
       "core-js",
       "hammerjs",
@@ -18,10 +18,13 @@
       "protractor",
       "selenium-webdriver",
       "source-map"
-    ]
+    ],
+    "outDir": "../output"
   },
   "exclude": [
-    "node_modules"
+    "../node_modules"
+    ,"./**/*.spec.ts",
+    "./main.browser.aot.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
     "useWebpackText": true,
@@ -30,5 +33,9 @@
   },
   "compileOnSave": false,
   "buildOnSave": false,
-  "atom": { "rewriteTsconfig": false }
+  "atom": { "rewriteTsconfig": false },
+  "angularCompilerOptions": {
+   "genDir": "compiled",
+   "debug": true
+ }
 }
