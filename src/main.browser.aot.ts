@@ -8,25 +8,5 @@ if ('production' === ENV) {
   enableProdMode();
 }
 
-export function main() {
-  return platformBrowser().bootstrapModuleFactory(AppModuleNgFactory)
+platformBrowser().bootstrapModuleFactory(AppModuleNgFactory)
     .catch(err => console.log(err));
-}
-
-// Hot Module Replacement
-export function bootstrapDomReady() {
-  // bootstrap after document is ready
-  document.addEventListener('DOMContentLoaded', main);
-}
-
-if ('development' === ENV && HMR) {
-  // activate hot module reload
-  if (document.readyState === 'complete') {
-    main();
-  } else {
-    bootstrapDomReady();
-  }
-  module.hot.accept();
-} else {
-  bootstrapDomReady();
-}
