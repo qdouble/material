@@ -1,7 +1,13 @@
-import { NgModule, ApplicationRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  NgModule, ApplicationRef,
+  CUSTOM_ELEMENTS_SCHEMA
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+
+import { NgModuleFactoryLoader } from '@angular/core';
+import { AsyncNgModuleLoader } from './app/shared/async-ng-module-loader';
 
 import { MdButtonModule } from '@angular2-material/button';
 import { MdCardModule } from '@angular2-material/card';
@@ -23,7 +29,6 @@ import { DebounceInputControlValueAccessor } from './app/validators';
 import { App } from './app/app.component';
 import { routes } from './app/routes';
 import { PAGES_COMMON, PAGES_COMPONENTS } from './app/pages';
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -37,7 +42,8 @@ import { PAGES_COMMON, PAGES_COMPONENTS } from './app/pages';
     MdSidenavModule,
     MdToolbarModule,
     ReactiveFormsModule,
-    RouterModule.forRoot([...routes
+    RouterModule.forRoot([
+      ...routes
     ], {})
   ],
   declarations: [
@@ -49,6 +55,7 @@ import { PAGES_COMMON, PAGES_COMPONENTS } from './app/pages';
     // StoreLogMonitorComponent
   ],
   providers: [
+    { provide: NgModuleFactoryLoader, useClass: AsyncNgModuleLoader },
     ...APP_PROVIDERS,
     ...PROVIDERS,
     MdIconRegistry

@@ -1,5 +1,5 @@
-import { RouterConfig } from '@angular/router';
-
+import { Routes } from '@angular/router';
+import { load } from './shared';
 import {
   AuthGuard,
   LoggedInRedirectGuard
@@ -34,13 +34,21 @@ import {
   ShowAllUsers
 } from './resolve';
 
-export const routes: RouterConfig = [
+export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
     component: Homepage,
     canActivate: [LoggedInRedirectGuard]
   },
+  {
+        path: 'lazy',
+        loadChildren: load(() => new Promise(resolve => {
+          (require as any).ensure([], require => {
+            resolve(require('./test').TestkModule);
+          });
+        }))
+      },
   {
     path: 'about-us',
     component: AboutUs

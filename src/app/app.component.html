@@ -12,6 +12,7 @@
     <span id="logoLevel">Level</span><span id="logoUp">Up</span><span id="logoRewards"><span id="logoR">R</span><span id="ewards">ewards</span></span>
     </span>
   </md-toolbar>
+  <a [routerLink]="['lazy']">Lazy</a>
   <router-outlet (activate)="activatedEvent($event)" (deactivate)="deactivatedEvent($event)"></router-outlet>
 </md-sidenav-layout>
 <!--<header>
