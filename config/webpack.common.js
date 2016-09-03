@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
-const resolveNgRoute = require('@angularclass/resolve-angular-routes')
+const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 // Webpack Constants
 const METADATA = {
   title: 'Angular 2 RC Raw Webpack Boilerplate',
@@ -17,7 +17,6 @@ module.exports = {
   metadata: METADATA,
   entry: {
     polyfills: './src/polyfills.ts',
-    vendor: './src/vendors.ts',
     main: './src/main.browser.ts'
   },
   resolve: {
@@ -27,26 +26,6 @@ module.exports = {
   },
   module: {
     preloaders: [
-        // fix angular2
-        {
-          test: /(systemjs_component_resolver|system_js_ng_module_factory_loader)\.js$/,
-          loader: 'string-replace-loader',
-          query: {
-            search: '(lang_1(.*[\\n\\r]\\s*\\.|\\.))?(global(.*[\\n\\r]\\s*\\.|\\.))?(System|SystemJS)(.*[\\n\\r]\\s*\\.|\\.)import',
-            replace: 'System.import',
-            flags: 'g'
-          }
-        },
-        // {
-        //   test: /.js$/,
-        //   loader: 'string-replace-loader',
-        //   query: {
-        //     search: 'moduleId: module.id,',
-        //     replace: '',
-        //     flags: 'g'
-        //   }
-        // },
-        // // end angular2 fix
       {
         test: /\.js$/,
         loader: 'source-map-loader',
@@ -65,7 +44,6 @@ module.exports = {
         loaders: [
           'awesome-typescript-loader', 
           'angular2-template-loader', 
-          '@angularclass/conventions-loader'
           ],
         exclude: [/\.(spec|e2e|d)\.ts$/]
       },
@@ -82,10 +60,6 @@ module.exports = {
         exclude: /node_modules/,
         loaders: ['raw-loader', 'sass-loader'] // sass-loader not scss-loader
       },
-      // {
-      //   test: /\.(jpg|png|gif)$/,
-      //   loader: 'file'
-      // },
       {test: /\.svg/, loader: 'svg-url-loader'},
       {
         test: /\.html$/,
@@ -95,18 +69,12 @@ module.exports = {
     ]
   },
   plugins: [
-    // fix angular2
-      new webpack.ContextReplacementPlugin(
-        /angular\/core\/(esm\/src|src)\/linker/,
-        helpers.root('./src'),
-        resolveNgRoute(helpers.root('./src'))
-      ),
-      // end angular2 fix
     new ForkCheckerPlugin(),
+    new NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(true),
     new webpack.optimize.CommonsChunkPlugin({ 
-      name: ['main', 'vendor', 'polyfills'], minChunks: Infinity 
+      name: ['main', 'polyfills'], minChunks: Infinity 
     }),
     new CopyWebpackPlugin([{
       from: 'src/assets',
