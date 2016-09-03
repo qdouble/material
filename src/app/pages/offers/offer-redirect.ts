@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
-import { OfferActions, UserActions } from '../../actions';
+import { UserActions } from '../../actions';
 import { AppState } from '../../reducers';
 
 @Component({
@@ -16,11 +16,12 @@ export class OfferRedirect implements OnInit, OnDestroy {
   id: string;
   routerSub: Subscription;
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private store: Store<AppState>,
     private userActions: UserActions
   ) {
-    this.routerSub = this.router.routerState.queryParams
+    this.routerSub = this.route.queryParams
     .filter(query => query !== undefined)
     .subscribe(query => {
       this.id = query['id'];

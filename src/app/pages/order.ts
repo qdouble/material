@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'order',
-  directives: [],
   template: `
 
   <header>

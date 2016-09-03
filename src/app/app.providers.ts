@@ -1,5 +1,3 @@
-export * from './app.component.ts';
-
 import { AuthGuard, LoggedInRedirectGuard } from '../app/guards';
 import { RESOLVE_DATA } from './resolve';
 // export * from './app-state.service.ts';

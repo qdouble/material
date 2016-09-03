@@ -1,27 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { AppState, getTestRequestAllUsers, getTestRequestGetAffiliates } from '../reducers';
 import { TestRequestActions } from '../actions';
 
-@Component({
-  selector: 'child-cmp',
-  template: `
-  
-  <h1>Hello from child</h1>
-  User: {{user}}
-
-  `
-})
-
-export class ChildCmp {
-  @Input() user;
-}
 
 @Component({
   selector: 'test-requests',
-  directives: [ChildCmp, ROUTER_DIRECTIVES],
   template: `
 
   <header>
@@ -36,7 +22,6 @@ export class ChildCmp {
   {{users$ | async | json }}
   {{affiliates$ | async | json }}
   </pre>
-  // <child-cmp [user]="user$ | async"></child-cmp>
 
   `
 })

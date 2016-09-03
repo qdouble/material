@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { OfferActions, UserActions } from '../../actions';
-import { compareFeatured, compareOrder, openInNewTab } from '../../helper';
+import { openInNewTab } from '../../helper';
 import { Offer } from '../../models';
 import { AppState, getOfferCollection, getOfferLoaded } from '../../reducers';
 
@@ -39,7 +39,6 @@ export class Offers implements OnDestroy, OnInit {
 
   goToOffer(offerId) {
     openInNewTab(`offer-redirect?id=${offerId}`);
-    // this.store.dispatch(this.userActions.recordClick(value));
   }
 
   ngOnDestroy() {

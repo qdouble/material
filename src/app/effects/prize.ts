@@ -1,30 +1,30 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { AppState } from '../reducers';
 import { PrizeService } from '../services';
-import { User } from '../models/user';
 import { PrizeActions } from '../actions';
 
 @Injectable()
 
 export class PrizeEffects {
   constructor(
+    public actions$: Actions,
     private prizeActions: PrizeActions,
     private prizeService: PrizeService,
-    private updates$: StateUpdates<AppState>
+    private store: Store<AppState>
   ) { }
 
-  @Effect() getPrizes$ = this.updates$
-    .whenAction(PrizeActions.GET_PRIZES)
-    .map<string>(toPayload)
+  @Effect() getPrizes$ = this.actions$
+    .ofType(PrizeActions.GET_PRIZES)
+    .map(action => <string>action.payload)
     .switchMap(email => this.prizeService.getPrizes()
       .map((res: any) => this.prizeActions.getPrizesSuccess(res))
       .catch((err) => Observable.of(
         this.prizeActions.getPrizesFail(err)
       ))
     );
-
 }

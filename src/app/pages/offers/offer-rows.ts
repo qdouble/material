@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
 import { Offer } from '../../models';
 
 @Component({
@@ -7,12 +6,12 @@ import { Offer } from '../../models';
   styles: [`offer-card-image { cursor: pointer }`],
   template: `
   <offer-card *ngFor="let offer of offers">
-    <offer-card-feature *ngIf="offer.featured">*Featured</offer-card-feature>
-    <offer-card-image (click)="goToOffer.emit(offer.id)">
+    <div class="offer-card-feature" *ngIf="offer.featured">*Featured</div>
+    <div class="offer-card-image" (click)="goToOffer.emit(offer.id)">
       <img [src]="offer.imageURL" width="148" alt="Offer Image">
-    </offer-card-image>
-    <offer-card-name>{{ offer.displayName }}</offer-card-name>
-    <offer-card-description>{{ offer.description }}</offer-card-description>
+    </div>
+    <div class="offer-card-name">{{ offer.displayName }}</div>
+    <div class="offer-card-description">{{ offer.description }}</div>
   </offer-card>
   `
 })

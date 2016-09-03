@@ -83,7 +83,7 @@ export class Register implements OnDestroy, OnInit {
       agree: new FormControl(true, CustomValidators.isTrue),
       hidden: new FormControl(true),
       selectedPrize: new FormControl(),
-    }, {}, Validators.compose(
+    }, Validators.compose(
       [CustomValidators.compare('email', 'confirmEmail', 'compareEmail'),
       CustomValidators.compare('password', 'confirmPassword', 'comparePassword')]));
 

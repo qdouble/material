@@ -1,11 +1,11 @@
 /* tslint:disable: member-ordering */
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { UserActions } from '../actions';
-import { openInNewTab } from '../helper';
 import { User } from '../models';
 import { AppState } from '../reducers';
 import { UserService } from '../services';
@@ -16,15 +16,16 @@ import { UserService } from '../services';
 export class UserEffects {
   private router;
   constructor(
+    public actions$: Actions,
     private injector: Injector,
-    private updates$: StateUpdates<AppState>,
+    private store: Store<AppState>,
     private userActions: UserActions,
     private userService: UserService
   ) { }
 
-  @Effect() checkEmail$ = this.updates$
-    .whenAction(UserActions.CHECK_EMAIL)
-    .map<string>(toPayload)
+  @Effect() checkEmail$ = this.actions$
+    .ofType(UserActions.CHECK_EMAIL)
+    .map(action => <string>action.payload)
     .switchMap(email => this.userService.checkEmail(email)
       .map((res: any) => this.userActions.checkEmailSuccess(res))
       .do((res: any) => res.payload.redirectTo ?
@@ -34,9 +35,9 @@ export class UserEffects {
       ))
     );
 
-  @Effect() checkLoggedIn$ = this.updates$
-    .whenAction(UserActions.CHECK_LOGGED_IN)
-    .map<string>(toPayload)
+  @Effect() checkLoggedIn$ = this.actions$
+    .ofType(UserActions.CHECK_LOGGED_IN)
+    .map(action => <string>action.payload)
     .switchMap(() => this.userService.checkLoggedIn()
       .map((res: any) => this.userActions.checkLoggedInSuccess(res))
       .catch((res) => Observable.of(
@@ -44,9 +45,9 @@ export class UserEffects {
       ))
     );
 
-  @Effect() getProfile$ = this.updates$
-    .whenAction(UserActions.GET_PROFILE)
-    .map<string>(toPayload)
+  @Effect() getProfile$ = this.actions$
+    .ofType(UserActions.GET_PROFILE)
+    .map(action => <string>action.payload)
     .switchMap(() => this.userService.getProfile()
       .map((res: any) => this.userActions.getProfileSuccess(res.user))
       .catch((res) => Observable.of(
@@ -54,9 +55,9 @@ export class UserEffects {
       ))
     );
 
-  @Effect() login$ = this.updates$
-    .whenAction(UserActions.LOGIN)
-    .map<User>(toPayload)
+  @Effect() login$ = this.actions$
+    .ofType(UserActions.LOGIN)
+    .map(action => <User>action.payload)
     .switchMap(user => this.userService.loginUser(user)
       .map(res => this.userActions.loginSuccess(res))
       .do((res: any) => res.payload.redirectTo ?
@@ -66,9 +67,9 @@ export class UserEffects {
       ))
     );
 
-  @Effect() logout$ = this.updates$
-    .whenAction(UserActions.LOGOUT)
-    .map<string>(toPayload)
+  @Effect() logout$ = this.actions$
+    .ofType(UserActions.LOGOUT)
+    .map(action => <string>action.payload)
     .switchMap(() => this.userService.logout()
       .map(() => this.userActions.logoutSuccess())
       .do(() => this.getRouter().navigateByUrl(''))
@@ -77,9 +78,9 @@ export class UserEffects {
       ))
     );
 
-  @Effect() recordClick$ = this.updates$
-  .whenAction(UserActions.RECORD_CLICK)
-  .map<string>(toPayload)
+  @Effect() recordClick$ = this.actions$
+  .ofType(UserActions.RECORD_CLICK)
+  .map(action => <string>action.payload)
   .switchMap(offer => this.userService.recordClick(offer)
     .map(res => this.userActions.recordClickSuccess(res))
     .do((res: any) => res.payload.redirectTo ?
@@ -89,9 +90,9 @@ export class UserEffects {
     ))
   );
 
-  @Effect() register$ = this.updates$
-    .whenAction(UserActions.REGISTER)
-    .map<User>(toPayload)
+  @Effect() register$ = this.actions$
+    .ofType(UserActions.REGISTER)
+    .map(action => <User>action.payload)
     .switchMap(user => this.userService.registerUser(user)
       .map(res => this.userActions.registerSuccess(res))
       .do((res: any) => res.payload.redirectTo ?
@@ -101,9 +102,9 @@ export class UserEffects {
       ))
     );
 
-  @Effect() updateProfile$ = this.updates$
-    .whenAction(UserActions.UPDATE_PROFILE)
-    .map<User>(toPayload)
+  @Effect() updateProfile$ = this.actions$
+    .ofType(UserActions.UPDATE_PROFILE)
+    .map(action => <User>action.payload)
     .switchMap(user => this.userService.updateProfile(user)
       .map(res => this.userActions.updateProfileSuccess(res))
       .catch((res) => Observable.of(

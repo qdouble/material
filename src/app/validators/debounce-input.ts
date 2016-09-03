@@ -7,12 +7,11 @@ function isBlank(obj: any): boolean {
   return obj === undefined || obj === null;
 }
 
-const DEBOUNCE_INPUT_VALUE_ACCESSOR = new Provider(
-    NG_VALUE_ACCESSOR, {useExisting: forwardRef(() => DebounceInputControlValueAccessor), multi: true});
-
 @Directive({
   selector: '[debounceTime]',
-  providers: [DEBOUNCE_INPUT_VALUE_ACCESSOR]
+  providers: [
+    { provide: NG_VALUE_ACCESSOR, useExisting: DebounceInputControlValueAccessor, multi: true }
+  ],
 })
 export class DebounceInputControlValueAccessor implements ControlValueAccessor {
   onChange = (_) => {};

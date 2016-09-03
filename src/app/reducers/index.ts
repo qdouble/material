@@ -16,15 +16,24 @@ export interface AppState {
     testRequests: fromTestRequests.TestRequestState;
 }
 
-export default compose(
-    storeLogger(),
-    combineReducers
-    ) ({
+// export default compose(
+//     storeLogger(),
+//     combineReducers
+//     ) ({
+//     offer: offerReducer,
+//     prize: prizeReducer,
+//     user: userReducer,
+//     testRequests: testRequestReducer
+// });
+
+export function rootReducer() {
+  return compose(storeLogger(), combineReducers)({
     offer: offerReducer,
     prize: prizeReducer,
     user: userReducer,
     testRequests: testRequestReducer
-});
+  });
+}
 
 export function getOfferState() {
   return (state$: Observable<AppState>) => state$

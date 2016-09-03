@@ -3,7 +3,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { UserActions } from './actions';
@@ -33,6 +33,7 @@ export class App implements AfterViewInit, OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
     private router: Router,
     private store: Store<AppState>,
     private userActions: UserActions
@@ -41,7 +42,7 @@ export class App implements AfterViewInit, OnInit {
     this.userLoading$ = store.let(getUserLoading());
     this.userLoggedIn$ = store.let(getUserLoggedIn());
     this.userReferredBy$ = store.let(getUserReferredBy());
-    this.router.routerState.queryParams
+    this.route.queryParams
       .filter(param => param['ref'] !== undefined)
       .take(1)
       .subscribe(param => {
