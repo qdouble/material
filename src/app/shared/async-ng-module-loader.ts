@@ -1,7 +1,7 @@
-import {Injectable, NgModuleFactory, NgModuleFactoryLoader, Compiler, Type} from '@angular/core';
+import { Injectable, NgModuleFactory, NgModuleFactoryLoader, Compiler, Type } from '@angular/core';
 
 class LoaderCallback {
-  constructor(public callback) {}
+  constructor(public callback) { }
 }
 
 export let load: any = (callback: Function) => {
@@ -14,17 +14,17 @@ export let load: any = (callback: Function) => {
  */
 @Injectable()
 export class AsyncNgModuleLoader implements NgModuleFactoryLoader {
-  constructor(private compiler: Compiler) {}
+  constructor(private compiler: Compiler) { }
 
-  load(modulePath: string|LoaderCallback): Promise<NgModuleFactory<any>> {
+  load(modulePath: string | LoaderCallback): Promise<NgModuleFactory<any>> {
     // console.log(modulePath)
     if (modulePath instanceof LoaderCallback) {
       let loader = (modulePath as LoaderCallback).callback();
 
       return Promise
-          .resolve(loader)
-          .then((type: any) => checkNotEmpty(type, '', ''))
-          .then((type: any) => this.compiler.compileModuleAsync(type));
+        .resolve(loader)
+        .then((type: any) => checkNotEmpty(type, '', ''))
+        .then((type: any) => this.compiler.compileModuleAsync(type));
     }
 
     return Promise.resolve(null);
