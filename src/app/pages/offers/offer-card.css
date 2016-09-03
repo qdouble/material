@@ -1,0 +1,23 @@
+.featured-offer {
+  position: absolute; }
+
+.description {
+  font-size: 79%; }
+
+.offer-face {
+  box-sizing: border-box;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  transition: 1s transform ease-in-out;
+  width: 400px;
+  height: 200px;
+  top: 0;
+  left: 0;
+  background-color: white;
+  padding: 20px;
+  backface-visibility: hidden;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); }
+
+.offer-image {
+  position: absolute;
+  top: -20px; }

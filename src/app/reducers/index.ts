@@ -4,27 +4,31 @@ import { storeLogger } from 'ngrx-store-logger';
 import { combineReducers } from '@ngrx/store';
 
 import { compareOrder } from '../helper';
-import offerReducer, * as fromOffer from './offer';
-import prizeReducer, * as fromPrize from './prize';
-import userReducer, * as fromUser from './user';
-import testRequestReducer, * as fromTestRequests from './test-requests';
+import { offerReducer, OfferState } from './offer';
+import { prizeReducer, PrizeState } from './prize';
+import { userReducer, UserState } from './user';
+import { testRequestReducer, TestRequestState } from './test-requests';
+import * as fromOffer from './offer';
+import * as fromPrize from './prize';
+import * as fromUser from './user';
+import * as fromTestRequests from './test-requests';
 
 export interface AppState {
-    offer: fromOffer.OfferState;
-    prize: fromPrize.PrizeState;
-    user: fromUser.UserState;
-    testRequests: fromTestRequests.TestRequestState;
+  offer: OfferState;
+  prize: PrizeState;
+  user: UserState;
+  testRequests: TestRequestState;
 }
 
-export default compose(
-    storeLogger(),
-    combineReducers
-    ) ({
+
+export function rootReducer() {
+  return compose(storeLogger(), combineReducers)({
     offer: offerReducer,
     prize: prizeReducer,
     user: userReducer,
     testRequests: testRequestReducer
-});
+  });
+}
 
 export function getOfferState() {
   return (state$: Observable<AppState>) => state$
@@ -37,8 +41,8 @@ export function getPrizeState() {
 }
 
 export function getUserState() {
-    return (state$: Observable<AppState>) => state$
-        .select(s => s.user);
+  return (state$: Observable<AppState>) => state$
+    .select(s => s.user);
 }
 
 export function getOffers(offerIds: string[]) {
@@ -103,42 +107,42 @@ export function getPrizeCollection() {
 }
 
 export function getTestRequestState() {
-    return (state$: Observable<AppState>) => state$
-        .select(s => s.testRequests);
+  return (state$: Observable<AppState>) => state$
+    .select(s => s.testRequests);
 }
 
 export function getTestRequestGetAffiliates() {
-    return compose(fromTestRequests.getAffiliates(), getTestRequestState());
+  return compose(fromTestRequests.getAffiliates(), getTestRequestState());
 }
 
 export function getTestRequestAllUsers() {
-    return compose(fromTestRequests.getAllUser(), getTestRequestState());
+  return compose(fromTestRequests.getAllUser(), getTestRequestState());
 }
 
 export function getUser() {
-    return compose(fromUser.getUser(), getUserState());
+  return compose(fromUser.getUser(), getUserState());
 }
 
 export function getUserEntryEmail() {
-    return compose(fromUser.getEntryEmail(), getUserState());
+  return compose(fromUser.getEntryEmail(), getUserState());
 }
 
 export function getUserLoaded() {
-    return compose(fromUser.getLoaded(), getUserState());
+  return compose(fromUser.getLoaded(), getUserState());
 }
 
 export function getUserLoading() {
-    return compose(fromUser.getLoading(), getUserState());
+  return compose(fromUser.getLoading(), getUserState());
 }
 
 export function getUserLoginChecked() {
-    return compose(fromUser.getLoginChecked(), getUserState());
+  return compose(fromUser.getLoginChecked(), getUserState());
 }
 
 export function getUserLoggedIn() {
-    return compose(fromUser.getLoggedIn(), getUserState());
+  return compose(fromUser.getLoggedIn(), getUserState());
 }
 
 export function getUserReferredBy() {
-    return compose(fromUser.getReferredBy(), getUserState());
+  return compose(fromUser.getReferredBy(), getUserState());
 }

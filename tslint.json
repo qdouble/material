@@ -61,7 +61,7 @@
     "no-switch-case-fall-through": true,
     "no-unreachable": true,
     "no-unused-expression": true,
-    "no-unused-variable": false,
+    "no-unused-variable": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "radix": true,
@@ -133,6 +133,18 @@
       "check-separator",
       "check-type"
     ],
+    "directive-selector-name": [true, "camelCase"],
+    "directive-selector-type": [true, "attribute"],
+    "component-selector-type": [true, "element"],
+    "use-input-property-decorator": true,
+    "use-output-property-decorator": true,
+    "use-host-property-decorator": true,
+    "no-attribute-parameter-decorator": true,
+    "no-input-rename": true,
+    "no-output-rename": true,
+    "no-forward-ref" :true,
+    "use-life-cycle-interface": true,
+    "use-pipe-transform-interface": true,
     "import-destructuring-spacing": true
   }
 }

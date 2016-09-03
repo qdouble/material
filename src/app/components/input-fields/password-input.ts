@@ -4,7 +4,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'password-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: require('./password-input.html')
+  templateUrl: './password-input.html'
 })
 
 export class PasswordInput implements OnInit {

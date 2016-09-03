@@ -1,3 +1,7 @@
+/**
+ * @author: @AngularClass
+ */
+const webpack = require('webpack');
 const helpers = require('./helpers');
 
 /**
@@ -5,7 +9,8 @@ const helpers = require('./helpers');
  */
 const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
-
+const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
+const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 /**
  * Webpack Constants
  */
@@ -82,11 +87,12 @@ module.exports = {
         test: /\.js$/,
         loader: 'source-map-loader',
         exclude: [
-        // these packages have problems with their sourcemaps
-        helpers.root('node_modules/rxjs'),
-        helpers.root('node_modules/@angular2-material'),
-        helpers.root('node_modules/@angular')
-      ]}
+          // these packages have problems with their sourcemaps
+          helpers.root('node_modules/rxjs'),
+          helpers.root('node_modules/@angular'),
+          helpers.root('node_modules/@ngrx'),
+        ]
+      }
 
     ],
 
@@ -107,16 +113,19 @@ module.exports = {
        */
       {
         test: /\.ts$/,
-        loader: 'awesome-typescript-loader',
-        query: {
-          compilerOptions: {
+        loaders: [
+          'awesome-typescript-loader',
+          'angular2-template-loader'
+        ],
+        // query: {
+        //   compilerOptions: {
 
-            // Remove TypeScript helpers to be injected
-            // below by DefinePlugin
-            removeComments: true
+        //     // Remove TypeScript helpers to be injected
+        //     // below by DefinePlugin
+        //     removeComments: true
 
-          }
-        },
+        //   }
+        // },
         exclude: [/\.e2e\.ts$/]
       },
 
@@ -133,7 +142,12 @@ module.exports = {
        *
        * See: https://github.com/webpack/raw-loader
        */
-      { test: /\.css$/, loader: 'raw-loader', exclude: [helpers.root('src/index.html')] },
+      { test: /\.css$/, loaders: ['to-string-loader', 'css-loader'], exclude: [helpers.root('src/index.html')] },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loaders: ['raw-loader', 'sass-loader'] // sass-loader not scss-loader
+      },
 
       /**
        * Raw loader support for *.html
@@ -196,8 +210,7 @@ module.exports = {
         'HMR': false,
       }
     }),
-
-
+    new NamedModulesPlugin()
   ],
 
   /**

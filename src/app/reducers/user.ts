@@ -25,7 +25,7 @@ const initialState: UserState = {
   referredBy: null
 };
 
-export default function (state = initialState, action: Action): UserState {
+export function userReducer (state = initialState, action: Action): UserState {
   switch (action.type) {
 
     case UserActions.CHECK_EMAIL:

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'status',
-  directives: [],
   template: `
 
   <header>

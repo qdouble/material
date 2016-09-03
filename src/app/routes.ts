@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { load } from './shared';
 import {
   AuthGuard,
   LoggedInRedirectGuard
@@ -41,14 +40,6 @@ export const routes: Routes = [
     component: Homepage,
     canActivate: [LoggedInRedirectGuard]
   },
-  {
-        path: 'lazy',
-        loadChildren: load(() => new Promise(resolve => {
-          (require as any).ensure([], require => {
-            resolve(require('./test').TestkModule);
-          });
-        }))
-      },
   {
     path: 'about-us',
     component: AboutUs

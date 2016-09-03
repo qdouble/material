@@ -10,7 +10,7 @@ export {
   UserActions
 };
 
-export default [
+export const actions = [
   OfferActions,
   PrizeActions,
   TestRequestActions,

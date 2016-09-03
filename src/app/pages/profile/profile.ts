@@ -12,7 +12,7 @@ import { RegexValues } from '../../validators';
 
 @Component({
   selector: 'profile',
-  template: require('./profile.html')
+  templateUrl: './profile.html'
 })
 
 export class Profile implements OnDestroy, OnInit {

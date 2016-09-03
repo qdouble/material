@@ -8,14 +8,14 @@ import { Subscription } from 'rxjs/Subscription';
 import { PrizeActions, UserActions } from '../../actions';
 import { Prize } from '../../models';
 import {
-  AppState, getPrizeCollection, getPrizeLoading,
+  AppState, getPrizeCollection,
   getPrizeLoaded
 } from '../../reducers';
 import { RegexValues } from '../../validators';
 
 @Component({
   selector: 'home',
-  template: require('./home.html')
+  templateUrl: './home.html'
 })
 
 export class Homepage implements OnDestroy {

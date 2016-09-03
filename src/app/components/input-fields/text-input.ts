@@ -4,7 +4,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'text-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: require('./text-input.html')
+  templateUrl: './text-input.html'
 })
 
 export class TextInput implements OnInit {

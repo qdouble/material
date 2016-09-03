@@ -6,11 +6,11 @@
 <div *ngIf="help"><em>{{help}}</em></div>
 <span *ngIf="!hideErr">
   <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
-    !dynamicControl.errors?.required" class="alert alert-danger">
+    !dynamicControl.hasError('required')" class="alert alert-danger">
     {{label}} is required.
   </div>
   <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
-    dynamicControl.errors?.required" class="alert alert-danger">
+    dynamicControl.hasError('required')" class="alert alert-danger">
     {{errorMessage}}
   </div> 
 </span>

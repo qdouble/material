@@ -4,7 +4,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'number-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: require('./number-input.html')
+  templateUrl: './number-input.html'
 })
 
 export class NumberInput implements OnInit {

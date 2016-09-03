@@ -1,7 +1,8 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { AppState } from '../reducers';
@@ -13,14 +14,15 @@ import { TestRequestService } from '../services';
 
 export class TestRequestEffects {
   constructor(
-    private updates$: StateUpdates<AppState>,
+    public actions$: Actions,
+    private store: Store<AppState>,
     private testService: TestRequestService,
     private testActions: TestRequestActions
   ) { }
 
-  @Effect() checkLoginStatus$ = this.updates$
-    .whenAction(TestRequestActions.CHECK_LOGIN_STATUS)
-    .map<Response>(toPayload)
+  @Effect() checkLoginStatus$ = this.actions$
+    .ofType(TestRequestActions.CHECK_LOGIN_STATUS)
+    .map(action => <Response>action.payload)
     .switchMap(() => this.testService.checkLoginStatus()
       .map((res: any) => this.testActions.checkLoginStatusSuccess(res.users))
       .catch((res: Response) => Observable.of(
@@ -28,9 +30,9 @@ export class TestRequestEffects {
       ))
     );
 
-  @Effect() getAffiliates$ = this.updates$
-    .whenAction(TestRequestActions.GET_AFFILIATES)
-    .map<Response>(toPayload)
+  @Effect() getAffiliates$ = this.actions$
+    .ofType(TestRequestActions.GET_AFFILIATES)
+    .map(action => <Response>action.payload)
     .switchMap(() => this.testService.getAffiliates()
       .map((res: any) => this.testActions.getAffiliatesSuccess(res.data))
       .catch((res: Response) => Observable.of(
@@ -38,9 +40,9 @@ export class TestRequestEffects {
       ))
     );
 
-  @Effect() showAllUsers$ = this.updates$
-    .whenAction(TestRequestActions.SHOW_ALL_USERS)
-    .map<Response>(toPayload)
+  @Effect() showAllUsers$ = this.actions$
+    .ofType(TestRequestActions.SHOW_ALL_USERS)
+    .map(action => <Response>action.payload)
     .switchMap(() => this.testService.showAllUsers()
       .map((res: any) => this.testActions.showAllUsersSuccess(res.users))
       .catch((res: Response) => Observable.of(
