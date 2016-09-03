@@ -1,6 +1,6 @@
 import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule } from './app/app.module';
+import { platformBrowser } from '@angular/platform-browser';
+import { AppModuleNgFactory } from './compiled/src/app/app.module.ngfactory';
 import '@ngrx/core/add/operator/select';
 import './rxjs.imports';
 
@@ -9,7 +9,7 @@ if ('production' === ENV) {
 }
 
 export function main() {
-  return platformBrowserDynamic().bootstrapModule(AppModule)
+  return platformBrowser().bootstrapModuleFactory(AppModuleNgFactory)
     .catch(err => console.log(err));
 }
 
@@ -18,7 +18,6 @@ export function bootstrapDomReady() {
   // bootstrap after document is ready
   document.addEventListener('DOMContentLoaded', main);
 }
-
 
 if ('development' === ENV && HMR) {
   // activate hot module reload

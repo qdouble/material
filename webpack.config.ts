@@ -28,16 +28,18 @@ function root(__path = '.') {
 }
 
 const ENV = process.env.npm_lifecycle_event;
+const AOT = ENV === 'build:aot' || ENV === 'server:aot';
+console.log('AOT =', AOT);
 // const isTest = ENV === 'test' || ENV === 'test-watch';
-const isProd = ENV === 'build:prod' || ENV === 'server:prod' || ENV === 'watch:prod';
+const isProd = ENV === 'build:prod' || ENV === 'server:prod' || ENV === 'watch:prod' ||  ENV === 'build:aot';
 
 // type definition for WebpackConfig at the bottom
 module.exports = function webpackConfig(options: EnvOptions = {}): WebpackConfig {
 
   const CONSTANTS = {
-    ENV: JSON.stringify(options.ENV),
+    ENV: isProd ? JSON.stringify('production') : JSON.stringify('development'),
     HMR: options.HMR,
-    PORT: 3000,
+    PORT: 8087,
     HOST: 'localhost'
   };
 
@@ -46,10 +48,17 @@ module.exports = function webpackConfig(options: EnvOptions = {}): WebpackConfig
   config.cache = true;
   isProd ? config.devtool = 'source-map' : config.devtool = 'eval';
 
-  config.entry = {
-    polyfills: './src/polyfills.browser',
-    main: './src/main.browser'
-  };
+  if (AOT) {
+    config.entry = {
+      polyfills: './src/polyfills.browser',
+      main: './src/main.browser.aot'
+    };
+  } else {
+    config.entry = {
+      polyfills: './src/polyfills.browser',
+      main: './src/main.browser'
+    };
+  }
 
   config.output = {
     path: root('dist'),
@@ -136,15 +145,14 @@ module.exports = function webpackConfig(options: EnvOptions = {}): WebpackConfig
         comments: false
       }),
       new CompressionPlugin({
-          asset: '[path].gz[query]',
-          algorithm: 'gzip',
-          test: /\.js$|\.html$/,
-          threshold: 10240,
-          minRatio: 0.8
+        asset: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: /\.js$|\.html$/,
+        threshold: 10240,
+        minRatio: 0.8
       })
     );
     config.resolve = {
-      // extensions: ['', '.ts', '.js', '.json'],
       extensions: ['.ts', '.js'],
       root: root('src'),
       moduleDirectories: ['node_modules'],
@@ -152,7 +160,6 @@ module.exports = function webpackConfig(options: EnvOptions = {}): WebpackConfig
     };
   } else {
     config.resolve = {
-      // extensions: ['', '.ts', '.js', '.json'],
       extensions: ['.ts', '.js'],
       root: root('src'),
       moduleDirectories: ['node_modules']

@@ -70,4 +70,4 @@ import { PAGES_COMMON, PAGES_COMPONENTS } from './pages';
   bootstrap: [App]
 })
 
-export class MyAppModule { };
+export class AppModule { };
