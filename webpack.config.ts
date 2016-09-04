@@ -1,19 +1,14 @@
 /* tslint:disable: variable-name max-line-length */
 import 'ts-helpers';
-// needed to create context for resolveNgRoute
-/**
- * @author: @AngularClass
- */
+
 const {
   HotModuleReplacementPlugin,
   DefinePlugin,
   ProgressPlugin,
   NoErrorsPlugin,
   optimize: {
-    CommonsChunkPlugin,
-    // DedupePlugin
+    CommonsChunkPlugin
   }
-
 } = require('webpack');
 const {ForkCheckerPlugin} = require('awesome-typescript-loader');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -29,21 +24,18 @@ function root(__path = '.') {
 
 const ENV = process.env.npm_lifecycle_event;
 const AOT = ENV === 'build:aot' || ENV === 'server:aot';
-console.log('AOT =', AOT);
-// const isTest = ENV === 'test' || ENV === 'test-watch';
 const isProd = ENV === 'build:prod' || ENV === 'server:prod' || ENV === 'watch:prod' ||  ENV === 'build:aot';
 
 // type definition for WebpackConfig at the bottom
-module.exports = function webpackConfig(options: EnvOptions = {}): WebpackConfig {
+module.exports = function webpackConfig(): WebpackConfig {
 
   const CONSTANTS = {
     ENV: isProd ? JSON.stringify('production') : JSON.stringify('development'),
-    HMR: options.HMR,
     PORT: 3000,
     HOST: 'localhost'
   };
 
-  let config: any = {};
+  let config: WebpackConfig;
 
   config.cache = true;
   isProd ? config.devtool = 'source-map' : config.devtool = 'eval';
@@ -82,7 +74,6 @@ module.exports = function webpackConfig(options: EnvOptions = {}): WebpackConfig
     ],
 
     loaders: [
-      // Support for .ts files.
       {
         test: /\.ts$/,
         loaders: [
@@ -112,12 +103,7 @@ module.exports = function webpackConfig(options: EnvOptions = {}): WebpackConfig
     new CopyWebpackPlugin([{
       from: 'src/assets',
       to: 'assets'
-    }, {
-      from: 'src/images',
-      to: 'images'
-    }
-    ]),
-    // new ExtractTextPlugin('styles.css'),
+    }]),
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     })
@@ -131,17 +117,10 @@ module.exports = function webpackConfig(options: EnvOptions = {}): WebpackConfig
       // Only emit files when there are no errors
       new NoErrorsPlugin(),
 
-      // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
-      // Dedupe modules in the output
-      // new DedupePlugin(),
-
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
       // Minify all javascript, switch loaders to minimizing mode
       new UglifyJsPlugin({
         beautify: false,
-        // compress: {
-        //   screw_ie8: true
-        // },
         comments: false
       }),
       new CompressionPlugin({
@@ -169,8 +148,6 @@ module.exports = function webpackConfig(options: EnvOptions = {}): WebpackConfig
   config.devServer = {
     contentBase: './src',
     port: CONSTANTS.PORT,
-    hot: CONSTANTS.HMR,
-    inline: CONSTANTS.HMR,
     historyApiFallback: true
   };
 
@@ -191,27 +168,19 @@ module.exports = function webpackConfig(options: EnvOptions = {}): WebpackConfig
 } ();
 
 // Types
-type Entry = Array<string> | Object;
-
-type Output = Array<string> | {
-  path: string,
-  filename: string
-};
-
-type EnvOptions = any;
-
 interface WebpackConfig {
-  config: {
     cache?: boolean;
     target?: string;
     devtool?: string;
-    entry: Entry;
+    entry: any;
     output: any;
     module?: any;
     plugins?: Array<any>;
     resolve?: {
       root?: string;
       extensions?: Array<string>;
+      moduleDirectories?: Array<string>;
+      mainFields?: Array<string>;
     };
     devServer?: {
       contentBase?: string;
@@ -231,5 +200,4 @@ interface WebpackConfig {
       clearTimeout?: boolean;
       setTimeout?: boolean
     };
-  };
 }
