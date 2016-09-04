@@ -39,7 +39,7 @@ module.exports = function webpackConfig(options: EnvOptions = {}): WebpackConfig
   const CONSTANTS = {
     ENV: isProd ? JSON.stringify('production') : JSON.stringify('development'),
     HMR: options.HMR,
-    PORT: 8087,
+    PORT: 3000,
     HOST: 'localhost'
   };
 
