@@ -29,7 +29,7 @@ import { APP_PROVIDERS } from './app.providers';
 import { DebounceInputControlValueAccessor } from './validators';
 
 import { App } from './app.component';
-import { PAGES_COMMON, PAGES_COMPONENTS } from './pages';
+import { PAGES_COMMON, PAGES_COMPONENTS } from './features';
 
 @NgModule({
   imports: [
