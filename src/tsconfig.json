@@ -20,6 +20,9 @@
       "selenium-webdriver",
       "source-map"
     ],
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
     "outDir": "../output"
   },
   "exclude": [

@@ -1,5 +1,6 @@
 /* tslint:disable: variable-name max-line-length */
 import 'ts-helpers';
+import { DEV_PORT } from './constants';
 
 const {
   HotModuleReplacementPlugin,
@@ -35,7 +36,7 @@ module.exports = function webpackConfig(): WebpackConfig {
   const CONSTANTS = {
     ENV: isProd ? JSON.stringify('production') : JSON.stringify('development'),
     LOCAL_IP: JSON.stringify(ip.address()),
-    PORT: 3000,
+    PORT: DEV_PORT,
     HOST: 'localhost'
   };
 
@@ -171,7 +172,7 @@ module.exports = function webpackConfig(): WebpackConfig {
 
 } ();
 
-// Types
+// // Types
 interface WebpackConfig {
     cache?: boolean;
     target?: string;
