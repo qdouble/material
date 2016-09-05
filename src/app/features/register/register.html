@@ -6,19 +6,19 @@
     <email-input [label]="'Email Address'" [controlName]="'email'" [form]="f"></email-input>
     <email-input [label]="'Confirm E-mail Address'" [controlName]="'confirmEmail'" [form]="f">
     </email-input>
-    <div [hidden]="!f.errors?.compareEmail || 
-        !f.controls.confirmEmail?.valid" class="alert alert-danger">
+    <div [hidden]="!f.hasError('compareEmail') || 
+        !f.get('confirmEmail').valid" class="alert alert-danger">
       Email addresses do not match.
     </div>
     <debounce-input [label]="'Username'" [controlName]="'username'" [form]="f"></debounce-input>
-    <div [hidden]="!f.controls.username?.errors?.usernameTaken" class="alert alert-danger">
+    <div [hidden]="!f.get('username').hasError('usernameTaken')" class="alert alert-danger">
       Username has already been taken.
     </div>
     <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
     <password-input [label]="'Confirm Password'" [controlName]="'confirmPassword'" [form]="f">
     </password-input>
-    <div [hidden]="!f.errors?.comparePassword || 
-        !f.controls.confirmPassword?.valid" class="alert alert-danger">
+    <div [hidden]="!f.hasError('comparePassword') || 
+        !f.get('confirmPassword').valid" class="alert alert-danger">
       Passwords do not match.
     </div>
     <text-input [label]="'First Name'" [controlName]="'firstName'" [form]="f"></text-input>
@@ -36,16 +36,16 @@
     <select-input *ngIf="showPrizes" [label]="'How would you like to recieve your prize?'" [optionValues]="prizeIds$ | async"
       [optionLabels]="prizeNames$ | async" [controlName]="'selectedPrize'" [form]="f">
     </select-input>
-    <email-input *ngIf="f.controls.selectedPrize?.value !== '1468623188180' &&
-        f.controls.selectedPrize?.value !== null " [label]="'PayPal email address'" [controlName]="'paypal'" [form]="f">
+    <email-input *ngIf="f.get('selectedPrize').value !== '1468623188180' &&
+        f.get('selectedPrize').value !== null " [label]="'PayPal email address'" [controlName]="'paypal'" [form]="f">
     </email-input>
     <div class="form-group">
       <label>I agree to the Terms and Conditions</label>
       <input formControlName="agree" type="checkbox" class="form-control">
     </div>
     <button type="submit" [disabled]="!f.valid">Register</button>
-    <p *ngIf="f.controls.referredBy?.value">
-      You are being referred by: {{f.controls.referredBy?.value}}
+    <p *ngIf="f.get('referredBy').value">
+      You are being referred by: {{f.get('referredBy').value}}
     </p>
   </form>
 </main>

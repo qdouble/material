@@ -1,0 +1,34 @@
+<md-sidenav-layout fullscreen>
+  <md-sidenav #sidenav [mode]="sideNavMode">
+    <md-nav-list>
+      <template ngFor let-view [ngForOf]="views" let-even="even" let-odd="odd" let-rowIndex="index">
+        <a *ngIf="!view.subViews" md-list-item [routerLink]="view.link" routerLinkActive="active-link" (click)="sidenav.close()">
+          <md-icon md-list-icon>{{view.icon}}</md-icon>
+          <span md-line>{{view.name}}</span>
+          <span md-line class="secondary">{{view.description}}</span>
+        </a>
+        <a *ngIf="view.subViews" md-list-item (click)="setToggle(view)">
+          <md-icon md-list-icon>{{view.icon}}</md-icon>
+          <span md-line>{{view.name}}</span>
+          <span md-line class="secondary">{{view.description}}</span>
+        </a>
+        <span *ngIf="view.subViews && router.url.startsWith('/' + view.link) && initView || view.show">
+        <a *ngFor="let subView of view.subViews" md-list-item [routerLink]="subView.link" class="subview" (click)="sidenav.close()">
+          <md-icon md-list-icon>navigate_next</md-icon>
+          <span md-line>{{subView.name}}</span>
+        </a>
+        </span>
+      </template>
+    </md-nav-list>
+  </md-sidenav>
+  <!--<div style="background: #689F38; padding-top: 16px;"></div>-->
+  <md-toolbar color="primary">
+    <button md-icon-button (click)="sidenav.toggle()">
+      <md-icon>menu</md-icon>
+    </button>
+    <img id="levelup-menu-logo" src="assets/svg/levelup-rewards-logo-v6.svg">
+  </md-toolbar>
+  <md-card flex>
+    <router-outlet (activate)="activatedEvent($event)" (deactivate)="deactivatedEvent($event)"></router-outlet>
+  </md-card>
+</md-sidenav-layout>

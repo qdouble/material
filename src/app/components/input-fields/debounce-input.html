@@ -7,6 +7,6 @@
       !dynamicControl.hasError('required')" class="alert alert-danger">
   {{label}} is required.
 </div>
-<div [hidden]="!dynamicControl.errors?.pattern" class="alert alert-danger">
+<div [hidden]="!dynamicControl.hasError('pattern')" class="alert alert-danger">
   {{errorMessage}}
 </div>
