@@ -11,6 +11,8 @@ const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
+
+const ip = require('ip');
 /**
  * Webpack Constants
  */
@@ -204,6 +206,7 @@ module.exports = {
     new DefinePlugin({
       'ENV': JSON.stringify(ENV),
       'HMR': false,
+      'LOCAL_IP': JSON.stringify(ip.address()),
       'process.env': {
         'ENV': JSON.stringify(ENV),
         'NODE_ENV': JSON.stringify(ENV),

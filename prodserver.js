@@ -14,6 +14,8 @@ var renderIndex = (req, res) => {
 
 app.get('/*', renderIndex);
 
-app.listen(8080, () => {
-  console.log('Listening on: http://localhost:8080');
+const PORT = 8080;
+
+app.listen(PORT, () => {
+  console.log(`Listening on: http://localhost:${PORT}`);
 });
