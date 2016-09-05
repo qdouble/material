@@ -16,10 +16,12 @@ import {
 } from './reducers';
 import { validateUserName } from './validators';
 
+import { views } from './app.nav.views';
+
 @Component({
   selector: 'app',
   styleUrls: ['./app.css'],
-  templateUrl: './app.component.html',
+  templateUrl: './app.html',
   encapsulation: ViewEncapsulation.None
 })
 export class App implements AfterViewInit, OnInit {
@@ -30,6 +32,7 @@ export class App implements AfterViewInit, OnInit {
   loaded: boolean;
   loggedIn: boolean;
   referredBy: string;
+  views = views;
 
   constructor(
     private cdr: ChangeDetectorRef,
