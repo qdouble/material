@@ -1,2 +1,3 @@
-export const DEV_PORT = 3000;
-export const PROD_PORT = 8000;
+"use strict";
+exports.DEV_PORT = 3000;
+exports.PROD_PORT = 8000;
