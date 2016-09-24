@@ -1,5 +1,6 @@
 /* tslint:disable: variable-name max-line-length */
 import 'ts-helpers';
+import { DEV_PORT } from './constants';
 
 const {
   HotModuleReplacementPlugin,
@@ -10,12 +11,15 @@ const {
     CommonsChunkPlugin
   }
 } = require('webpack');
-const {ForkCheckerPlugin} = require('awesome-typescript-loader');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
-const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
+
 const CompressionPlugin = require('compression-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const {ForkCheckerPlugin} = require('awesome-typescript-loader');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
+const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+
+import * as ip from 'ip';
 const path = require('path');
 
 function root(__path = '.') {
@@ -31,11 +35,12 @@ module.exports = function webpackConfig(): WebpackConfig {
 
   const CONSTANTS = {
     ENV: isProd ? JSON.stringify('production') : JSON.stringify('development'),
-    PORT: 3000,
+    LOCAL_IP: JSON.stringify(ip.address()),
+    PORT: DEV_PORT,
     HOST: 'localhost'
   };
 
-  let config: WebpackConfig;
+  let config: WebpackConfig = Object.assign({});
 
   config.cache = true;
   isProd ? config.devtool = 'source-map' : config.devtool = 'eval';
@@ -167,7 +172,7 @@ module.exports = function webpackConfig(): WebpackConfig {
 
 } ();
 
-// Types
+// // Types
 interface WebpackConfig {
     cache?: boolean;
     target?: string;

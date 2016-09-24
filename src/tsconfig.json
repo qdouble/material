@@ -13,11 +13,15 @@
     "types": [
       "core-js",
       "hammerjs",
+      "ip",
       "jasmine",
       "node",
       "protractor",
       "selenium-webdriver",
       "source-map"
+    ],
+    "typeRoots": [
+      "../node_modules/@types"
     ],
     "outDir": "../output"
   },

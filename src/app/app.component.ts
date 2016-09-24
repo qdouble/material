@@ -1,9 +1,10 @@
 import {
-  AfterViewInit, Component, ChangeDetectorRef, OnInit,
-  ViewEncapsulation
+  AfterContentInit, Component, ChangeDetectorRef, OnInit,
+  ViewChild, ViewEncapsulation
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MdSidenav } from '@angular2-material/sidenav';
 import { Store } from '@ngrx/store';
 
 import { UserActions } from './actions';
@@ -16,13 +17,22 @@ import {
 } from './reducers';
 import { validateUserName } from './validators';
 
+import { views } from './app.nav.views';
+import { MOBILE } from './services/constants';
+
 @Component({
   selector: 'app',
   styleUrls: ['./app.css'],
   templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class App implements AfterViewInit, OnInit {
+export class App implements AfterContentInit, OnInit {
+  // Nav menu related //
+  initView = true;
+  previousView;
+  mobile = MOBILE;
+  sideNavMode = MOBILE ? 'over' : 'side';
+  /////////////////////
   userLoading$: Observable<boolean>;
   userLoaded$: Observable<boolean>;
   userLoggedIn$: Observable<boolean>;
@@ -30,6 +40,8 @@ export class App implements AfterViewInit, OnInit {
   loaded: boolean;
   loggedIn: boolean;
   referredBy: string;
+  views = views;
+  @ViewChild(MdSidenav) sidenav: MdSidenav;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -65,10 +77,12 @@ export class App implements AfterViewInit, OnInit {
     });
   }
 
-  ngAfterViewInit() {
-    Observable.interval(50).take(10).subscribe(() => {
-      this.cdr.markForCheck();
-    });
+  ngAfterContentInit() {
+    if (!MOBILE) {
+      setTimeout(() => {
+        this.sidenav.open();
+      }, 250);
+    }
   }
 
   activatedEvent(event) {
@@ -81,6 +95,32 @@ export class App implements AfterViewInit, OnInit {
 
   logout() {
     this.store.dispatch(this.userActions.logout());
+  }
+
+  setToggle(view: { link?: string, show?: boolean, toggle?: boolean }) {
+    if (this.previousView) this.previousView.show = false;
+    if (view !== this.previousView) {
+      if (!this.previousView && this.router.url.search(view.link) > - 1) {
+        view.show = false;
+        view.toggle = true;
+      } else {
+        view.show = true;
+        view.toggle = false;
+      }
+    } else {
+      if (view.show === false && !view.toggle) {
+        view.toggle = true;
+      } else {
+        if (!view.show) {
+          view.show = true;
+        } else {
+          view.show = false;
+        }
+        if (view.toggle) view.toggle = false;
+      }
+    }
+    this.previousView = view;
+    this.initView = false;
   }
 
 }

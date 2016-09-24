@@ -31,3 +31,5 @@ npm-debug.log
 /output/
 /src/compiled/
 .awcache/
+ts-node/
+/src/app/**/*.css

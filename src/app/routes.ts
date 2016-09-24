@@ -4,7 +4,7 @@ import {
   LoggedInRedirectGuard
 } from './guards';
 
-import { OfferRedirect } from './pages/offers';
+import { OfferRedirect } from './features/offers';
 
 import {
   AboutUs,
@@ -26,7 +26,7 @@ import {
   TermsAndConditions,
   TestRequests,
   ViewOffers
-}  from './pages';
+}  from './features';
 
 import {
   GetUserProfile,
