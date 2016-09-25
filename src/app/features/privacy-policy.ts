@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'privacy-policy',
+  selector: 'os-privacy-policy',
   template: `
 
   <header>

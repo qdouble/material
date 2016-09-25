@@ -3,25 +3,21 @@
     "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": false,
+    "lib": ["es5", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
     "noEmitHelpers": true,
+    "skipDefaultLibCheck": true,
     "pretty": true,
     "sourceMap": true,
-    "lib": ["es5", "dom"],
     "strictNullChecks": false,
-    "baseUrl": "./src",
-    "types": [
-      "core-js",
-      "hammerjs",
-      "jasmine",
-      "node",
-      "protractor",
-      "selenium-webdriver",
-      "source-map"
+    "typeRoots": [
+      "node_modules/@types"
     ]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/compiled"
   ],
   "awesomeTypescriptLoaderOptions": {
     "useWebpackText": true,

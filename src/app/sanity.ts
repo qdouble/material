@@ -2,7 +2,7 @@ import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'sanity',
+  selector: 'os-sanity',
   template: `This is a sanity check component for testing.`
 })
 export class SanityComp {

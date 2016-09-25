@@ -16,7 +16,7 @@ import {
 } from '../../validators';
 
 @Component({
-  selector: 'register',
+  selector: 'os-register',
   providers: [UsernameValidator],
   templateUrl: './register.html'
 })

@@ -1,33 +1,62 @@
-import { Observable } from 'rxjs/Observable';
 import { compose } from '@ngrx/core/compose';
+import { ActionReducer, combineReducers } from '@ngrx/store';
+import { storeFreeze } from 'ngrx-store-freeze';
 import { storeLogger } from 'ngrx-store-logger';
-import { combineReducers } from '@ngrx/store';
+import { routerReducer, RouterState } from '@ngrx/router-store';
+import { Observable } from 'rxjs/Observable';
 
 import { compareOrder } from '../helper';
+
 import { offerReducer, OfferState } from './offer';
 import { prizeReducer, PrizeState } from './prize';
-import { userReducer, UserState } from './user';
 import { testRequestReducer, TestRequestState } from './test-requests';
+
 import * as fromOffer from './offer';
 import * as fromPrize from './prize';
 import * as fromUser from './user';
 import * as fromTestRequests from './test-requests';
+import { userReducer, UserState } from './user';
 
 export interface AppState {
   offer: OfferState;
   prize: PrizeState;
-  user: UserState;
+  router: RouterState;
   testRequests: TestRequestState;
+  user: UserState;
 }
 
+export const reducers = {
+  offer: offerReducer,
+  prize: prizeReducer,
+  testRequests: testRequestReducer,
+  router: routerReducer,
+  user: userReducer
+};
 
-export function rootReducer() {
-  return compose(storeLogger(), combineReducers)({
-    offer: offerReducer,
-    prize: prizeReducer,
-    user: userReducer,
-    testRequests: testRequestReducer
-  });
+// Generate a reducer to set the root state in dev mode for HMR
+function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
+  return function (state, action) {
+    if (action.type === 'SET_ROOT_STATE') {
+      return action.payload;
+    }
+    return reducer(state, action);
+  };
+}
+
+const DEV_REDUCERS = [stateSetter, storeFreeze];
+if (['logger', 'both'].includes(STORE_DEV_TOOLS)) { // set in constants.js file of project root
+    DEV_REDUCERS.push(storeLogger());
+}
+
+const developmentReducer = compose(...DEV_REDUCERS, combineReducers)(reducers);
+const productionReducer = combineReducers(reducers);
+
+export function rootReducer(state: any, action: any) {
+  if (ENV !== 'development') {
+    return productionReducer(state, action);
+  } else {
+    return developmentReducer(state, action);
+  }
 }
 
 export function getOfferState() {

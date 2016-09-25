@@ -9,7 +9,7 @@ import { AppState, getUserEntryEmail } from '../../reducers';
 import { RegexValues } from '../../validators';
 
 @Component({
-  selector: 'login',
+  selector: 'os-login',
   templateUrl: './login.html'
 })
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'support',
+  selector: 'os-support',
   template: `
 
   <header>

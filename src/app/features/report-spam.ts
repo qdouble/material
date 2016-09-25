@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'report-spam',
+  selector: 'os-report-spam',
   template: `
 
   <header>

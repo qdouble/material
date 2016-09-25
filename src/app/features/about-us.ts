@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'about-us',
+  selector: 'os-about-us',
   template: `
 
   <header>

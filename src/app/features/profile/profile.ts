@@ -11,7 +11,7 @@ import { AppState, getUser, getUserLoaded } from '../../reducers';
 import { RegexValues } from '../../validators';
 
 @Component({
-  selector: 'profile',
+  selector: 'os-profile',
   templateUrl: './profile.html'
 })
 

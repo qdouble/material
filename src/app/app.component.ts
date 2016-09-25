@@ -21,12 +21,15 @@ import { views } from './app.nav.views';
 import { MOBILE } from './services/constants';
 
 @Component({
-  selector: 'app',
+  selector: 'my-app',
   styleUrls: ['./app.css'],
   templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class App implements AfterContentInit, OnInit {
+export class AppComponent implements AfterContentInit, OnInit {
+  showMonitor = (ENV === 'development' &&
+    ['monitor', 'both'].includes(STORE_DEV_TOOLS) // set in constants.js file in project root
+  );
   // Nav menu related //
   initView = true;
   previousView;
@@ -42,7 +45,6 @@ export class App implements AfterContentInit, OnInit {
   referredBy: string;
   views = views;
   @ViewChild(MdSidenav) sidenav: MdSidenav;
-
   constructor(
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
@@ -78,19 +80,25 @@ export class App implements AfterContentInit, OnInit {
   }
 
   ngAfterContentInit() {
-    if (!MOBILE) {
+    if (HMR) {
+      this.sidenav.open();
+    } else if (!MOBILE) {
       setTimeout(() => {
         this.sidenav.open();
-      }, 250);
+      });
     }
   }
 
-  activatedEvent(event) {
-    console.log('Activated Event:', event);
+  activateEvent(event) {
+    if (ENV === 'development') {
+      console.log('Activate Event:', event);
+    }
   }
 
-  deactivatedEvent(event) {
-    console.log('Deactivated Event', event);
+  deactivateEvent(event) {
+    if (ENV === 'development') {
+      console.log('Deactivate Event', event);
+    }
   }
 
   logout() {
@@ -122,5 +130,4 @@ export class App implements AfterContentInit, OnInit {
     this.previousView = view;
     this.initView = false;
   }
-
 }

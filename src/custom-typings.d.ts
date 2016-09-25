@@ -22,19 +22,29 @@ import * as _ from 'lodash'
  */
 
 // Extra variables that live on Global that will be replaced by webpack DefinePlugin
+declare var AOT: boolean;
 declare var ENV: string;
 declare var HMR: boolean;
+declare var HOST: string;
+declare var PORT: number;
+declare var STORE_DEV_TOOLS: string;
 declare var System: SystemJS;
+declare var UNIVERSAL: boolean;
 
 interface SystemJS {
   import: (path?: string) => Promise<any>;
 }
 
 interface GlobalEnvironment {
+  AOT;
   ENV;
   HMR;
+  HOST;
+  PORT;
+  STORE_DEV_TOOLS;
   SystemJS: SystemJS;
   System: SystemJS;
+  UNIVERSAL;
 }
 
 interface WebpackModule {
