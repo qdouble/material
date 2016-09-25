@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'view-offers',
+  selector: 'os-view-offers',
   template: `
 
   <header>

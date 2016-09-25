@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'proof-pic-gallery',
+  selector: 'os-proof-pic-gallery',
   template: `
 
   <header>

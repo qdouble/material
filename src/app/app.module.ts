@@ -1,73 +1,69 @@
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+/** 
+ * This module is the entry for your App when NOT using universal.
+ * 
+ * Make sure to use the 3 constant APP_ imports so you don't have to keep
+ * track of your root app dependencies here. Only import directly in this file if
+ * there is something that is specific to the environment.  
+ */
+
+import { ApplicationRef, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
 
-import { MdButtonModule } from '@angular2-material/button';
-import { MdCardModule } from '@angular2-material/card';
-import { MdCheckboxModule } from '@angular2-material/checkbox';
-import { MdIconModule } from '@angular2-material/icon';
-import { MdInputModule } from '@angular2-material/input';
-import { MdListModule } from '@angular2-material/list';
-import { MdSidenavModule } from '@angular2-material/sidenav';
-import { MdToolbarModule } from '@angular2-material/toolbar';
+import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
-import { Actions } from '@ngrx/effects';
-import { RouterStoreModule } from '@ngrx/router-store';
-import { StoreModule } from '@ngrx/store';
-// import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
+import { Store } from '@ngrx/store';
 
-import { routes } from './routes';
-import { rootReducer } from './reducers';
-import { effects } from './effects';
-import { services } from './services';
-import { actions } from './actions';
-
-import { PROJECT_COMPONENT_DIRECTIVES } from './components';
+import { APP_DECLERATIONS } from './app.declerations';
+import { APP_IMPORTS } from './app.imports';
 import { APP_PROVIDERS } from './app.providers';
-import { DebounceInputControlValueAccessor } from './validators';
 
-import { App } from './app.component';
-import { PAGES_COMMON, PAGES_COMPONENTS } from './features';
+import { AppComponent } from './app.component';
+
+import { AppState } from './reducers';
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    MdButtonModule.forRoot(),
-    MdCardModule.forRoot(),
-    MdCheckboxModule.forRoot(),
-    MdIconModule.forRoot(),
-    MdInputModule.forRoot(),
-    MdListModule.forRoot(),
-    MdSidenavModule.forRoot(),
-    MdToolbarModule.forRoot(),
-    ReactiveFormsModule,
-    RouterModule.forRoot(routes),
-    RouterStoreModule.connectRouter(),
-    StoreModule.provideStore(rootReducer)
-  ],
   declarations: [
-    App,
-    ...PAGES_COMMON,
-    ...PAGES_COMPONENTS,
-    ...PROJECT_COMPONENT_DIRECTIVES,
-    DebounceInputControlValueAccessor,
-    // StoreLogMonitorComponent
+    AppComponent,
+    APP_DECLERATIONS
   ],
-  providers: [
-    actions,
-    Actions,
-    ...APP_PROVIDERS,
-    effects,
-    services
+  imports: [
+    APP_IMPORTS,
+    BrowserModule,
+    HttpModule,
   ],
-  entryComponents: [
-    ...PAGES_COMPONENTS
-  ],
-  bootstrap: [App]
+  bootstrap: [AppComponent],
+  providers: [APP_PROVIDERS]
 })
 
-export class AppModule { };
+export class AppModule {
+  constructor(public appRef: ApplicationRef,
+    private _store: Store<AppState>) { }
+
+  hmrOnInit(store) {
+    if (!store || !store.rootState) return;
+
+    // restore state by dispatch a SET_ROOT_STATE action
+    if (store.rootState) {
+      this._store.dispatch({
+        type: 'SET_ROOT_STATE',
+        payload: store.rootState
+      });
+    }
+
+    if ('restoreInputValues' in store) { store.restoreInputValues(); }
+    this.appRef.tick();
+    Object.keys(store).forEach(prop => delete store[prop]);
+  }
+  hmrOnDestroy(store) {
+    const cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
+    this._store.take(1).subscribe(s => store.rootState = s);
+    store.disposeOldHosts = createNewHosts(cmpLocation);
+    store.restoreInputValues = createInputTransfer();
+    removeNgStyles();
+  }
+  hmrAfterDestroy(store) {
+    store.disposeOldHosts();
+    delete store.disposeOldHosts;
+  }
+}

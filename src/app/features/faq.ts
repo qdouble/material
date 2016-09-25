@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'faq',
+  selector: 'os-faq',
   template: `
 
   <header>

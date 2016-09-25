@@ -7,7 +7,7 @@ import { TestRequestActions } from '../actions';
 
 
 @Component({
-  selector: 'test-requests',
+  selector: 'os-test-requests',
   template: `
 
   <header>

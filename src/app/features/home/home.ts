@@ -14,7 +14,7 @@ import {
 import { RegexValues } from '../../validators';
 
 @Component({
-  selector: 'home',
+  selector: 'os-home',
   templateUrl: './home.html'
 })
 

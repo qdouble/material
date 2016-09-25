@@ -29,6 +29,7 @@
     <img id="levelup-menu-logo" src="assets/svg/levelup-rewards-logo-v6.svg">
   </md-toolbar>
   <md-card flex>
-    <router-outlet (activate)="activatedEvent($event)" (deactivate)="deactivatedEvent($event)"></router-outlet>
+    <router-outlet (activate)="activateEvent($event)" (deactivate)="deactivateEvent($event)"></router-outlet>
   </md-card>
 </md-sidenav-layout>
+<os-store-devtools *ngIf="showMonitor"></os-store-devtools>

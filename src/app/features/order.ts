@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'order',
+  selector: 'os-order',
   template: `
 
   <header>

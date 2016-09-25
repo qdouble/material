@@ -2,17 +2,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Offer } from '../../models';
 
 @Component({
-  selector: 'offer-rows',
+  selector: 'os-offer-rows',
   styles: [`offer-card-image { cursor: pointer }`],
   template: `
-  <offer-card *ngFor="let offer of offers">
+  <os-offer-card *ngFor="let offer of offers">
     <div class="offer-card-feature" *ngIf="offer.featured">*Featured</div>
     <div class="offer-card-image" (click)="goToOffer.emit(offer.id)">
       <img [src]="offer.imageURL" width="148" alt="Offer Image">
     </div>
     <div class="offer-card-name">{{ offer.displayName }}</div>
     <div class="offer-card-description">{{ offer.description }}</div>
-  </offer-card>
+  </os-offer-card>
   `
 })
 

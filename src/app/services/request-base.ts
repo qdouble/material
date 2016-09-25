@@ -11,7 +11,6 @@ export class RequestBase {
   });
   optionsNoPre = new RequestOptions({
     headers: this.noPreFlightHeaders,
-    body: '',
     withCredentials: true
   });
   constructor(public http: Http) {

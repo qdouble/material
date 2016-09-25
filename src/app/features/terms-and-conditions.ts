@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'terms-and-conditons',
+  selector: 'os-terms-and-conditons',
   template: `
 
   <header>

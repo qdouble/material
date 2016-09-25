@@ -9,7 +9,7 @@ import { Offer } from '../../models';
 import { AppState, getOfferCollection, getOfferLoaded } from '../../reducers';
 
 @Component({
-  selector: 'offers',
+  selector: 'os-offers',
   templateUrl: './offers.html'
 })
 

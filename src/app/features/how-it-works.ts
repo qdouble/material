@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'how-it-works',
+  selector: 'os-how-it-works',
   template: `
 
   <header>

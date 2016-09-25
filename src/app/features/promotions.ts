@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'promotions',
+  selector: 'os-promotions',
   template: `
 
   <header>

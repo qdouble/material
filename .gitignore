@@ -17,11 +17,7 @@ npm-debug.log
 
 # Dist #
 /dist/
-/public/__build__/
-/src/*/__build__/
 /__build__/**
-/public/dist/
-/src/*/dist/
 .webpack.json
 /src/assets/bower_components/
 
@@ -31,5 +27,8 @@ npm-debug.log
 /output/
 /src/compiled/
 .awcache/
-ts-node/
 /src/app/**/*.css
+ts-node
+/**/*.ngfactory.ts
+/**/*.css.ts
+/**/*.css.shim.ts
