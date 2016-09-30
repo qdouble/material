@@ -13,6 +13,7 @@
     "hangfix:dev": "npm run compile:only && npm i typescript@2.1.0-dev.20160914 exit 0 && npm run build:aot:dev",
     "postinstall": "npm run clean:overlaycss && npm run sass",
     "rimraf": "rimraf",
+    "webdev:hmr": "npm run webdev -- --inline --hot",
     "webdev": "webpack-dev-server",
     "webdev:hmr": "npm run webdev -- --inline --hot",
     "webpack": "webpack",
