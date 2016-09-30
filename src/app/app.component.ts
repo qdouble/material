@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MdSidenav } from '@angular2-material/sidenav';
+import { MdSidenav } from '@angular/material';
 import { Store } from '@ngrx/store';
 
 import { UserActions } from './actions';
