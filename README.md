@@ -1,3 +1,14 @@
+# Complete starter seed project for Angular 2
+
+> Featuring Material Design 2, Webpack 2 (and Webpack DLL plugin for faster dev builds), HMR (Hot Module Replacement), @ngrx for state management and optional server-side rendering with Universal.
+
+```
+git clone https://github.com/qdouble/angular2webpack2-starter.git
+cd angular2webpack2-starter
+npm install
+npm start
+```
+
 ##### Branch without Universal (Server-side rendering) support
 https://github.com/qdouble/angular2webpack2-starter/tree/no-universal-support
 
@@ -12,6 +23,7 @@ https://github.com/qdouble/angular2webpack2-starter/tree/minimal
   * AOT (Ahead of Time/ Offline) Compilation
   * AOT safe SASS compilation
 * Webpack 2
+  * Webpack Dlls (Speeds up devServer builds)
 * HMR (Hot Module Replacement)
 * TypeScript 2
   * @types
