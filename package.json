@@ -15,7 +15,6 @@
     "rimraf": "rimraf",
     "webdev:hmr": "npm run webdev -- --inline --hot",
     "webdev": "webpack-dev-server",
-    "webdev:hmr": "npm run webdev -- --inline --hot",
     "webpack": "webpack",
     "ngc": "./node_modules/.bin/ngc -p tsconfig.aot.json && npm run rimraf -- output",
     "webdriver-manager": "webdriver-manager",
