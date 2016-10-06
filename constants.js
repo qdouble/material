@@ -33,8 +33,8 @@ exports.PROD_SOURCE_MAPS = 'source-map';
  * https://github.com/webpack/docs/wiki/webpack-dev-middleware#watchoptionsaggregatetimeout
  */
 exports.DEV_SERVER_WATCH_OPTIONS = {
-  poll: undefined,
-  aggregateTimeout: 300
+  poll: 300,
+  aggregateTimeout: 0
 }
 
 /**
