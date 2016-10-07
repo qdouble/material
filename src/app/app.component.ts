@@ -27,8 +27,8 @@ import { MOBILE } from './services/constants';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements AfterContentInit, OnInit {
-  showMonitor = (ENV === 'development' &&
-    ['monitor', 'both'].includes(STORE_DEV_TOOLS) // set in constants.js file in project root
+  showMonitor = (ENV === 'development' && !AOT &&
+    ['monitor', 'both'].includes(STORE_DEV_TOOLS)
   );
   // Nav menu related //
   initView = true;
