@@ -5,12 +5,6 @@
   "author": "Qdouble <qdouble@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "prehangfix": "npm i typescript@2.0.2",
-    "posthangfix": "npm i typescript@2.0.2",
-    "prehangfix:dev": "npm i typescript@2.0.2",
-    "posthangfix:dev": "npm i typescript@2.0.2",
-    "hangfix": "npm run compile:only && npm i typescript@2.1.0-dev.20160914 exit 0 && npm run build:aot",
-    "hangfix:dev": "npm run compile:only && npm i typescript@2.1.0-dev.20160914 exit 0 && npm run build:aot:dev",
     "postinstall": "npm run clean:overlaycss && npm run sass && npm run build:dll",
     "rimraf": "rimraf",
     "webdev": "webpack-dev-server",
