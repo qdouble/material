@@ -34,7 +34,8 @@ exports.PROD_SOURCE_MAPS = 'source-map';
  */
 exports.DEV_SERVER_WATCH_OPTIONS = {
   poll: 300,
-  aggregateTimeout: 0
+  aggregateTimeout: 100,
+  ignored: /node_modules/
 }
 
 /**
