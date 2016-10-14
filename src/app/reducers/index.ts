@@ -12,13 +12,14 @@ import { prizeReducer, PrizeState } from './prize';
 
 import * as fromOffer from './offer';
 import * as fromPrize from './prize';
-import * as fromUser from './user';
+import { ticketReducer, TicketState } from './ticket';
 import { userReducer, UserState } from './user';
 
 export interface AppState {
   offer: OfferState;
   prize: PrizeState;
   router: RouterState;
+  ticket: TicketState;
   user: UserState;
 }
 
@@ -26,6 +27,7 @@ export const reducers = {
   offer: offerReducer,
   prize: prizeReducer,
   router: routerReducer,
+  ticket: ticketReducer,
   user: userReducer
 };
 
@@ -63,11 +65,6 @@ export function getOfferState() {
 export function getPrizeState() {
   return (state$: Observable<AppState>) => state$
     .select(s => s.prize);
-}
-
-export function getUserState() {
-  return (state$: Observable<AppState>) => state$
-    .select(s => s.user);
 }
 
 export function getOffers(offerIds: string[]) {
@@ -129,32 +126,4 @@ export function getPrizeCollection() {
     .let(getPrizeIds())
     .switchMap(prizeId => state$.let(getPrizes(prizeId)))
     .map(arr => arr.sort(compareOrder));
-}
-
-export function getUser() {
-  return compose(fromUser.getUser(), getUserState());
-}
-
-export function getUserEntryEmail() {
-  return compose(fromUser.getEntryEmail(), getUserState());
-}
-
-export function getUserLoaded() {
-  return compose(fromUser.getLoaded(), getUserState());
-}
-
-export function getUserLoading() {
-  return compose(fromUser.getLoading(), getUserState());
-}
-
-export function getUserLoginChecked() {
-  return compose(fromUser.getLoginChecked(), getUserState());
-}
-
-export function getUserLoggedIn() {
-  return compose(fromUser.getLoggedIn(), getUserState());
-}
-
-export function getUserReferredBy() {
-  return compose(fromUser.getReferredBy(), getUserState());
 }

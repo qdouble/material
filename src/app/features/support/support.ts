@@ -7,8 +7,9 @@ import { Component } from '@angular/core';
   <header>
     <h1>Support</h1>
   </header>
-  <main>
-  </main>
+  <section>
+    <os-support-ticket></os-support-ticket>
+  </section>
 
   `
 })
