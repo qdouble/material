@@ -1,7 +1,7 @@
 /* tslint:disable: member-ordering */
 import { Injectable, Injector } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
+import { go } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -10,11 +10,9 @@ import { User } from '../models';
 import { AppState } from '../reducers';
 import { UserService } from '../services';
 
-
 @Injectable()
 
 export class UserEffects {
-  private router;
   constructor(
     public actions$: Actions,
     private injector: Injector,
@@ -29,7 +27,7 @@ export class UserEffects {
     .switchMap(email => this.userService.checkEmail(email)
       .map((res: any) => this.userActions.checkEmailSuccess(res))
       .do((res: any) => res.payload.redirectTo ?
-        this.getRouter().navigateByUrl(res.payload.redirectTo) : null)
+        this.store.dispatch(go([res.payload.redirectTo])) : null)
       .catch(() => Observable.of(
         this.userActions.checkEmailFail(email)
       ))
@@ -61,7 +59,7 @@ export class UserEffects {
     .switchMap(user => this.userService.loginUser(user)
       .map(res => this.userActions.loginSuccess(res))
       .do((res: any) => res.payload.redirectTo ?
-        this.getRouter().navigateByUrl(res.payload.redirectTo) : null)
+        this.store.dispatch(go([res.payload.redirectTo])) : null)
       .catch(() => Observable.of(
         this.userActions.loginFail(user)
       ))
@@ -72,7 +70,7 @@ export class UserEffects {
     .map(action => <string>action.payload)
     .switchMap(() => this.userService.logout()
       .map(() => this.userActions.logoutSuccess())
-      .do(() => this.getRouter().navigateByUrl(''))
+      .do(() => this.store.dispatch(go([''])))
       .catch((res) => Observable.of(
         this.userActions.logoutFail(res)
       ))
@@ -96,7 +94,7 @@ export class UserEffects {
     .switchMap(user => this.userService.registerUser(user)
       .map(res => this.userActions.registerSuccess(res))
       .do((res: any) => res.payload.redirectTo ?
-        this.getRouter().navigateByUrl(res.payload.redirectTo) : null)
+        this.store.dispatch(go([res.payload.redirectTo])) : null)
       .catch((res) => Observable.of(
         this.userActions.registerFail(res)
       ))
@@ -111,12 +109,5 @@ export class UserEffects {
         this.userActions.updateProfileFail(res)
       ))
     );
-
-    getRouter() {
-    if (!this.router) {
-      this.router = this.injector.get(Router);
-    }
-    return this.router;
-  }
 
 }

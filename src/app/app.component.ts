@@ -17,12 +17,12 @@ import {
 } from './reducers';
 import { validateUserName } from './validators';
 
-import { views } from './app.nav.views';
+import { views } from './app-nav-views';
 import { MOBILE } from './services/constants';
 
 @Component({
   selector: 'my-app',
-  styleUrls: ['./app.css'],
+  styleUrls: ['./app.component.css'],
   templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None
 })
@@ -40,6 +40,7 @@ export class AppComponent implements AfterContentInit, OnInit {
   userLoaded$: Observable<boolean>;
   userLoggedIn$: Observable<boolean>;
   userReferredBy$: Observable<string | null>;
+  HMR = HMR;
   loaded: boolean;
   loggedIn: boolean;
   referredBy: string;

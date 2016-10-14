@@ -10,7 +10,7 @@ export interface UserState {
   loading: boolean;
   loaded: boolean;
   loginChecked: boolean;
-  loggedIn: boolean;
+  loggedIn: boolean | null;
   user: User;
   referredBy: string | null;
 };
@@ -20,7 +20,7 @@ const initialState: UserState = {
   loading: false,
   loaded: false,
   loginChecked: false,
-  loggedIn: false,
+  loggedIn: null,
   user: {},
   referredBy: null
 };
@@ -82,7 +82,9 @@ export function userReducer (state = initialState, action: Action): UserState {
       return state;
 
     case UserActions.LOGOUT_SUCCESS:
-      return Object.assign({}, state, initialState);
+      return Object.assign({}, state, Object.assign({}, initialState, {
+        loggedIn: false
+      }));
 
     case UserActions.SET_REFERRED_BY:
       return Object.assign({}, state, { referredBy: action.payload });

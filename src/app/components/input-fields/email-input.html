@@ -1,7 +1,7 @@
 <div class="form-group">
   <label>{{label}}</label>
   <input type="email" [formControl]="dynamicControl" class="form-control">
-  <button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
+  <button md-raised-button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
 </div>
 <div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
       !dynamicControl.hasError('required')" class="alert alert-danger">

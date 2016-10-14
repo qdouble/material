@@ -16,6 +16,7 @@ import {
   Homepage,
   HowItWorks,
   Login,
+  Logout,
   Offers,
   Order,
   Profile,
@@ -27,13 +28,11 @@ import {
   Status,
   Support,
   TermsAndConditions,
-  TestRequests,
   ViewOffers
 }  from './features';
 
 import {
-  GetUserProfile,
-  ShowAllUsers
+  GetUserProfile
 } from './resolve';
 
 export const routes: Routes = [
@@ -65,6 +64,10 @@ export const routes: Routes = [
     path: 'login',
     component: Login,
     canActivate: [LoggedInRedirectGuard]
+  },
+  {
+    path: 'logout',
+    component: Logout
   },
   {
     path: 'offers',
@@ -120,12 +123,6 @@ export const routes: Routes = [
   {
     path: 'terms-and-conditions',
     component: TermsAndConditions
-  },
-  {
-    path: 'test-requests',
-    component: TestRequests,
-    canActivate: [AuthGuard],
-    resolve: ShowAllUsers
   },
   {
     path: 'view-offers',
