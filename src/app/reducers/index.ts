@@ -9,26 +9,22 @@ import { compareOrder } from '../helper';
 
 import { offerReducer, OfferState } from './offer';
 import { prizeReducer, PrizeState } from './prize';
-import { testRequestReducer, TestRequestState } from './test-requests';
 
 import * as fromOffer from './offer';
 import * as fromPrize from './prize';
 import * as fromUser from './user';
-import * as fromTestRequests from './test-requests';
 import { userReducer, UserState } from './user';
 
 export interface AppState {
   offer: OfferState;
   prize: PrizeState;
   router: RouterState;
-  testRequests: TestRequestState;
   user: UserState;
 }
 
 export const reducers = {
   offer: offerReducer,
   prize: prizeReducer,
-  testRequests: testRequestReducer,
   router: routerReducer,
   user: userReducer
 };
@@ -133,19 +129,6 @@ export function getPrizeCollection() {
     .let(getPrizeIds())
     .switchMap(prizeId => state$.let(getPrizes(prizeId)))
     .map(arr => arr.sort(compareOrder));
-}
-
-export function getTestRequestState() {
-  return (state$: Observable<AppState>) => state$
-    .select(s => s.testRequests);
-}
-
-export function getTestRequestGetAffiliates() {
-  return compose(fromTestRequests.getAffiliates(), getTestRequestState());
-}
-
-export function getTestRequestAllUsers() {
-  return compose(fromTestRequests.getAllUser(), getTestRequestState());
 }
 
 export function getUser() {

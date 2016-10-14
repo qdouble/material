@@ -2,7 +2,7 @@
   <md-sidenav #sidenav [mode]="sideNavMode">
     <md-nav-list>
       <template ngFor let-view [ngForOf]="views" let-even="even" let-odd="odd" let-rowIndex="index">
-        <a *ngIf="!view.subViews" md-list-item [routerLink]="view.link" routerLinkActive="active-link" (click)="sidenav.close()">
+        <a *ngIf="!view.subViews && view.loggedIn === (this.userLoggedIn$ | async)" md-list-item [routerLink]="view.link" routerLinkActive="active-link" (click)="HMR ? null : sidenav.close()">
           <md-icon md-list-icon>{{view.icon}}</md-icon>
           <span md-line>{{view.name}}</span>
           <span md-line class="secondary">{{view.description}}</span>
@@ -13,7 +13,7 @@
           <span md-line class="secondary">{{view.description}}</span>
         </a>
         <span *ngIf="view.subViews && router.url.startsWith('/' + view.link) && initView || view.show">
-        <a *ngFor="let subView of view.subViews" md-list-item [routerLink]="subView.link" class="subview" (click)="sidenav.close()">
+        <a *ngFor="let subView of view.subViews" md-list-item [routerLink]="subView.link" class="subview" (click)="HMR ? null : sidenav.close()">
           <md-icon md-list-icon>navigate_next</md-icon>
           <span md-line>{{subView.name}}</span>
         </a>
@@ -28,7 +28,7 @@
     </button>
     <img id="levelup-menu-logo" src="assets/svg/levelup-rewards-logo-v6.svg">
   </md-toolbar>
-  <md-card flex>
+  <md-card id="my-page-card">
     <router-outlet (activate)="activateEvent($event)" (deactivate)="deactivateEvent($event)"></router-outlet>
   </md-card>
 </md-sidenav-layout>

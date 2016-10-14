@@ -4,6 +4,7 @@ import { FAQ } from './faq';
 import { Homepage } from './home';
 import { HowItWorks } from './how-it-works';
 import { Login } from './login';
+import { Logout } from './logout';
 import { OfferRedirect, Offers, OFFERS_COMMON } from './offers';
 import { Order } from  './order';
 import { PrivacyPolicy } from './privacy-policy';
@@ -15,7 +16,6 @@ import { ReportSpam } from './report-spam';
 import { Status } from './status';
 import { Support } from './support';
 import { TermsAndConditions } from './terms-and-conditions';
-import { TestRequests } from './test-requests';
 import { ViewOffers } from './view-offers';
 
 export {
@@ -25,6 +25,7 @@ export {
   Homepage,
   HowItWorks,
   Login,
+  Logout,
   OfferRedirect,
   Offers,
   Order,
@@ -37,7 +38,6 @@ export {
   Status,
   Support,
   TermsAndConditions,
-  TestRequests,
   ViewOffers
 }
 
@@ -52,6 +52,7 @@ export const PAGES_COMPONENTS = [
   Homepage,
   HowItWorks,
   Login,
+  Logout,
   OfferRedirect,
   Offers,
   Order,
@@ -64,6 +65,5 @@ export const PAGES_COMPONENTS = [
   Status,
   Support,
   TermsAndConditions,
-  TestRequests,
   ViewOffers
 ];

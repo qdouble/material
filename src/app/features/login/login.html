@@ -5,6 +5,6 @@
   <form [formGroup]="f" (ngSubmit)="submitForm()">
     <email-input [label]="'Email Address'" [controlName]="'email'" [form]="f"></email-input>
     <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
-    <button [disabled]="!f.valid" type="submit">Login</button>
+    <button md-raised-button [disabled]="!f.valid" type="submit">Login</button>
   </form>
 </main>
