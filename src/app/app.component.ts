@@ -7,14 +7,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MdSidenav } from '@angular/material';
 import { Store } from '@ngrx/store';
 
+import { AppState } from './reducers';
 import { UserActions } from './actions';
-import {
-  AppState,
-  getUserLoaded,
-  getUserLoading,
-  getUserLoggedIn,
-  getUserReferredBy
-} from './reducers';
+
+import { getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy } from './reducers/user';
 import { validateUserName } from './validators';
 
 import { views } from './app-nav-views';

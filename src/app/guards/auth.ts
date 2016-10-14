@@ -3,7 +3,8 @@ import { CanActivate, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { AppState, getUserLoggedIn } from '../reducers';
+import { AppState } from '../reducers';
+import { getUserLoggedIn } from '../reducers/user';
 
 @Injectable()
 

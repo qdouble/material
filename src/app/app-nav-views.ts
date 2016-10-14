@@ -24,6 +24,12 @@ export const views: Object[] = [
     loggedIn: true
   },
   {
+    name: 'Support',
+    icon: 'help',
+    link: ['support'],
+    loggedIn: true
+  },
+  {
     name: 'Logout',
     icon: 'close',
     link: ['logout'],

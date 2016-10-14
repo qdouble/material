@@ -1,7 +1,9 @@
 /* tslint:disable: no-switch-case-fall-through */
 import { Observable } from 'rxjs/Observable';
+import { compose } from '@ngrx/core/compose';
 import { Action } from '@ngrx/store';
 
+import { AppState } from './';
 import { UserActions } from '../actions';
 import { User } from '../models';
 
@@ -136,37 +138,70 @@ export function userReducer (state = initialState, action: Action): UserState {
   }
 }
 
-export function getEntryEmail() {
+function _getEntryEmail() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.entryEmail);
 }
 
-export function getLoaded() {
+function _getLoaded() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.loaded);
 }
 
-export function getLoading() {
+function _getLoading() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.loading);
 }
 
-export function getLoginChecked() {
+function _getLoginChecked() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.loginChecked);
 }
 
-export function getLoggedIn() {
+function _getLoggedIn() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.loggedIn);
 }
 
-export function getReferredBy() {
+function _getReferredBy() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.referredBy);
 }
 
-export function getUser() {
+function _getUser() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.user);
+}
+
+function _getUserState() {
+  return (state$: Observable<AppState>) => state$
+    .select(s => s.user);
+}
+
+export function getUser() {
+  return compose(_getUser(), _getUserState());
+}
+
+export function getUserEntryEmail() {
+  return compose(_getEntryEmail(), _getUserState());
+}
+
+export function getUserLoaded() {
+  return compose(_getLoaded(), _getUserState());
+}
+
+export function getUserLoading() {
+  return compose(_getLoading(), _getUserState());
+}
+
+export function getUserLoginChecked() {
+  return compose(_getLoginChecked(), _getUserState());
+}
+
+export function getUserLoggedIn() {
+  return compose(_getLoggedIn(), _getUserState());
+}
+
+export function getUserReferredBy() {
+  return compose(_getReferredBy(), _getUserState());
 }

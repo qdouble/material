@@ -7,7 +7,8 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { UserActions } from '../../actions';
 import { User } from '../../models';
-import { AppState, getUser, getUserLoaded } from '../../reducers';
+import { AppState } from '../../reducers';
+import { getUser, getUserLoaded } from '../../reducers/user';
 import { RegexValues } from '../../validators';
 
 @Component({

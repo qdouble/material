@@ -14,7 +14,7 @@ import { ProofPicGallery } from './proof-pic-gallery';
 import { Register } from './register';
 import { ReportSpam } from './report-spam';
 import { Status } from './status';
-import { Support } from './support';
+import { Support, SupportTicket } from './support';
 import { TermsAndConditions } from './terms-and-conditions';
 import { ViewOffers } from './view-offers';
 
@@ -64,6 +64,7 @@ export const PAGES_COMPONENTS = [
   ReportSpam,
   Status,
   Support,
+  SupportTicket,
   TermsAndConditions,
   ViewOffers
 ];
