@@ -2,7 +2,7 @@ import {
   AfterContentInit, Component, ChangeDetectorRef, OnInit, OnDestroy,
   ViewChild, ViewContainerRef, ViewEncapsulation
 } from '@angular/core';
-import { MdSnackBar, MdSnackBarConfig, MdSnackBarRef, MdSidenav } from '@angular/material';
+import { MdSnackBar, MdSnackBarConfig, MdSidenav } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
