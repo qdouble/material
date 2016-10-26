@@ -23,8 +23,8 @@ export class TicketService extends RequestBase {
       .map(res => res.json());
   }
 
-  submitTicket(ticket: Ticket): Observable<Response> {
-    return this.http.get(`${API_USER_URL}/submitTicket`, this.optionsNoPre)
+  addTicket(ticket: Ticket): Observable<Response> {
+    return this.http.get(`${API_USER_URL}/addTicket`, this.optionsNoPre)
       .map(res => res.json());
   }
 

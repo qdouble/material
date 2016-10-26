@@ -1,0 +1,35 @@
+/* tslint:disable: member-ordering */
+import { Injectable } from '@angular/core';
+import { Response } from '@angular/http';
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+
+import { Notify } from './notify.model';
+import { NotifyActions } from './notify.actions';
+import { AppState } from '../../reducers';
+
+@Injectable()
+
+export class CountryEffects {
+  constructor(
+    private actions$: Actions,
+    private notifyActions: NotifyActions,
+    private store: Store<AppState>
+  ) { }
+
+  // @Effect() addNotify$ = this.actions$
+  //   .ofType(NotifyActions.ADD_NOTIFY)
+  //   .map(action => <Notify>action.payload)
+  //   .switchMap((country) => this.countryService.addCountry(country)
+  //     .mergeMap((res) => Observable.of(
+  //       this.notifyActions.addCountrySuccess(res),
+  //       this.notifyActions.addNotify(res))
+  //     )
+  //     .catch((err: Error | Response) => Observable.of(
+  //       // this.notifyActions.addCountryFail(err),
+  //       // this.notifyActions.addNotify(err)
+  //     ))
+  //   );
+
+}

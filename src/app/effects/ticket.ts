@@ -38,13 +38,13 @@ export class TicketEffects {
       ))
     );
 
-    @Effect() submitTicket$ = this.actions$
-    .ofType(TicketActions.SUBMIT_TICKET)
+    @Effect() addTicket$ = this.actions$
+    .ofType(TicketActions.ADD_TICKET)
     .map(action => <string>action.payload)
-    .switchMap(ticket => this.ticketService.submitTicket(ticket)
-      .map((res: any) => this.ticketActions.submitTicketSuccess(res))
+    .switchMap(ticket => this.ticketService.addTicket(ticket)
+      .map((res: any) => this.ticketActions.addTicketSuccess(res))
       .catch((err) => Observable.of(
-        this.ticketActions.submitTicketFail(err)
+        this.ticketActions.addTicketFail(err)
       ))
     );
 }

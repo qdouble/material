@@ -1,7 +1,9 @@
 /* tslint:disable: no-switch-case-fall-through */
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { compose } from '@ngrx/core/compose';
 
+import { AppState } from '../reducers';
 import { OfferActions } from '../actions';
 import { Offer } from '../models';
 
@@ -63,35 +65,68 @@ export function offerReducer (state = initialState, action: Action): OfferState 
   }
 }
 
-export function getLoaded() {
+function _getLoaded() {
   return (state$: Observable<OfferState>) => state$
     .select(s => s.loaded);
 }
 
-export function getLoading() {
+function _getLoading() {
   return (state$: Observable<OfferState>) => state$
     .select(s => s.loading);
 }
 
-export function getOfferEntities() {
+function _getOfferEntities() {
   return (state$: Observable<OfferState>) => state$
     .select(s => s.entities);
 }
 
-export function getOffers(offerIds: string[]) {
+function _getOffers(offerIds: string[]) {
   return (state$: Observable<OfferState>) => state$
-    .let(getOfferEntities())
+    .let(_getOfferEntities())
     .map(entities => offerIds.map(id => entities[id]));
 }
 
-export function getOfferIds() {
+function _getOfferIds() {
   return (state$: Observable<OfferState>) => state$
     .select(s => s.ids);
 }
 
-export function getSelectedOffer() {
+function _getSelectedOffer() {
   return (state$: Observable<OfferState>) => state$
     .select(s => s.selectedOffer);
 }
 
+function _getOfferState() {
+  return (state$: Observable<AppState>) => state$
+    .select(s => s.offer);
+}
 
+export function getOffers(offerIds: string[]) {
+  return compose(_getOffers(offerIds), _getOfferState());
+}
+
+export function getOfferIds() {
+  return compose(_getOfferIds(), _getOfferState());
+}
+
+export function getOfferEntities() {
+  return compose(_getOfferEntities(), _getOfferState());
+}
+
+export function getOfferLoaded() {
+  return compose(_getLoaded(), _getOfferState());
+}
+
+export function getOfferLoading() {
+  return compose(_getLoading(), _getOfferState());
+}
+
+export function getOfferSelected() {
+  return compose(_getSelectedOffer(), _getOfferState());
+}
+
+export function getOfferCollection() {
+  return (state$: Observable<AppState>) => state$
+    .let(getOfferIds())
+    .switchMap(offerId => state$.let(getOffers(offerId)));
+}

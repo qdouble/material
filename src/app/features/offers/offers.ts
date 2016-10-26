@@ -6,7 +6,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { OfferActions, UserActions } from '../../actions';
 import { openInNewTab } from '../../helper';
 import { Offer } from '../../models';
-import { AppState, getOfferCollection, getOfferLoaded } from '../../reducers';
+import { AppState } from '../../reducers';
+import { getOfferCollection, getOfferLoaded } from '../../reducers/offer';
 
 @Component({
   selector: 'os-offers',

@@ -9,6 +9,7 @@ import { UserActions } from '../actions';
 import { User } from '../models';
 import { AppState } from '../reducers';
 import { UserService } from '../services';
+import { NotifyActions } from '../actions/notify';
 
 @Injectable()
 
@@ -16,6 +17,7 @@ export class UserEffects {
   constructor(
     public actions$: Actions,
     private injector: Injector,
+    private notifyActions: NotifyActions,
     private store: Store<AppState>,
     private userActions: UserActions,
     private userService: UserService
@@ -57,7 +59,10 @@ export class UserEffects {
     .ofType(UserActions.LOGIN)
     .map(action => <User>action.payload)
     .switchMap(user => this.userService.loginUser(user)
-      .map(res => this.userActions.loginSuccess(res))
+      .mergeMap(res => Observable.of(
+        this.userActions.loginSuccess(res),
+        this.notifyActions.addNotify(res)
+        ))
       .do((res: any) => res.payload.redirectTo ?
         this.store.dispatch(go([res.payload.redirectTo])) : null)
       .catch(() => Observable.of(

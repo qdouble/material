@@ -1,16 +1,20 @@
 import {
-  AfterContentInit, Component, ChangeDetectorRef, OnInit,
-  ViewChild, ViewEncapsulation
+  AfterContentInit, Component, ChangeDetectorRef, OnInit, OnDestroy,
+  ViewChild, ViewContainerRef, ViewEncapsulation
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { MdSnackBar, MdSnackBarConfig, MdSnackBarRef, MdSidenav } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MdSidenav } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 
 import { AppState } from './reducers';
-import { UserActions } from './actions';
+import { Notify } from './models/notify';
+import { UserActions } from './actions/user';
 
 import { getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy } from './reducers/user';
+import { getNotifyCollection } from './reducers/notify';
 import { validateUserName } from './validators';
 
 import { views } from './app-nav-views';
@@ -22,7 +26,7 @@ import { MOBILE } from './services/constants';
   templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements AfterContentInit, OnInit {
+export class AppComponent implements AfterContentInit, OnDestroy, OnInit {
   showMonitor = (ENV === 'development' && !AOT &&
     ['monitor', 'both'].includes(STORE_DEV_TOOLS)
   );
@@ -32,23 +36,43 @@ export class AppComponent implements AfterContentInit, OnInit {
   mobile = MOBILE;
   sideNavMode = MOBILE ? 'over' : 'side';
   /////////////////////
+  actionButtonLabel: string = 'Close';
+  action: boolean = false;
+  /////////////////////
+  destroyed$: Subject<any> = new Subject<any>();
+  HMR = HMR;
+  loaded: boolean;
+  loggedIn: boolean;
+  notifications$: Observable<Notify[]>;
+  notificationSub: Subscription;
+  referredBy: string;
+  @ViewChild(MdSidenav) sidenav: MdSidenav;
+  snackRefs = [];
   userLoading$: Observable<boolean>;
   userLoaded$: Observable<boolean>;
   userLoggedIn$: Observable<boolean>;
   userReferredBy$: Observable<string | null>;
-  HMR = HMR;
-  loaded: boolean;
-  loggedIn: boolean;
-  referredBy: string;
   views = views;
-  @ViewChild(MdSidenav) sidenav: MdSidenav;
   constructor(
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
+    public snackBar: MdSnackBar,
     private store: Store<AppState>,
-    private userActions: UserActions
+    private userActions: UserActions,
+    public viewContainerRef: ViewContainerRef
   ) {
+    this.notifications$ = store.let(getNotifyCollection());
+    this.notificationSub = this.notifications$
+      .takeUntil(this.destroyed$)
+      .filter(notify => notify.length > 0)
+      .subscribe(notify => {
+        let config = new MdSnackBarConfig(this.viewContainerRef);
+        let index = notify.length - 1;
+        this.snackRefs[index] = this.snackBar.open(notify[index].message,
+          this.action && this.actionButtonLabel, config);
+        setTimeout(() => { this.snackRefs[index].dismiss(); }, 3000);
+      });
     this.userLoaded$ = store.let(getUserLoaded());
     this.userLoading$ = store.let(getUserLoading());
     this.userLoggedIn$ = store.let(getUserLoggedIn());
@@ -126,5 +150,9 @@ export class AppComponent implements AfterContentInit, OnInit {
     }
     this.previousView = view;
     this.initView = false;
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
   }
 }

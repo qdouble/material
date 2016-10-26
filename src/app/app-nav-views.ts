@@ -18,8 +18,26 @@ export const views: Object[] = [
     loggedIn: false
   },
   {
+    name: 'Status',
+    icon: 'code',
+    link: ['status'],
+    loggedIn: true
+  },
+  {
+    name: 'Offers',
+    icon: 'loyalty',
+    link: ['offers'],
+    loggedIn: true
+  },
+  {
+    name: 'Order',
+    icon: 'add_shopping_cart',
+    link: ['order'],
+    loggedIn: true
+  },
+  {
     name: 'Profile',
-    icon: 'folder_shared',
+    icon: 'perm_identity',
     link: ['profile'],
     loggedIn: true
   },

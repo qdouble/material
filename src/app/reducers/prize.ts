@@ -1,10 +1,13 @@
 /* tslint:disable: no-switch-case-fall-through */
 import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
+import { compose } from '@ngrx/core/compose';
 
+import { AppState } from '../reducers';
 import { PrizeActions } from '../actions';
 import { Prize } from '../models';
 
+import { compareOrder } from '../helper';
 
 export interface PrizeState {
   ids: string[];
@@ -64,35 +67,69 @@ export function prizeReducer (state = initialState, action: Action): PrizeState 
   }
 }
 
-export function getLoaded() {
+function _getLoaded() {
   return (state$: Observable<PrizeState>) => state$
     .select(s => s.loaded);
 }
 
-export function getLoading() {
+function _getLoading() {
   return (state$: Observable<PrizeState>) => state$
     .select(s => s.loading);
 }
 
-export function getPrizeEntities() {
+function _getPrizeEntities() {
   return (state$: Observable<PrizeState>) => state$
     .select(s => s.entities);
 }
 
-export function getPrizes(prizeIds: string[]) {
+function _getPrizes(prizeIds: string[]) {
   return (state$: Observable<PrizeState>) => state$
-    .let(getPrizeEntities())
+    .let(_getPrizeEntities())
     .map(entities => prizeIds.map(id => entities[id]));
 }
 
-export function getPrizeIds() {
+function _getPrizeIds() {
   return (state$: Observable<PrizeState>) => state$
     .select(s => s.ids);
 }
 
-export function getSelectedPrize() {
+function _getSelectedPrize() {
   return (state$: Observable<PrizeState>) => state$
     .select(s => s.selectedPrize);
 }
 
+function _getPrizeState() {
+  return (state$: Observable<AppState>) => state$
+    .select(s => s.prize);
+}
 
+export function getPrizes(prizeIds: string[]) {
+  return compose(_getPrizes(prizeIds), _getPrizeState());
+}
+
+export function getPrizeIds() {
+  return compose(_getPrizeIds(), _getPrizeState());
+}
+
+export function getPrizeEntities() {
+  return compose(_getPrizeEntities(), _getPrizeState());
+}
+
+export function getPrizeLoaded() {
+  return compose(_getLoaded(), _getPrizeState());
+}
+
+export function getPrizeLoading() {
+  return compose(_getLoading(), _getPrizeState());
+}
+
+export function getPrizeSelected() {
+  return compose(_getSelectedPrize(), _getPrizeState());
+}
+
+export function getPrizeCollection() {
+  return (state$: Observable<AppState>) => state$
+    .let(getPrizeIds())
+    .switchMap(prizeId => state$.let(getPrizes(prizeId)))
+    .map(arr => arr.sort(compareOrder));
+}

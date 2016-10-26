@@ -7,7 +7,8 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { PrizeActions, UserActions } from '../../actions';
 import { Prize } from '../../models';
-import { AppState, getPrizeSelected, getPrizeCollection, getPrizeLoaded } from '../../reducers';
+import { AppState } from '../../reducers';
+import { getPrizeSelected, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
 import { getUserEntryEmail, getUserReferredBy } from '../../reducers/user';
 import { CustomValidators, RegexValues, UsernameValidator } from '../../validators';
 

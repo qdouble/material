@@ -25,6 +25,29 @@ const initialState: TicketState = {
 export function ticketReducer (state = initialState, action: Action): TicketState {
   switch (action.type) {
 
+    case TicketActions.ADD_TICKET:
+      return Object.assign({}, state, { loading: true });
+    case TicketActions.ADD_TICKET_FAIL:
+      return Object.assign({}, state, { loading: false });
+
+    case TicketActions.ADD_TICKET_SUCCESS: {
+      if (!action.payload.ticket || !action.payload.id)
+        return Object.assign({}, state, { loading: false });
+      const id: string = action.payload.id;
+      const ticket = Object.assign({}, action.payload.ticket, {
+        id: id
+      });
+      ticket.id = id;
+      return {
+        ids: [...state.ids, id],
+        entities: Object.assign({}, state.entities, {
+          [ticket.id]: ticket
+        }),
+        loading: false,
+        loaded: false
+      };
+    }
+
     case TicketActions.CLOSE_TICKET:
       return Object.assign({}, state, { loading: true });
     case TicketActions.CLOSE_TICKET_FAIL:
@@ -101,29 +124,6 @@ export function ticketReducer (state = initialState, action: Action): TicketStat
         entities: Object.assign({}, state.entities, newTicketEntities),
         loading: false,
         loaded: true
-      };
-    }
-
-    case TicketActions.SUBMIT_TICKET:
-      return Object.assign({}, state, { loading: true });
-    case TicketActions.SUBMIT_TICKET_FAIL:
-      return Object.assign({}, state, { loading: false });
-
-    case TicketActions.SUBMIT_TICKET_SUCCESS: {
-      if (!action.payload.ticket || !action.payload.id)
-        return Object.assign({}, state, { loading: false });
-      const id: string = action.payload.id;
-      const ticket = Object.assign({}, action.payload.ticket, {
-        id: id
-      });
-      ticket.id = id;
-      return {
-        ids: [...state.ids, id],
-        entities: Object.assign({}, state.entities, {
-          [ticket.id]: ticket
-        }),
-        loading: false,
-        loaded: false
       };
     }
 

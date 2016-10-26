@@ -8,6 +8,31 @@ import { Ticket } from '../models';
 @Injectable()
 
 export class TicketActions {
+
+  static ADD_TICKET = '[Ticket] Add Ticket';
+  addTicket(ticket: Ticket): Action {
+    return {
+      type: TicketActions.ADD_TICKET,
+      payload: ticket
+    };
+  }
+
+  static ADD_TICKET_FAIL = '[Ticket] Add Ticket Fail';
+  addTicketFail(err: Error): Action {
+    return {
+      type: TicketActions.ADD_TICKET_FAIL,
+      payload: err
+    };
+  }
+
+  static ADD_TICKET_SUCCESS = '[Ticket] Add Ticket Success';
+  addTicketSuccess(ticket: Ticket): Action {
+    return {
+      type: TicketActions.ADD_TICKET_SUCCESS,
+      payload: ticket
+    };
+  }
+
   static CLOSE_TICKET = '[Ticket] Close Ticket';
   closeTicket(id: string): Action {
     return {
@@ -28,6 +53,30 @@ export class TicketActions {
   closeTicketSuccess(ticket: Ticket): Action {
     return {
       type: TicketActions.CLOSE_TICKET_SUCCESS,
+      payload: ticket
+    };
+  }
+
+  static EDIT_TICKET = '[Ticket] Edit Ticket';
+  editTicket(ticket: Ticket): Action {
+    return {
+      type: TicketActions.EDIT_TICKET,
+      payload: ticket
+    };
+  }
+
+  static EDIT_TICKET_FAIL = '[Ticket] Edit Ticket Fail';
+  editTicketFail(err: Error): Action {
+    return {
+      type: TicketActions.EDIT_TICKET_FAIL,
+      payload: err
+    };
+  }
+
+  static EDIT_TICKET_SUCCESS = '[Ticket] Edit Ticket Success';
+  editTicketSuccess(ticket: Ticket): Action {
+    return {
+      type: TicketActions.EDIT_TICKET_SUCCESS,
       payload: ticket
     };
   }
@@ -79,27 +128,5 @@ export class TicketActions {
     };
   }
 
-  static SUBMIT_TICKET = '[Ticket] Submit Ticket';
-  submitTicket(ticket: Ticket): Action {
-    return {
-      type: TicketActions.SUBMIT_TICKET,
-      payload: ticket
-    };
-  }
 
-  static SUBMIT_TICKET_FAIL = '[Ticket] Select Ticket';
-  submitTicketFail(err: Error): Action {
-    return {
-      type: TicketActions.SUBMIT_TICKET_FAIL,
-      payload: err
-    };
-  }
-
-  static SUBMIT_TICKET_SUCCESS = '[Ticket] Get Ticket Success';
-  submitTicketSuccess(ticket: Ticket): Action {
-    return {
-      type: TicketActions.SUBMIT_TICKET_SUCCESS,
-      payload: ticket
-    };
-  }
 }

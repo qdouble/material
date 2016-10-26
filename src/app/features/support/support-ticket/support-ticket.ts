@@ -29,6 +29,6 @@ export class SupportTicket {
   ) { }
 
   submitForm() {
-    this.store.dispatch(this.ticketActions.submitTicket(this.f.value));
+    this.store.dispatch(this.ticketActions.addTicket(this.f.value));
   }
 }
