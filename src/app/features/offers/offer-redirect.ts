@@ -2,14 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
-import { UserActions } from '../../actions';
+import { UserActions } from '../../actions/user';
 import { AppState } from '../../reducers';
 
 @Component({
   selector: 'offer-redirect',
-  template: `
-  <header> <h1>Offer Redirect</h1> </header>
-  `
+  template: `<header> <h1>Offer Redirect</h1> </header>`
 })
 
 export class OfferRedirect implements OnInit, OnDestroy {

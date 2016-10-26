@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { AppState } from '../../reducers';
-import { UserActions } from '../../actions';
+import { UserActions } from '../../actions/user';
 import { getUserEntryEmail } from '../../reducers/user';
 import { RegexValues } from '../../validators';
 

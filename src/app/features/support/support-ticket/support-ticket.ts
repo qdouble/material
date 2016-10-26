@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '../../../reducers';
-import { TicketActions } from '../../../actions';
+import { TicketActions } from '../../../actions/ticket';
 
 @Component({
   selector: 'os-support-ticket',

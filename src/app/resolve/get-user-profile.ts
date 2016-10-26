@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { UserActions } from '../actions';
-import { User } from '../models';
+import { UserActions } from '../actions/user';
+import { User } from '../models/user';
 import { AppState } from '../reducers';
 import { getUser, getUserLoaded } from '../reducers/user';
 

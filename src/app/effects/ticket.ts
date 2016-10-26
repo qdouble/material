@@ -5,8 +5,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { AppState } from '../reducers';
-import { TicketService } from '../services';
-import { TicketActions } from '../actions';
+import { TicketService } from '../services/ticket';
+import { TicketActions } from '../actions/ticket';
 
 @Injectable()
 

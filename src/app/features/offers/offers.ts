@@ -3,9 +3,10 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { OfferActions, UserActions } from '../../actions';
-import { openInNewTab } from '../../helper';
-import { Offer } from '../../models';
+import { OfferActions } from '../../actions/offer';
+import { UserActions } from '../../actions/user';
+import { openInNewTab } from '../../helper/open-in-new-tab';
+import { Offer } from '../../models/offer';
 import { AppState } from '../../reducers';
 import { getOfferCollection, getOfferLoaded } from '../../reducers/offer';
 

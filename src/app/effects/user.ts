@@ -5,10 +5,10 @@ import { go } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { UserActions } from '../actions';
-import { User } from '../models';
+import { UserActions } from '../actions/user';
+import { User } from '../models/user';
 import { AppState } from '../reducers';
-import { UserService } from '../services';
+import { UserService } from '../services/user';
 import { NotifyActions } from '../actions/notify';
 
 @Injectable()

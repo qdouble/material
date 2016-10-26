@@ -5,8 +5,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { PrizeActions, UserActions } from '../../actions';
-import { Prize } from '../../models';
+import { PrizeActions } from '../../actions/prize';
+import { UserActions } from '../../actions/user';
+import { Prize } from '../../models/prize';
 import { AppState } from '../../reducers';
 import { getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
 import { RegexValues } from '../../validators';

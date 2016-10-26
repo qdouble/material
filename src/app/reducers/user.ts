@@ -4,8 +4,8 @@ import { compose } from '@ngrx/core/compose';
 import { Action } from '@ngrx/store';
 
 import { AppState } from './';
-import { UserActions } from '../actions';
-import { User } from '../models';
+import { UserActions } from '../actions/user';
+import { User } from '../models/user';
 
 export interface UserState {
   entryEmail: string | null;

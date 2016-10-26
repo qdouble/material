@@ -5,8 +5,8 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '../reducers';
-import { OfferActions } from '../actions';
-import { OfferService } from '../services';
+import { OfferActions } from '../actions/offer';
+import { OfferService } from '../services/offer';
 
 @Injectable()
 

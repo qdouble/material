@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 // import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
 
-import { Ticket } from '../models';
+import { Ticket } from '../models/ticket';
 
 @Injectable()
 

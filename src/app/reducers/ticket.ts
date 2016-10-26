@@ -5,8 +5,8 @@ import { compose } from '@ngrx/core/compose';
 import { Action } from '@ngrx/store';
 
 import { AppState } from './';
-import { TicketActions } from '../actions';
-import { Ticket } from '../models';
+import { TicketActions } from '../actions/ticket';
+import { Ticket } from '../models/ticket';
 
 export interface TicketState {
   ids: string[];

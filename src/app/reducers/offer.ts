@@ -4,8 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { compose } from '@ngrx/core/compose';
 
 import { AppState } from '../reducers';
-import { OfferActions } from '../actions';
-import { Offer } from '../models';
+import { OfferActions } from '../actions/offer';
+import { Offer } from '../models/offer';
 
 export interface OfferState {
   ids: string[];

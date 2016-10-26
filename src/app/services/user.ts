@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
-import { User } from '../models';
+import { User } from '../models/user';
 import { RequestBase } from './request-base';
 
 @Injectable()

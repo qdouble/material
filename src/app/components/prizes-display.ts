@@ -3,7 +3,7 @@ import {
   Input, Output
 } from '@angular/core';
 
-import { Prize } from '../models';
+import { Prize } from '../models/prize';
 
 @Component({
   selector: 'prizes-display',

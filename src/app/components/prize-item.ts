@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { Prize } from '../models';
+import { Prize } from '../models/prize';
 
 @Component({
   selector: 'prize-item',

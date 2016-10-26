@@ -4,10 +4,10 @@ import { Action } from '@ngrx/store';
 import { compose } from '@ngrx/core/compose';
 
 import { AppState } from '../reducers';
-import { PrizeActions } from '../actions';
-import { Prize } from '../models';
+import { PrizeActions } from '../actions/prize';
+import { Prize } from '../models/prize';
 
-import { compareOrder } from '../helper';
+import { compareOrder } from '../helper/compare-order';
 
 export interface PrizeState {
   ids: string[];

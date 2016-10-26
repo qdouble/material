@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Offer } from '../../models';
+import { Offer } from '../../models/offer';
 
 @Component({
   selector: 'os-offer-rows',
