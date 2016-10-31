@@ -71,7 +71,7 @@ export class AppComponent implements AfterContentInit, OnDestroy, OnInit {
         let index = notify.length - 1;
         this.snackRefs[index] = this.snackBar.open(notify[index].message,
           this.action && this.actionButtonLabel, config);
-        setTimeout(() => { this.snackRefs[index].dismiss(); }, 3000);
+        setTimeout(() => { this.snackRefs[index].dismiss(); }, 5000);
       });
     this.userLoaded$ = store.let(getUserLoaded());
     this.userLoading$ = store.let(getUserLoading());

@@ -1,24 +1,40 @@
-import { ChangeDetectionStrategy , Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'textarea-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    { provide: NG_VALUE_ACCESSOR, useExisting: TextareaInput, multi: true }
+  ],
   templateUrl: './textarea-input.html'
 })
 
-export class TextareaInput implements OnInit {
-  @Input() form: FormGroup;
-  @Input() controlName: string;
-  @Input() label: string;
+export class TextareaInput implements ControlValueAccessor, OnDestroy, OnInit {
+  @Input() label: string = '';
   @Input() error: string;
   @Input() help: string;
   @Input() submit: string;
+  controlSub: Subscription;
+  dynamicControl = new FormControl();
   errorMessage: string;
-  dynamicControl: AbstractControl;
 
   ngOnInit() {
     this.errorMessage = this.error || this.label + ' is invalid';
-    this.dynamicControl = this.form.get(this.controlName);
+  }
+
+  writeValue(value: any) {
+    this.dynamicControl.setValue(value);
+  }
+
+  registerOnChange(fn: (value: any) => void) {
+    this.controlSub = this.dynamicControl.valueChanges.subscribe(fn);
+  }
+
+  registerOnTouched() { }
+
+  ngOnDestroy() {
+    if (this.controlSub) this.controlSub.unsubscribe();
   }
 }

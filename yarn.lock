@@ -76,9 +76,9 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-2.0.0.tgz#db4c3e1b69030229cb6b908477115b3479e4c4e0"
 
-"@ngrx/router-store@1.2.4":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@ngrx/router-store/-/router-store-1.2.4.tgz#fd194d6c20b4120a2d3a02126bc94746264e9160"
+"@ngrx/router-store@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@ngrx/router-store/-/router-store-1.2.5.tgz#1cff82c5488fab995872c6f0d57a29a7ac91e598"
 
 "@ngrx/store-devtools@3.1.0":
   version "3.1.0"
@@ -139,9 +139,9 @@
   version "2.5.35"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.35.tgz#5566406dc8417d380d6c2f9562ec3c71ec28ef78"
 
-"@types/jasmine@~2.2.34":
-  version "2.2.34"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.2.34.tgz#4156d5f8ea59dc2adb6e5f21e09ae80f19090505"
+"@types/jasmine@~2.5.35":
+  version "2.5.36"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.36.tgz#6d804b79a57e9380d766a2680e9362c17d9556d2"
 
 "@types/mime@*", "@types/mime@~0.0.29":
   version "0.0.29"
@@ -3483,9 +3483,9 @@ nested-error-stacks@^1.0.0:
   dependencies:
     inherits "~2.0.1"
 
-ngrx-store-freeze@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/ngrx-store-freeze/-/ngrx-store-freeze-0.1.0.tgz#d505545ad30ef7fbcfdc2b0ab642139b51784794"
+ngrx-store-freeze@0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/ngrx-store-freeze/-/ngrx-store-freeze-0.1.4.tgz#7994ad26878a503603606b9eb25ccdb61269750f"
   dependencies:
     deep-freeze "^0.0.1"
 

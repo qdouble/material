@@ -1,0 +1,40 @@
+<div class="os-table-container">
+  <table class="mdl-data-table mdl-shadow--2dp">
+    <thead>
+      <tr>
+        <th style="padding-left: 8px; padding-right: 3px; vertical-align: bottom" class="mdl-data-table__cell--non-numeric"></th>
+        <th class="mdl-data-table__cell--non-numeric" (click)="sortBy.emit('createdAt')">Submitted</th>
+        <th class="mdl-data-table__cell--non-numeric" (click)="sortBy.emit('closed')">Status</th>
+        <th class="mdl-data-table__cell--non-numeric" (click)="sortBy.emit('subject')">Subject</th>
+        <th class="mdl-data-table__cell--non-numeric">
+          <span style="position: relative; top: 6px"></span>
+          <button md-button (click)="reload.emit($event)" color="primary" style="position: relative; top: 5px;left: 22px;">
+            RELOAD TICKETS
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let ticket of tickets">
+          <td style="padding-left: 8px; padding-right: 3px; vertical-align: bottom;">
+            <md-icon *ngIf="!ticket?.readByUser" style="font-size: 18px; color: #4CAF50">brightness_1</md-icon>
+          </td>
+          <td class="mdl-data-table__cell--non-numeric added-on-row">
+            {{ticket.createdAt | date: 'MMM d h:mm a'}}
+          </td>
+          <td class="mdl-data-table__cell--non-numeric added-on-row">
+            {{ticket.closed ? 'Closed' : 'Open'}}
+          </td>
+          <td class="mdl-data-table__cell--non-numeric">
+            <span md-tooltip="{{ticket.subject}}">{{ticket.subject | slice:0:20 }}</span>
+          </td>
+          <td>
+            <button class="view-tickets-btn" md-button color="primary" type="button" [routerLink]="['view-ticket', { id: ticket.id } ]">VIEW({{ticket.entries}})</button>
+            <button class="close-ticket-btn" md-button [color]="ticket.closed ? 'primary' : 'accent'" type="button" (click)="ticket?.closed ? closeTicket.emit({id: ticket.id, close: false}) : closeTicket.emit({id: ticket.id, close: true})">
+              {{ticket.closed ? 'REOPEN' : 'CLOSE'}}
+              </button>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+</div>

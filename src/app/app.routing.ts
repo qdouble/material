@@ -28,7 +28,8 @@ import {
   Status,
   Support,
   TermsAndConditions,
-  ViewOffers
+  ViewOffers,
+  ViewTicket
 }  from './features';
 
 import {
@@ -117,8 +118,17 @@ export const routes: Routes = [
   },
   {
     path: 'support',
-    component: Support,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: Support
+      },
+      {
+        path: 'view-ticket',
+        component: ViewTicket
+      }
+    ]
   },
   {
     path: 'terms-and-conditions',

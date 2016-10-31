@@ -3,11 +3,35 @@ import { Injectable } from '@angular/core';
 // import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
 
-import { Ticket } from '../models/ticket';
+import { Ticket, TicketMessage } from '../models/ticket';
 
 @Injectable()
 
 export class TicketActions {
+
+  static ADD_MESSAGE = '[Ticket] Add Message';
+  addMessage(message: TicketMessage): Action {
+    return {
+      type: TicketActions.ADD_MESSAGE,
+      payload: message
+    };
+  }
+
+  static ADD_MESSAGE_FAIL = '[Ticket] Add Message Fail';
+  addMessageFail(err: Error): Action {
+    return {
+      type: TicketActions.ADD_MESSAGE_FAIL,
+      payload: err
+    };
+  }
+
+  static ADD_MESSAGE_SUCCESS = '[Ticket] Add Message Success';
+  addMessageSuccess(message: TicketMessage): Action {
+    return {
+      type: TicketActions.ADD_MESSAGE_SUCCESS,
+      payload: message
+    };
+  }
 
   static ADD_TICKET = '[Ticket] Add Ticket';
   addTicket(ticket: Ticket): Action {
@@ -34,10 +58,10 @@ export class TicketActions {
   }
 
   static CLOSE_TICKET = '[Ticket] Close Ticket';
-  closeTicket(id: string): Action {
+  closeTicket(ticket: { id: string, close: boolean }): Action {
     return {
       type: TicketActions.CLOSE_TICKET,
-      payload: id
+      payload: ticket
     };
   }
 
@@ -81,7 +105,7 @@ export class TicketActions {
     };
   }
 
-  static GET_TICKET = '[Ticket] Select Ticket';
+  static GET_TICKET = '[Ticket] Get Ticket';
   getTicket(id: string): Action {
     return {
       type: TicketActions.GET_TICKET,
@@ -89,10 +113,10 @@ export class TicketActions {
     };
   }
 
-  static GET_TICKET_FAIL = '[Ticket] Select Ticket';
+  static GET_TICKET_FAIL = '[Ticket] Get Ticket Fail';
   getTicketFail(err: Error): Action {
     return {
-      type: TicketActions.GET_TICKET,
+      type: TicketActions.GET_TICKET_FAIL,
       payload: err
     };
   }
@@ -100,7 +124,7 @@ export class TicketActions {
   static GET_TICKET_SUCCESS = '[Ticket] Get Ticket Success';
   getTicketSuccess(ticket: Ticket): Action {
     return {
-      type: TicketActions.GET_TICKETS_SUCCESS,
+      type: TicketActions.GET_TICKET_SUCCESS,
       payload: ticket
     };
   }
@@ -128,5 +152,35 @@ export class TicketActions {
     };
   }
 
+  static MARK_TICKET_AS_READ = '[Support] Mark Ticket As Readd';
+  markTicketAsRead(ticket: { id: string, mark: boolean }): Action {
+    return {
+      type: TicketActions.MARK_TICKET_AS_READ,
+      payload: ticket
+    };
+  }
 
+  static MARK_TICKET_AS_READ_FAIL = '[Support] Mark Ticket As Read Fail';
+  markTicketAsReadFail(err: Error): Action {
+    return {
+      type: TicketActions.MARK_TICKET_AS_READ_FAIL,
+      payload: err
+    };
+  }
+
+  static MARK_TICKET_AS_READ_SUCCESS = '[Support] Mark Ticket As Read Success';
+  markTicketAsReadSuccess(ticket: Ticket): Action {
+    return {
+      type: TicketActions.MARK_TICKET_AS_READ_SUCCESS,
+      payload: ticket
+    };
+  }
+
+  static SORT_BY = '[Offer] Sort Tickets By';
+  sortBy(sort: { sortBy: string, reverse: boolean }): Action {
+    return {
+      type: TicketActions.SORT_BY,
+      payload: sort
+    };
+  }
 }

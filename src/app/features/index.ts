@@ -6,7 +6,7 @@ import { HowItWorks } from './how-it-works';
 import { Login } from './login';
 import { Logout } from './logout';
 import { OfferRedirect, Offers, OFFERS_COMMON } from './offers';
-import { Order } from  './order';
+import { Order } from './order';
 import { PrivacyPolicy } from './privacy-policy';
 import { Profile } from './profile';
 import { Promotions } from './promotions';
@@ -14,7 +14,10 @@ import { ProofPicGallery } from './proof-pic-gallery';
 import { Register } from './register';
 import { ReportSpam } from './report-spam';
 import { Status } from './status';
-import { Support, SupportTicket } from './support';
+import {
+  Support, SupportTicket, SupportTicketFormComponent,
+  SupportTicketMessageComponent, SupportTicketTable, ViewTicket
+} from './support';
 import { TermsAndConditions } from './terms-and-conditions';
 import { ViewOffers } from './view-offers';
 
@@ -38,7 +41,8 @@ export {
   Status,
   Support,
   TermsAndConditions,
-  ViewOffers
+  ViewOffers,
+  ViewTicket
 }
 
 export const PAGES_COMMON = [
@@ -65,6 +69,10 @@ export const PAGES_COMPONENTS = [
   Status,
   Support,
   SupportTicket,
+  SupportTicketFormComponent,
+  SupportTicketMessageComponent,
+  SupportTicketTable,
   TermsAndConditions,
-  ViewOffers
+  ViewOffers,
+  ViewTicket
 ];

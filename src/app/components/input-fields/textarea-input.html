@@ -1,16 +1,8 @@
-<div class="form-group">
-  <label>{{label}}</label>
+<div class="form-group" class="textarea">
+  <label [style.visibility]="dynamicControl.value ? 'visible' : 'hidden'">{{label}}</label>
   <div>
-    <textarea rows="4" [cols]="50" [formControl]="dynamicControl" class="form-control"></textarea>
-    <div *ngIf="help"><em>{{help}}</em></div>
+    <textarea rows="4" [cols]="50" [formControl]="dynamicControl" [placeholder]="label" class="form-control"></textarea>
+    <span class="help-text-textarea" *ngIf="help">{{help}}</span>
   </div>
   <button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
-</div>
-<div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
-      !dynamicControl.hasError('required')" class="alert alert-danger">
-  {{label}} is required.
-</div>
-<div [hidden]="dynamicControl.valid || dynamicControl.untouched || 
-      dynamicControl.hasError('required')" class="alert alert-danger">
-  {{errorMessage}}
 </div>
