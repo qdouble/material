@@ -1,0 +1,33 @@
+<div class="os-table-container">
+  <table class="mdl-data-table mdl-shadow--2dp">
+    <thead>
+      <tr>
+        <th style="padding-left: 8px; padding-right: 3px; vertical-align: bottom" class="mdl-data-table__cell--non-numeric"></th>
+        <th class="mdl-data-table__cell--non-numeric hide-1">Submitted On</th>
+        <th class="mdl-data-table__cell--non-numeric">Subject</th>
+        <th class="mdl-data-table__cell--non-numeric">
+          <span style="position: relative; top: 6px"></span>
+          <!--<button md-button (click)="reload.emit($event)" color="primary" id="reload-credit-requests" class="hide-small">
+            RELOAD TICKETS
+          </button>-->
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let creditRequest of creditRequests">
+          <td class="unread-td">
+            <md-icon *ngIf="!creditRequest?.readByUser" style="font-size: 18px; color: #4CAF50">brightness_1</md-icon>
+          </td>
+          <td class="mdl-data-table__cell--non-numeric hide-1">
+            {{creditRequest.createdAt | date: 'shortDate'}}
+          </td>
+          <td class="mdl-data-table__cell--non-numeric">
+            <span md-tooltip="{{creditRequest.subject}}">{{creditRequest.subject | slice:0:18 }}</span>
+          </td>
+          <td>
+            <button class="view-credit-request-btn" md-button color="primary" type="button" [routerLink]="['view-creditRequest', { id: creditRequest.id } ]">VIEW</button>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+</div>

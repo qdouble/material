@@ -1,0 +1,29 @@
+@import '../../variables.scss';
+
+md-card-title {
+  color: $primary-color-x-dark;
+}
+
+md-input {
+  color: $primary-color-x-dark;
+}
+
+select-input {
+  display: block;
+  margin: 15px auto 15px;
+}
+
+.os-agree-checkbox {
+  margin: 5px auto 15px;
+}
+
+#referred-by {
+  margin-top: 15px;
+  margin-bottom: -5px;
+}
+
+#registration-text {
+  padding: 10px;
+  font-size: 12px;
+  margin-bottom: 15px;
+}

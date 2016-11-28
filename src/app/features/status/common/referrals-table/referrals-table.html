@@ -1,0 +1,43 @@
+<div class="os-table-container">
+ 
+  <table class="mdl-data-table mdl-shadow--2dp">
+    <thead>
+      <tr>
+        <th class="mdl-data-table__cell--non-numeric hide-1" (click)="sortBy.emit('addedOn')">Added On</th>
+        <th class="mdl-data-table__cell--non-numeric" (click)="sortBy.emit('username')">Username</th>
+        <th class="mdl-data-table__cell" (click)="sortBy.emit('level')">Level</th>
+        <th class="mdl-data-table__cell--non-numeric">
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let referral of referrals">
+        <tr [ngClass]="{'primary-background': referral.payBeyondLevel < referral.currentLevel, 'warn': referral.hold }">
+          <td class="mdl-data-table__cell--non-numeric hide-1">
+            {{referral.addedOn | date: medium }}
+          </td>
+          <td class="mdl-data-table__cell--non-numeric">
+            <span>{{referral.username | slice:0:20 }}</span>
+          </td>
+          <td class="mdl-data-table__cell center">
+            <ng-container *ngIf="!referral.hold">
+              <span>{{referral.currentLevel}}</span>
+              <ng-container *ngIf="referral.payBeyondLevel < referral.currentLevel">
+                <span><b>({{ referral.currentLevel - referral.payBeyondLevel }})</b></span>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="referral.hold"> Hold </ng-container>
+          </td>
+          <td>
+            <button md-mini-fab [ngClass]="{'white-background': (!referral.leveledUp || referral.hold) , 'primary-background':  (referral.leveledUp && !referral.hold) }" >
+              <md-icon>remove_red_eye</md-icon>
+            </button>
+            <button md-mini-fab [ngClass]="{'hide-2': true, 'white-background': (!referral.leveledUp || referral.hold) , 'primary-background':  (referral.leveledUp && !referral.hold) }">
+              <md-icon>email</md-icon>
+            </button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

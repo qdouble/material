@@ -1,18 +1,16 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'os-order',
+  selector: 'os-messages',
   template: `
 
   <header>
-    <h1>Order</h1>
+    <h1>Messages</h1>
   </header>
-  <main>
-  </main>
 
   `
 })
 
-export class Order {
+export class MessagesComponent {
 
 }

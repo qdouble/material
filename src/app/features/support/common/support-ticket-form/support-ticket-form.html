@@ -1,4 +1,5 @@
 <md-card>
+  <ng-content></ng-content>
   <md-card-actions>
     <button md-button (click)="ticket.readByUser ? markTicketAsRead.emit({id: ticket.id, mark: false}) : markTicketAsRead.emit({id: ticket.id, mark: true})">{{ticket?.readByUser ? 'MARK AS UNREAD' : 'MARK AS READ'}}</button>
     <button md-button [color]="ticket?.closed ? 'primary' : 'accent'" (click)="ticket.closed ? closeTicket.emit({id: ticket.id, close: false}) : closeTicket.emit({id: ticket.id, close: true})">{{ticket?.closed ? 'REOPEN TICKET' : 'CLOSE TICKET'}}</button>
@@ -36,12 +37,11 @@
   <md-card-content>
     <div id="reply"></div>
     <form [formGroup]="f">
-      <textarea-input formControlName="message"></textarea-input>
+      <md-textarea placeholder="Response Message" rows="4" formControlName="message"></md-textarea>
     </form>
   </md-card-content>
   <md-card-actions>
     <button color="warn" md-button (click)="f.get('message').setValue('')">CLEAR</button>
-    <button color="primary" md-button (click)="fSubmit()" [disabled]="addingTicketMessage | async">SEND REPLY</button>
+    <button color="primary" md-button (click)="fSubmit()" [disabled]="addingTicketMessageObs | async">SEND REPLY</button>
   </md-card-actions>
 </md-card>
-<!--<pre>{{ticket | json }}</pre>-->

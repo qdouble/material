@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -11,7 +11,9 @@ import { RegexValues } from '../../validators';
 
 @Component({
   selector: 'os-login',
-  templateUrl: './login.html'
+  templateUrl: './login.html',
+  styleUrls: ['./login.css'],
+  encapsulation: ViewEncapsulation.Emulated
 })
 
 export class Login {

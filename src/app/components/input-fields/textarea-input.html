@@ -1,7 +1,7 @@
 <div class="form-group" class="textarea">
   <label [style.visibility]="dynamicControl.value ? 'visible' : 'hidden'">{{label}}</label>
   <div>
-    <textarea rows="4" [cols]="50" [formControl]="dynamicControl" [placeholder]="label" class="form-control"></textarea>
+    <md-textarea rows="4" [cols]="50" [formControl]="dynamicControl" [placeholder]="placeholder" class="form-control"></md-textarea>
     <span class="help-text-textarea" *ngIf="help">{{help}}</span>
   </div>
   <button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>

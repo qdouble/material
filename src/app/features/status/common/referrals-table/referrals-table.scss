@@ -1,0 +1,61 @@
+th { 
+  cursor: pointer; 
+}
+
+table {
+  margin: 0 auto;
+}
+
+#green-key {
+  background: green;
+  width: 14px;
+  height: 14px;
+}
+
+.mdl-data-table { 
+  font-size: 13px !important
+}
+
+
+#hold-td {
+  text-align: left;
+  :nth-child(1) {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  :nth-child(2) {
+    font-size: 11px;
+  }
+  p {
+    margin-bottom: 0px;
+  }
+}
+
+#reload-referrals {
+  position: relative; 
+  top: 5px;
+  left: 22px;
+}
+
+.white-background {
+  background: white;
+}
+
+@media screen and (max-width: 500px) {
+  .mdl-data-table td, .mdl-data-table th {
+    padding-right: 10px !important;
+    padding-left:  8px;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .hide-1, .hide-2 {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 330px) and (max-width: 500px) {
+  .hide-1 {
+    display: none;
+  }
+}

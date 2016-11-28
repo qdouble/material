@@ -13,12 +13,12 @@ import { TicketActions } from '../../../../actions/ticket';
   <section>
     <form [formGroup]="f" (ngSubmit)="submitForm()">
       <md-input maxlength=90 placeholder="Subject" formControlName="subject"></md-input><br>
-      <textarea rows="4" cols="50" placeholder="Question" formControlName="question"></textarea><br>
+      <md-textarea [rows]="6" placeholder="Question" formControlName="question"></md-textarea><br>
       <button md-raised-button color="primary" [disabled]="!f.valid">SUBMIT</button>
     </form>
   </section>
   `,
-  styles: [`md-input, textarea { width: 99%; }`]
+  styles: [`md-input, md-textarea { width: 99%; }`]
 })
 
 export class SupportTicket implements OnDestroy {

@@ -29,6 +29,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const webpackMerge = require('webpack-merge');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const { hasProcessFlag, includeClientPackages, root, testDll } = require('./helpers.js');
 
@@ -36,6 +37,7 @@ const EVENT = process.env.npm_lifecycle_event || '';
 const AOT = EVENT.includes('aot');
 const DEV_SERVER = EVENT.includes('webdev');
 const DLL = EVENT.includes('dll');
+const E2E = EVENT.includes('e2e');
 const HMR = hasProcessFlag('hot');
 const PROD = EVENT.includes('prod');
 const UNIVERSAL = EVENT.includes('universal');
@@ -98,6 +100,8 @@ const COPY_FOLDERS = [
   { from: 'src/assets', to: 'assets' },
   { from: 'node_modules/hammerjs/hammer.min.js' },
   { from: 'node_modules/hammerjs/hammer.min.js.map' },
+  { from: 'src/app/main.css' },
+  { from: 'src/app/styles.css' },
   ...MY_COPY_FOLDERS
 ];
 
@@ -191,8 +195,13 @@ const commonConfig = function webpackConfig(): WebpackConfig {
         threshold: 10240,
         minRatio: 0.8
       }),
-      ...MY_CLIENT_PRODUCTION_PLUGINS
+      ...MY_CLIENT_PRODUCTION_PLUGINS,
     );
+    if (!E2E && !UNIVERSAL) {
+      config.plugins.push(
+        new BundleAnalyzerPlugin({analyzerPort: 5000})
+      );
+    }
   }
 
   return config;
@@ -271,6 +280,7 @@ const clientConfig = function webpackConfig(): WebpackConfig {
     historyApiFallback: {
       disableDotRule: true,
     },
+    stats: 'minimal',
     host: '0.0.0.0',
     watchOptions: DEV_SERVER_WATCH_OPTIONS
   };

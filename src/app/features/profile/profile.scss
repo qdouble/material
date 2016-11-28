@@ -1,0 +1,23 @@
+.form-group, .os-form-input { 
+  margin-bottom: 6px; 
+}
+
+.os-profile-form-container {
+  display: block;
+  max-width: 500px;
+}
+
+md-checkbox {
+  display: block;
+  margin: 8px auto 6px;
+}
+
+#pending-changes {
+  p {
+    margin-bottom: 0;
+  }
+}
+
+#profile-pending {
+  margin-bottom: 20px;
+}

@@ -16,7 +16,8 @@ import { CustomValidators, RegexValues, UsernameValidator } from '../../validato
 @Component({
   selector: 'os-register',
   providers: [UsernameValidator],
-  templateUrl: './register.html'
+  templateUrl: './register.html',
+  styleUrls: ['./register.css']
 })
 
 export class Register implements OnDestroy, OnInit {
@@ -59,9 +60,9 @@ export class Register implements OnDestroy, OnInit {
         [Validators.required, Validators.pattern(RegexValues.password)]),
       confirmPassword: new FormControl('password',
         [Validators.required, Validators.pattern(RegexValues.password)]),
-      firstName: new FormControl('First Name',
+      firstName: new FormControl('John',
         [Validators.required, Validators.pattern(RegexValues.nameValue)]),
-      lastName: new FormControl('Last Name',
+      lastName: new FormControl('Doe',
         [Validators.required, Validators.pattern(RegexValues.nameValue)]),
       address: new FormControl('123 Street',
         [Validators.required, Validators.pattern(RegexValues.address)]),
@@ -113,8 +114,6 @@ export class Register implements OnDestroy, OnInit {
             .subscribe(prizes => {
               if (prizes[0]) {
                 this.showPrizes = true;
-                console.log('Hello!');
-                console.log(prizes[0].id);
                 setTimeout(() => {
                   this.f.get('selectedPrize').setValue(prizes[0].id);
                 }, 1);

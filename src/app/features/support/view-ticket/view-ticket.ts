@@ -6,39 +6,13 @@ import { Observable } from 'rxjs/Observable';
 
 import { AppState } from '../../../reducers';
 import { TicketActions } from '../../../actions/ticket';
-import { getTicket } from '../../../reducers/ticket';
+import { getTicket, getTicketAddedMessage, getTicketAddingMessage } from '../../../reducers/ticket';
 import { Ticket, TicketMessage } from '../../../models/ticket';
 
 @Component({
   selector: 'os-view-ticket',
-  template: `
-
-  <header>
-  
-    <h3>View Ticket
-      <button id="os-vt-back-button" md-button [routerLink]="['..']">
-      <md-icon id="os-vt-back-button-arrow">keyboard_arrow_left</md-icon>
-      GO TO SUPPORT PAGE
-      </button>
-    </h3>
-  </header>
-  
-  <section>
-    <os-support-ticket-form 
-    [ticket]="ticket$ | async"
-    [ticketObs]="ticket$"
-    [addedTicketMessage]="addedTicketMessage$"
-    [addingTicketMessage]="addingTicketMessage$"
-    (addMessage)=addMessage($event)
-    (closeTicket)=closeTicket($event)
-    (goBack)=goBack($event)
-    (markTicketAsRead)=markTicketAsRead($event)
-    >
-    </os-support-ticket-form>
-  </section>
-
-  `,
-  styles: [`#os-vt-back-button, #os-vt-back-button-arrow { vertical-align: middle }`]
+  templateUrl: './view-ticket.html',
+  styleUrls: ['./view-ticket.css']
 })
 
 export class ViewTicket {
@@ -54,8 +28,8 @@ export class ViewTicket {
     route.params.forEach(param => {
       store.dispatch(ticketActions.getTicket(param['id']));
       this.ticket$ = store.let(getTicket(param['id']));
-      this.addedTicketMessage$ = this.store.select(s => s.ticket.addedMessage);
-      this.addingTicketMessage$ = this.store.select(s => s.ticket.addingMessage);
+      this.addedTicketMessage$ = this.store.let(getTicketAddedMessage());
+      this.addingTicketMessage$ = this.store.let(getTicketAddingMessage());
       this.loading$ = this.store.select(s => s.ticket.loading);
     });
   }

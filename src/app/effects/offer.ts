@@ -18,10 +18,30 @@ export class OfferEffects {
     private store: Store<AppState>
   ) { }
 
+  @Effect() getOffer$ = this.actions$
+    .ofType(OfferActions.GET_OFFER)
+    .map(action => <string>action.payload)
+    .switchMap(id => this.offerService.getOffer(id)
+      .map((res: any) => this.offerActions.getOfferSuccess(res))
+      .catch((err) => Observable.of(
+        this.offerActions.getOfferFail(err)
+      ))
+    );
+
   @Effect() getOffers$ = this.actions$
     .ofType(OfferActions.GET_OFFERS)
     .map(action => <string>action.payload)
-    .switchMap(email => this.offerService.getOffers()
+    .switchMap(() => this.offerService.getOffers()
+      .map((res: any) => this.offerActions.getOffersSuccess(res))
+      .catch((err) => Observable.of(
+        this.offerActions.getOffersFail(err)
+      ))
+    );
+
+  @Effect() getViewOffers$ = this.actions$
+    .ofType(OfferActions.GET_VIEW_OFFERS)
+    .map(action => <string>action.payload)
+    .switchMap(email => this.offerService.getViewOffers()
       .map((res: any) => this.offerActions.getOffersSuccess(res))
       .catch((err) => Observable.of(
         this.offerActions.getOffersFail(err)

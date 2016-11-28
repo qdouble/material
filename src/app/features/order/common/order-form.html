@@ -1,0 +1,11 @@
+<form *ngIf="loaded && !user?.profilePending" [formGroup]="form" (ngSubmit)="placeOrder.emit()">
+  <os-form-input class="os-form-input" placeholder="First Name" controlName="firstName" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="Last Name" controlName="lastName" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="Address" controlName="address" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="City" controlName="city" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="State" controlName="State" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="Zip Code" controlName="zipCode" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="Email Address" controlName="email" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="PayPal Email Address" controlName="paypal" [form]="form"></os-form-input>
+  <button md-raised-button type="submit" color="primary" class="white" [disabled]="form.invalid || placing">PLACE ORDER</button>
+</form>

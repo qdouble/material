@@ -14,7 +14,7 @@ export interface NotifyState {
   entities: { [id: number]: Notify };
 }
 
-const initialState: NotifyState = {
+export const initialState: NotifyState = {
   ids: [],
   entities: {}
 };

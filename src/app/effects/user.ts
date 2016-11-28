@@ -23,15 +23,44 @@ export class UserEffects {
     private userService: UserService
   ) { }
 
+  @Effect() adminLogin$ = this.actions$
+    .ofType(UserActions.ADMIN_LOGIN)
+    .map(action => <User>action.payload)
+    .switchMap(user => this.userService.loginAdmin(user)
+      .mergeMap(res => Observable.of(
+        this.userActions.adminLoginSuccess(res),
+        res['message_type'] !== 'success' ? this.notifyActions.addNotify(res) : null
+      ))
+      .do((res: any) => res.payload.redirectTo ?
+        window.location.href = res.payload.redirectTo : null)
+      .catch(() => Observable.of(
+        this.userActions.adminLoginFail(user)
+      ))
+    );
+
+  @Effect() changeSelectedPrize$ = this.actions$
+    .ofType(UserActions.CHANGE_SELECTED_PRIZE)
+    .map(action => <string>action.payload)
+    .switchMap(id => this.userService.changeSelectedPrize(id)
+      .mergeMap((res: any) => Observable.of(
+        this.userActions.changeSelectedPrizeSuccess(res),
+        // res['message_type'] !== 'success' ? this.notifyActions.addNotify(res) : null
+        ))
+      .catch((err) => Observable.of(
+        this.userActions.changeSelectedPrizeFail(err)
+      ))
+    );
+
   @Effect() checkEmail$ = this.actions$
     .ofType(UserActions.CHECK_EMAIL)
     .map(action => <string>action.payload)
     .switchMap(email => this.userService.checkEmail(email)
       .map((res: any) => this.userActions.checkEmailSuccess(res))
       .do((res: any) => res.payload.redirectTo ?
-        this.store.dispatch(go([res.payload.redirectTo])) : null)
-      .catch(() => Observable.of(
-        this.userActions.checkEmailFail(email)
+        this.store.dispatch(go([res.payload.redirectTo], undefined,
+          { preserveQueryParams: true })) : null)
+      .catch((err) => Observable.of(
+        this.userActions.checkEmailFail(err)
       ))
     );
 
@@ -42,6 +71,16 @@ export class UserEffects {
       .map((res: any) => this.userActions.checkLoggedInSuccess(res))
       .catch((res) => Observable.of(
         this.userActions.checkLoggedInFail(res)
+      ))
+    );
+
+  @Effect() dismissProfileChanges$ = this.actions$
+    .ofType(UserActions.DISMISS_PROFILE_CHANGES)
+    .map(action => <any>action.payload)
+    .switchMap(() => this.userService.dismissProfileChanges()
+      .map((res: any) => this.userActions.dismissProfileChangesSuccess(res))
+      .catch((res) => Observable.of(
+        this.userActions.dismissProfileChangesFail(res)
       ))
     );
 
@@ -61,8 +100,8 @@ export class UserEffects {
     .switchMap(user => this.userService.loginUser(user)
       .mergeMap(res => Observable.of(
         this.userActions.loginSuccess(res),
-        this.notifyActions.addNotify(res)
-        ))
+        res['message_type'] !== 'success' ? this.notifyActions.addNotify(res) : null
+      ))
       .do((res: any) => res.payload.redirectTo ?
         this.store.dispatch(go([res.payload.redirectTo])) : null)
       .catch(() => Observable.of(
@@ -82,26 +121,42 @@ export class UserEffects {
     );
 
   @Effect() recordClick$ = this.actions$
-  .ofType(UserActions.RECORD_CLICK)
-  .map(action => <string>action.payload)
-  .switchMap(offer => this.userService.recordClick(offer)
-    .map(res => this.userActions.recordClickSuccess(res))
-    .do((res: any) => res.payload.redirectTo ?
-      window.location.replace(res.payload.redirectTo) : null)
-    .catch((res) => Observable.of(
-      this.userActions.recordClickFail(res)
-    ))
-  );
+    .ofType(UserActions.RECORD_CLICK)
+    .map(action => <string>action.payload)
+    .switchMap(offer => this.userService.recordClick(offer)
+      .map(res => this.userActions.recordClickSuccess(res))
+      .do((res: any) => res.payload.redirectTo ?
+        window.location.replace(res.payload.redirectTo) : null)
+      .catch((res) => Observable.of(
+        this.userActions.recordClickFail(res)
+      ))
+    );
 
   @Effect() register$ = this.actions$
     .ofType(UserActions.REGISTER)
     .map(action => <User>action.payload)
     .switchMap(user => this.userService.registerUser(user)
       .map(res => this.userActions.registerSuccess(res))
-      .do((res: any) => res.payload.redirectTo ?
-        this.store.dispatch(go([res.payload.redirectTo])) : null)
+      .do(res => {
+        if (res.payload.redirectTo) {
+          this.store.dispatch(go([res.payload.redirectTo, { new: true }]));
+        }
+      })
       .catch((res) => Observable.of(
         this.userActions.registerFail(res)
+      ))
+    );
+
+  @Effect() setSponsor$ = this.actions$
+    .ofType(UserActions.SET_SPONSOR)
+    .map(action => <string>action.payload)
+    .switchMap(sponsor => this.userService.setSponsor(sponsor)
+      .mergeMap(res => Observable.of(
+        this.userActions.setSponsorSuccess(res),
+        res['message'] ? this.notifyActions.addNotify(res) : null
+      ))
+      .catch((res) => Observable.of(
+        this.userActions.setSponsorFail(res)
       ))
     );
 
@@ -109,7 +164,10 @@ export class UserEffects {
     .ofType(UserActions.UPDATE_PROFILE)
     .map(action => <User>action.payload)
     .switchMap(user => this.userService.updateProfile(user)
-      .map(res => this.userActions.updateProfileSuccess(res))
+      .mergeMap(res => Observable.of(
+        this.userActions.updateProfileSuccess(res),
+        this.notifyActions.addNotify(res)
+      ))
       .catch((res) => Observable.of(
         this.userActions.updateProfileFail(res)
       ))

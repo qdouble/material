@@ -1,14 +1,31 @@
-<div class="offer-face">
-  <div>
-    <em><b><ng-content select="offer-card-feature"></ng-content></b></em>
+<md-card [ngClass]="{'offer-face': sideNavOpen, 'offer-face-s-closed': !sideNavOpen }">
+  <md-card-subtitle *ngIf="showingAvailable">
+    <ng-content select="[offer-card-feature]"></ng-content>
+  </md-card-subtitle>
+  <md-card-title>
+    <ng-content select="[offer-card-name]"></ng-content>
+  </md-card-title>
+  <div [ngClass]="{'offer-card-image': sideNavOpen, 'offer-card-image-s-closed': !sideNavOpen }">
+    <ng-content select="[offer-card-image]" md-card-image></ng-content>
   </div>
-  <div>
-    <ng-content class="offer-image" select="offer-card-image"></ng-content>
-  </div>
-  <div>
-    <ng-content select="offer-card-name"></ng-content>
-  </div>
-  <div class="description">
-    <i><ng-content select="offer-card-description"></ng-content></i>
-  </div>
-</div>
+  <md-card-content>
+    <div>Credit Value: <ng-content select="[offer-card-value]"></ng-content></div>
+    <div>Cost: <ng-content select="[offer-card-cost]"></ng-content></div>
+    <div>Credits: <ng-content select="[offer-card-credits]"></ng-content></div>
+  </md-card-content>
+  <md-card-actions>
+    <button md-button color="primary" [routerLink]="['../offer-details', {id: offerId}]">VIEW OFFER</button>
+    <ng-container *ngIf="showingAvailable">
+      <div *ngIf="!hideLevel" class="os-md-card-level">
+        <div>Complete and reach</div>
+        <div>Level <ng-content select="[offer-card-level]"></ng-content></div>
+        <div>Earn up to $<ng-content select="[offer-card-earn]"></ng-content> per referral&#42;</div>
+      </div>
+      <div *ngIf="hideLevel" class="os-md-card-level">
+        <div>Complete and earn</div>
+        <div>Partial Credit</div>
+        <div>towards reaching level {{userLevel + 1}}</div>
+      </div>
+    </ng-container>
+  </md-card-actions>
+</md-card>

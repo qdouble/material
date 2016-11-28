@@ -1,0 +1,17 @@
+<md-card class="os-page-container">
+  <div class="os-support-tickets-table-container">
+  <md-card class="os-new-support-ticket">
+    <md-card-title class="primary">New Credit Request</md-card-title>
+    <md-card class="os-message-card" id="request-card-instructions">
+      Please include all header information from your confirmation e-mail. E-mail headers typically include information such as <b>Return-Path, Received, Date, Message-Id, To, From, Subject, etc.</b> If you're using a web based e-mail client you may need to change your configuration in order to see the full header information.
+    </md-card>
+    <form [formGroup]="f" (ngSubmit)="addRequest(f.value)">
+      <select-input controlName="offerId" label="Completed Offer: " [optionValues]="offerIds$ | async" [optionLabels]="offerNames$ | async" [form]="f"></select-input>
+      <label>Date Completed:</label> <input type="date" id="myDate" formControlName="completedOn">
+      <md-textarea [rows]="6" placeholder="Confirmation Email" formControlName="confirmationEmail"></md-textarea><br>
+      <md-textarea [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></md-textarea><br>
+      <button md-raised-button class="white" color="primary" [disabled]="!f.valid">SUBMIT CREDIT REQUEST</button>
+    </form>
+  </md-card>
+  </div>
+</md-card>

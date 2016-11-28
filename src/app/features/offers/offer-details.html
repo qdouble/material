@@ -1,0 +1,43 @@
+<md-card class="os-page-container">
+  <div class="details-container">
+    <md-card id="important-review" class="accent-background">
+      <md-card-subtitle class="white">Important: Please review the following information before continuing with the offer!</md-card-subtitle>
+    </md-card>
+    <md-card class="offer-section">
+      <md-card-content>
+        <div>
+          <img [src]="offer?.imageURL" [alt]="offer?.displayName">
+        </div>
+        <p>You are being sent to the {{offer?.displayName}} offer.</p>
+        <p><b>Description:</b> {{offer?.description}}</p>
+        <p><b>Requirements:</b> {{offer?.requirements}}</p>
+      </md-card-content>
+      <md-card-actions>
+        <button md-raised-button color="primary" class="white" (click)="continueToOffer(offer?.id)">CONTINUE WITH THIS OFFER</button>
+      </md-card-actions>
+      <md-card-content>
+        Once you have completed the requirements listed above, credit is usually applied to your account
+        <span *ngIf="offer?.minTimeToCredit === 0 && offer?.maxTimeToCredit === 0">
+        quickly (within 6 hours).
+      </span>
+        <span *ngIf="offer?.minTimeToCredit === 0 && offer?.maxTimeToCredit !== 0">
+        within {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType }}.
+      </span>
+        <span *ngIf="offer?.minTimeToCredit !== 0 && offer?.maxTimeToCredit !== 0">
+        within {{offer?.minTimeToCredit }} - {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType }} .
+      </span> Until the sign up is reported to us, you will not see any indication on your account that you have
+        completed the offer.
+      </md-card-content>
+    </md-card>
+    <md-card>
+      <md-card-subtitle id="please-note-section">
+        Please note: Unless otherwise stated, use of anything other than a valid credit card or bank issued debit card is prohibited
+        and will invalidate credit. Use of a promotional or coupon code will also invalidate credit. Immediate or quick cancellations
+        of the product or service will result in your credit being revoked and your account being closed. Please try the
+        advertisers product or service to its fullest. Lastly, please do not contact the advertiser if you complete an offer
+        and do not receive credit as they will not be able to help. Use our missing credit request form if you are missing
+        credit for an offer you have completed.
+      </md-card-subtitle>
+    </md-card>
+  </div>
+</md-card>

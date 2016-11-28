@@ -1,0 +1,54 @@
+th { 
+  cursor: pointer; 
+}
+
+table {
+  margin: 0 auto;
+}
+
+.mdl-data-table { 
+  font-size: 13px !important
+}
+
+#reload-tickets {
+  position: relative; 
+  top: 5px;
+  left: 22px;
+}
+
+.unread-td {
+  padding-left: 8px; 
+  padding-right: 3px; 
+  vertical-align: bottom;
+}
+
+@media screen and (max-width: 400px) {
+  .hide-1 {
+    display: none;
+  }
+}
+
+
+@media screen and (max-width: 500px) {
+  .hide-small {
+    display: none !important;
+  }
+  .mdl-data-table td, .mdl-data-table th {
+    padding: 0 4px 0 !important;
+  }
+  .unread-td {
+    vertical-align: middle !important;
+    top: 4px;
+  }
+}
+
+@media screen and (min-width: 500px) and (max-width: 600px) {
+  .mdl-data-table td, .mdl-data-table th {
+    padding: 0 0px 12px 10px;
+    text-align: right;
+  }
+  #reload-tickets {
+    left: 0px;
+  }
+}
+

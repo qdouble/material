@@ -1,51 +1,52 @@
-<header>
-  <h1>Registration</h1>
-</header>
-<main>
-  <form [formGroup]="f" (ngSubmit)="submitForm()">
-    <email-input [label]="'Email Address'" [controlName]="'email'" [form]="f"></email-input>
-    <email-input [label]="'Confirm E-mail Address'" [controlName]="'confirmEmail'" [form]="f">
-    </email-input>
-    <div [hidden]="!f.hasError('compareEmail') || 
-        !f.get('confirmEmail').valid" class="alert alert-danger">
-      Email addresses do not match.
-    </div>
-    <debounce-input [label]="'Username'" [controlName]="'username'" [form]="f"></debounce-input>
-    <div [hidden]="!f.get('username').hasError('usernameTaken')" class="alert alert-danger">
-      Username has already been taken.
-    </div>
-    <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
-    <password-input [label]="'Confirm Password'" [controlName]="'confirmPassword'" [form]="f">
-    </password-input>
-    <div [hidden]="!f.hasError('comparePassword') || 
-        !f.get('confirmPassword').valid" class="alert alert-danger">
-      Passwords do not match.
-    </div>
-    <text-input [label]="'First Name'" [controlName]="'firstName'" [form]="f"></text-input>
-    <text-input [label]="'Last Name'" [controlName]="'lastName'" [form]="f"></text-input>
-    <text-input [label]="'Street Address'" [controlName]="'address'" [form]="f"></text-input>
-    <text-input [label]="'City'" [controlName]="'city'" [form]="f"></text-input>
-    <text-input [label]="'State'" [controlName]="'State'" [form]="f"></text-input>
-    <text-input [label]="'Zip Code'" [controlName]="'zipCode'" [form]="f"></text-input>
-    <text-input [label]="'Country'" [controlName]="'country'" [form]="f"></text-input>
-    <text-input [label]="'Phone Number'" [controlName]="'phone'" [form]="f"></text-input>
-    <div class="form-group">
-      <label>Birthday</label>
-      <input type="date" formControlName="birthday" class="form-control">
-    </div>
-    <select-input *ngIf="showPrizes" [label]="'How would you like to recieve your prize?'" [optionValues]="prizeIds$ | async"
-      [optionLabels]="prizeNames$ | async" [controlName]="'selectedPrize'" [form]="f">
-    </select-input>
-    <email-input *ngIf="f.get('selectedPrize').value !== '1468623188180' &&
-        f.get('selectedPrize').value !== null " [label]="'PayPal email address'" [controlName]="'paypal'" [form]="f">
-    </email-input>
-    <div class="form-group">
-      <label>I agree to the Terms and Conditions</label>
-      <input formControlName="agree" type="checkbox" class="form-control">
-    </div>
-    <button type="submit" [disabled]="!f.valid">Register</button>
-    <p *ngIf="f.get('referredBy').value">
-      You are being referred by: {{f.get('referredBy').value}}
-    </p>
-  </form>
-</main>
+<md-card class="register-page-container">
+  <md-card class="os-form-container">
+    <md-card-title>Register</md-card-title>
+    <md-card id="registration-text">
+      All information provided is used for verifying your account and paying out prizes.
+      Invalid information will lead to this account being placed on hold. Your information will not be used for spam or sold to third parties.
+    </md-card>
+    <form [formGroup]="f" (ngSubmit)="submitForm()">
+      <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" type="email" controlName="confirmEmail" placeholder="Confirm Email Address" [form]="f"></os-form-input>
+      <div [hidden]="!f.hasError('compareEmail') || 
+          !f.get('confirmEmail').valid" class="warn-text">
+        Email addresses do not match.
+      </div>
+      <os-form-input class="os-form-input" type="text" controlName="username" placeholder="Username" [form]="f"></os-form-input>
+      <div [hidden]="!f.get('username').hasError('usernameTaken')" class="warn-text">
+        Username has already been taken.
+      </div>
+      <os-form-input class="os-form-input" type="password" controlName="password" placeholder="Password" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" type="password" controlName="confirmPassword" placeholder="Confirm Password" [form]="f"></os-form-input>
+      <div [hidden]="!f.hasError('comparePassword') || 
+          !f.get('confirmPassword').valid" class="warn-text">
+        Passwords do not match.
+      </div>
+      <os-form-input class="os-form-input" type="text" controlName="firstName" placeholder="First Name" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" type="text" controlName="lastName" placeholder="Last Name" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" type="text" controlName="address" placeholder="Street Address (Do NOT use PO Box)" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" type="text" controlName="city" placeholder="City" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" type="text" controlName="State" placeholder="State" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" type="text" controlName="zipCode" placeholder="Zip Code" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" type="text" controlName="country" placeholder="Country" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" type="text" controlName="phone" placeholder="Phone Number" [form]="f"></os-form-input>
+      <div class="form-group">
+        <label>Birthday</label>
+        <input type="date" formControlName="birthday" class="form-control">
+      </div>
+      
+      <select-input *ngIf="showPrizes" [label]="'How would you like to recieve your prize?'" [optionValues]="prizeIds$ | async"
+        [optionLabels]="prizeNames$ | async" [controlName]="'selectedPrize'" [form]="f">
+      </select-input>
+      <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address'" [controlName]="'paypal'" [form]="f">
+      </os-form-input>
+      <div class="os-agree-checkbox">
+        <md-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the Terms and Conditions</md-checkbox>
+      </div>
+      <button class="white" md-raised-button color="primary" type="submit" [disabled]="!f.valid">Register</button>
+      <p id="referred-by" *ngIf="f.get('referredBy').value">
+        You are being referred by: {{f.get('referredBy').value}}
+      </p>
+    </form>
+  </md-card>
+</md-card>

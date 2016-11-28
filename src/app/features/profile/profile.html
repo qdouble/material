@@ -1,18 +1,74 @@
-<header>
-  <h1>Profile</h1>
-</header>
-<main>
-  <form [formGroup]="f" (ngSubmit)="submitForm()">
-    <p *ngIf="(user$ | async)?.currentSponsor">
-      Your sponsor is: {{(user$ | async)?.currentSponsor}}
-    </p>
-    <text-input [label]="'Your Username:'" [controlName]="'username'" [form]="f"></text-input>
-    <email-input [label]="'Your Email Address:'" [controlName]="'email'" [form]="f"></email-input>
-    <text-input [label]="'Your Address:'" [controlName]="'address'" [form]="f"></text-input>
-    <text-input [label]="'Your City:'" [controlName]="'city'" [form]="f"></text-input>
-    <text-input [label]="'Your State:'" [controlName]="'State'" [form]="f"></text-input>
-    <text-input [label]="'Your Zip Code:'" [controlName]="'zipCode'" [form]="f"></text-input>
-    <text-input [label]="'Phone Number:'" [controlName]="'phone'" [form]="f"></text-input>
-    <button md-raised-button type="submit" [disabled]="!f.valid">Update Profile</button>
-  </form>
-</main>
+<md-card class="os-page-container">
+  <md-card class="os-form-container">
+    <md-card-title class="primary">Profile</md-card-title>
+    <md-card *ngIf="(loaded$ | async) && (user$ | async).profilePending" id="profile-pending" class="accent-medium-background">
+      <md-card-content>
+        <h6>Your Profile Changes are Pending Approval</h6>
+        <p>You must either wait for admin approval before making further changes or you can dismiss pending changes.</p>
+        <p><em>*If you changed your password, the password change was applied immediately.</em></p>
+        <button md-raised-button color="warn" (click)="dismissProfileChanges()">DISMISS PENDING CHANGES</button>
+      </md-card-content>
+      <md-card-actions>
+        <button md-button (click)="viewPending = !viewPending">{{ viewPending ? 'HIDE PENDING CHANGES' : 'VIEW PENDING CHANGES' }}</button>
+      </md-card-actions>
+      <md-card-content id="pending-changes" *ngIf="viewPending">
+        <p>First Name: {{ pendingProfile?.firstName }}</p>
+        <p>Last Name: {{ pendingProfile?.lastName }}</p>
+        <p>Username: {{ pendingProfile?.username }}</p>
+        <p>Email: {{ pendingProfile?.email }}</p>
+        <p>Address: {{ pendingProfile?.address }}</p>
+        <p>City: {{ pendingProfile?.city }}</p>
+        <p>State: {{ pendingProfile?.State }}</p>
+        <p>Zip Code: {{ pendingProfile?.zipCode }}</p>
+        <p>Phone: {{ pendingProfile?.phone }}</p>
+        <p>PayPal: {{ pendingProfile?.paypal }}</p>
+        <p>Birthday: {{ pendingProfile?.birthday }}</p>
+      </md-card-content>
+    </md-card>
+    <form *ngIf="(loaded$ | async) && !(user$ | async).profilePending" [formGroup]="f" (ngSubmit)="submitForm()">
+      <os-form-input class="os-form-input" placeholder="First Name" controlName="firstName" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="Last Name" controlName="lastName" [form]="f"></os-form-input>
+      <ng-container *ngIf="(f.get('firstName').value !== initialFormValue.firstName || f.get('lastName').value !== initialFormValue.lastName)">
+        <div class="checkbox-note accent">*Name changes will be manually reviewed/approved by Admin</div>
+      </ng-container>
+      <os-form-input class="os-form-input" placeholder="Username" controlName="username" [form]="f"></os-form-input>
+      <ng-container *ngIf="f.get('username').value !== initialFormValue.username">
+        <div class="checkbox-note accent">*Username changes will be manually reviewed/approved by Admin</div>
+      </ng-container>
+      <os-form-input class="os-form-input" placeholder="Email Address" controlName="email" [form]="f"></os-form-input>
+      <ng-container *ngIf="f.get('email').value !== initialFormValue.email">
+        <os-form-input class="os-form-input" placeholder="Confirm Email Address" controlName="confirmEmail" [form]="f"></os-form-input>
+        <div class="checkbox-note accent">*Email changes will be manually reviewed/approved by Admin</div>
+        <div [hidden]="!f.hasError('compareEmail')" class="warn-text">
+          Emails do not match.
+        </div>
+      </ng-container>
+      <os-form-input class="os-form-input" placeholder="Address" controlName="address" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="City" controlName="city" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="State" controlName="State" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="Zip Code" controlName="zipCode" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="Phone Number" controlName="phone" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="PayPal Email Address" controlName="paypal" [form]="f"></os-form-input>
+      <md-checkbox #changePassword color="primary">Change Password</md-checkbox>
+      <ng-container *ngIf="changePassword.checked">
+        <os-form-input class="os-form-input" placeholder="Change Password" controlName="password" type="password" autocomplete="off" [form]="f"></os-form-input>
+        <os-form-input class="os-form-input" placeholder="Confirm New Password" controlName="confirmPassword" type="password" autocomplete="off" [form]="f"></os-form-input>
+        <div [hidden]="!f.hasError('comparePassword')" class="warn-text">
+          Passwords do not match.
+        </div>
+      </ng-container>
+      <div class="form-group">
+        <label>Birthday</label>
+        <input type="date" formControlName="birthday" class="form-control">
+      </div>
+      
+      <md-checkbox color="primary" class="os-form-input" formControlName="receiveEmailNotifications">Receive Email Notifications</md-checkbox>
+      <ng-container *ngIf="f.get('receiveEmailNotifications').value">
+        <md-checkbox color="primary" class="os-form-input" formControlName="receiveNotificationsFromSponsor">Receive Notifications from Sponsor</md-checkbox>
+        <md-checkbox color="primary" class="os-form-input" formControlName="receiveNotificationsFromReferrals">Receive Notifications from Referrals</md-checkbox>
+        <md-checkbox color="primary" class="os-form-input" formControlName="optOutOfMassEmails">Opt out of Of Mass Emails</md-checkbox>
+      </ng-container>
+      <button md-raised-button type="submit" color="primary" class="white" [disabled]="f.invalid || (f.value | json) === (initialFormValue | json )">Update Profile</button>
+    </form>
+  </md-card>
+</md-card>

@@ -1,0 +1,29 @@
+:host {
+  padding: 0px; // Clear padding on parent page card
+}
+
+.os-home-container {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /*:nth-child(1) {
+    background: lightgray;
+  }
+  :nth-child(2) {
+    background: gray;
+  }*/
+}
+.os-home-col {
+  width: 100%;
+  height: 100vh;
+  @media screen and (min-width: 950px) {
+    width: 50%;
+  }
+}
+
+.os-home-card-top {
+  height: 100vh;
+}
+

@@ -1,0 +1,26 @@
+th { 
+  cursor: pointer; 
+}
+
+table {
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 550px) {
+  .mdl-data-table td, .mdl-data-table th {
+    padding-right: 10px !important;
+    padding-left:  8px;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .hide-1, .hide-2 {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 330px) and (max-width: 550px) {
+  .hide-1 {
+    display: none;
+  }
+}

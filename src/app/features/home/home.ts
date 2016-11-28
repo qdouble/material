@@ -14,7 +14,8 @@ import { RegexValues } from '../../validators';
 
 @Component({
   selector: 'os-home',
-  templateUrl: './home.html'
+  templateUrl: './home.html',
+  styleUrls: ['./home.css']
 })
 
 export class Homepage implements OnDestroy {

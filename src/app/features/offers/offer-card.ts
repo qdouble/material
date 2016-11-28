@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'os-offer-card',
@@ -6,4 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./offer-card.css']
 })
 
-export class OfferCard {}
+export class OfferCard {
+  @Input() hideLevel: boolean;
+  @Input() mobile: boolean;
+  @Input() showingAvailable: boolean;
+  @Input() sideNavOpen: boolean;
+  @Input() offerId: string;
+  @Input() userLevel: number;
+}

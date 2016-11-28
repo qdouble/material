@@ -1,0 +1,10 @@
+form {
+  display: block;
+  :nth-child(1) {
+    margin-top: 15px;
+  }
+  button {
+    margin: 0 auto;
+    display: block;
+  }
+}

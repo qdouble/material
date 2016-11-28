@@ -10,4 +10,8 @@ export interface Offer {
   adminNotes?: string;
   affiliate?: string;
   campaignID?: number;
+  minTimeToCredit?: number;
+  minTimeToCreditType?: string;
+  maxTimeToCredit?: number;
+  maxTimeToCreditType?: number;
 }

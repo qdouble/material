@@ -1,0 +1,61 @@
+ <div [ngClass]="{'os-offer-card-containter': sideNavOpen, 
+    'os-offer-card-containter-s-closed': !sideNavOpen }">
+  <os-offer-card *ngFor="let offer of offers; trackBy: offer?.id" 
+    [ngClass]="{'os-offer-card': sideNavOpen, 
+    'os-offer-card-s-closed': !sideNavOpen }"
+    [hideLevel]="((userCredits + offer.creditValue) | floor) === (userCredits | floor)"
+    [offerId]="offer.id"
+    [showingAvailable]="showingAvailable"
+    [sideNavOpen]="sideNavOpen"
+    [userLevel]="userLevel"
+    >
+    <div class="offer-card-feature" offer-card-feature *ngIf="offer.featured">
+      *Featured
+    </div>
+    <div class="offer-card-image-container" offer-card-image [routerLink]="['../offer-details', { id: offer.id }]">
+      <img class="os-offer-card-image" [src]="offer.imageURL" alt="Offer Image">
+    </div>
+    <div class="offer-card-name" offer-card-name>
+      {{ offer.displayName }}
+    </div>
+    <div class="offer-card-description" offer-card-description>
+      {{ offer.description }}
+    </div>
+    <span class="offer-card-value" offer-card-value>
+      {{ offer.creditValue | number: '1.2-2' }}
+    </span>
+    <span class="offer-card-cost" offer-card-cost>
+      <span *ngIf="offer.costToUser > 0">
+        {{offer.costToUser | currency:'USD':true:'1.2-2'}}
+      </span>
+      <span *ngIf="offer.costToUser <= 0">
+        <b>{{offer.costToUser| costToUser}}</b>
+      </span>
+    </span>
+    <span class="offer-card-credits" offer-card-credits>
+      <span *ngIf="offer.minTimeToCredit === 0 && offer.maxTimeToCredit === 0">
+        <em md-tooltip="Instantly or Within 6 Hours">Quickly</em>
+      </span>
+      <span *ngIf="!(offer.minTimeToCredit === 0 && offer.maxTimeToCredit === 0)">
+        <span *ngIf="offer.minTimeToCredit > 0">
+          {{offer.minTimeToCredit}}
+          <span *ngIf="offer.maxTimeToCredit > 0 && 
+            offer.minTimeToCreditType !== offer.maxTimeToCreditType">
+            {{' ' + offer.minTimeToCreditType}}
+          </span>
+        </span>
+        <span *ngIf="offer.minTimeToCredit <= 0 && offer.maxTimeToCredit > 0">
+          Within
+        </span>
+        <span *ngIf="offer.minTimeToCredit > 0 && offer.maxTimeToCredit > 0"> - </span>
+        <span *ngIf="offer.maxTimeToCredit > 0">
+          {{offer.maxTimeToCredit + ' ' + offer.maxTimeToCreditType}}
+        </span>
+      </span>
+    </span>
+    <span class="offer-card-level" offer-card-level>
+      {{offer.creditValue + userCredits | floor }}
+    </span>
+    <span class="offer-card-earn" offer-card-earn>{{(offer.creditValue + userCredits) * 5 | earnPerReferral}}</span>
+  </os-offer-card>
+  </div>

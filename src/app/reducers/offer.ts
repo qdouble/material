@@ -15,7 +15,7 @@ export interface OfferState {
   selectedOffer: string | null;
 };
 
-const initialState: OfferState = {
+export const initialState: OfferState = {
   ids: [],
   entities: {},
   loading: false,
@@ -23,36 +23,73 @@ const initialState: OfferState = {
   selectedOffer: null
 };
 
-export function offerReducer (state = initialState, action: Action): OfferState {
+export function offerReducer(state = initialState, action: Action): OfferState {
   switch (action.type) {
 
+    case OfferActions.GET_OFFER:
     case OfferActions.GET_OFFERS:
       return Object.assign({}, state, { loading: true });
 
+    case OfferActions.GET_OFFER_FAIL:
     case OfferActions.GET_OFFERS_FAIL: {
       return Object.assign({}, state, { loading: false });
+    }
+
+    case OfferActions.GET_OFFER_SUCCESS: {
+      const offer: Offer = action.payload.offer;
+      if (!offer) return Object.assign({}, state, { loading: false });
+      const newOfferIds = [...state.ids];
+      if (!state.ids.includes(offer.id)) {
+        newOfferIds.push(offer.id);
+      }
+      return Object.assign({}, state, {
+        ids: newOfferIds,
+        entities: Object.assign({}, state.entities, {
+          [offer.id]: offer
+        }),
+        loading: false
+      });
     }
 
     case OfferActions.GET_OFFERS_SUCCESS: {
       const offers: Offer[] = action.payload.offers;
       if (!offers) return Object.assign({}, state, { loading: false });
-      const newOffers: Offer[] = offers.filter(offer => !state.entities[offer.id!]);
-      const newOfferIds: string[] = newOffers.map(offer => offer.id!);
-      const newOfferEntities = newOffers.reduce(
+      if (state.loaded) {
+        const newOffers: Offer[] = offers.filter(offer => !state.entities[offer.id!]);
+        const newOfferIds: string[] = newOffers.map(offer => offer.id!);
+        const newOfferEntities = newOffers.reduce(
+          (entities: { [id: string]: Offer }, offer: Offer) => {
+            if (offer.id)
+              return Object.assign(entities, {
+                [offer.id]: offer
+              });
+          }, {});
+
+        return Object.assign({}, state, {
+          ids: [...state.ids, ...newOfferIds],
+          entities: Object.assign({}, state.entities, newOfferEntities),
+          loading: false,
+          loaded: true
+        });
+      }
+
+      const newOffers: Offer[] = offers;
+      const offerIds: string[] = newOffers.map(offer => offer.id!);
+      const offerEntities = newOffers.reduce(
         (entities: { [id: string]: Offer }, offer: Offer) => {
           if (offer.id)
-          return Object.assign(entities, {
-            [offer.id]: offer
-          });
+            return Object.assign(entities, {
+              [offer.id]: offer
+            });
         }, {});
 
-      return {
-        ids: [...state.ids, ...newOfferIds],
-        entities: Object.assign({}, state.entities, newOfferEntities),
+      return Object.assign({}, state, {
+        ids: [...offerIds],
+        entities: offerEntities,
         loading: false,
-        loaded: true,
-        selectedOffer: state.selectedOffer
-      };
+        loaded: true
+      });
+
 
     }
 
@@ -80,6 +117,11 @@ function _getOfferEntities() {
     .select(s => s.entities);
 }
 
+function _getOffer(id: string) {
+  return (state$: Observable<OfferState>) => state$
+    .select(s => s.entities[id]);
+}
+
 function _getOffers(offerIds: string[]) {
   return (state$: Observable<OfferState>) => state$
     .let(_getOfferEntities())
@@ -99,6 +141,10 @@ function _getSelectedOffer() {
 function _getOfferState() {
   return (state$: Observable<AppState>) => state$
     .select(s => s.offer);
+}
+
+export function getOffer(id: string) {
+  return compose(_getOffer(id), _getOfferState());
 }
 
 export function getOffers(offerIds: string[]) {

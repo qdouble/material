@@ -17,10 +17,11 @@ export interface TicketState {
   addingMessage: boolean;
   loading: boolean;
   loaded: boolean;
+  loadingTicket: boolean;
   sortBy: { sortBy: string, reverse: boolean };
 };
 
-const initialState: TicketState = {
+export const initialState: TicketState = {
   ids: [],
   entities: {},
   added: false,
@@ -29,6 +30,7 @@ const initialState: TicketState = {
   addingMessage: false,
   loading: false,
   loaded: false,
+  loadingTicket: false,
   sortBy: { sortBy: 'createdAt', reverse: true }
 };
 
@@ -59,9 +61,9 @@ export function ticketReducer(state = initialState, action: Action): TicketState
     }
 
     case TicketActions.ADD_MESSAGE:
-      return Object.assign({}, state, { addingTicketMessage: true, addedTicketMessage: false });
+      return Object.assign({}, state, { addingMessage: true, addedMessage: false });
     case TicketActions.ADD_MESSAGE_FAIL:
-      return Object.assign({}, state, { addingTicketMessage: false, addedTicketMessage: false });
+      return Object.assign({}, state, { addingMessage: false, addedMessage: false });
 
     case TicketActions.ADD_MESSAGE_SUCCESS: {
       const ticketMessage: TicketMessage = action.payload.ticketMessage;
@@ -69,11 +71,13 @@ export function ticketReducer(state = initialState, action: Action): TicketState
       const lastEntry: Date = action.payload.lastEntry;
       const lastEntryBy: string = action.payload.lastEntryBy;
       if (!ticketMessage || !entries || !lastEntry || !lastEntryBy) {
-        return Object.assign({}, state, { addingTicketMessage: false, addedTicketMessage: false });
+        return Object.assign({}, state, { addingMessage: false, addedMessage: false });
       }
       const ticketsMod = Object.assign({}, state.entities);
       ticketsMod[ticketMessage.ticketId] = Object.assign({}, ticketsMod[ticketMessage.ticketId],
         {
+          addedMessage: true,
+          addingMessage: false,
           messages: [...ticketsMod[ticketMessage.ticketId].messages, ticketMessage],
           entries: entries,
           lastEntry: lastEntry,
@@ -87,8 +91,8 @@ export function ticketReducer(state = initialState, action: Action): TicketState
       return Object.assign({}, state, {
         entities: ticketsMod,
         loadingTicket: false,
-        addedTicketMessage: true,
-        addingTicketMessage: false
+        addedMessage: true,
+        addingMessage: false
       });
     }
 
@@ -204,6 +208,16 @@ export function ticketReducer(state = initialState, action: Action): TicketState
   }
 }
 
+function _getAddedMessage() {
+  return (state$: Observable<TicketState>) => state$
+    .select(s => s.addedMessage);
+}
+
+function _getAddingMessage() {
+  return (state$: Observable<TicketState>) => state$
+    .select(s => s.addingMessage);
+}
+
 function _getTicketEntities() {
   return (state$: Observable<TicketState>) => state$
     .select(s => s.entities);
@@ -235,6 +249,14 @@ function _getTicketCollection() {
 function _getTicketState() {
   return (state$: Observable<AppState>) => state$
     .select(s => s.ticket);
+}
+
+export function getTicketAddedMessage() {
+  return compose(_getAddedMessage(), _getTicketState());
+}
+
+export function getTicketAddingMessage() {
+  return compose(_getAddingMessage(), _getTicketState());
 }
 
 export function getTicket(ticketId: string) {

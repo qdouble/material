@@ -1,9 +1,18 @@
-<main>
-  <h4>Step 1: Choose How You Would Like to Receive Your Prize</h4>
-  <prizes-display [prizes]="prizes$ | async" [form]="prizeForm">
-  </prizes-display>
-  <h4> Step 2: Register or Extend Your Account</h4>
-  <form novalidate [formGroup]="f" (ngSubmit)="submitForm()">
-    <email-input [error]="''" [label]="'Email Address'" [controlName]="'email'" [form]="f" [submit]="'Submit'"></email-input>
-  </form>
+<main class="os-home-container">
+  <div class="os-home-col">
+    <md-card class="os-home-card-top">
+      <md-textarea placeholder="Textarea with autosize"></md-textarea>
+    </md-card>
+  </div>
+  <div class="os-home-col">
+    <md-card class="os-home-card-top">
+      <h4>Step 1: Choose How You Would Like to Receive Your Prize</h4>
+      <prizes-display [prizes]="prizes$ | async" [form]="prizeForm">
+      </prizes-display>
+      <h4> Step 2: Register or Extend Your Account</h4>
+      <form novalidate [formGroup]="f" (ngSubmit)="submitForm()">
+        <os-form-input [error]="''" [label]="'Email Address'" [controlName]="'email'" [form]="f" [submit]="'Submit'"></os-form-input>
+      </form>
+    </md-card>
+  </div>
 </main>

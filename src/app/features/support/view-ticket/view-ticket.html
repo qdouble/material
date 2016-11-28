@@ -1,0 +1,20 @@
+<md-card class="os-page-container">
+  <section>
+    <os-support-ticket-form 
+      [ticket]="ticket$ | async"
+      [ticketObs]="ticket$"
+      [addedTicketMessageObs]="addedTicketMessage$"
+      [addingTicketMessageObs]="addingTicketMessage$"
+      (addMessage)=addMessage($event)
+      (closeTicket)=closeTicket($event)
+      (goBack)=goBack($event)
+      (markTicketAsRead)=markTicketAsRead($event)
+    >
+    <md-card-title class="primary">View Ticket</md-card-title>
+    <button id="os-vt-back-button" md-raised-button [routerLink]="['..']">
+      <md-icon id="os-vt-back-button-arrow">keyboard_arrow_left</md-icon>
+        GO TO SUPPORT PAGE
+    </button>
+    </os-support-ticket-form>
+  </section>
+</md-card>

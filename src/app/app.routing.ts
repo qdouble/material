@@ -8,17 +8,20 @@ import {
 } from './guards';
 
 import { OfferRedirect } from './features/offers';
+import { AdminLogin } from './admin-login';
 
 import {
   AboutUs,
   ContactUs,
+  CreditRequestComponent,
   FAQ,
   Homepage,
   HowItWorks,
   Login,
   Logout,
+  OfferDetailsComponent,
   Offers,
-  Order,
+  OrderComponent,
   Profile,
   PrivacyPolicy,
   Promotions,
@@ -28,7 +31,6 @@ import {
   Status,
   Support,
   TermsAndConditions,
-  ViewOffers,
   ViewTicket
 }  from './features';
 
@@ -37,6 +39,10 @@ import {
 } from './resolve';
 
 export const routes: Routes = [
+  {
+    path: 'admin-login',
+    component: AdminLogin
+  },
   {
     path: '',
     pathMatch: 'full',
@@ -71,6 +77,11 @@ export const routes: Routes = [
     component: Logout
   },
   {
+    path: 'offer-details',
+    component: OfferDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'offers',
     component: Offers,
     canActivate: [AuthGuard]
@@ -81,7 +92,7 @@ export const routes: Routes = [
   },
   {
     path: 'order',
-    component: Order,
+    component: OrderComponent,
     canActivate: [AuthGuard]
   },
   {
@@ -125,6 +136,10 @@ export const routes: Routes = [
         component: Support
       },
       {
+        path: 'credit-request',
+        component: CreditRequestComponent
+      },
+      {
         path: 'view-ticket',
         component: ViewTicket
       }
@@ -136,7 +151,7 @@ export const routes: Routes = [
   },
   {
     path: 'view-offers',
-    component: ViewOffers,
+    component: Offers,
     canActivate: [LoggedInRedirectGuard]
   },
   { path: '**', component: NotFound404Component }

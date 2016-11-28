@@ -7,7 +7,17 @@ import { AppState } from '../../reducers';
 
 @Component({
   selector: 'offer-redirect',
-  template: `<header> <h1>Offer Redirect</h1> </header>`
+  template: `
+  <md-card class="os-page-container">
+  <div class="progress-container">
+    <h5>Redirecting to offer</h5>
+    <md-progress-bar mode="query" class="demo-progress-bar-margins"></md-progress-bar>
+  </div>
+  </md-card>
+  `, styles: [`
+  h5 { text-align: center } md-progress-bar { width: 75%; margin: 0 auto; }
+  .progress-container { position: absolute; top: 40%; transform: translateY(-40%); width: 100%; }
+  `]
 })
 
 export class OfferRedirect implements OnInit, OnDestroy {

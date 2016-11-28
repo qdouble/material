@@ -8,6 +8,55 @@ import { User } from '../models/user';
 @Injectable()
 
 export class UserActions {
+  static ADMIN_LOGIN = '[User] Admin Login';
+  adminLogin(user: User): Action {
+    return {
+      type: UserActions.ADMIN_LOGIN,
+      payload: user
+    };
+  }
+
+  static ADMIN_LOGIN_FAIL = '[User] Admin Login Fail';
+  adminLoginFail(user: User): Action {
+    return {
+      type: UserActions.ADMIN_LOGIN_FAIL,
+      payload: user
+    };
+  }
+
+  static ADMIN_LOGIN_SUCCESS = '[User] Admin Login Success';
+  adminLoginSuccess(user: User): Action {
+    return {
+      type: UserActions.ADMIN_LOGIN_SUCCESS,
+      payload: user
+    };
+  }
+
+  static CHANGE_SELECTED_PRIZE = '[User] Change Selected Prize';
+  changeSelectedPrize(id: string): Action {
+    return {
+      type: UserActions.CHANGE_SELECTED_PRIZE,
+      payload: id
+    };
+  }
+
+  static CHANGE_SELECTED_PRIZE_FAIL = '[User] Change Selected Prize Fail';
+  changeSelectedPrizeFail(email: string): Action {
+    return {
+      type: UserActions.CHANGE_SELECTED_PRIZE_FAIL,
+      payload: email
+    };
+  }
+
+
+  static CHANGE_SELECTED_PRIZE_SUCCESS = '[User] Change Selected Prize Success';
+  changeSelectedPrizeSuccess(res: Response): Action {
+    return {
+      type: UserActions.CHANGE_SELECTED_PRIZE_SUCCESS,
+      payload: res
+    };
+  }
+
   static CHECK_EMAIL = '[User] Check Email';
   checkEmail(email: string): Action {
     return {
@@ -52,6 +101,30 @@ export class UserActions {
   checkLoggedInSuccess(res: any): Action {
     return {
       type: UserActions.CHECK_LOGGED_IN_SUCCESS,
+      payload: res
+    };
+  }
+
+  static DISMISS_PROFILE_CHANGES = '[User] Dismiss Profile Changes';
+  dismissProfileChanges(): Action {
+    return {
+      type: UserActions.DISMISS_PROFILE_CHANGES
+    };
+  }
+
+  static DISMISS_PROFILE_CHANGES_FAIL = '[User] Dismiss Profile Changes Fail';
+  dismissProfileChangesFail(err: Error): Action {
+    return {
+      type: UserActions.DISMISS_PROFILE_CHANGES_FAIL,
+      payload: err
+    };
+  }
+
+
+  static DISMISS_PROFILE_CHANGES_SUCCESS = '[User] Dismiss Profile Changes Success';
+  dismissProfileChangesSuccess(res: Response): Action {
+    return {
+      type: UserActions.DISMISS_PROFILE_CHANGES_SUCCESS,
       payload: res
     };
   }
@@ -179,11 +252,43 @@ export class UserActions {
     };
   }
 
+  static SET_ORDER_PENDING = '[User] Set Order Pending';
+  setOrderPending(pending: boolean): Action {
+    return {
+      type: UserActions.SET_ORDER_PENDING,
+      payload: pending
+    };
+  }
+
   static SET_REFERRED_BY = '[User] Set Referred By';
   setReferredBy(username: string): Action {
     return {
       type: UserActions.SET_REFERRED_BY,
       payload: username
+    };
+  }
+
+  static SET_SPONSOR = '[User] Set Sponsor';
+  setSponsor(sponsorUsername: string): Action {
+    return {
+      type: UserActions.SET_SPONSOR,
+      payload: sponsorUsername
+    };
+  }
+
+  static SET_SPONSOR_SUCCESS = '[User] Set Sponsor Success';
+  setSponsorSuccess(res: any): Action {
+    return {
+      type: UserActions.SET_SPONSOR_SUCCESS,
+      payload: res
+    };
+  }
+
+  static SET_SPONSOR_FAIL = '[User] Set Sponsor Fail';
+  setSponsorFail(err: Error): Action {
+    return {
+      type: UserActions.SET_SPONSOR_FAIL,
+      payload: err
     };
   }
 

@@ -1,61 +1,121 @@
 /* tslint:disable: variable-name */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
 import { UserActions } from '../../actions/user';
 import { User } from '../../models/user';
 import { AppState } from '../../reducers';
 import { getUser, getUserLoaded } from '../../reducers/user';
-import { RegexValues } from '../../validators';
+import { CustomValidators, RegexValues } from '../../validators';
 
 @Component({
   selector: 'os-profile',
-  templateUrl: './profile.html'
+  templateUrl: './profile.html',
+  styleUrls: ['./profile.css']
 })
 
 export class Profile implements OnDestroy, OnInit {
+  destroyed$: Subject<any> = new Subject<any>();
+  f: FormGroup;
+  initialFormValue: User;
+  previousEmailValue: string;
+  pendingProfile: User;
   user$: Observable<User>;
   loaded$: Observable<boolean>;
   loading$: Observable<boolean>;
-  loadedUserSub: Subscription;
+  viewPending: false;
 
-  f = new FormGroup({
-    username: new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.username)]),
-    email: new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.email)]),
-    address: new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.address)]),
-    city: new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.address)]),
-    State: new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.address)]),
-    zipCode: new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.zipCode)]),
-    phone: new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.phone)])
-  });
-
-  constructor(private store: Store<AppState>, private userActions: UserActions) {
+  constructor(
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+    private userActions: UserActions
+  ) {
+    this.f = fb.group({
+      firstName: ['', [Validators.required, Validators.pattern(RegexValues.nameValue)]],
+      lastName: ['', [Validators.required, Validators.pattern(RegexValues.nameValue)]],
+      username: ['', [Validators.required, Validators.pattern(RegexValues.username)]],
+      email: ['', [Validators.required, Validators.pattern(RegexValues.email)]],
+      confirmEmail: ['', [Validators.pattern(RegexValues.email)]],
+      password: ['', [Validators.pattern(RegexValues.changePassword)]],
+      confirmPassword: ['', [Validators.pattern(RegexValues.changePassword)]],
+      address: ['', [Validators.required, Validators.pattern(RegexValues.address)]],
+      city: ['', [Validators.required, Validators.pattern(RegexValues.address)]],
+      State: ['', [Validators.required, Validators.pattern(RegexValues.address)]],
+      zipCode: ['', [Validators.required, Validators.pattern(RegexValues.zipCode)]],
+      phone: ['', [Validators.required, Validators.pattern(RegexValues.phone)]],
+      paypal: ['', [Validators.pattern(RegexValues.email)]],
+      birthday: ['', [Validators.required]],
+      receiveEmailNotifications: true,
+      receiveNotificationsFromSponsor: true,
+      receiveNotificationsFromReferrals: true,
+      optOutOfMassEmails: false
+    }, {
+        validator: Validators.compose([
+          CustomValidators.compare('email', 'confirmEmail', 'compareEmail'),
+          CustomValidators.compare('password', 'confirmPassword', 'comparePassword')
+        ])
+      });
     this.user$ = store.let(getUser());
+    this.user$.take(1).subscribe(u => {
+      if (u && u.profilePending) {
+        this.store.dispatch(this.userActions.getProfile());
+      }
+    });
     this.loaded$ = store.let(getUserLoaded());
   }
 
-  submitForm() {
-    this.store.dispatch(this.userActions.updateProfile(this.f.value));
+  ngOnInit() {
+    this.user$
+      .filter(user => user !== undefined)
+      .takeUntil(this.destroyed$)
+      .subscribe((user: User) => {
+        if (user.profilePending) {
+          this.pendingProfile = user.pendingProfile;
+        }
+        let loadedUser = Object.assign({}, user, {
+          birthday: (user.birthday || '').substring(0, 10),
+          confirmEmail: user.email
+        });
+        this.f.patchValue(loadedUser);
+        this.initialFormValue = this.f.value;
+        this.previousEmailValue = user.email;
+      });
+
+    this.f.get('email').valueChanges
+      .takeUntil(this.destroyed$)
+      .subscribe(value => {
+        if (value === this.initialFormValue.email) {
+          this.f.get('confirmEmail').setValue(value);
+          this.previousEmailValue = value;
+        } else {
+          if (this.previousEmailValue === this.initialFormValue.email) {
+            this.f.get('confirmEmail').setValue('');
+          }
+          this.previousEmailValue = value;
+        }
+      });
   }
 
-  ngOnInit() {
-    this.loadedUserSub = this.user$.subscribe((user: User) => {
-      let loadedUser = Object.assign({}, user);
-      this.f.patchValue(loadedUser);
-    });
+  dismissProfileChanges() {
+    this.store.dispatch(this.userActions.dismissProfileChanges());
+  }
+
+  submitForm() {
+    let f: User = this.f.value;
+    let i: User = this.initialFormValue;
+    let requiresApproval = false;
+    if (f.firstName !== i.firstName || f.lastName !== i.lastName || f.username !== i.username
+      || f.email !== i.email) {
+      requiresApproval = true;
+    }
+    this.store.dispatch(this.userActions.updateProfile(Object.assign({}, this.f.value,
+      { requiresApproval: requiresApproval })));
   }
 
   ngOnDestroy() {
-    this.loadedUserSub.unsubscribe();
+    this.destroyed$.next();
   }
 }

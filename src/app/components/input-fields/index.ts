@@ -1,5 +1,5 @@
 import { DebounceInput } from './debounce-input';
-import { EmailInput } from './email-input';
+import { FormInput } from './form-input';
 import { NumberInput } from './number-input';
 import { PasswordInput } from './password-input';
 import { SelectInput } from './select-input';
@@ -8,7 +8,7 @@ import { TextareaInput } from './textarea-input';
 
 export const INPUT_FIELDS = [
   DebounceInput,
-  EmailInput,
+  FormInput,
   NumberInput,
   PasswordInput,
   SelectInput,

@@ -83,5 +83,4 @@ export class TicketEffects {
         this.ticketActions.markTicketAsReadFail(err)
       ))
     );
-
 }

@@ -1,10 +1,10 @@
-<header>
-  <h1>Login</h1>
-</header>
-<main>
-  <form [formGroup]="f" (ngSubmit)="submitForm()">
-    <email-input [label]="'Email Address'" [controlName]="'email'" [form]="f"></email-input>
-    <password-input [label]="'Password'" [controlName]="'password'" [form]="f"></password-input>
-    <button md-raised-button [disabled]="!f.valid" type="submit">Login</button>
-  </form>
-</main>
+  <md-card class="os-page-container-vh">
+    <md-card class="os-login-form-container">
+      <md-card-title>Login</md-card-title>
+        <form [formGroup]="f" (ngSubmit)="submitForm()">
+          <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" name="Email" [form]="f"></os-form-input>
+          <os-form-input class="os-form-input" type="password" controlName="password" placeholder="Password" name="Password" [form]="f"></os-form-input>
+          <button md-raised-button color="primary" [disabled]="!f.valid" type="submit">LOGIN</button>
+        </form>
+    </md-card>
+  </md-card>

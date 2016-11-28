@@ -8,13 +8,15 @@ import { Subscription } from 'rxjs/Subscription';
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: TextareaInput, multi: true }
   ],
-  templateUrl: './textarea-input.html'
+  templateUrl: './textarea-input.html',
+  styles: [`md-textarea { width: 100% }`]
 })
 
 export class TextareaInput implements ControlValueAccessor, OnDestroy, OnInit {
   @Input() label: string = '';
   @Input() error: string;
   @Input() help: string;
+  @Input() placeholder: string;
   @Input() submit: string;
   controlSub: Subscription;
   dynamicControl = new FormControl();

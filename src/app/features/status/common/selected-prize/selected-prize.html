@@ -1,0 +1,10 @@
+<div id="selected-prize">
+  <img [src]="changePrize ? prizes[selectedPrizeValues.indexOf(form.get('selectedPrize').value)]?.imageUrl : prize?.imageUrl">
+</div>
+<md-card-content>
+  <p *ngIf="!changePrize">{{ prize?.name }}</p>
+  <select-input *ngIf="changePrize && selectedPrizeValues.length > 0" id="selectedPrizeDrop" controlName="selectedPrize" [optionValues]="selectedPrizeValues"
+    [optionLabels]="selectedPrizeLabels" [form]="form"></select-input>
+  <button *ngIf="changePrize" md-raised-button color="warn" (click)="cancelPrizeChange.emit()">CANCEL</button>
+  <button md-raised-button color="primary" class="white" (click)="changeSelectedPrize.emit()">{{changePrize ? 'SAVE' : 'CHANGE PRIZE'}}</button>
+</md-card-content>

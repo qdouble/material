@@ -12,12 +12,14 @@ export class PasswordInput implements OnInit {
   @Input() controlName: string;
   @Input() label: string;
   @Input() error: string;
+  @Input() name: string;
+  @Input() placeholder: string;
   @Input() submit: string;
   errorMessage: string;
   dynamicControl: AbstractControl;
 
   ngOnInit() {
-    this.errorMessage = this.error || this.label + ' is invalid';
+    this.errorMessage = this.error || (this.name || 'Password') + ' is invalid';
     this.dynamicControl = this.form.get(this.controlName);
   }
 }

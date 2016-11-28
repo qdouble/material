@@ -17,7 +17,7 @@ export interface PrizeState {
   selectedPrize: string | null;
 };
 
-const initialState: PrizeState = {
+export const initialState: PrizeState = {
   ids: [],
   entities: {},
   loading: false,
@@ -77,6 +77,11 @@ function _getLoading() {
     .select(s => s.loading);
 }
 
+function _getPrize(id: string) {
+  return (state$: Observable<PrizeState>) => state$
+    .select(s => s.entities[id]);
+}
+
 function _getPrizeEntities() {
   return (state$: Observable<PrizeState>) => state$
     .select(s => s.entities);
@@ -101,6 +106,10 @@ function _getSelectedPrize() {
 function _getPrizeState() {
   return (state$: Observable<AppState>) => state$
     .select(s => s.prize);
+}
+
+export function getPrize(id: string) {
+  return compose(_getPrize(id), _getPrizeState());
 }
 
 export function getPrizes(prizeIds: string[]) {

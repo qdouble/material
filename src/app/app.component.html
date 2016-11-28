@@ -1,8 +1,9 @@
-<md-sidenav-layout fullscreen>
-  <md-sidenav #sidenav [mode]="sideNavMode">
+<md-sidenav-layout id="offer-site" fullscreen>
+  <md-sidenav [opened]="!mobile" #sidenav [mode]="sideNavMode">
+    <div class="os-sidenav-top"></div>
     <md-nav-list>
       <template ngFor let-view [ngForOf]="views" let-even="even" let-odd="odd" let-rowIndex="index">
-        <a *ngIf="!view.subViews && view.loggedIn === (this.userLoggedIn$ | async)" md-list-item [routerLink]="view.link" routerLinkActive="active-link" (click)="mobile ? sidenav.close() : null">
+        <a *ngIf="!view.subViews && view.loggedIn === loggedIn" md-list-item style="color: #272b27" [routerLink]="view.link" preserveQueryParams routerLinkActive="active-link" (click)="mobile ? sidenav.close() : null">
           <md-icon md-list-icon>{{view.icon}}</md-icon>
           <span md-line>{{view.name}}</span>
           <span md-line class="secondary">{{view.description}}</span>
@@ -21,12 +22,23 @@
       </template>
     </md-nav-list>
   </md-sidenav>
-  <!--<div style="background: #689F38; padding-top: 16px;"></div>-->
   <md-toolbar color="primary">
-    <button md-icon-button (click)="sidenav.toggle()">
-      <md-icon>menu</md-icon>
+    <button md-icon-button (click)="sidenav.toggle(); toggleMobile()">
+      <md-icon style="color: white">menu</md-icon>
     </button>
     <img id="levelup-menu-logo" src="assets/svg/levelup-rewards-logo-v6.svg">
+    <div class="os-toolbar-right">
+      <span [ngSwitch]="loggedIn"></span>
+      <button class="os-toolbar-el-3" *ngIf="loggedIn" md-icon-button color="primary" (click)="null">
+        <md-icon style="color: #e8e8e8;" >group_add</md-icon>
+      </button>
+      <button *ngIf="loggedIn" md-icon-button color="primary" (click)="null">
+        <md-icon style="color: #e8e8e8;" >notifications</md-icon>
+      </button>
+      <button *ngIf="loggedIn" md-icon-button color="primary" (click)="null">
+        <md-icon style="color: #e8e8e8;" >mail</md-icon>
+      </button>
+    </div>
   </md-toolbar>
   <md-card id="my-page-card">
     <router-outlet (activate)="activateEvent($event)" (deactivate)="deactivateEvent($event)"></router-outlet>

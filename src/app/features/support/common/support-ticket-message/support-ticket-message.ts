@@ -13,7 +13,8 @@ import { TicketMessage } from '../../../../models/ticket';
   template: `
   <form [formGroup]="f">
     <pre><span *ngIf="!editing">{{f.get('message').value}}</span></pre>
-    <textarea-input *ngIf="editing" formControlName="message"></textarea-input>
+    <textarea-input *ngIf="editing" placeholder="Some placeholder" formControlName="message">
+    </textarea-input>
   </form>
   `
 })

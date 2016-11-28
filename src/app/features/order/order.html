@@ -1,0 +1,47 @@
+<md-card class="os-page-container">
+  <md-card id="place-order" class="os-form-container">
+    <md-card-title class="primary">Place Order</md-card-title>
+    <ng-container *ngIf="user?.orderPending">
+      <md-card class="order-status accent-background white">You have an order that is currently pending. You can not place another order until order is resolved. All pending completions
+        will be processed at the same time.</md-card>
+    </ng-container>
+    <ng-container *ngIf="!user?.orderPending && !user?.hasQualifiedReferrals">
+      <md-card class="os-message-card warn-background white">
+        <ng-container *ngIf="user?.currentLevel < 1">
+          <div style="text-align: left; padding: 4px;">
+          As you are currently on level 0, you are not qualified to place any orders. 
+          To qualify to place an order, you must complete
+          free or cheap offers on the offers tab to reach level 1 or higher and then refer 1 or more users who reach level
+          1 or higher as well. Payouts are calculated by multiplying $5 by the level reached by your referrals. The maximum
+          you can earn per referral is determined by your own level.
+          </div>
+        </ng-container>
+        <ng-container *ngIf="user?.currentLevel >= 1 && user?.hasReferralsBeyondLevel">
+          You do not have any users on your level or below that you can place an order on.
+          However, you do have referrals that have unpaid levels that are beyond your level that you can place an order for if you increase your level.
+        </ng-container>
+        <ng-container *ngIf="user?.currentLevel >= 1 && !user?.hasReferralsBeyondLevel">
+          You have no referrals that you can currently place an order on.
+        </ng-container>
+      </md-card>
+    </ng-container>
+    <ng-container *ngIf="!user?.orderPending && user?.hasQualifiedReferrals">
+      <md-card class="order-status primary-background white">Congratulations! You have met all requirements! Place your order!</md-card>
+      <md-card-subtitle>After approval, your order will be paid through:</md-card-subtitle>
+      <os-selected-prize [changePrize]="changePrize" [form]="selectPrizeForm" [prize]="prize$ | async" [prizes]="prizes$ | async"
+        [selectedPrizeLabels]="selectedPrizeLabels$ | async" [selectedPrizeValues]="selectedPrizeValues$ | async" (cancelPrizeChange)="cancelPrizeChange()"
+        (changeSelectedPrize)="changeSelectedPrize()">
+      </os-selected-prize>
+      <div id="order-form">
+        <md-card id="please-be-sure-card" class="accent-background white">Please ensure that all information is absolutely correct before placing order!</md-card>
+        <os-order-form [form]="f" [loaded]="loaded$ | async" [placing]="placing$ | async" [user]="user$ | async" (placeOrder)="placeOrder()">
+        </os-order-form>
+      </div>
+    </ng-container>
+  </md-card>
+  <md-card *ngIf="(orders$| async)?.length > 0" class="os-form-container">
+    <md-card-title class="primary">Orders</md-card-title>
+    <os-orders-table [loaded]="ordersLoaded$ | async" [orders]="orders$ | async">
+    </os-orders-table>
+  </md-card>
+</md-card>

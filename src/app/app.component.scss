@@ -1,8 +1,4 @@
-@import './styles.scss';
-
-md-toolbar.md-primary {
-  background: #8BC34A !important;
-}
+@import 'variables';
 
 #levelup-menu-logo {
   height: 32%;
@@ -11,11 +7,23 @@ md-toolbar.md-primary {
 }
 
 #my-page-card {
-  min-height: 100%;
+  padding: 0;
 }
 
-textarea {
-  font-family: $primary-font;
-  font-size: 95%;
-  width: 99%;
+.os-sidenav-top {
+  background: $primary-color;
+  height: 64px;
+  width: 100%
 }
+
+.os-toolbar-right {
+  position: absolute;
+  right: 15px;
+  top: 12px;
+  .os-toolbar-el-3 {
+    @media screen and (max-width: 360px) {
+      display: none;
+    }
+  }
+}
+

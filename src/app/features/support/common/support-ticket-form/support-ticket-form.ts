@@ -2,22 +2,25 @@ import {
   ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, OnDestroy, Output
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
+import { AppState } from '../../../../reducers';
 import { Ticket, TicketMessage } from '../../../../models/ticket';
 
 @Component({
   selector: 'os-support-ticket-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './support-ticket-form.html'
+  templateUrl: './support-ticket-form.html',
+  styles: [`md-textarea{ width: 100%; }`]
 })
 
 export class SupportTicketFormComponent implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
-  @Input() addedTicketMessage: Observable<boolean>;
-  @Input() addingTicketMessage: Observable<boolean>;
+  @Input() addedTicketMessageObs: Observable<boolean>;
+  @Input() addingTicketMessageObs: Observable<boolean>;
   @Input() loading: boolean;
   @Input() ticket: Ticket;
   @Input() ticketObs: Observable<Ticket>;
@@ -27,7 +30,10 @@ export class SupportTicketFormComponent implements OnDestroy, OnInit {
   @Output() goBack = new EventEmitter();
   @Output() markTicketAsRead = new EventEmitter();
   @Output() sortBy = new EventEmitter();
-  constructor(fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private store: Store<AppState>
+  ) {
     this.f = fb.group({
       message: ''
     });
@@ -50,7 +56,7 @@ export class SupportTicketFormComponent implements OnDestroy, OnInit {
       message: this.f.get('message').value,
       ticketId: this.ticket.id
     });
-    this.addedTicketMessage
+    this.addedTicketMessageObs
       .filter(v => v === true)
       .take(1)
       .takeUntil(this.destroyed$)

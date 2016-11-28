@@ -1,0 +1,54 @@
+/* main.css will be extracted to main dist folder and is imported in index.html */
+/* This file is for setting global styles  */
+@import 'variables';
+
+.os-form-container {
+  position: relative;
+  max-width: 500px;
+  margin: 0 auto;
+  border-bottom: 5px solid $primary-color;
+}
+
+.os-form-input {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.os-message-card {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  text-align: center;
+}
+
+.os-page-container-vh {
+  height: -moz-calc(100vh - 64px - 48px);
+  height: -webkit-calc(100vh - 64px -48px);
+  height: calc(100vh - 64px - 48px);
+  min-height: 100%;
+}
+
+.os-page-container {
+  height: 100%;
+  min-height: -moz-calc(100vh - 64px - 48px);
+  min-height: -webkit-calc(100vh - 64px -48px);
+  min-height: calc(100vh - 64px - 48px);
+}
+
+.flex-row-container {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.checkbox-note {
+  font-size: 12px;
+  margin-top: -5px;
+  margin-bottom: 5px;
+}
+
+.center {
+  text-align: center !important;
+}

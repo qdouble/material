@@ -1,8 +1,5 @@
-import {
-  AfterContentInit, Component, ChangeDetectorRef, OnInit, OnDestroy,
-  ViewChild, ViewContainerRef, ViewEncapsulation
-} from '@angular/core';
-import { MdSnackBar, MdSnackBarConfig, MdSidenav } from '@angular/material';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -11,6 +8,8 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from './reducers';
 import { Notify } from './models/notify';
+import { PrizeActions } from './actions/prize';
+import { UIActions } from './actions/ui';
 import { UserActions } from './actions/user';
 
 import { getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy } from './reducers/user';
@@ -23,10 +22,9 @@ import { MOBILE } from './services/constants';
 @Component({
   selector: 'my-app',
   styleUrls: ['./app.component.css'],
-  templateUrl: './app.component.html',
-  encapsulation: ViewEncapsulation.None
+  templateUrl: './app.component.html'
 })
-export class AppComponent implements AfterContentInit, OnDestroy, OnInit {
+export class AppComponent implements OnDestroy, OnInit {
   showMonitor = (ENV === 'development' && !AOT &&
     ['monitor', 'both'].includes(STORE_DEV_TOOLS)
   );
@@ -46,7 +44,6 @@ export class AppComponent implements AfterContentInit, OnDestroy, OnInit {
   notifications$: Observable<Notify[]>;
   notificationSub: Subscription;
   referredBy: string;
-  @ViewChild(MdSidenav) sidenav: MdSidenav;
   snackRefs = [];
   userLoading$: Observable<boolean>;
   userLoaded$: Observable<boolean>;
@@ -57,17 +54,18 @@ export class AppComponent implements AfterContentInit, OnDestroy, OnInit {
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
+    private prizeActions: PrizeActions,
     public snackBar: MdSnackBar,
     private store: Store<AppState>,
-    private userActions: UserActions,
-    public viewContainerRef: ViewContainerRef
+    private uiActions: UIActions,
+    private userActions: UserActions
   ) {
     this.notifications$ = store.let(getNotifyCollection());
     this.notificationSub = this.notifications$
       .takeUntil(this.destroyed$)
       .filter(notify => notify.length > 0)
       .subscribe(notify => {
-        let config = new MdSnackBarConfig(this.viewContainerRef);
+        let config = new MdSnackBarConfig();
         let index = notify.length - 1;
         this.snackRefs[index] = this.snackBar.open(notify[index].message,
           this.action && this.actionButtonLabel, config);
@@ -76,6 +74,9 @@ export class AppComponent implements AfterContentInit, OnDestroy, OnInit {
     this.userLoaded$ = store.let(getUserLoaded());
     this.userLoading$ = store.let(getUserLoading());
     this.userLoggedIn$ = store.let(getUserLoggedIn());
+    this.userLoggedIn$
+      .takeUntil(this.destroyed$)
+      .subscribe(l => this.loggedIn = l);
     this.userReferredBy$ = store.let(getUserReferredBy());
     this.route.queryParams
       .filter(param => param['ref'] !== undefined)
@@ -86,10 +87,12 @@ export class AppComponent implements AfterContentInit, OnDestroy, OnInit {
           this.store.dispatch(this.userActions.setReferredBy(this.referredBy));
         }
       });
+    this.store.dispatch(this.prizeActions.getPrizes());
     this.store.dispatch(this.userActions.checkLoggedIn());
   }
 
   ngOnInit() {
+    this.store.dispatch(this.uiActions.setMobile(MOBILE));
     this.userLoaded$.subscribe(loaded => {
       this.loaded = loaded;
     });
@@ -98,16 +101,6 @@ export class AppComponent implements AfterContentInit, OnDestroy, OnInit {
         this.store.dispatch(this.userActions.getProfile());
       }
     });
-  }
-
-  ngAfterContentInit() {
-    if (HMR) {
-      this.sidenav.open();
-    } else if (!MOBILE) {
-      setTimeout(() => {
-        this.sidenav.open();
-      });
-    }
   }
 
   activateEvent(event) {
@@ -150,6 +143,10 @@ export class AppComponent implements AfterContentInit, OnDestroy, OnInit {
     }
     this.previousView = view;
     this.initView = false;
+  }
+
+  toggleMobile() {
+    this.store.dispatch(this.uiActions.toggleSideNavOpen());
   }
 
   ngOnDestroy() {

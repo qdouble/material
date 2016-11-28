@@ -152,7 +152,7 @@ export class TicketActions {
     };
   }
 
-  static MARK_TICKET_AS_READ = '[Support] Mark Ticket As Readd';
+  static MARK_TICKET_AS_READ = '[Support] Mark Ticket As Read';
   markTicketAsRead(ticket: { id: string, mark: boolean }): Action {
     return {
       type: TicketActions.MARK_TICKET_AS_READ,

@@ -1,0 +1,39 @@
+.os-status-page-section {
+  width: 90%;
+  max-width: 615px;
+  margin: 0 auto;
+}
+
+md-card {
+  margin-bottom: 5px;
+}
+
+#announcements-section {
+  h5 {
+    text-align: center;
+    font-size: 18px;
+  }
+  p {
+    text-align: justify;
+  }
+}
+
+#current-status-section {
+  p {
+    margin-bottom: 0px;
+  }
+  button {
+    margin-top: 5px;
+  }
+}
+
+#referral-link-section {
+  md-card-content {
+    :nth-child(1) {
+      text-align: center;
+    }
+    :nth-child(2) {
+      text-align: justify;
+    }
+  }
+}
