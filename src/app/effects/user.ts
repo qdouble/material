@@ -141,6 +141,9 @@ export class UserEffects {
         if (res.payload.redirectTo) {
           this.store.dispatch(go([res.payload.redirectTo, { new: true }]));
         }
+        if (res.payload.message_type !== 'success') {
+          this.store.dispatch(this.notifyActions.addNotify(res.payload));
+        }
       })
       .catch((res) => Observable.of(
         this.userActions.registerFail(res)

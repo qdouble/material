@@ -22,7 +22,7 @@
             (sortBy)=sortBy($event)>
           </os-support-ticket-table>
       </md-card>
-       <md-card class="os-support-ticket-section">
+       <md-card *ngIf="(creditRequests$ | async)?.length > 0" class="os-support-ticket-section">
         <md-card-title>Credit Requests</md-card-title>
           <os-credit-request-table
             [creditRequests]="creditRequests$ | async">

@@ -146,7 +146,7 @@ export function userReducer(state = initialState, action: Action): UserState {
     case UserActions.REGISTER_SUCCESS:
       return Object.assign({}, state, {
         loading: false,
-        loggedIn: action.payload.success
+        loggedIn: action.payload.success || false
       });
 
     case UserActions.SET_ORDER_PENDING:
