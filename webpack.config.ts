@@ -69,7 +69,7 @@ const CONSTANTS = {
   AOT: AOT,
   ENV: PROD ? JSON.stringify('production') : JSON.stringify('development'),
   HMR: HMR,
-  HOST: PUBLISH ? JSON.stringify('www.levelrewards.com') : JSON.stringify(HOST),
+  HOST: PUBLISH ? JSON.stringify('levelrewards.com') : JSON.stringify(HOST),
   PORT: PORT,
   STORE_DEV_TOOLS: JSON.stringify(STORE_DEV_TOOLS),
   UNIVERSAL: UNIVERSAL
@@ -266,7 +266,7 @@ const clientConfig = function webpackConfig(): WebpackConfig {
 
   if (!DLL) {
     config.output = {
-      path: PUBLISH ? '/var/www/html' : root('dist/client'),
+      path: root('dist/client'),
       filename: 'index.js'
     };
   } else {
