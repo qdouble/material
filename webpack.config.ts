@@ -39,7 +39,9 @@ const DEV_SERVER = EVENT.includes('webdev');
 const DLL = EVENT.includes('dll');
 const E2E = EVENT.includes('e2e');
 const HMR = hasProcessFlag('hot');
+const PUBLISH = EVENT.includes('publish');
 const PROD = EVENT.includes('prod');
+const WATCH = hasProcessFlag('watch');
 const UNIVERSAL = EVENT.includes('universal');
 
 let port: number;
@@ -57,6 +59,7 @@ const PORT = port;
 
 console.log('PRODUCTION BUILD: ', PROD);
 console.log('AOT: ', AOT);
+console.log('WATCH: ', WATCH);
 if (DEV_SERVER) {
   testDll();
   console.log(`Starting dev server on: http://${HOST}:${PORT}`);
@@ -66,7 +69,7 @@ const CONSTANTS = {
   AOT: AOT,
   ENV: PROD ? JSON.stringify('production') : JSON.stringify('development'),
   HMR: HMR,
-  HOST: JSON.stringify(HOST),
+  HOST: PUBLISH ? JSON.stringify('www.levelrewards.com') : JSON.stringify(HOST),
   PORT: PORT,
   STORE_DEV_TOOLS: JSON.stringify(STORE_DEV_TOOLS),
   UNIVERSAL: UNIVERSAL
@@ -197,7 +200,7 @@ const commonConfig = function webpackConfig(): WebpackConfig {
       }),
       ...MY_CLIENT_PRODUCTION_PLUGINS,
     );
-    if (!E2E && !UNIVERSAL) {
+    if (!E2E && !UNIVERSAL && !WATCH && !PUBLISH) {
       config.plugins.push(
         new BundleAnalyzerPlugin({analyzerPort: 5000})
       );
@@ -263,7 +266,7 @@ const clientConfig = function webpackConfig(): WebpackConfig {
 
   if (!DLL) {
     config.output = {
-      path: root('dist/client'),
+      path: PUBLISH ? '/var/www/html' : root('dist/client'),
       filename: 'index.js'
     };
   } else {
