@@ -141,7 +141,7 @@ export class UserEffects {
         if (res.payload.redirectTo) {
           this.store.dispatch(go([res.payload.redirectTo, { new: true }]));
         }
-        if (res.payload.message_type !== 'success') {
+        if (!res.payload.success) {
           this.store.dispatch(this.notifyActions.addNotify(res.payload));
         }
       })
