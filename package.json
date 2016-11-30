@@ -41,6 +41,7 @@
     "clean:dist": "npm run rimraf -- dist .awcache",
     "clean:dll": "npm run rimraf -- dll",
     "clean:compile": "npm run rimraf -- \"src/compiled\" ",
+    "clean:publish": "npm run rimraf -- \"/var/www/html/*.*\" \"/var/www/html/assets\" ",
     "compile": "npm run compile:aot",
     "compile:aot": "npm run sass && npm run clean:compile && npm run ngc && npm run build:aot",
     "compile:aot:publish": "npm run sass && npm run ngc && npm run build:aot:prod:publish",

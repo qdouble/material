@@ -265,7 +265,7 @@ const clientConfig = function webpackConfig(): WebpackConfig {
 
   if (!DLL) {
     config.output = {
-      path: root('dist/client'),
+      path: PUBLISH ? '/var/www/html' : root('dist/client'),
       filename: 'index.js'
     };
   } else {
