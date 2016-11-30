@@ -39,8 +39,8 @@ const DEV_SERVER = EVENT.includes('webdev');
 const DLL = EVENT.includes('dll');
 const E2E = EVENT.includes('e2e');
 const HMR = hasProcessFlag('hot');
-const PUBLISH = EVENT.includes('publish');
 const PROD = EVENT.includes('prod');
+const PUBLISH = EVENT.includes('publish');
 const WATCH = hasProcessFlag('watch');
 const UNIVERSAL = EVENT.includes('universal');
 
@@ -59,7 +59,6 @@ const PORT = port;
 
 console.log('PRODUCTION BUILD: ', PROD);
 console.log('AOT: ', AOT);
-console.log('WATCH: ', WATCH);
 if (DEV_SERVER) {
   testDll();
   console.log(`Starting dev server on: http://${HOST}:${PORT}`);
