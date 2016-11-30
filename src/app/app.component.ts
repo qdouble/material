@@ -12,7 +12,9 @@ import { PrizeActions } from './actions/prize';
 import { UIActions } from './actions/ui';
 import { UserActions } from './actions/user';
 
-import { getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy } from './reducers/user';
+import {
+  getUserOnAdminPage, getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy
+} from './reducers/user';
 import { getNotifyCollection } from './reducers/notify';
 import { validateUserName } from './validators';
 
@@ -38,6 +40,7 @@ export class AppComponent implements OnDestroy, OnInit {
   action: boolean = false;
   /////////////////////
   destroyed$: Subject<any> = new Subject<any>();
+  onAdminLoginPage$: Observable<boolean>;
   HMR = HMR;
   loaded: boolean;
   loggedIn: boolean;
@@ -60,6 +63,7 @@ export class AppComponent implements OnDestroy, OnInit {
     private uiActions: UIActions,
     private userActions: UserActions
   ) {
+    this.onAdminLoginPage$ = store.let(getUserOnAdminPage());
     this.notifications$ = store.let(getNotifyCollection());
     this.notificationSub = this.notifications$
       .takeUntil(this.destroyed$)

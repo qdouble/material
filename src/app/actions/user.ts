@@ -252,6 +252,14 @@ export class UserActions {
     };
   }
 
+  static SET_ADMIN_LOGIN_PAGE = '[User] Set Admin Login Page';
+  setAdminLoginPage(onAdminLogin: boolean): Action {
+    return {
+      type: UserActions.SET_ADMIN_LOGIN_PAGE,
+      payload: onAdminLogin
+    };
+  }
+
   static SET_ORDER_PENDING = '[User] Set Order Pending';
   setOrderPending(pending: boolean): Action {
     return {

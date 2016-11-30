@@ -17,11 +17,12 @@ export interface UserState {
   loaded: boolean;
   loginChecked: boolean;
   loggedIn: boolean | null;
-  user: User;
+  onAdminPage: boolean;
   referredBy: string | null;
   referralIds: string[];
   referrals: { [id: string]: Referral };
   settingPrize: boolean;
+  user: User;
 };
 
 export const initialState: UserState = {
@@ -32,11 +33,12 @@ export const initialState: UserState = {
   loaded: false,
   loginChecked: false,
   loggedIn: null,
-  user: {},
+  onAdminPage: false,
   referredBy: null,
   referralIds: [],
   referrals: {},
-  settingPrize: false
+  settingPrize: false,
+  user: {}
 };
 
 export function userReducer(state = initialState, action: Action): UserState {
@@ -131,7 +133,7 @@ export function userReducer(state = initialState, action: Action): UserState {
       return state;
 
     case UserActions.LOGOUT_SUCCESS:
-      return Object.assign({}, state,  { loggedIn: false });
+      return Object.assign({}, state, { loggedIn: false });
 
     case UserActions.REGISTER:
       return Object.assign({}, state, {
@@ -147,6 +149,11 @@ export function userReducer(state = initialState, action: Action): UserState {
       return Object.assign({}, state, {
         loading: false,
         loggedIn: action.payload.success || false
+      });
+
+    case UserActions.SET_ADMIN_LOGIN_PAGE:
+      return Object.assign({}, state, {
+        onAdminPage: action.payload
       });
 
     case UserActions.SET_ORDER_PENDING:
@@ -244,6 +251,11 @@ function _getLoggedIn() {
     .select(s => s.loggedIn);
 }
 
+function _getOnAdminLoginPage() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.onAdminPage);
+}
+
 function _getReferredBy() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.referredBy);
@@ -278,6 +290,10 @@ function _getUser() {
 function _getUserState() {
   return (state$: Observable<AppState>) => state$
     .select(s => s.user);
+}
+
+export function getUserOnAdminPage() {
+  return compose(_getOnAdminLoginPage(), _getUserState());
 }
 
 export function getCredits(ids: string[]) {

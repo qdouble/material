@@ -1,5 +1,5 @@
 <md-sidenav-layout id="offer-site" fullscreen>
-  <md-sidenav [opened]="!mobile" #sidenav [mode]="sideNavMode">
+  <md-sidenav [opened]="!mobile && !(onAdminLoginPage$ | async)" #sidenav [mode]="sideNavMode">
     <div class="os-sidenav-top"></div>
     <md-nav-list>
       <template ngFor let-view [ngForOf]="views" let-even="even" let-odd="odd" let-rowIndex="index">
@@ -27,7 +27,7 @@
       <md-icon style="color: white">menu</md-icon>
     </button>
     <img id="levelup-menu-logo" src="assets/svg/levelup-rewards-logo-v6.svg">
-    <div class="os-toolbar-right">
+    <div *ngIf="!(onAdminLoginPage$ | async)" class="os-toolbar-right">
       <span [ngSwitch]="loggedIn"></span>
       <button class="os-toolbar-el-3" *ngIf="loggedIn" md-icon-button color="primary" (click)="null">
         <md-icon style="color: #e8e8e8;" >group_add</md-icon>
