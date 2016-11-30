@@ -3,7 +3,6 @@ import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 
 import { AppState } from './reducers';
@@ -45,7 +44,6 @@ export class AppComponent implements OnDestroy, OnInit {
   loaded: boolean;
   loggedIn: boolean;
   notifications$: Observable<Notify[]>;
-  notificationSub: Subscription;
   referredBy: string;
   snackRefs = [];
   userLoading$: Observable<boolean>;
@@ -65,7 +63,7 @@ export class AppComponent implements OnDestroy, OnInit {
   ) {
     this.onAdminLoginPage$ = store.let(getUserOnAdminPage());
     this.notifications$ = store.let(getNotifyCollection());
-    this.notificationSub = this.notifications$
+    this.notifications$
       .takeUntil(this.destroyed$)
       .filter(notify => notify.length > 0)
       .subscribe(notify => {
