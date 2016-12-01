@@ -4,6 +4,7 @@ export interface Offer {
   subTitle?: string;
   offerURL?: string;
   imageURL?: string;
+  directImageURL?: string;
   featured?: boolean;
   offerOrder?: number;
   description?: string;

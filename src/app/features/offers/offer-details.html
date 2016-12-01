@@ -6,7 +6,7 @@
     <md-card class="offer-section">
       <md-card-content>
         <div>
-          <img [src]="offer?.imageURL" [alt]="offer?.displayName">
+          <img [src]="offer.directImageURL?.length > 1 ? offer.directImageURL : offer.imageURL" [alt]="offer?.displayName">
         </div>
         <p>You are being sent to the {{offer?.displayName}} offer.</p>
         <p><b>Description:</b> {{offer?.description}}</p>
