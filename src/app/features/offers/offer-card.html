@@ -4,6 +4,7 @@
   </md-card-subtitle>
   <md-card-title>
     <ng-content select="[offer-card-name]"></ng-content>
+    <ng-content select="[offer-card-subtitle]"></ng-content>
   </md-card-title>
   <div [ngClass]="{'offer-card-image': sideNavOpen, 'offer-card-image-s-closed': !sideNavOpen }">
     <ng-content select="[offer-card-image]" md-card-image></ng-content>

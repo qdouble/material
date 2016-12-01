@@ -24,7 +24,7 @@ export class Homepage implements OnDestroy {
   prizesLoaded$: Observable<boolean>;
   prizesLoadedSub: Subscription;
   f = new FormGroup({
-    email: new FormControl('unregiseterd@gmail.com',
+    email: new FormControl( PUBLISH ? '' : 'unregiseterd@gmail.com',
       [Validators.required, Validators.pattern(RegexValues.email)])
   });
   prizeForm = new FormGroup({});

@@ -22,7 +22,7 @@ export class Login {
   f = new FormGroup({
     email: new FormControl('', [Validators.required,
     Validators.pattern(RegexValues.email)]),
-    password: new FormControl('password', Validators.required)
+    password: new FormControl( PUBLISH ? '' : 'password', Validators.required)
   });
 
   constructor(

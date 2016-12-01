@@ -14,6 +14,15 @@
   display: inline-block;
   text-align: initial;
 }
+
+.offer-card-subtitle {
+  font-size: 13px;
+}
+
+.shrink-name {
+  font-size: 21px;
+}
+
 @media screen and (max-width: 807px) {
   .os-offer-card {
     width: 90%;

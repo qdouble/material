@@ -1,6 +1,7 @@
 export interface Offer {
   id?: string;
   displayName?: string;
+  subTitle?: string;
   offerURL?: string;
   imageURL?: string;
   featured?: boolean;

@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
 import { PrizeActions } from '../../actions/prize';
 import { UserActions } from '../../actions/user';
@@ -21,23 +21,19 @@ import { CustomValidators, RegexValues, UsernameValidator } from '../../validato
 })
 
 export class Register implements OnDestroy, OnInit {
+  destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
   entryEmail$: Observable<string | null>;
-  entryEmailSub: Subscription;
   prizes$: Observable<Prize[]>;
-  prizesSub: Subscription;
   prizeIds$: Observable<(string | undefined)[]>;
   prizeNames$: Observable<(string | undefined)[]>;
   prizeLoaded$: Observable<boolean>;
   prizeLoaded: boolean;
-  prizeLoadedSub: Subscription;
   RANDOM_NUM = Math.floor((Math.random() * 100000) + 1);
   RANDOM_EMAIL = `new${this.RANDOM_NUM}@user.com`;
   referredBy$: Observable<string | null>;
-  referredBySub: Subscription;
   selectedPrize$: Observable<string | null>;
   selectedPrize: string | null;
-  selectedPrizeSub: Subscription;
   showPrizes: boolean;
 
   constructor(
@@ -49,37 +45,37 @@ export class Register implements OnDestroy, OnInit {
 
     this.f = new FormGroup({
       referredBy: new FormControl(),
-      email: new FormControl(`${this.RANDOM_EMAIL}`,
+      email: new FormControl(PUBLISH ? '' : `${this.RANDOM_EMAIL}`,
         [Validators.required, Validators.pattern(RegexValues.email)]),
-      confirmEmail: new FormControl(`${this.RANDOM_EMAIL}`,
+      confirmEmail: new FormControl(PUBLISH ? '' : `${this.RANDOM_EMAIL}`,
         [Validators.required, Validators.pattern(RegexValues.email)]),
-      username: new FormControl(`myUserName${this.RANDOM_NUM}`,
+      username: new FormControl(PUBLISH ? '' : `myUserName${this.RANDOM_NUM}`,
         [Validators.required, Validators.pattern(RegexValues.username)],
         userValidator.usernameTaken),
-      password: new FormControl('password',
+      password: new FormControl(PUBLISH ? '' : 'password',
         [Validators.required, Validators.pattern(RegexValues.password)]),
-      confirmPassword: new FormControl('password',
+      confirmPassword: new FormControl(PUBLISH ? '' : 'password',
         [Validators.required, Validators.pattern(RegexValues.password)]),
-      firstName: new FormControl('John',
+      firstName: new FormControl(PUBLISH ? '' : 'John',
         [Validators.required, Validators.pattern(RegexValues.nameValue)]),
-      lastName: new FormControl('Doe',
+      lastName: new FormControl(PUBLISH ? '' : 'Doe',
         [Validators.required, Validators.pattern(RegexValues.nameValue)]),
-      address: new FormControl('123 Street',
+      address: new FormControl(PUBLISH ? '' : '123 Street',
         [Validators.required, Validators.pattern(RegexValues.address)]),
-      city: new FormControl('myCity',
+      city: new FormControl(PUBLISH ? '' : 'myCity',
         [Validators.required, Validators.pattern(RegexValues.address)]),
-      State: new FormControl('Nevada',
+      State: new FormControl(PUBLISH ? '' : 'Nevada',
         [Validators.required, Validators.pattern(RegexValues.address)]),
-      zipCode: new FormControl('12345',
+      zipCode: new FormControl(PUBLISH ? '' : '12345',
         [Validators.required, Validators.pattern(RegexValues.zipCode)]),
-      country: new FormControl('USA',
+      country: new FormControl(PUBLISH ? '' : 'USA',
         [Validators.required, Validators.pattern(RegexValues.address)]),
-      phone: new FormControl('305-837-2832',
+      phone: new FormControl(PUBLISH ? '' : '305-837-2832',
         [Validators.required, Validators.pattern(RegexValues.phone)]),
-      birthday: new FormControl('1999-01-01', Validators.required),
-      paypal: new FormControl('new@user.com',
+      birthday: new FormControl(PUBLISH ? '' : '1999-01-01', Validators.required),
+      paypal: new FormControl(PUBLISH ? '' : 'new@user.com',
         Validators.pattern(RegexValues.email)),
-      agree: new FormControl(true, CustomValidators.isTrue),
+      agree: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
       hidden: new FormControl(true),
       selectedPrize: new FormControl(),
     }, Validators.compose(
@@ -87,30 +83,37 @@ export class Register implements OnDestroy, OnInit {
       CustomValidators.compare('password', 'confirmPassword', 'comparePassword')]));
 
     this.prizeLoaded$ = this.store.let(getPrizeLoaded());
-    this.prizeLoadedSub = this.prizeLoaded$.subscribe(loaded => {
-      this.prizeLoaded = loaded;
-    });
-
+    this.prizeLoaded$
+      .takeUntil(this.destroyed$)
+      .subscribe(loaded => {
+        this.prizeLoaded = loaded;
+      });
   }
 
   ngOnInit() {
     this.entryEmail$ = this.store.let(getUserEntryEmail());
-    this.entryEmailSub = this.entryEmail$.take(1).subscribe(email => {
-      if (email) this.f.get('email').setValue(email);
-    });
+    this.entryEmail$
+      .takeUntil(this.destroyed$)
+      .take(1)
+      .subscribe(email => {
+        if (email) this.f.get('email').setValue(email);
+      });
     this.referredBy$ = this.store.let(getUserReferredBy());
-    this.referredBySub = this.referredBy$
+    this.referredBy$
+      .takeUntil(this.destroyed$)
       .filter(ref => ref !== null)
       .subscribe(ref => {
         this.f.get('referredBy').setValue(ref);
       });
     this.selectedPrize$ = this.store.let(getPrizeSelected());
-    this.selectedPrizeSub = this.selectedPrize$
+    this.selectedPrize$
+      .takeUntil(this.destroyed$)
       .subscribe(prize => {
         if (prize === null) {
           if (!this.prizeLoaded) this.store.dispatch(this.prizeActions.getPrizes());
           this.prizes$ = this.store.let(getPrizeCollection());
-          this.prizesSub = this.prizes$
+          this.prizes$
+            .takeUntil(this.destroyed$)
             .subscribe(prizes => {
               if (prizes[0]) {
                 this.showPrizes = true;
@@ -135,9 +138,6 @@ export class Register implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    this.entryEmailSub.unsubscribe();
-    this.referredBySub.unsubscribe();
-    if (this.prizesSub) this.prizesSub.unsubscribe();
-    this.selectedPrizeSub.unsubscribe();
+    this.destroyed$.next();
   }
 }

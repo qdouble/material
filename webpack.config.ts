@@ -70,6 +70,7 @@ const CONSTANTS = {
   HMR: HMR,
   HOST: PUBLISH ? JSON.stringify('levelrewards.com') : JSON.stringify(HOST),
   PORT: PORT,
+  PUBLISH: PUBLISH,
   STORE_DEV_TOOLS: JSON.stringify(STORE_DEV_TOOLS),
   UNIVERSAL: UNIVERSAL
 };
