@@ -1,0 +1,34 @@
+<div class="md-tab-header" role="tablist"
+     (keydown)="handleKeydown($event)">
+  <div class="md-tab-label" role="tab" md-tab-label-wrapper md-ripple
+       *ngFor="let tab of _tabs; let i = index"
+       [id]="_getTabLabelId(i)"
+       [tabIndex]="selectedIndex == i ? 0 : -1"
+       [attr.aria-controls]="_getTabContentId(i)"
+       [attr.aria-selected]="selectedIndex == i"
+       [class.md-tab-label-active]="selectedIndex == i"
+       [class.md-tab-disabled]="tab.disabled"
+       (click)="focusIndex = selectedIndex = i">
+
+    <!-- If there is a label template, use it. -->
+    <template [ngIf]="tab.templateLabel">
+      <template [portalHost]="tab.templateLabel"></template>
+    </template>
+
+    <!-- If there is not a label template, fall back to the text label. -->
+    <template [ngIf]="!tab.templateLabel">{{tab.textLabel}}</template>
+  </div>
+  <md-ink-bar></md-ink-bar>
+</div>
+<div class="md-tab-body-wrapper" #tabBodyWrapper>
+  <md-tab-body role="tabpanel"
+               *ngFor="let tab of _tabs; let i = index"
+               [id]="_getTabContentId(i)"
+               [attr.aria-labelledby]="_getTabLabelId(i)"
+               [class.md-tab-body-active]="selectedIndex == i"
+               [md-tab-body-position]="i - selectedIndex"
+               [md-tab-body-content]="tab.content"
+               (onTabBodyCentered)="_removeTabBodyWrapperHeight()"
+               (onTabBodyCentering)="_setTabBodyWrapperHeight($event)">
+  </md-tab-body>
+</div>

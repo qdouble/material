@@ -1,0 +1,1 @@
+{"version":3,"sources":["chips.css"],"names":[],"mappings":"AAAA;EACE,cAAc,EAAE;;AAElB;EACE,sBAAsB;EACtB,2BAA2B;EAC3B,oBAAoB;EACpB,gBAAgB;EAChB,kBAAkB,EAAE","file":"chips.css","sourcesContent":[".md-chip-list {\n  padding: 12px; }\n\n.md-chip {\n  display: inline-block;\n  padding: 8px 12px 8px 12px;\n  border-radius: 24px;\n  font-size: 13px;\n  line-height: 16px; }\n"]}

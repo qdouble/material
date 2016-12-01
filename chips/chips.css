@@ -1,0 +1,11 @@
+.md-chip-list {
+  padding: 12px; }
+
+.md-chip {
+  display: inline-block;
+  padding: 8px 12px 8px 12px;
+  border-radius: 24px;
+  font-size: 13px;
+  line-height: 16px; }
+
+/*# sourceMappingURL=chips.css.map */
