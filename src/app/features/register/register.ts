@@ -8,9 +8,10 @@ import { Subject } from 'rxjs/Subject';
 import { CountryActions } from '../../actions/country';
 import { PrizeActions } from '../../actions/prize';
 import { UserActions } from '../../actions/user';
+import { Country } from '../../models/country';
 import { Prize } from '../../models/prize';
 import { AppState } from '../../reducers';
-import { getCountryLoaded } from '../../reducers/country';
+import { getCountryCollection, getCountryLoaded } from '../../reducers/country';
 import { getPrizeSelected, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
 import { getUserEntryEmail, getUserReferredBy } from '../../reducers/user';
 import { CustomValidators, RegexValues, UsernameValidator } from '../../validators';
@@ -24,6 +25,9 @@ import { CustomValidators, RegexValues, UsernameValidator } from '../../validato
 
 export class Register implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
+  countries$: Observable<Country[]>;
+  countryIds$: Observable<(string | undefined)[]>;
+  countryNames$: Observable<(string | undefined)[]>;
   countryLoaded$: Observable<boolean>;
   f: FormGroup;
   entryEmail$: Observable<string | null>;
@@ -31,7 +35,6 @@ export class Register implements OnDestroy, OnInit {
   prizeIds$: Observable<(string | undefined)[]>;
   prizeNames$: Observable<(string | undefined)[]>;
   prizeLoaded$: Observable<boolean>;
-  prizeLoaded: boolean;
   RANDOM_NUM = Math.floor((Math.random() * 100000) + 1);
   RANDOM_EMAIL = `new${this.RANDOM_NUM}@user.com`;
   referredBy$: Observable<string | null>;
@@ -51,7 +54,7 @@ export class Register implements OnDestroy, OnInit {
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
         if (!loaded) this.store.dispatch(this.countryActions.getCountries());
-      })
+      });
     this.f = new FormGroup({
       referredBy: new FormControl(),
       email: new FormControl(PUBLISH ? '' : `${this.RANDOM_EMAIL}`,
@@ -91,15 +94,35 @@ export class Register implements OnDestroy, OnInit {
       [CustomValidators.compare('email', 'confirmEmail', 'compareEmail'),
       CustomValidators.compare('password', 'confirmPassword', 'comparePassword')]));
 
-    this.prizeLoaded$ = this.store.let(getPrizeLoaded());
+    this.prizeLoaded$ = store.let(getPrizeLoaded());
     this.prizeLoaded$
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
-        this.prizeLoaded = loaded;
+        if (!loaded) {
+          this.store.dispatch(this.prizeActions.getPrizes());
+        }
+      });
+
+    this.countryLoaded$ = store.let(getCountryLoaded());
+    this.countryLoaded$
+      .takeUntil(this.destroyed$)
+      .subscribe(loaded => {
+        if (!loaded) {
+          this.store.dispatch(this.countryActions.getCountries());
+        }
       });
   }
 
   ngOnInit() {
+    this.countries$ = this.store.let(getCountryCollection());
+    this.countryIds$ = this.countries$.map(countries => countries.map(country => country.id));
+    this.countryIds$
+      .filter(ids => ids.length > 0)
+      .take(1)
+      .takeUntil(this.destroyed$)
+      .subscribe(ids => this.f.get('country').setValue(ids[0]));
+    this.countryNames$ = this.countries$
+      .map(countries => countries.map(country => country.displayName));
     this.entryEmail$ = this.store.let(getUserEntryEmail());
     this.entryEmail$
       .takeUntil(this.destroyed$)
@@ -114,29 +137,23 @@ export class Register implements OnDestroy, OnInit {
       .subscribe(ref => {
         this.f.get('referredBy').setValue(ref);
       });
+
+    this.prizes$ = this.store.let(getPrizeCollection());
+    this.prizeIds$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
+    this.prizeNames$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
     this.selectedPrize$ = this.store.let(getPrizeSelected());
     this.selectedPrize$
       .takeUntil(this.destroyed$)
       .subscribe(prize => {
         if (prize === null) {
-          if (!this.prizeLoaded) this.store.dispatch(this.prizeActions.getPrizes());
-          this.prizes$ = this.store.let(getPrizeCollection());
           this.prizes$
             .takeUntil(this.destroyed$)
             .subscribe(prizes => {
               if (prizes[0]) {
                 this.showPrizes = true;
-                setTimeout(() => {
-                  this.f.get('selectedPrize').setValue(prizes[0].id);
-                }, 1);
+                this.f.get('selectedPrize').setValue(prizes[0].id);
               }
             });
-          this.prizeIds$ = this.store.let(getPrizeCollection())
-            .filter(arr => arr.length > 0)
-            .map((arr: Prize[]) => arr.map((item: Prize) => item.id));
-          this.prizeNames$ = this.store.let(getPrizeCollection())
-            .filter(arr => arr.length > 0)
-            .map((arr: Prize[]) => arr.map((item: Prize) => item.name));
         }
         this.f.get('selectedPrize').setValue(prize);
       });
