@@ -9,6 +9,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { useLogMonitor } from '@ngrx/store-log-monitor';
 
 import { routes } from './app.routing';
+import { CountryEffects } from './effects/country';
 import { CreditRequestEffects } from './effects/credit-request';
 import { OfferEffects } from './effects/offer';
 import { OrderEffects } from './effects/order';
@@ -31,6 +32,7 @@ if (ENV === 'development' && !AOT &&
 ]);
 
 export const APP_IMPORTS = [
+  EffectsModule.run(CountryEffects),
   EffectsModule.run(CreditRequestEffects),
   EffectsModule.run(OfferEffects),
   EffectsModule.run(OrderEffects),

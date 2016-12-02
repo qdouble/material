@@ -4,6 +4,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import { storeLogger } from 'ngrx-store-logger';
 import { routerReducer, RouterState } from '@ngrx/router-store';
 
+import * as fromCountry from './country';
 import * as fromCreditRequest from './credit-request';
 import * as fromNotify from './notify';
 import * as fromOffer from './offer';
@@ -14,6 +15,7 @@ import * as fromUi from './ui';
 import * as fromUser from './user';
 
 const modules = {
+  'country': fromCountry,
   'creditRequest': fromCreditRequest,
   'notify' : fromNotify,
   'offer': fromOffer,
@@ -25,6 +27,7 @@ const modules = {
 };
 
 export interface AppState {
+  country: fromCountry.CountryState;
   creditRequest: fromCreditRequest.CreditRequestState;
   notify: fromNotify.NotifyState;
   offer: fromOffer.OfferState;
@@ -37,6 +40,7 @@ export interface AppState {
 }
 
 export const reducers = {
+  country: fromCountry.countryReducer,
   creditRequest: fromCreditRequest.creditRequestReducer,
   notify: fromNotify.notifyReducer,
   offer: fromOffer.offerReducer,

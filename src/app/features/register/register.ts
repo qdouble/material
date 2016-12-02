@@ -5,10 +5,12 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
+import { CountryActions } from '../../actions/country';
 import { PrizeActions } from '../../actions/prize';
 import { UserActions } from '../../actions/user';
 import { Prize } from '../../models/prize';
 import { AppState } from '../../reducers';
+import { getCountryLoaded } from '../../reducers/country';
 import { getPrizeSelected, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
 import { getUserEntryEmail, getUserReferredBy } from '../../reducers/user';
 import { CustomValidators, RegexValues, UsernameValidator } from '../../validators';
@@ -22,6 +24,7 @@ import { CustomValidators, RegexValues, UsernameValidator } from '../../validato
 
 export class Register implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
+  countryLoaded$: Observable<boolean>;
   f: FormGroup;
   entryEmail$: Observable<string | null>;
   prizes$: Observable<Prize[]>;
@@ -37,12 +40,18 @@ export class Register implements OnDestroy, OnInit {
   showPrizes: boolean;
 
   constructor(
+    private countryActions: CountryActions,
     private prizeActions: PrizeActions,
     private store: Store<AppState>,
     private userActions: UserActions,
     private userValidator: UsernameValidator
   ) {
-
+    this.countryLoaded$ = store.let(getCountryLoaded());
+    this.countryLoaded$
+      .takeUntil(this.destroyed$)
+      .subscribe(loaded => {
+        if (!loaded) this.store.dispatch(this.countryActions.getCountries());
+      })
     this.f = new FormGroup({
       referredBy: new FormControl(),
       email: new FormControl(PUBLISH ? '' : `${this.RANDOM_EMAIL}`,

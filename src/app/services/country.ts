@@ -3,17 +3,17 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
-import { Prize } from '../models/prize';
+import { Country } from '../models/country';
 import { RequestBase } from './request-base';
 
 @Injectable()
-export class PrizeService extends RequestBase {
+export class CountryService extends RequestBase {
   constructor(public http: Http) {
     super(http);
   }
 
-  getPrizes(): Observable<Prize[]> {
-    return this.http.get(`${API_USER_URL}/getPrizes`, this.optionsNoPre)
+  getCountries(): Observable<Country[]> {
+    return this.http.get(`${API_USER_URL}/getCountries`, this.optionsNoPre)
       .map(res => res.json());
   }
 }
