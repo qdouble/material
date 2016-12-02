@@ -6,11 +6,11 @@
     <md-card class="offer-section">
       <md-card-content>
         <div>
-          <img [src]="offer.directImageURL?.length > 1 ? offer.directImageURL : offer.imageURL" [alt]="offer?.displayName">
+          <img [src]="offer?.directImageURL?.length > 1 ? offer?.directImageURL : offer?.imageURL" [alt]="offer?.displayName">
         </div>
         <p>You are being sent to the {{offer?.displayName}} offer.</p>
-        <p><b>Description:</b> {{offer?.description}}</p>
-        <p><b>Requirements:</b> {{offer?.requirements}}</p>
+        <p><b>Description:</b> <span [innerHTML]="offer?.description"></span></p>
+        <p><b>Requirements:</b> <span [innerHTML]="offer?.requirements"></span></p>
       </md-card-content>
       <md-card-actions>
         <button md-raised-button color="primary" class="white" (click)="continueToOffer(offer?.id)">CONTINUE WITH THIS OFFER</button>
