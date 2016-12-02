@@ -8,14 +8,14 @@
         <div>
           <img [src]="offer?.directImageURL?.length > 1 ? offer?.directImageURL : offer?.imageURL" [alt]="offer?.displayName">
         </div>
-        <p>You are being sent to the {{offer?.displayName}} offer.</p>
+        <p>You are being about to be sent to the <b>{{offer?.displayName}}</b> offer.</p>
         <div class="dr-table">
           <div class="dr-row">
-            <div class="dr-title">Description</div>
+            <div class="dr-title"><b>Description</b></div>
             <div class="dr-text" [innerHTML]="offer?.description"></div>
           </div>
           <div class="dr-row">
-            <div class="dr-title">Requirements</div>
+            <div class="dr-title"><b>Requirements</b></div>
              <div class="dr-text" [innerHTML]="offer?.requirements"></div>
           </div>
         </div>

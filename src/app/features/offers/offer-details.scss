@@ -15,7 +15,6 @@ img {
 #important-review {
   text-align: center;
   padding: 10px;
-  // background: #ffb433;
 }
 
 .offer-details-page-container {
@@ -35,15 +34,17 @@ img {
 
 .dr-table {
   text-align: left;
-  border: 1px solid #ffb433;
+  margin-top: 30px;
 }
 
 .dr-title {
-  background: #ffb433;
-  color: white;
+  border-bottom: 1px solid #ffda99;
+  border-top: 1px solid #ffda99;
+  color: #ffa000;
   padding: 5px;
 }
 
 .dr-text {
   padding: 7px;
+  text-align: justify;
 }
