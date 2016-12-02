@@ -12,6 +12,7 @@ export interface OfferState {
   entities: { [id: string]: Offer };
   loading: boolean;
   loaded: boolean;
+  loadedUserOffers: boolean;
   selectedOffer: string | null;
 };
 
@@ -20,6 +21,7 @@ export const initialState: OfferState = {
   entities: {},
   loading: false,
   loaded: false,
+  loadedUserOffers: false,
   selectedOffer: null
 };
 
@@ -69,6 +71,7 @@ export function offerReducer(state = initialState, action: Action): OfferState {
           ids: [...state.ids, ...newOfferIds],
           entities: Object.assign({}, state.entities, newOfferEntities),
           loading: false,
+          loadedUserOffers: action.payload.loadedUserOffers || false,
           loaded: true
         });
       }
@@ -87,7 +90,8 @@ export function offerReducer(state = initialState, action: Action): OfferState {
         ids: [...offerIds],
         entities: offerEntities,
         loading: false,
-        loaded: true
+        loaded: true,
+        loadedUserOffers: action.payload.loadedUserOffers || false,
       });
 
 
@@ -105,6 +109,11 @@ export function offerReducer(state = initialState, action: Action): OfferState {
 function _getLoaded() {
   return (state$: Observable<OfferState>) => state$
     .select(s => s.loaded);
+}
+
+function _getLoadedUserOffers() {
+  return (state$: Observable<OfferState>) => state$
+    .select(s => s.loadedUserOffers);
 }
 
 function _getLoading() {
@@ -161,6 +170,10 @@ export function getOfferEntities() {
 
 export function getOfferLoaded() {
   return compose(_getLoaded(), _getOfferState());
+}
+
+export function getOfferLoadedUserOffers() {
+  return compose(_getLoadedUserOffers(), _getOfferState());
 }
 
 export function getOfferLoading() {

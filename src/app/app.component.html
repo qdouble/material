@@ -29,9 +29,9 @@
     <img id="levelup-menu-logo" src="assets/svg/levelup-rewards-logo-v6.svg">
     <div *ngIf="!(onAdminLoginPage$ | async)" class="os-toolbar-right">
       <span [ngSwitch]="loggedIn"></span>
-      <button class="os-toolbar-el-3" *ngIf="loggedIn" md-icon-button color="primary" (click)="null">
+      <!--<button class="os-toolbar-el-3" *ngIf="loggedIn" md-icon-button color="primary" (click)="null">
         <md-icon style="color: #e8e8e8;" >group_add</md-icon>
-      </button>
+      </button>-->
       <button *ngIf="loggedIn" md-icon-button color="primary" (click)="null">
         <md-icon style="color: #e8e8e8;" >notifications</md-icon>
       </button>

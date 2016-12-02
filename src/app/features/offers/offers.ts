@@ -8,7 +8,7 @@ import { MdUniqueSelectionDispatcher } from '@angular/material';
 import { AppState } from '../../reducers';
 import { Credit } from '../../models/credit';
 import { Offer } from '../../models/offer';
-import { getOfferCollection, getOfferLoaded } from '../../reducers/offer';
+import { getOfferCollection, getOfferLoaded, getOfferLoadedUserOffers } from '../../reducers/offer';
 import { getUIMobile, getUISideNavOpen } from '../../reducers/ui';
 import { getCreditCollection, getUserLoggedIn } from '../../reducers/user';
 import { OfferActions } from '../../actions/offer';
@@ -27,11 +27,16 @@ export class Offers implements AfterViewInit, OnDestroy {
   lastCloseResult: string;
   loaded$: Observable<boolean>;
   loaded: boolean;
+  loadedUserOffers$: Observable<boolean>;
+  loadedUserOffers: boolean;
   loggedIn$: Observable<boolean>;
   loggedIn: boolean;
   mobile$: Observable<boolean>;
   offers$: Observable<Offer[]>;
+  offersUnSorted$: Observable<Offer[]>;
   offersCompleted$: Observable<Offer[]>;
+  offersFeatured$: Observable<Offer[]>;
+  offersNonFeatured$: Observable<Offer[]>;
   offersAvailable$: Observable<Offer[]>;
   sideNavOpen$: Observable<boolean>;
   selectedOption = 'Available';
@@ -52,6 +57,10 @@ export class Offers implements AfterViewInit, OnDestroy {
     this.loaded$
       .takeUntil(this.destroyed$)
       .subscribe(l => this.loaded = l);
+    this.loadedUserOffers$ = this.store.let(getOfferLoadedUserOffers());
+    this.loadedUserOffers$
+      .takeUntil(this.destroyed$)
+      .subscribe(l => this.loadedUserOffers = l);
     this.loggedIn$ = this.store.let(getUserLoggedIn());
     this.loggedIn$
       .takeUntil(this.destroyed$)
@@ -62,17 +71,25 @@ export class Offers implements AfterViewInit, OnDestroy {
           } else {
             this.store.dispatch(this.offerActions.getViewOffers());
           }
+        } else if (this.loaded && !this.loadedUserOffers) {
+          this.store.dispatch(this.offerActions.getOffers());
         }
       });
-    this.offers$ = this.store.let(getOfferCollection());
+
+    let compare = ((a, b) => ((a.featured === b.featured) ? 0 : a.featured ? -1 : 1) ||
+      a.displayName.localeCompare(b.displayName));
+
+    this.offersUnSorted$ = this.store.let(getOfferCollection());
+    this.offers$ = this.offersUnSorted$.map(arr => arr.sort(compare));
+
     this.offersAvailable$ = this.offers$;
-    this.credits$ = this.store.let(getCreditCollection());
     let available = (arr: Offer[], offerIds) => {
       return arr.filter(offer => !offerIds.includes(offer.id));
     };
     let completed = (arr: Offer[], offerIds) => {
       return arr.filter(offer => offerIds.includes(offer.id));
     };
+    this.credits$ = this.store.let(getCreditCollection());
     this.credits$
       .takeUntil(this.destroyed$)
       .filter(credits => credits.length > 0)

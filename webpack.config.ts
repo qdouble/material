@@ -216,7 +216,7 @@ const clientConfig = function webpackConfig(): WebpackConfig {
   let config: WebpackConfig = Object.assign({});
 
   config.cache = true;
-  PROD ? config.devtool = PROD_SOURCE_MAPS : config.devtool = DEV_SOURCE_MAPS;
+  PROD ? config.devtool = PUBLISH ? undefined : PROD_SOURCE_MAPS : config.devtool = DEV_SOURCE_MAPS;
 
   if (DLL) {
     config.entry = {
