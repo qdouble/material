@@ -15,7 +15,7 @@
     <div class="offer-card-image-container" offer-card-image [routerLink]="['../offer-details', { id: offer.id }]">
       <img class="os-offer-card-image" [src]="offer.directImageURL?.length > 1 ? offer.directImageURL : offer.imageURL" alt="Offer Image">
     </div>
-    <div [ngClass]="{'offer-card-name': true, 'shrink-name': (offer?.displayName?.length > 20), 'shrink-name-2': (offer?.displayName?.length > 24) }" offer-card-name>
+    <div [ngClass]="{'offer-card-name': true, 'shrink-name': (offer?.displayName?.length > 18), 'shrink-name-2': (offer?.displayName?.length > 24) }" offer-card-name>
       {{ offer.displayName }}
     </div>
     <div [ngClass]="{'offer-card-subtitle': true, 'shrink-subtitle': (offer?.subTitle?.length > 35) }" offer-card-subtitle>
