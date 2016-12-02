@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy , Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'password-input',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './password-input.html'
 })
 

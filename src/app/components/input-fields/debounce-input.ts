@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import {  AbstractControl, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'debounce-input',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './debounce-input.html'
 })
 

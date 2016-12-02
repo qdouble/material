@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy , Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'text-input',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './text-input.html'
 })
 

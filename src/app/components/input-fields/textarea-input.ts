@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'textarea-input',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: TextareaInput, multi: true }
   ],

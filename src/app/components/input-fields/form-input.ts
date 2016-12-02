@@ -1,12 +1,11 @@
 import {
-  ChangeDetectionStrategy, Component, Input, OnInit,
+  Component, Input, OnInit,
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'os-form-input',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './form-input.html',
   styles: [` md-input { width: 100% } `],
   encapsulation: ViewEncapsulation.Emulated
