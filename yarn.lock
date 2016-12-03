@@ -5218,6 +5218,10 @@ tar@^2.0.0, tar@~2.2.0, tar@~2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
+thenby:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/thenby/-/thenby-1.2.1.tgz#df48e3f0eafc53a294687ad7f4c54e901709dafc"
+
 throttleit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/throttleit/-/throttleit-1.0.0.tgz#9e785836daf46743145a5984b6268d828528ac6c"

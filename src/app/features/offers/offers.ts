@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { MdUniqueSelectionDispatcher } from '@angular/material';
 
+const firstBy = require('thenby');
+
 import { AppState } from '../../reducers';
 import { Credit } from '../../models/credit';
 import { Offer } from '../../models/offer';
@@ -76,11 +78,9 @@ export class Offers implements AfterViewInit, OnDestroy {
         }
       });
 
-    let compare = ((a, b) => ((a.featured === b.featured) ? 0 : a.featured ? -1 : 1) ||
-      a.displayName.localeCompare(b.displayName));
-
     this.offersUnSorted$ = this.store.let(getOfferCollection());
-    this.offers$ = this.offersUnSorted$.map(arr => arr.sort(compare));
+    this.offers$ = this.offersUnSorted$.map(arr => arr.sort(
+      firstBy('featured', { direction: -1 }).thenBy('order').thenBy('name')));
 
     this.offersAvailable$ = this.offers$;
     let available = (arr: Offer[], offerIds) => {
