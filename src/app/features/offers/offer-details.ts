@@ -19,6 +19,7 @@ import { OfferActions } from '../../actions/offer';
 export class OfferDetailsComponent implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
   id: string;
+  publish = PUBLISH;
   offer$: Observable<Offer>;
   offer: Offer;
 

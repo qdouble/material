@@ -3,6 +3,7 @@ export interface Offer {
   displayName?: string;
   subTitle?: string;
   offerURL?: string;
+  filename?: string;
   imageURL?: string;
   directImageURL?: string;
   featured?: boolean;

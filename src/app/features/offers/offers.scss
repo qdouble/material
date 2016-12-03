@@ -111,10 +111,13 @@
   padding: 10px;
 }
 
+os-offer-rows {
+  display: block;
+  // margin-bottom: 290px;
+}
+
 .os-offer-page-footer {
-  position:absolute;
-  bottom:0;
-  margin-top: 10px;
+  margin-top: 70px;
   p {
     font-size: 11px;
     line-height: 16px;

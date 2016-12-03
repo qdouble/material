@@ -6,7 +6,7 @@
     <md-card class="offer-section">
       <md-card-content>
         <div>
-          <img [src]="offer?.directImageURL?.length > 1 ? offer?.directImageURL : offer?.imageURL" [alt]="offer?.displayName">
+          <img [src]="publish ? 'http://levelrewards.com/images/offer-images/' + offer.filename : (offer?.directImageURL?.length > 1 ? offer?.directImageURL : offer?.imageURL)" [alt]="offer?.displayName">
         </div>
         <p>You are being about to be sent to the <b>{{offer?.displayName}}</b> offer.</p>
         <div class="dr-table">
