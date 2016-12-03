@@ -71,7 +71,7 @@ export class Offers implements AfterViewInit, OnDestroy {
           } else {
             this.store.dispatch(this.offerActions.getViewOffers());
           }
-        } else if (this.loaded && !this.loadedUserOffers) {
+        } else if (loggedIn && this.loaded && !this.loadedUserOffers) {
           this.store.dispatch(this.offerActions.getOffers());
         }
       });

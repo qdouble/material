@@ -112,9 +112,18 @@
 }
 
 .os-offer-page-footer {
+  position:absolute;
+  bottom:0;
   margin-top: 10px;
   p {
     font-size: 11px;
     line-height: 16px;
   }
+}
+
+md-progress-circle {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%);
 }

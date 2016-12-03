@@ -15,6 +15,7 @@
       </md-button-toggle-group>
     </section>
   </span>
+  <md-progress-circle *ngIf="(offers$ | async)?.length < 1" mode="indeterminate"></md-progress-circle>
   <os-offer-rows 
     [showingAvailable]="selectedOption === 'Available'"
     [offers]="selectedOption === 'Available' ? (offersAvailable$ | async) : (offersCompleted$ | async)"

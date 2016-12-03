@@ -89,7 +89,7 @@ export class Register implements OnDestroy, OnInit {
         Validators.pattern(RegexValues.email)),
       agree: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
       hidden: new FormControl(true),
-      selectedPrize: new FormControl(),
+      selectedPrize: new FormControl(null),
     }, Validators.compose(
       [CustomValidators.compare('email', 'confirmEmail', 'compareEmail'),
       CustomValidators.compare('password', 'confirmPassword', 'comparePassword')]));
@@ -144,19 +144,22 @@ export class Register implements OnDestroy, OnInit {
     this.selectedPrize$ = this.store.let(getPrizeSelected());
     this.selectedPrize$
       .takeUntil(this.destroyed$)
-      .subscribe(prize => {
-        if (prize === null) {
-          this.prizes$
-            .takeUntil(this.destroyed$)
-            .subscribe(prizes => {
-              if (prizes[0]) {
-                this.showPrizes = true;
-                this.f.get('selectedPrize').setValue(prizes[0].id);
-              }
-            });
-        }
-        this.f.get('selectedPrize').setValue(prize);
+      .subscribe(id => {
+        if (id === null) this.showPrizes = true;
       });
+    this.prizeIds$
+      .filter(ids => ids.length > 0)
+      .takeUntil(this.destroyed$)
+      .subscribe(ids => {
+        if (this.f.get('selectedPrize').value === null) {
+          this.f.patchValue({ selectedPrize: ids[0] });
+        }
+      });
+
+    this.selectedPrize$
+      .filter(id => id !== null)
+      .takeUntil(this.destroyed$)
+      .subscribe(id => this.f.patchValue({ selectedPrize: id }));
   }
 
   submitForm() {
