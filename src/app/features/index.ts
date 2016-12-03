@@ -15,7 +15,7 @@ import { Promotions } from './promotions';
 import { ProofPicGallery } from './proof-pic-gallery';
 import { Register } from './register';
 import { ReportSpam } from './report-spam';
-import { ReferralsTable, SelectedPrizeComponent, Status } from './status';
+import { ReferralDetailsDialog, ReferralsTable, SelectedPrizeComponent, Status } from './status';
 import {
   CreditRequestComponent, CreditRequestTable, Support, SupportTicket, SupportTicketFormComponent,
   SupportTicketMessageComponent, SupportTicketTable, ViewTicket
@@ -40,6 +40,7 @@ export {
   Profile,
   Promotions,
   ProofPicGallery,
+  ReferralDetailsDialog,
   Register,
   ReportSpam,
   Status,
@@ -72,6 +73,7 @@ export const PAGES_COMPONENTS = [
   Profile,
   Promotions,
   ProofPicGallery,
+  ReferralDetailsDialog,
   ReferralsTable,
   Register,
   ReportSpam,

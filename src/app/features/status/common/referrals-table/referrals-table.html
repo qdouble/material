@@ -29,7 +29,8 @@
             <ng-container *ngIf="referral.hold"> Hold </ng-container>
           </td>
           <td>
-            <button md-icon-button md-tooltip="View Details" tooltip-position="before" [ngClass]="{'white-background': (!referral.leveledUp || referral.hold) , 'primary-background':  (referral.leveledUp && !referral.hold) }" >
+            <button md-icon-button [ngClass]="{'white-background': (!referral.leveledUp || referral.hold) , 'primary-background':  (referral.leveledUp && !referral.hold) }" 
+              (click)="open(referral)">
               <md-icon>remove_red_eye</md-icon>
             </button>
             <button md-icon-button  md-tooltip="Send Email (Coming Soon)" tooltip-position="before" [ngClass]="{'hide-2': true, 'white-background': (!referral.leveledUp || referral.hold) , 'primary-background':  (referral.leveledUp && !referral.hold) }">

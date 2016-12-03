@@ -39,6 +39,11 @@ export class UserService extends RequestBase {
       .map(res => res.json());
   }
 
+  getReferral(id: string): Observable<User> {
+    return this.http.get(`${API_USER_URL}/getReferral?id=${id}`, this.optionsNoPre)
+      .map(res => res.json());
+  }
+
   loginAdmin(user: User): Observable<User> {
     return this.http.post(`${API_ADMIN_URL}/login`, user, this.options)
       .map(res => res.json());

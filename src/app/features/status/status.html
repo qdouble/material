@@ -62,7 +62,7 @@
   <div class="os-status-page-section">
     <md-card id="referrals-table-section">
       <md-card-title class="primary">Your Referrals</md-card-title>
-      <os-referrals-table *ngIf="(referrals$ | async)?.length > 0" [referrals]="referrals$ | async" (reload)=reload($event) (sortBy)=sortBy($event)>
+      <os-referrals-table *ngIf="(referrals$ | async)?.length > 0" [referrals]="referrals$ | async" (getReferral)="getReferral($event)" (reload)=reload($event) (sortBy)=sortBy($event)>
       </os-referrals-table>
       <md-card-content *ngIf="(referrals$ | async)?.length <= 0">
         You do not have any referrals. Be sure to share your referral link. Tell any missing referrals to enter in your username

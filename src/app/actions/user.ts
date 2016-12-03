@@ -151,6 +151,29 @@ export class UserActions {
     };
   }
 
+  static GET_REFERRAL = '[User] Get Referral';
+  getReferral(id: string): Action {
+    return {
+      type: UserActions.GET_REFERRAL,
+      payload: id
+    };
+  }
+
+  static GET_REFERRAL_FAIL = '[User] Get Referral Fail';
+  getReferralFail(user: Response): Action {
+    return {
+      type: UserActions.GET_REFERRAL_FAIL,
+      payload: user
+    };
+  }
+  static GET_REFERRAL_SUCCESS = '[User] Get Referral Success';
+  getReferralSuccess(user: Response): Action {
+    return {
+      type: UserActions.GET_REFERRAL_SUCCESS,
+      payload: user
+    };
+  }
+
   static LOGIN = '[User] Login';
   login(user: User): Action {
     return {

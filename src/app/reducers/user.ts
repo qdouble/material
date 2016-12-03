@@ -124,6 +124,26 @@ export function userReducer(state = initialState, action: Action): UserState {
       });
     }
 
+    case UserActions.GET_REFERRAL_SUCCESS: {
+      let referral = action.payload.referral;
+      if (!referral || !referral.id) return state;
+      let id = referral.id;
+      let referralMod = Object.assign({}, state.referrals);
+      Object.keys(referral).forEach(key => {
+        if (referralMod[id][key] === undefined) {
+          referralMod = Object.assign({}, referralMod, {
+            [id]: Object.assign({}, referralMod[id], {
+              [key]: referral[key]
+            })
+          });
+        }
+      });
+      console.log(referralMod);
+      return Object.assign({}, state, {
+        referrals: referralMod
+      });
+    }
+
     case UserActions.LOGIN_SUCCESS:
       if (action.payload.message_type === 'success') {
         return Object.assign({}, state, {

@@ -94,6 +94,16 @@ export class UserEffects {
       ))
     );
 
+    @Effect() getReferral$ = this.actions$
+    .ofType(UserActions.GET_REFERRAL)
+    .map(action => <string>action.payload)
+    .switchMap((id) => this.userService.getReferral(id)
+      .map((res: any) => this.userActions.getReferralSuccess(res))
+      .catch((res) => Observable.of(
+        this.userActions.getReferralFail(res)
+      ))
+    );
+
   @Effect() login$ = this.actions$
     .ofType(UserActions.LOGIN)
     .map(action => <User>action.payload)

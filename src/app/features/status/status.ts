@@ -97,6 +97,9 @@ export class Status implements OnDestroy {
     }
   }
 
+  getReferral(id: string) {
+    this.store.dispatch(this.userActions.getReferral(id));
+  }
 
   submitSponsor() {
     this.store.dispatch(this.userActions.setSponsor(this.sponsorForm.get('sponsorUserName').value));
