@@ -9,7 +9,7 @@
     [sideNavOpen]="sideNavOpen"
     [userLevel]="userLevel"
     >
-    <div class="offer-card-feature" offer-card-feature *ngIf="offer.featured">
+    <div class="offer-card-feature accent" offer-card-feature *ngIf="offer.featured">
       *Featured
     </div>
     <div class="offer-card-image-container" offer-card-image [routerLink]="['../offer-details', { id: offer.id }]">
