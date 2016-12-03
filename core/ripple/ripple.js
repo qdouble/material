@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { NgModule, Directive, ElementRef, HostBinding, Input } from '@angular/core';
 import { RippleRenderer, ForegroundRippleState } from './ripple-renderer';
+import { DefaultStyleCompatibilityModeModule } from '../compatibility/default-mode';
 export var MdRipple = (function () {
     function MdRipple(_elementRef) {
         var _this = this;
@@ -158,7 +159,7 @@ export var MdRipple = (function () {
     ], MdRipple.prototype, "unbounded", void 0);
     MdRipple = __decorate([
         Directive({
-            selector: '[md-ripple]',
+            selector: '[md-ripple], [mat-ripple]',
         }), 
         __metadata('design:paramtypes', [ElementRef])
     ], MdRipple);
@@ -175,7 +176,8 @@ export var MdRippleModule = (function () {
     };
     MdRippleModule = __decorate([
         NgModule({
-            exports: [MdRipple],
+            imports: [DefaultStyleCompatibilityModeModule],
+            exports: [MdRipple, DefaultStyleCompatibilityModeModule],
             declarations: [MdRipple],
         }), 
         __metadata('design:paramtypes', [])

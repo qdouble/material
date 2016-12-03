@@ -31,7 +31,7 @@ export var MdTabNavBar = (function () {
         __metadata('design:type', MdInkBar)
     ], MdTabNavBar.prototype, "_inkBar", void 0);
     MdTabNavBar = __decorate([
-        Component({selector: '[md-tab-nav-bar]',
+        Component({selector: '[md-tab-nav-bar], [mat-tab-nav-bar]',
             template: "<ng-content></ng-content> <md-ink-bar></md-ink-bar> ",
             styles: ["[md-tab-nav-bar] { overflow: hidden; position: relative; display: flex; flex-direction: row; flex-shrink: 0; } [md-tab-link] { line-height: 48px; height: 48px; padding: 0 12px; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; cursor: pointer; box-sizing: border-box; color: currentColor; opacity: 0.6; min-width: 160px; text-align: center; text-decoration: none; position: relative; overflow: hidden; } [md-tab-link]:focus { outline: none; opacity: 1; } @media (max-width: 600px) { [md-tab-link] { min-width: 72px; } } md-ink-bar { position: absolute; bottom: 0; height: 2px; transition: 500ms cubic-bezier(0.35, 0, 0.25, 1); } /*# sourceMappingURL=tab-nav-bar.css.map */ "],
             encapsulation: ViewEncapsulation.None,
@@ -65,7 +65,7 @@ export var MdTabLink = (function () {
     ], MdTabLink.prototype, "active", null);
     MdTabLink = __decorate([
         Directive({
-            selector: '[md-tab-link]',
+            selector: '[md-tab-link], [mat-tab-link]',
         }), 
         __metadata('design:paramtypes', [MdTabNavBar, ElementRef])
     ], MdTabLink);
@@ -88,7 +88,7 @@ export var MdTabLinkRipple = (function (_super) {
     };
     MdTabLinkRipple = __decorate([
         Directive({
-            selector: '[md-tab-link]',
+            selector: '[md-tab-link], [mat-tab-link]',
         }), 
         __metadata('design:paramtypes', [ElementRef])
     ], MdTabLinkRipple);

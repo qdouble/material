@@ -1,6 +1,5 @@
 import { ModuleWithProviders, Injector } from '@angular/core';
-import { Overlay } from '../core';
-import { ComponentType } from '../core';
+import { Overlay, ComponentType } from '../core';
 import { MdDialogConfig } from './dialog-config';
 import { MdDialogRef } from './dialog-ref';
 export { MdDialogConfig } from './dialog-config';
@@ -11,6 +10,8 @@ export { MdDialogRef } from './dialog-ref';
 export declare class MdDialog {
     private _overlay;
     private _injector;
+    /** Keeps track of the currently-open dialogs. */
+    private _openDialogs;
     constructor(_overlay: Overlay, _injector: Injector);
     /**
      * Opens a modal dialog containing the given component.
@@ -18,6 +19,10 @@ export declare class MdDialog {
      * @param config
      */
     open<T>(component: ComponentType<T>, config?: MdDialogConfig): MdDialogRef<T>;
+    /**
+     * Closes all of the currently-open dialogs.
+     */
+    closeAll(): void;
     /**
      * Creates the overlay into which the dialog will be loaded.
      * @param dialogConfig The dialog configuration.
@@ -45,6 +50,10 @@ export declare class MdDialog {
      * @returns The overlay configuration.
      */
     private _getOverlayState(dialogConfig);
+    /**
+     * Removes a dialog from the array of open dialogs.
+     */
+    private _removeOpenDialog(dialogRef);
 }
 export declare class MdDialogModule {
     static forRoot(): ModuleWithProviders;

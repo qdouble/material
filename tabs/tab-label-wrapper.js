@@ -21,7 +21,7 @@ export var MdTabLabelWrapper = (function () {
     };
     MdTabLabelWrapper = __decorate([
         Directive({
-            selector: '[md-tab-label-wrapper]'
+            selector: '[md-tab-label-wrapper], [mat-tab-label-wrapper]'
         }), 
         __metadata('design:paramtypes', [ElementRef])
     ], MdTabLabelWrapper);

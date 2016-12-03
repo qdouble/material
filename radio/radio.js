@@ -13,7 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 import { Component, ContentChildren, Directive, ElementRef, EventEmitter, HostBinding, Input, Optional, Output, QueryList, ViewEncapsulation, forwardRef, NgModule, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MdRippleModule, MdUniqueSelectionDispatcher } from '../core';
+import { MdRippleModule, MdUniqueSelectionDispatcher, DefaultStyleCompatibilityModeModule } from '../core';
 import { coerceBooleanProperty } from '../core/coersion/boolean-property';
 /**
  * Provider Expression that allows md-radio-group to register as a ControlValueAccessor. This
@@ -227,7 +227,7 @@ export var MdRadioGroup = (function () {
     ], MdRadioGroup.prototype, "selected", null);
     MdRadioGroup = __decorate([
         Directive({
-            selector: 'md-radio-group',
+            selector: 'md-radio-group, mat-radio-group',
             providers: [MD_RADIO_GROUP_CONTROL_VALUE_ACCESSOR],
             host: {
                 'role': 'radiogroup',
@@ -464,7 +464,7 @@ export var MdRadioButton = (function () {
         __metadata('design:type', Boolean)
     ], MdRadioButton.prototype, "disabled", null);
     MdRadioButton = __decorate([
-        Component({selector: 'md-radio-button',
+        Component({selector: 'md-radio-button, mat-radio-button',
             template: "<!-- TODO(jelbourn): render the radio on either side of the content --> <!-- TODO(mtlin): Evaluate trade-offs of using native radio vs. cost of additional bindings. --> <label [attr.for]=\"inputId\" class=\"md-radio-label\"> <!-- The actual 'radio' part of the control. --> <div class=\"md-radio-container\"> <div class=\"md-radio-outer-circle\"></div> <div class=\"md-radio-inner-circle\"></div> <div md-ripple *ngIf=\"!_isRippleDisabled()\" class=\"md-radio-ripple\" [md-ripple-trigger]=\"getHostElement()\" [md-ripple-centered]=\"true\" [md-ripple-speed-factor]=\"0.3\" md-ripple-background-color=\"rgba(0, 0, 0, 0)\"></div> </div> <input #input class=\"md-radio-input md-visually-hidden\" type=\"radio\" [id]=\"inputId\" [checked]=\"checked\" [disabled]=\"disabled\" [name]=\"name\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledby\" (change)=\"_onInputChange($event)\" (focus)=\"_onInputFocus()\" (blur)=\"_onInputBlur()\" (click)=\"_onInputClick($event)\"> <!-- The label content for radio control. --> <div class=\"md-radio-label-content\" [class.md-radio-align-end]=\"align == 'end'\"> <ng-content></ng-content> </div> </label> ",
             styles: ["md-radio-button { display: inline-block; } .md-radio-label { cursor: pointer; display: inline-flex; align-items: baseline; white-space: nowrap; } .md-radio-container { box-sizing: border-box; display: inline-block; height: 20px; position: relative; width: 20px; top: 2px; } .md-radio-outer-circle { border: solid 2px; border-radius: 50%; box-sizing: border-box; height: 20px; left: 0; position: absolute; top: 0; transition: border-color ease 280ms; width: 20px; } .md-radio-inner-circle { border-radius: 50%; box-sizing: border-box; height: 20px; left: 0; position: absolute; top: 0; transition: transform ease 280ms, background-color ease 280ms; transform: scale(0); width: 20px; } .md-radio-checked .md-radio-inner-circle { transform: scale(0.5); } .md-radio-label-content { display: inline-block; order: 0; line-height: inherit; padding-left: 8px; padding-right: 0; } [dir='rtl'] .md-radio-label-content { padding-right: 8px; padding-left: 0; } .md-radio-label-content.md-radio-align-end { order: -1; padding-left: 0; padding-right: 8px; } [dir='rtl'] .md-radio-label-content.md-radio-align-end { padding-right: 0; padding-left: 8px; } .md-radio-disabled, .md-radio-disabled .md-radio-label { cursor: default; } .md-radio-ripple { position: absolute; left: -15px; top: -15px; right: -15px; bottom: -15px; border-radius: 50%; z-index: 1; pointer-events: none; } /*# sourceMappingURL=radio.css.map */ "],
             encapsulation: ViewEncapsulation.None
@@ -485,8 +485,8 @@ export var MdRadioModule = (function () {
     };
     MdRadioModule = __decorate([
         NgModule({
-            imports: [CommonModule, MdRippleModule],
-            exports: [MdRadioGroup, MdRadioButton],
+            imports: [CommonModule, MdRippleModule, DefaultStyleCompatibilityModeModule],
+            exports: [MdRadioGroup, MdRadioButton, DefaultStyleCompatibilityModeModule],
             declarations: [MdRadioGroup, MdRadioButton],
         }), 
         __metadata('design:paramtypes', [])

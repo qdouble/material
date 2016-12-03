@@ -1,29 +1,13 @@
-import { ModuleWithProviders, NgZone, EventEmitter, QueryList, TemplateRef, ViewContainerRef, OnInit, AnimationTransitionEvent, ElementRef, Renderer } from '@angular/core';
-import { TemplatePortal, PortalHostDirective, Dir, LayoutDirection } from '../core';
-import { MdTabLabel } from './tab-label';
+import { ModuleWithProviders, NgZone, QueryList, ElementRef, Renderer } from '@angular/core';
 import { MdTabLabelWrapper } from './tab-label-wrapper';
 import { MdInkBar } from './ink-bar';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { MdTab } from './tab';
 /** A simple change event emitted on focus or selection changes. */
 export declare class MdTabChangeEvent {
     index: number;
     tab: MdTab;
-}
-export declare class MdTab implements OnInit {
-    private _viewContainerRef;
-    /** Content for the tab label given by <template md-tab-label>. */
-    templateLabel: MdTabLabel;
-    /** Template inside the MdTab view that contains an <ng-content>. */
-    _content: TemplateRef<any>;
-    /** The plain text label for the tab, used when there is no template label. */
-    textLabel: string;
-    private _contentPortal;
-    constructor(_viewContainerRef: ViewContainerRef);
-    ngOnInit(): void;
-    private _disabled;
-    disabled: boolean;
-    readonly content: TemplatePortal;
 }
 /**
  * Material design tab-group component.  Supports basic tab pairs (label + content) and includes
@@ -35,9 +19,12 @@ export declare class MdTabGroup {
     private _renderer;
     _tabs: QueryList<MdTab>;
     _labelWrappers: QueryList<MdTabLabelWrapper>;
-    _inkBar: QueryList<MdInkBar>;
+    _inkBar: MdInkBar;
     _tabBodyWrapper: ElementRef;
+    /** Whether this component has been initialized. */
     private _isInitialized;
+    /** The tab index that should be selected after the content has been checked. */
+    private _indexToSelect;
     /** Snapshot of the height of the tab body wrapper before another tab is activated. */
     private _tabBodyWrapperHeight;
     /** Whether the tab group should grow to the size of the active tab */
@@ -55,6 +42,13 @@ export declare class MdTabGroup {
     private _focusIndex;
     private _groupId;
     constructor(_zone: NgZone, _renderer: Renderer);
+    /**
+     * After the content is checked, this component knows what tabs have been defined
+     * and what the selected index should be. This is where we can know exactly what position
+     * each tab should be in according to the new selected index, and additionally we know how
+     * a new selected tab should transition in (from the left or right).
+     */
+    ngAfterContentChecked(): void;
     /**
      * Waits one frame for the view to update, then updates the ink bar
      * Note: This must be run outside of the zone or it will create an infinite change detection loop
@@ -97,28 +91,6 @@ export declare class MdTabGroup {
     _setTabBodyWrapperHeight(tabHeight: number): void;
     /** Removes the height of the tab body wrapper. */
     _removeTabBodyWrapperHeight(): void;
-}
-export declare type MdTabBodyActiveState = 'left' | 'center' | 'right';
-export declare class MdTabBody implements OnInit {
-    private _elementRef;
-    private _dir;
-    /** The portal host inside of this container into which the tab body content will be loaded. */
-    _portalHost: PortalHostDirective;
-    /** Event emitted when the tab begins to animate towards the center as the active tab. */
-    onTabBodyCentering: EventEmitter<number>;
-    /** Event emitted when the tab completes its animation towards the center. */
-    onTabBodyCentered: EventEmitter<void>;
-    /** The tab body content to display. */
-    _content: TemplatePortal;
-    /** The shifted index position of the tab body, where zero represents the active center tab. */
-    _position: MdTabBodyActiveState;
-    position: number;
-    constructor(_elementRef: ElementRef, _dir: Dir);
-    ngOnInit(): void;
-    _onTranslateTabStarted(e: AnimationTransitionEvent): void;
-    _onTranslateTabComplete(e: AnimationTransitionEvent): void;
-    /** The text direction of the containing app. */
-    getLayoutDirection(): LayoutDirection;
 }
 export declare class MdTabsModule {
     static forRoot(): ModuleWithProviders;

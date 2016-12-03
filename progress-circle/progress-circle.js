@@ -13,6 +13,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { NgModule, Component, HostBinding, ChangeDetectorRef, ChangeDetectionStrategy, Input, ElementRef, NgZone } from '@angular/core';
+import { DefaultStyleCompatibilityModeModule } from '../core';
 // TODO(josephperrott): Benchpress tests.
 /** A single degree in radians. */
 var DEGREE_IN_RADIANS = Math.PI / 180;
@@ -200,7 +201,7 @@ export var MdProgressCircle = (function () {
         __metadata('design:type', Object)
     ], MdProgressCircle.prototype, "mode", null);
     MdProgressCircle = __decorate([
-        Component({selector: 'md-progress-circle',
+        Component({selector: 'md-progress-circle, mat-progress-circle',
             host: {
                 'role': 'progressbar',
                 '[attr.aria-valuemin]': '_ariaValueMin',
@@ -232,7 +233,7 @@ export var MdSpinner = (function (_super) {
         _super.prototype.ngOnDestroy.call(this);
     };
     MdSpinner = __decorate([
-        Component({selector: 'md-spinner',
+        Component({selector: 'md-spinner, mat-spinner',
             host: {
                 'role': 'progressbar',
                 'mode': 'indeterminate',
@@ -314,7 +315,8 @@ export var MdProgressCircleModule = (function () {
     };
     MdProgressCircleModule = __decorate([
         NgModule({
-            exports: [MdProgressCircle, MdSpinner],
+            imports: [DefaultStyleCompatibilityModeModule],
+            exports: [MdProgressCircle, MdSpinner, DefaultStyleCompatibilityModeModule],
             declarations: [MdProgressCircle, MdSpinner],
         }), 
         __metadata('design:paramtypes', [])

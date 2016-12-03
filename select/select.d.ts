@@ -3,13 +3,46 @@ import { MdOption } from './option';
 import { ListKeyManager } from '../core/a11y/list-key-manager';
 import { Dir } from '../core/rtl/dir';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { ConnectedOverlayPositionChange } from '../core/overlay/position/connected-position';
+import { ConnectedOverlayDirective } from '../core/overlay/overlay-directives';
+import { ViewportRuler } from '../core/overlay/position/viewport-ruler';
+/**
+ * The following style constants are necessary to save here in order
+ * to properly calculate the alignment of the selected option over
+ * the trigger element.
+ */
+/** The fixed height of every option element. */
+export declare const SELECT_OPTION_HEIGHT: number;
+/** The max height of the select's overlay panel */
+export declare const SELECT_PANEL_MAX_HEIGHT: number;
+/** The max number of options visible at once in the select panel. */
+export declare const SELECT_MAX_OPTIONS_DISPLAYED: number;
+/** The fixed height of the select's trigger element. */
+export declare const SELECT_TRIGGER_HEIGHT: number;
+/**
+ * Must adjust for the difference in height between the option and the trigger,
+ * so the text will align on the y axis.
+ * (SELECT_OPTION_HEIGHT (48) - SELECT_TRIGGER_HEIGHT (30)) / 2 = 9
+ */
+export declare const SELECT_OPTION_HEIGHT_ADJUSTMENT: number;
+/** The panel's padding on the x-axis */
+export declare const SELECT_PANEL_PADDING_X: number;
+/**
+ * The panel's padding on the y-axis. This padding indicates there are more
+ * options available if you scroll.
+ */
+export declare const SELECT_PANEL_PADDING_Y: number;
+/**
+ * The select panel will only "fit" inside the viewport if it is positioned at
+ * this value or more away from the viewport boundary.
+ */
+export declare const SELECT_PANEL_VIEWPORT_PADDING: number;
 export declare class MdSelect implements AfterContentInit, ControlValueAccessor, OnDestroy {
     private _element;
     private _renderer;
+    private _ngZone;
+    private _viewportRuler;
     private _dir;
     _control: NgControl;
-    private _ngZone;
     /** Whether or not the overlay panel is open. */
     private _panelOpen;
     /** The currently selected option. */
@@ -24,6 +57,8 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
     private _required;
     /** Whether the select is disabled.  */
     private _disabled;
+    /** The scroll position of the overlay panel, calculated to center the selected option. */
+    private _scrollTop;
     /** Manages keyboard events for options in the panel. */
     _keyManager: ListKeyManager;
     /** View -> model callback called when value changes */
@@ -34,6 +69,18 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
     _optionIds: string;
     /** The value of the select panel's transform-origin property. */
     _transformOrigin: string;
+    /**
+     * The x-offset of the overlay panel in relation to the trigger's top start corner.
+     * This must be adjusted to align the selected option text over the trigger text when
+     * the panel opens. Will change based on LTR or RTL text direction.
+     */
+    _offsetX: number;
+    /**
+     * The y-offset of the overlay panel in relation to the trigger's top start corner.
+     * This must be adjusted to align the selected option text over the trigger text.
+     * when the panel opens. Will change based on the y-position of the selected option.
+     */
+    _offsetY: number;
     /**
      * This position config ensures that the top "start" corner of the overlay
      * is aligned with with the top "start" of the origin by default (overlapping
@@ -47,13 +94,14 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
         overlayY: string;
     }[];
     trigger: ElementRef;
+    overlayDir: ConnectedOverlayDirective;
     options: QueryList<MdOption>;
     placeholder: string;
     disabled: any;
     required: any;
     onOpen: EventEmitter<{}>;
     onClose: EventEmitter<{}>;
-    constructor(_element: ElementRef, _renderer: Renderer, _dir: Dir, _control: NgControl, _ngZone: NgZone);
+    constructor(_element: ElementRef, _renderer: Renderer, _ngZone: NgZone, _viewportRuler: ViewportRuler, _dir: Dir, _control: NgControl);
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
     /** Toggles the overlay panel open or closed. */
@@ -95,8 +143,6 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
     _getWidth(): number;
     /** The animation state of the placeholder. */
     _getPlaceholderState(): string;
-    /** The animation state of the overlay panel. */
-    _getPanelState(): string;
     /** Ensures the panel opens if activated by the keyboard. */
     _handleKeydown(event: KeyboardEvent): void;
     /**
@@ -112,10 +158,12 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
     /** Returns the correct tabindex for the select depending on disabled state. */
     _getTabIndex(): string;
     /**
-     * Sets the transform-origin property of the panel to ensure that it
-     * animates in the correct direction based on its positioning.
+     * Sets the scroll position of the scroll container. This must be called after
+     * the overlay pane is attached or the scroll container element will not yet be
+     * present in the DOM.
      */
-    _updateTransformOrigin(pos: ConnectedOverlayPositionChange): void;
+    _setScrollTop(): void;
+    private _getTriggerRect();
     /** Sets up a key manager to listen to keyboard events on the overlay panel. */
     private _initKeyManager();
     /** Drops current option subscriptions and IDs and resets from scratch. */
@@ -138,4 +186,33 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
     private _focusHost();
     /** Gets the index of the provided option in the option list. */
     private _getOptionIndex(option);
+    /** Calculates the scroll position and x- and y-offsets of the overlay panel. */
+    private _calculateOverlayPosition();
+    /**
+     * Calculates the scroll position of the select's overlay panel.
+     *
+     * Attempts to center the selected option in the panel. If the option is
+     * too high or too low in the panel to be scrolled to the center, it clamps the
+     * scroll position to the min or max scroll positions respectively.
+     */
+    _calculateOverlayScroll(selectedIndex: number, scrollBuffer: number, maxScroll: number): number;
+    /**
+     * Calculates the y-offset of the select's overlay panel in relation to the
+     * top start corner of the trigger. It has to be adjusted in order for the
+     * selected option to be aligned over the trigger when the panel opens.
+     */
+    private _calculateOverlayOffset(selectedIndex, scrollBuffer, maxScroll);
+    /**
+     * Checks that the attempted overlay position will fit within the viewport.
+     * If it will not fit, tries to adjust the scroll position and the associated
+     * y-offset so the panel can open fully on-screen. If it still won't fit,
+     * sets the offset back to 0 to allow the fallback position to take over.
+     */
+    private _checkOverlayWithinViewport(maxScroll);
+    /** Adjusts the overlay panel up to fit in the viewport. */
+    private _adjustPanelUp(panelHeightBottom, bottomSpaceAvailable);
+    /** Adjusts the overlay panel down to fit in the viewport. */
+    private _adjustPanelDown(panelHeightTop, topSpaceAvailable, maxScroll);
+    /** Sets the transform origin point based on the selected option. */
+    private _getOriginBasedOnOption();
 }

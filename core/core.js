@@ -52,12 +52,15 @@ export { MdError } from './errors/error';
 // Misc
 // Keybindings
 export * from './keyboard/keycodes';
-export * from './compatibility/style-compatibility';
+export * from './compatibility/default-mode';
 // Animation
 export * from './animation/animation';
 // Coersion
 export { coerceBooleanProperty } from './coersion/boolean-property';
 export { coerceNumberProperty } from './coersion/number-property';
+// Compatibility
+export { DefaultStyleCompatibilityModeModule } from './compatibility/default-mode';
+export { NoConflictStyleCompatibilityMode } from './compatibility/no-conflict-mode';
 export var MdCoreModule = (function () {
     function MdCoreModule() {
     }

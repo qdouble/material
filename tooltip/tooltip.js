@@ -8,7 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { NgModule, Component, Directive, Input, ElementRef, ViewContainerRef, style, trigger, state, transition, animate, NgZone } from '@angular/core';
-import { Overlay, OverlayState, OverlayModule, ComponentPortal, OVERLAY_PROVIDERS } from '../core';
+import { Overlay, OverlayState, OverlayModule, ComponentPortal, OVERLAY_PROVIDERS, DefaultStyleCompatibilityModeModule } from '../core';
 import { Subject } from 'rxjs/Subject';
 /** Time in ms to delay before changing the tooltip visibility to hidden */
 export var TOUCHEND_HIDE_DELAY = 1500;
@@ -155,7 +155,7 @@ export var MdTooltip = (function () {
     ], MdTooltip.prototype, "message", null);
     MdTooltip = __decorate([
         Directive({
-            selector: '[md-tooltip]',
+            selector: '[md-tooltip], [mat-tooltip]',
             host: {
                 '(longpress)': 'show()',
                 '(touchend)': 'hide(' + TOUCHEND_HIDE_DELAY + ')',
@@ -240,7 +240,7 @@ export var TooltipComponent = (function () {
         }
     };
     TooltipComponent = __decorate([
-        Component({selector: 'md-tooltip-component',
+        Component({selector: 'md-tooltip-component, mat-tooltip-component',
             template: "<div class=\"md-tooltip\" [style.transform-origin]=\"_transformOrigin\" [@state]=\"_visibility\" (@state.done)=\"_afterVisibilityAnimation($event)\"> {{message}} </div>",
             styles: [":host { pointer-events: none; } .md-tooltip { color: white; padding: 0 8px; border-radius: 2px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-size: 10px; margin: 14px; height: 22px; line-height: 22px; } /*# sourceMappingURL=tooltip.css.map */ "],
             animations: [
@@ -271,8 +271,8 @@ export var MdTooltipModule = (function () {
     };
     MdTooltipModule = __decorate([
         NgModule({
-            imports: [OverlayModule],
-            exports: [MdTooltip, TooltipComponent],
+            imports: [OverlayModule, DefaultStyleCompatibilityModeModule],
+            exports: [MdTooltip, TooltipComponent, DefaultStyleCompatibilityModeModule],
             declarations: [MdTooltip, TooltipComponent],
             entryComponents: [TooltipComponent],
         }), 

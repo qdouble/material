@@ -49,6 +49,10 @@ export var ConnectedPositionStrategy = (function () {
         configurable: true
     });
     /**
+     * To be used to for any cleanup after the element gets destroyed.
+     */
+    ConnectedPositionStrategy.prototype.dispose = function () { };
+    /**
      * Updates the position of the overlay element, using whichever preferred position relative
      * to the origin fits on-screen.
      * TODO: internal

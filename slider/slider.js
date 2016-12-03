@@ -13,7 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 import { NgModule, Component, ElementRef, Input, Output, ViewEncapsulation, forwardRef, EventEmitter, Optional } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
-import { MdGestureConfig, coerceBooleanProperty, coerceNumberProperty } from '../core';
+import { MdGestureConfig, coerceBooleanProperty, coerceNumberProperty, DefaultStyleCompatibilityModeModule } from '../core';
 import { Dir } from '../core/rtl/dir';
 import { CommonModule } from '@angular/common';
 import { PAGE_UP, PAGE_DOWN, END, HOME, LEFT_ARROW, UP_ARROW, RIGHT_ARROW, DOWN_ARROW } from '../core/keyboard/keycodes';
@@ -81,6 +81,7 @@ export var MdSlider = (function () {
         /** The maximum value that the slider can have. */
         this._max = 100;
         this._invert = false;
+        this._vertical = false;
         this.change = new EventEmitter();
         this._renderer = new SliderRenderer(elementRef);
     }
@@ -168,11 +169,43 @@ export var MdSlider = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(MdSlider.prototype, "vertical", {
+        /** Whether the slider is vertical. */
+        get: function () { return this._vertical; },
+        set: function (value) { this._vertical = coerceBooleanProperty(value); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MdSlider.prototype, "invertAxis", {
+        /**
+         * Whether the axis of the slider is inverted.
+         * (i.e. whether moving the thumb in the positive x or y direction decreases the slider's value).
+         */
+        get: function () {
+            // Standard non-inverted mode for a vertical slider should be dragging the thumb from bottom to
+            // top. However from a y-axis standpoint this is inverted.
+            return this.vertical ? !this.invert : this.invert;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MdSlider.prototype, "invertMouseCoords", {
+        /**
+         * Whether mouse events should be converted to a slider position by calculating their distance
+         * from the right or bottom edge of the slider as opposed to the top or left.
+         */
+        get: function () {
+            return (this.direction == 'rtl' && !this.vertical) ? !this.invertAxis : this.invertAxis;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(MdSlider.prototype, "trackFillStyles", {
         /** CSS styles for the track fill element. */
         get: function () {
+            var axis = this.vertical ? 'Y' : 'X';
             return {
-                'flexBasis': this.percent * 100 + "%"
+                'transform': "scale" + axis + "(" + this.percent + ")"
             };
         },
         enumerable: true,
@@ -181,8 +214,13 @@ export var MdSlider = (function () {
     Object.defineProperty(MdSlider.prototype, "ticksContainerStyles", {
         /** CSS styles for the ticks container element. */
         get: function () {
+            var axis = this.vertical ? 'Y' : 'X';
+            // For a horizontal slider in RTL languages we push the ticks container off the left edge
+            // instead of the right edge to avoid causing a horizontal scrollbar to appear.
+            var sign = !this.vertical && this.direction == 'rtl' ? '' : '-';
+            var offset = this.tickIntervalPercent / 2 * 100;
             return {
-                'marginLeft': "" + (this.direction == 'rtl' ? '' : '-') + this.tickIntervalPercent / 2 * 100 + "%"
+                'transform': "translate" + axis + "(" + sign + offset + "%)"
             };
         },
         enumerable: true,
@@ -191,16 +229,33 @@ export var MdSlider = (function () {
     Object.defineProperty(MdSlider.prototype, "ticksStyles", {
         /** CSS styles for the ticks element. */
         get: function () {
-            var styles = {
-                'backgroundSize': this.tickIntervalPercent * 100 + "% 2px"
+            var tickSize = this.tickIntervalPercent * 100;
+            var backgroundSize = this.vertical ? "2px " + tickSize + "%" : tickSize + "% 2px";
+            var axis = this.vertical ? 'Y' : 'X';
+            // Depending on the direction we pushed the ticks container, push the ticks the opposite
+            // direction to re-center them but clip off the end edge. In RTL languages we need to flip the
+            // ticks 180 degrees so we're really cutting off the end edge abd not the start.
+            var sign = !this.vertical && this.direction == 'rtl' ? '-' : '';
+            var rotate = !this.vertical && this.direction == 'rtl' ? ' rotate(180deg)' : '';
+            return {
+                'backgroundSize': backgroundSize,
+                // Without translateZ ticks sometimes jitter as the slider moves on Chrome & Firefox.
+                'transform': "translateZ(0) translate" + axis + "(" + sign + tickSize / 2 + "%)" + rotate
             };
-            if (this.direction == 'rtl') {
-                styles['marginRight'] = "-" + this.tickIntervalPercent / 2 * 100 + "%";
-            }
-            else {
-                styles['marginLeft'] = this.tickIntervalPercent / 2 * 100 + "%";
-            }
-            return styles;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MdSlider.prototype, "thumbContainerStyles", {
+        get: function () {
+            var axis = this.vertical ? 'Y' : 'X';
+            // For a horizontal slider in RTL languages we push the thumb container off the left edge
+            // instead of the right edge to avoid causing a horizontal scrollbar to appear.
+            var invertOffset = (this.direction == 'rtl' && !this.vertical) ? !this.invertAxis : this.invertAxis;
+            var offset = (invertOffset ? this.percent : 1 - this.percent) * 100;
+            return {
+                'transform': "translate" + axis + "(-" + offset + "%)"
+            };
         },
         enumerable: true,
         configurable: true
@@ -229,7 +284,7 @@ export var MdSlider = (function () {
         this._isActive = true;
         this._isSliding = false;
         this._renderer.addFocus();
-        this._updateValueFromPosition(event.clientX);
+        this._updateValueFromPosition({ x: event.clientX, y: event.clientY });
         this._emitValueIfChanged();
     };
     MdSlider.prototype._onSlide = function (event) {
@@ -238,17 +293,19 @@ export var MdSlider = (function () {
         }
         // Prevent the slide from selecting anything else.
         event.preventDefault();
-        this._updateValueFromPosition(event.center.x);
+        this._updateValueFromPosition({ x: event.center.x, y: event.center.y });
     };
     MdSlider.prototype._onSlideStart = function (event) {
         if (this.disabled) {
             return;
         }
+        // Simulate mouseenter in case this is a mobile device.
+        this._onMouseenter();
         event.preventDefault();
         this._isSliding = true;
         this._isActive = true;
         this._renderer.addFocus();
-        this._updateValueFromPosition(event.center.x);
+        this._updateValueFromPosition({ x: event.center.x, y: event.center.y });
     };
     MdSlider.prototype._onSlideEnd = function () {
         this._isSliding = false;
@@ -276,13 +333,21 @@ export var MdSlider = (function () {
                 this.value = this.min;
                 break;
             case LEFT_ARROW:
-                this._increment(this._isLeftMin() ? -1 : 1);
+                // NOTE: For a sighted user it would make more sense that when they press an arrow key on an
+                // inverted slider the thumb moves in that direction. However for a blind user, nothing
+                // about the slider indicates that it is inverted. They will expect left to be decrement,
+                // regardless of how it appears on the screen. For speakers ofRTL languages, they probably
+                // expect left to mean increment. Therefore we flip the meaning of the side arrow keys for
+                // RTL. For inverted sliders we prefer a good a11y experience to having it "look right" for
+                // sighted users, therefore we do not swap the meaning.
+                this._increment(this.direction == 'rtl' ? 1 : -1);
                 break;
             case UP_ARROW:
                 this._increment(1);
                 break;
             case RIGHT_ARROW:
-                this._increment(this._isLeftMin() ? 1 : -1);
+                // See comment on LEFT_ARROW about the conditions under which we flip the meaning.
+                this._increment(this.direction == 'rtl' ? -1 : 1);
                 break;
             case DOWN_ARROW:
                 this._increment(-1);
@@ -293,10 +358,6 @@ export var MdSlider = (function () {
                 return;
         }
         event.preventDefault();
-    };
-    /** Whether the left side of the slider is the minimum value. */
-    MdSlider.prototype._isLeftMin = function () {
-        return (this.direction == 'rtl') == this.invert;
     };
     /** Increments the slider by the given number of steps (negative number decrements). */
     MdSlider.prototype._increment = function (numSteps) {
@@ -309,11 +370,12 @@ export var MdSlider = (function () {
         if (!this._sliderDimensions) {
             return;
         }
-        var offset = this._sliderDimensions.left;
-        var size = this._sliderDimensions.width;
+        var offset = this.vertical ? this._sliderDimensions.top : this._sliderDimensions.left;
+        var size = this.vertical ? this._sliderDimensions.height : this._sliderDimensions.width;
+        var posComponent = this.vertical ? pos.y : pos.x;
         // The exact value is calculated from the event and used to find the closest snap value.
-        var percent = this._clamp((pos - offset) / size);
-        if (!this._isLeftMin()) {
+        var percent = this._clamp((posComponent - offset) / size);
+        if (this.invertMouseCoords) {
             percent = 1 - percent;
         }
         var exactValue = this._calculateValue(percent);
@@ -342,10 +404,11 @@ export var MdSlider = (function () {
             return;
         }
         if (this.tickInterval == 'auto') {
-            var pixelsPerStep = this._sliderDimensions.width * this.step / (this.max - this.min);
+            var trackSize = this.vertical ? this._sliderDimensions.height : this._sliderDimensions.width;
+            var pixelsPerStep = trackSize * this.step / (this.max - this.min);
             var stepsPerTick = Math.ceil(MIN_AUTO_TICK_SEPARATION / pixelsPerStep);
             var pixelsPerTick = stepsPerTick * this.step;
-            this._tickIntervalPercent = pixelsPerTick / (this._sliderDimensions.width);
+            this._tickIntervalPercent = pixelsPerTick / trackSize;
         }
         else {
             this._tickIntervalPercent = this.tickInterval * this.step / (this.max - this.min);
@@ -428,11 +491,15 @@ export var MdSlider = (function () {
         __metadata('design:type', Object)
     ], MdSlider.prototype, "invert", null);
     __decorate([
+        Input(), 
+        __metadata('design:type', Object)
+    ], MdSlider.prototype, "vertical", null);
+    __decorate([
         Output(), 
         __metadata('design:type', Object)
     ], MdSlider.prototype, "change", void 0);
     MdSlider = __decorate([
-        Component({selector: 'md-slider',
+        Component({selector: 'md-slider, mat-slider',
             providers: [MD_SLIDER_VALUE_ACCESSOR],
             host: {
                 '(blur)': '_onBlur()',
@@ -451,12 +518,14 @@ export var MdSlider = (function () {
                 '[class.md-slider-active]': '_isActive',
                 '[class.md-slider-disabled]': 'disabled',
                 '[class.md-slider-has-ticks]': 'tickInterval',
-                '[class.md-slider-inverted]': 'invert',
+                '[class.md-slider-horizontal]': '!vertical',
+                '[class.md-slider-axis-inverted]': 'invertAxis',
                 '[class.md-slider-sliding]': '_isSliding',
                 '[class.md-slider-thumb-label-showing]': 'thumbLabel',
+                '[class.md-slider-vertical]': 'vertical',
             },
-            template: "<div class=\"md-slider-track\"> <div class=\"md-slider-track-fill\" [ngStyle]=\"trackFillStyles\"></div> <div class=\"md-slider-ticks-container\" [ngStyle]=\"ticksContainerStyles\"> <div class=\"md-slider-ticks\" [ngStyle]=\"ticksStyles\"></div> </div> <div class=\"md-slider-thumb-container\"> <div class=\"md-slider-thumb\"></div> <div class=\"md-slider-thumb-label\"> <span class=\"md-slider-thumb-label-text\">{{value}}</span> </div> </div> </div> ",
-            styles: ["md-slider { display: inline-block; box-sizing: border-box; position: relative; height: 48px; min-width: 128px; padding: 8px; outline: none; vertical-align: middle; } .md-slider-track { display: flex; flex-grow: 1; align-items: center; position: relative; top: 15px; height: 2px; transition: box-shadow 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-has-ticks.md-slider-active .md-slider-track, .md-slider-has-ticks:hover .md-slider-track { box-shadow: inset -4px 0 0 -2px rgba(0, 0, 0, 0.6); } [dir='rtl'] .md-slider-has-ticks.md-slider-active .md-slider-track, [dir='rtl'] .md-slider-has-ticks:hover .md-slider-track { box-shadow: inset 4px 0 0 -2px rgba(0, 0, 0, 0.6); } .md-slider-inverted .md-slider-track { flex-direction: row-reverse; } .md-slider-track-fill { flex: 0 0 50%; height: 2px; transition: flex-basis 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-sliding .md-slider-track-fill { transition: none; } .md-slider-ticks-container { position: absolute; left: 0; top: 0; height: 2px; width: 100%; overflow: hidden; } [dir='rtl'] .md-slider-ticks-container { transform: translateZ(0) rotate(180deg); } .md-slider-ticks { background: repeating-linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) 2px, transparent 0, transparent) repeat; background: -moz-repeating-linear-gradient(0.0001deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) 2px, transparent 0, transparent) repeat; height: 2px; width: 100%; opacity: 0; transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-has-ticks.md-slider-active .md-slider-ticks, .md-slider-has-ticks:hover .md-slider-ticks { opacity: 1; } .md-slider-thumb-container { flex: 0 0 auto; position: relative; width: 0; height: 0; } .md-slider-thumb { position: absolute; left: -10px; top: -10px; width: 20px; height: 20px; border-radius: 50%; transform-origin: 50% 50%; transform: scale(0.7); transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-active .md-slider-thumb { transform: scale(1); } .md-slider-active.md-slider-thumb-label-showing .md-slider-thumb { transform: scale(0); } .md-slider-thumb-label { display: flex; align-items: center; justify-content: center; position: absolute; left: -14px; top: -40px; width: 28px; height: 28px; border-radius: 50%; transform: translateY(26px) scale(0.4) rotate(45deg); transition: 300ms cubic-bezier(0.35, 0, 0.25, 1); transition-property: transform, border-radius; } .md-slider-active .md-slider-thumb-label { border-radius: 50% 50% 0; transform: rotate(45deg); } md-slider:not(.md-slider-thumb-label-showing) .md-slider-thumb-label { display: none; } .md-slider-thumb-label-text { z-index: 1; font-size: 12px; font-weight: bold; opacity: 0; transform: rotate(-45deg); transition: opacity 300ms cubic-bezier(0.35, 0, 0.25, 1); } .md-slider-active .md-slider-thumb-label-text { opacity: 1; } /*# sourceMappingURL=slider.css.map */ "],
+            template: "<div class=\"md-slider-track\"> <div class=\"md-slider-track-fill\" [ngStyle]=\"trackFillStyles\"></div> <div class=\"md-slider-ticks-container\" [ngStyle]=\"ticksContainerStyles\"> <div class=\"md-slider-ticks\" [ngStyle]=\"ticksStyles\"></div> </div> <div class=\"md-slider-thumb-container\" [ngStyle]=\"thumbContainerStyles\"> <div class=\"md-slider-thumb\"></div> <div class=\"md-slider-thumb-label\"> <span class=\"md-slider-thumb-label-text\">{{value}}</span> </div> </div> </div> ",
+            styles: ["md-slider { display: inline-block; position: relative; box-sizing: border-box; padding: 8px; outline: none; vertical-align: middle; } .md-slider-track { position: absolute; } .md-slider-track-fill { position: absolute; transform-origin: 0 0; transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-ticks-container { position: absolute; left: 0; top: 0; overflow: hidden; } .md-slider-ticks { opacity: 0; transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-thumb-container { position: absolute; z-index: 1; transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-thumb { position: absolute; right: -10px; bottom: -10px; width: 20px; height: 20px; border-radius: 50%; transform: scale(0.7); transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-slider-thumb-label { display: none; align-items: center; justify-content: center; position: absolute; width: 28px; height: 28px; border-radius: 50%; transition: 300ms cubic-bezier(0.35, 0, 0.25, 1); transition-property: transform, border-radius; } .md-slider-thumb-label-text { z-index: 1; font-size: 12px; font-weight: bold; opacity: 0; transition: opacity 300ms cubic-bezier(0.35, 0, 0.25, 1); } .md-slider-sliding .md-slider-track-fill, .md-slider-sliding .md-slider-thumb-container { transition: none; } .md-slider-has-ticks .md-slider-track::after { content: ''; position: absolute; border: 0 solid rgba(0, 0, 0, 0.6); opacity: 0; transition: opacity 300ms cubic-bezier(0.35, 0, 0.25, 1); } .md-slider-has-ticks.md-slider-active .md-slider-track::after, .md-slider-has-ticks:hover .md-slider-track::after { opacity: 1; } .md-slider-has-ticks.md-slider-active .md-slider-ticks, .md-slider-has-ticks:hover .md-slider-ticks { opacity: 1; } .md-slider-thumb-label-showing .md-slider-thumb-label { display: flex; } .md-slider-axis-inverted .md-slider-track-fill { transform-origin: 100% 100%; } .md-slider-active .md-slider-thumb { transform: scale(1); } .md-slider-active.md-slider-thumb-label-showing .md-slider-thumb { transform: scale(0); } .md-slider-active .md-slider-thumb-label { border-radius: 50% 50% 0; } .md-slider-active .md-slider-thumb-label-text { opacity: 1; } .md-slider-horizontal { height: 48px; min-width: 128px; } .md-slider-horizontal .md-slider-track { height: 2px; top: 23px; left: 8px; right: 8px; } .md-slider-horizontal .md-slider-track::after { height: 2px; border-left-width: 2px; right: 0; } .md-slider-horizontal .md-slider-track-fill { height: 2px; width: 100%; transform: scaleX(0); } .md-slider-horizontal .md-slider-ticks-container { height: 2px; width: 100%; } .md-slider-horizontal .md-slider-ticks { background: repeating-linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) 2px, transparent 0, transparent) repeat; background: -moz-repeating-linear-gradient(0.0001deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) 2px, transparent 0, transparent) repeat; height: 2px; width: 100%; } .md-slider-horizontal .md-slider-thumb-container { width: 100%; height: 0; top: 50%; } .md-slider-horizontal .md-slider-thumb-label { right: -14px; top: -40px; transform: translateY(26px) scale(0.4) rotate(45deg); } .md-slider-horizontal .md-slider-thumb-label-text { transform: rotate(-45deg); } .md-slider-horizontal.md-slider-active .md-slider-thumb-label { transform: rotate(45deg); } .md-slider-vertical { width: 48px; min-height: 128px; } .md-slider-vertical .md-slider-track { width: 2px; top: 8px; bottom: 8px; left: 23px; } .md-slider-vertical .md-slider-track::after { width: 2px; border-top-width: 2px; bottom: 0; } .md-slider-vertical .md-slider-track-fill { height: 100%; width: 2px; transform: scaleY(0); } .md-slider-vertical .md-slider-ticks-container { width: 2px; height: 100%; } .md-slider-vertical .md-slider-ticks { background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) 2px, transparent 0, transparent) repeat; width: 2px; height: 100%; } .md-slider-vertical .md-slider-thumb-container { height: 100%; width: 0; left: 50%; } .md-slider-vertical .md-slider-thumb-label { bottom: -14px; left: -40px; transform: translateX(26px) scale(0.4) rotate(-45deg); } .md-slider-vertical .md-slider-thumb-label-text { transform: rotate(45deg); } .md-slider-vertical.md-slider-active .md-slider-thumb-label { transform: rotate(-45deg); } [dir='rtl'] .md-slider-track::after { left: 0; right: auto; } [dir='rtl'] .md-slider-horizontal .md-slider-track-fill { transform-origin: 100% 100%; } [dir='rtl'] .md-slider-horizontal.md-slider-axis-inverted .md-slider-track-fill { transform-origin: 0 0; } /*# sourceMappingURL=slider.css.map */ "],
             encapsulation: ViewEncapsulation.None,
         }),
         __param(0, Optional()), 
@@ -500,8 +569,8 @@ export var MdSliderModule = (function () {
     };
     MdSliderModule = __decorate([
         NgModule({
-            imports: [CommonModule, FormsModule],
-            exports: [MdSlider],
+            imports: [CommonModule, FormsModule, DefaultStyleCompatibilityModeModule],
+            exports: [MdSlider, DefaultStyleCompatibilityModeModule],
             declarations: [MdSlider],
             providers: [
                 { provide: HAMMER_GESTURE_CONFIG, useClass: MdGestureConfig },

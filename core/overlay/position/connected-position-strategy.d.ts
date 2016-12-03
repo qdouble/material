@@ -32,6 +32,10 @@ export declare class ConnectedPositionStrategy implements PositionStrategy {
     constructor(_connectedTo: ElementRef, _originPos: OriginConnectionPosition, _overlayPos: OverlayConnectionPosition, _viewportRuler: ViewportRuler);
     readonly positions: ConnectionPositionPair[];
     /**
+     * To be used to for any cleanup after the element gets destroyed.
+     */
+    dispose(): void;
+    /**
      * Updates the position of the overlay element, using whichever preferred position relative
      * to the origin fits on-screen.
      * TODO: internal

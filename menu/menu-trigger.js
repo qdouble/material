@@ -210,7 +210,7 @@ export var MdMenuTrigger = (function () {
     ], MdMenuTrigger.prototype, "onMenuClose", void 0);
     MdMenuTrigger = __decorate([
         Directive({
-            selector: '[md-menu-trigger-for]',
+            selector: '[md-menu-trigger-for], [mat-menu-trigger-for]',
             host: {
                 'aria-haspopup': 'true',
                 '(mousedown)': '_handleMousedown($event)',

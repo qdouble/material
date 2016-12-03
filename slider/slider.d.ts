@@ -63,8 +63,21 @@ export declare class MdSlider implements ControlValueAccessor {
     private _max;
     max: number;
     /** Whether the slider is inverted. */
-    invert: boolean;
+    invert: any;
     private _invert;
+    /** Whether the slider is vertical. */
+    vertical: any;
+    private _vertical;
+    /**
+     * Whether the axis of the slider is inverted.
+     * (i.e. whether moving the thumb in the positive x or y direction decreases the slider's value).
+     */
+    readonly invertAxis: any;
+    /**
+     * Whether mouse events should be converted to a slider position by calculating their distance
+     * from the right or bottom edge of the slider as opposed to the top or left.
+     */
+    readonly invertMouseCoords: any;
     /** CSS styles for the track fill element. */
     readonly trackFillStyles: {
         [key: string]: string;
@@ -75,6 +88,9 @@ export declare class MdSlider implements ControlValueAccessor {
     };
     /** CSS styles for the ticks element. */
     readonly ticksStyles: {
+        [key: string]: string;
+    };
+    readonly thumbContainerStyles: {
         [key: string]: string;
     };
     /** The language direction for this slider element. */
@@ -88,8 +104,6 @@ export declare class MdSlider implements ControlValueAccessor {
     _onSlideEnd(): void;
     _onBlur(): void;
     _onKeydown(event: KeyboardEvent): void;
-    /** Whether the left side of the slider is the minimum value. */
-    private _isLeftMin();
     /** Increments the slider by the given number of steps (negative number decrements). */
     private _increment(numSteps);
     /**

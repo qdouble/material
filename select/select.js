@@ -18,13 +18,47 @@ import { Dir } from '../core/rtl/dir';
 import { transformPlaceholder, transformPanel, fadeInContent } from './select-animations';
 import { NgControl } from '@angular/forms';
 import { coerceBooleanProperty } from '../core/coersion/boolean-property';
+import { ConnectedOverlayDirective } from '../core/overlay/overlay-directives';
+import { ViewportRuler } from '../core/overlay/position/viewport-ruler';
+/**
+ * The following style constants are necessary to save here in order
+ * to properly calculate the alignment of the selected option over
+ * the trigger element.
+ */
+/** The fixed height of every option element. */
+export var SELECT_OPTION_HEIGHT = 48;
+/** The max height of the select's overlay panel */
+export var SELECT_PANEL_MAX_HEIGHT = 256;
+/** The max number of options visible at once in the select panel. */
+export var SELECT_MAX_OPTIONS_DISPLAYED = 5;
+/** The fixed height of the select's trigger element. */
+export var SELECT_TRIGGER_HEIGHT = 30;
+/**
+ * Must adjust for the difference in height between the option and the trigger,
+ * so the text will align on the y axis.
+ * (SELECT_OPTION_HEIGHT (48) - SELECT_TRIGGER_HEIGHT (30)) / 2 = 9
+ */
+export var SELECT_OPTION_HEIGHT_ADJUSTMENT = 9;
+/** The panel's padding on the x-axis */
+export var SELECT_PANEL_PADDING_X = 16;
+/**
+ * The panel's padding on the y-axis. This padding indicates there are more
+ * options available if you scroll.
+ */
+export var SELECT_PANEL_PADDING_Y = 16;
+/**
+ * The select panel will only "fit" inside the viewport if it is positioned at
+ * this value or more away from the viewport boundary.
+ */
+export var SELECT_PANEL_VIEWPORT_PADDING = 8;
 export var MdSelect = (function () {
-    function MdSelect(_element, _renderer, _dir, _control, _ngZone) {
+    function MdSelect(_element, _renderer, _ngZone, _viewportRuler, _dir, _control) {
         this._element = _element;
         this._renderer = _renderer;
+        this._ngZone = _ngZone;
+        this._viewportRuler = _viewportRuler;
         this._dir = _dir;
         this._control = _control;
-        this._ngZone = _ngZone;
         /** Whether or not the overlay panel is open. */
         this._panelOpen = false;
         /** Subscriptions to option events. */
@@ -33,12 +67,28 @@ export var MdSelect = (function () {
         this._required = false;
         /** Whether the select is disabled.  */
         this._disabled = false;
+        /** The scroll position of the overlay panel, calculated to center the selected option. */
+        this._scrollTop = 0;
+        /** View -> model callback called when value changes */
+        this._onChange = function (value) { };
         /** View -> model callback called when select has been touched */
         this._onTouched = function () { };
         /** The IDs of child options to be passed to the aria-owns attribute. */
         this._optionIds = '';
         /** The value of the select panel's transform-origin property. */
         this._transformOrigin = 'top';
+        /**
+         * The x-offset of the overlay panel in relation to the trigger's top start corner.
+         * This must be adjusted to align the selected option text over the trigger text when
+         * the panel opens. Will change based on LTR or RTL text direction.
+         */
+        this._offsetX = 0;
+        /**
+         * The y-offset of the overlay panel in relation to the trigger's top start corner.
+         * This must be adjusted to align the selected option text over the trigger text.
+         * when the panel opens. Will change based on the y-position of the selected option.
+         */
+        this._offsetY = 0;
         /**
          * This position config ensures that the top "start" corner of the overlay
          * is aligned with with the top "start" of the origin by default (overlapping
@@ -105,6 +155,7 @@ export var MdSelect = (function () {
         if (this.disabled) {
             return;
         }
+        this._calculateOverlayPosition();
         this._panelOpen = true;
     };
     /** Closes the overlay panel and focuses the host element. */
@@ -178,7 +229,7 @@ export var MdSelect = (function () {
      * the overlay width to the trigger width.
      */
     MdSelect.prototype._getWidth = function () {
-        return this.trigger.nativeElement.getBoundingClientRect().width;
+        return this._getTriggerRect().width;
     };
     /** The animation state of the placeholder. */
     MdSelect.prototype._getPlaceholderState = function () {
@@ -188,10 +239,6 @@ export var MdSelect = (function () {
         else {
             return 'normal';
         }
-    };
-    /** The animation state of the overlay panel. */
-    MdSelect.prototype._getPanelState = function () {
-        return this._isRtl() ? this._transformOrigin + "-rtl" : this._transformOrigin + "-ltr";
     };
     /** Ensures the panel opens if activated by the keyboard. */
     MdSelect.prototype._handleKeydown = function (event) {
@@ -226,11 +273,16 @@ export var MdSelect = (function () {
         return this.disabled ? '-1' : '0';
     };
     /**
-     * Sets the transform-origin property of the panel to ensure that it
-     * animates in the correct direction based on its positioning.
+     * Sets the scroll position of the scroll container. This must be called after
+     * the overlay pane is attached or the scroll container element will not yet be
+     * present in the DOM.
      */
-    MdSelect.prototype._updateTransformOrigin = function (pos) {
-        this._transformOrigin = pos.connectionPair.originY;
+    MdSelect.prototype._setScrollTop = function () {
+        var scrollContainer = this.overlayDir.overlayRef.overlayElement.querySelector('.md-select-panel');
+        scrollContainer.scrollTop = this._scrollTop;
+    };
+    MdSelect.prototype._getTriggerRect = function () {
+        return this.trigger.nativeElement.getBoundingClientRect();
     };
     /** Sets up a key manager to listen to keyboard events on the overlay panel. */
     MdSelect.prototype._initKeyManager = function () {
@@ -304,10 +356,150 @@ export var MdSelect = (function () {
             return result === undefined ? (option === current ? index : undefined) : result;
         }, undefined);
     };
+    /** Calculates the scroll position and x- and y-offsets of the overlay panel. */
+    MdSelect.prototype._calculateOverlayPosition = function () {
+        this._offsetX = this._isRtl() ? SELECT_PANEL_PADDING_X : -SELECT_PANEL_PADDING_X;
+        var panelHeight = Math.min(this.options.length * SELECT_OPTION_HEIGHT, SELECT_PANEL_MAX_HEIGHT);
+        var scrollContainerHeight = this.options.length * SELECT_OPTION_HEIGHT;
+        // The farthest the panel can be scrolled before it hits the bottom
+        var maxScroll = scrollContainerHeight - panelHeight;
+        if (this.selected) {
+            var selectedIndex = this._getOptionIndex(this.selected);
+            // We must maintain a scroll buffer so the selected option will be scrolled to the
+            // center of the overlay panel rather than the top.
+            var scrollBuffer = panelHeight / 2;
+            this._scrollTop = this._calculateOverlayScroll(selectedIndex, scrollBuffer, maxScroll);
+            this._offsetY = this._calculateOverlayOffset(selectedIndex, scrollBuffer, maxScroll);
+        }
+        else {
+            // If no option is selected, the panel centers on the first option. In this case,
+            // we must only adjust for the height difference between the option element
+            // and the trigger element, then multiply it by -1 to ensure the panel moves
+            // in the correct direction up the page.
+            this._offsetY = (SELECT_OPTION_HEIGHT - SELECT_TRIGGER_HEIGHT) / 2 * -1;
+        }
+        this._checkOverlayWithinViewport(maxScroll);
+    };
+    /**
+     * Calculates the scroll position of the select's overlay panel.
+     *
+     * Attempts to center the selected option in the panel. If the option is
+     * too high or too low in the panel to be scrolled to the center, it clamps the
+     * scroll position to the min or max scroll positions respectively.
+     */
+    MdSelect.prototype._calculateOverlayScroll = function (selectedIndex, scrollBuffer, maxScroll) {
+        var optionOffsetFromScrollTop = SELECT_OPTION_HEIGHT * selectedIndex;
+        var halfOptionHeight = SELECT_OPTION_HEIGHT / 2;
+        // Starts at the optionOffsetFromScrollTop, which scrolls the option to the top of the
+        // scroll container, then subtracts the scroll buffer to scroll the option down to
+        // the center of the overlay panel. Half the option height must be re-added to the
+        // scrollTop so the option is centered based on its middle, not its top edge.
+        var optimalScrollPosition = optionOffsetFromScrollTop - scrollBuffer + halfOptionHeight;
+        return clampValue(0, optimalScrollPosition, maxScroll);
+    };
+    /**
+     * Calculates the y-offset of the select's overlay panel in relation to the
+     * top start corner of the trigger. It has to be adjusted in order for the
+     * selected option to be aligned over the trigger when the panel opens.
+     */
+    MdSelect.prototype._calculateOverlayOffset = function (selectedIndex, scrollBuffer, maxScroll) {
+        var optionOffsetFromPanelTop;
+        if (this._scrollTop === 0) {
+            optionOffsetFromPanelTop = selectedIndex * SELECT_OPTION_HEIGHT;
+        }
+        else if (this._scrollTop === maxScroll) {
+            var firstDisplayedIndex = this.options.length - SELECT_MAX_OPTIONS_DISPLAYED;
+            var selectedDisplayIndex = selectedIndex - firstDisplayedIndex;
+            // Because the panel height is longer than the height of the options alone,
+            // there is always extra padding at the top or bottom of the panel. When
+            // scrolled to the very bottom, this padding is at the top of the panel and
+            // must be added to the offset.
+            optionOffsetFromPanelTop =
+                selectedDisplayIndex * SELECT_OPTION_HEIGHT + SELECT_PANEL_PADDING_Y;
+        }
+        else {
+            // If the option was scrolled to the middle of the panel using a scroll buffer,
+            // its offset will be the scroll buffer minus the half height that was added to
+            // center it.
+            optionOffsetFromPanelTop = scrollBuffer - SELECT_OPTION_HEIGHT / 2;
+        }
+        // The final offset is the option's offset from the top, adjusted for the height
+        // difference, multiplied by -1 to ensure that the overlay moves in the correct
+        // direction up the page.
+        return optionOffsetFromPanelTop * -1 - SELECT_OPTION_HEIGHT_ADJUSTMENT;
+    };
+    /**
+     * Checks that the attempted overlay position will fit within the viewport.
+     * If it will not fit, tries to adjust the scroll position and the associated
+     * y-offset so the panel can open fully on-screen. If it still won't fit,
+     * sets the offset back to 0 to allow the fallback position to take over.
+     */
+    MdSelect.prototype._checkOverlayWithinViewport = function (maxScroll) {
+        var viewportRect = this._viewportRuler.getViewportRect();
+        var triggerRect = this._getTriggerRect();
+        var topSpaceAvailable = triggerRect.top - viewportRect.top - SELECT_PANEL_VIEWPORT_PADDING;
+        var bottomSpaceAvailable = viewportRect.bottom - triggerRect.bottom - SELECT_PANEL_VIEWPORT_PADDING;
+        var panelHeightTop = Math.abs(this._offsetY);
+        var totalPanelHeight = Math.min(this.options.length * SELECT_OPTION_HEIGHT, SELECT_PANEL_MAX_HEIGHT);
+        var panelHeightBottom = totalPanelHeight - panelHeightTop - triggerRect.height;
+        if (panelHeightBottom > bottomSpaceAvailable) {
+            this._adjustPanelUp(panelHeightBottom, bottomSpaceAvailable);
+        }
+        else if (panelHeightTop > topSpaceAvailable) {
+            this._adjustPanelDown(panelHeightTop, topSpaceAvailable, maxScroll);
+        }
+        else {
+            this._transformOrigin = this._getOriginBasedOnOption();
+        }
+    };
+    /** Adjusts the overlay panel up to fit in the viewport. */
+    MdSelect.prototype._adjustPanelUp = function (panelHeightBottom, bottomSpaceAvailable) {
+        var distanceBelowViewport = panelHeightBottom - bottomSpaceAvailable;
+        // Scrolls the panel up by the distance it was extending past the boundary, then
+        // adjusts the offset by that amount to move the panel up into the viewport.
+        this._scrollTop -= distanceBelowViewport;
+        this._offsetY -= distanceBelowViewport;
+        this._transformOrigin = this._getOriginBasedOnOption();
+        // If the panel is scrolled to the very top, it won't be able to fit the panel
+        // by scrolling, so set the offset to 0 to allow the fallback position to take
+        // effect.
+        if (this._scrollTop <= 0) {
+            this._scrollTop = 0;
+            this._offsetY = 0;
+            this._transformOrigin = "50% bottom 0px";
+        }
+    };
+    /** Adjusts the overlay panel down to fit in the viewport. */
+    MdSelect.prototype._adjustPanelDown = function (panelHeightTop, topSpaceAvailable, maxScroll) {
+        var distanceAboveViewport = panelHeightTop - topSpaceAvailable;
+        // Scrolls the panel down by the distance it was extending past the boundary, then
+        // adjusts the offset by that amount to move the panel down into the viewport.
+        this._scrollTop += distanceAboveViewport;
+        this._offsetY += distanceAboveViewport;
+        this._transformOrigin = this._getOriginBasedOnOption();
+        // If the panel is scrolled to the very bottom, it won't be able to fit the
+        // panel by scrolling, so set the offset to 0 to allow the fallback position
+        // to take effect.
+        if (this._scrollTop >= maxScroll) {
+            this._scrollTop = maxScroll;
+            this._offsetY = 0;
+            this._transformOrigin = "50% top 0px";
+            return;
+        }
+    };
+    /** Sets the transform origin point based on the selected option. */
+    MdSelect.prototype._getOriginBasedOnOption = function () {
+        var originY = Math.abs(this._offsetY) - SELECT_OPTION_HEIGHT_ADJUSTMENT + SELECT_OPTION_HEIGHT / 2;
+        return "50% " + originY + "px 0px";
+    };
     __decorate([
         ViewChild('trigger'), 
         __metadata('design:type', ElementRef)
     ], MdSelect.prototype, "trigger", void 0);
+    __decorate([
+        ViewChild(ConnectedOverlayDirective), 
+        __metadata('design:type', ConnectedOverlayDirective)
+    ], MdSelect.prototype, "overlayDir", void 0);
     __decorate([
         ContentChildren(MdOption), 
         __metadata('design:type', QueryList)
@@ -333,9 +525,9 @@ export var MdSelect = (function () {
         __metadata('design:type', Object)
     ], MdSelect.prototype, "onClose", void 0);
     MdSelect = __decorate([
-        Component({selector: 'md-select',
-            template: "<div class=\"md-select-trigger\" overlay-origin (click)=\"toggle()\" #origin=\"overlayOrigin\" #trigger> <span class=\"md-select-placeholder\" [@transformPlaceholder]=\"_getPlaceholderState()\"> {{ placeholder }} </span> <span class=\"md-select-value\" *ngIf=\"selected\"> {{ selected?.viewValue }} </span> <span class=\"md-select-arrow\"></span> </div> <template connected-overlay [origin]=\"origin\"  [open]=\"panelOpen\" hasBackdrop (backdropClick)=\"close()\" backdropClass=\"md-overlay-transparent-backdrop\" [positions]=\"_positions\" [width]=\"_getWidth()\" (positionChange)=\"_updateTransformOrigin($event)\"> <div class=\"md-select-panel\" [@transformPanel]=\"_getPanelState()\" (@transformPanel.done)=\"_onPanelDone()\" (keydown)=\"_keyManager.onKeydown($event)\" [style.transformOrigin]=\"_transformOrigin\"> <div class=\"md-select-content\" [@fadeInContent]=\"'showing'\"> <ng-content></ng-content> </div> </div> </template> ",
-            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ md-select { display: inline-block; outline: none; } .md-select-trigger { display: flex; justify-content: space-between; align-items: center; height: 30px; min-width: 112px; cursor: pointer; position: relative; } [aria-disabled='true'] .md-select-trigger { background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%); background-size: 4px 1px; background-repeat: repeat-x; border-bottom: transparent; background-position: 0 bottom; cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-select-placeholder { padding: 0 2px; transform-origin: left top; } [dir='rtl'] .md-select-placeholder { transform-origin: right top; } [aria-required=true] .md-select-placeholder::after { content: '*'; } .md-select-value { position: absolute; left: 0; top: 6px; } [dir='rtl'] .md-select-value { left: auto; right: 0; } .md-select-arrow { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid; margin: 0 4px; } .md-select-panel { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; padding-top: 0; padding-bottom: 0; transform-origin: top; } md-option { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; cursor: pointer; outline: none; } md-option[disabled] { cursor: default; } md-option md-icon { margin-right: 16px; } [dir='rtl'] md-option md-icon { margin-left: 16px; } md-option[aria-disabled='true'] { cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-option-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } /*# sourceMappingURL=select.css.map */ "],
+        Component({selector: 'md-select, mat-select',
+            template: "<div class=\"md-select-trigger\" overlay-origin (click)=\"toggle()\" #origin=\"overlayOrigin\" #trigger> <span class=\"md-select-placeholder\" [@transformPlaceholder]=\"_getPlaceholderState()\"> {{ placeholder }} </span> <span class=\"md-select-value\" *ngIf=\"selected\"> {{ selected?.viewValue }} </span> <span class=\"md-select-arrow\"></span> </div> <template connected-overlay [origin]=\"origin\"  [open]=\"panelOpen\" hasBackdrop (backdropClick)=\"close()\" backdropClass=\"md-overlay-transparent-backdrop\" [positions]=\"_positions\" [width]=\"_getWidth()\" [offsetY]=\"_offsetY\" [offsetX]=\"_offsetX\" (attach)=\"_setScrollTop()\"> <div class=\"md-select-panel\" [@transformPanel]=\"'showing'\" (@transformPanel.done)=\"_onPanelDone()\" (keydown)=\"_keyManager.onKeydown($event)\" [style.transformOrigin]=\"_transformOrigin\"> <div class=\"md-select-content\" [@fadeInContent]=\"'showing'\"> <ng-content></ng-content> </div> </div> </template> ",
+            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ md-select { display: inline-block; outline: none; } .md-select-trigger { display: flex; justify-content: space-between; align-items: center; height: 30px; min-width: 112px; cursor: pointer; position: relative; box-sizing: border-box; } [aria-disabled='true'] .md-select-trigger { background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%); background-size: 4px 1px; background-repeat: repeat-x; border-bottom: transparent; background-position: 0 bottom; cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-select-placeholder { padding: 0 2px; transform-origin: left top; } [dir='rtl'] .md-select-placeholder { transform-origin: right top; } [aria-required=true] .md-select-placeholder::after { content: '*'; } .md-select-value { position: absolute; left: 0; top: 6px; } [dir='rtl'] .md-select-value { left: auto; right: 0; } .md-select-arrow { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid; margin: 0 4px; } .md-select-panel { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; padding-top: 0; padding-bottom: 0; max-height: 256px; } md-option { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; cursor: pointer; outline: none; } md-option[disabled] { cursor: default; } md-option md-icon { margin-right: 16px; } [dir='rtl'] md-option md-icon { margin-left: 16px; } md-option[aria-disabled='true'] { cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-option-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } /*# sourceMappingURL=select.css.map */ "],
             encapsulation: ViewEncapsulation.None,
             host: {
                 'role': 'listbox',
@@ -356,11 +548,15 @@ export var MdSelect = (function () {
             ],
             exportAs: 'mdSelect',
         }),
-        __param(2, Optional()),
-        __param(3, Optional()), 
-        __metadata('design:paramtypes', [ElementRef, Renderer, Dir, NgControl, NgZone])
+        __param(4, Optional()),
+        __param(5, Optional()), 
+        __metadata('design:paramtypes', [ElementRef, Renderer, NgZone, ViewportRuler, Dir, NgControl])
     ], MdSelect);
     return MdSelect;
 }());
+/** Clamps a value n between min and max values. */
+function clampValue(min, n, max) {
+    return Math.min(Math.max(min, n), max);
+}
 
 //# sourceMappingURL=select.js.map

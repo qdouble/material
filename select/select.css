@@ -14,7 +14,8 @@ md-select {
   height: 30px;
   min-width: 112px;
   cursor: pointer;
-  position: relative; }
+  position: relative;
+  box-sizing: border-box; }
   [aria-disabled='true'] .md-select-trigger {
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%);
     background-size: 4px 1px;
@@ -59,7 +60,7 @@ md-select {
   -webkit-overflow-scrolling: touch;
   padding-top: 0;
   padding-bottom: 0;
-  transform-origin: top; }
+  max-height: 256px; }
 
 md-option {
   white-space: nowrap;

@@ -25,10 +25,12 @@ export { applyCssTransform } from './style/apply-transform';
 export { MdError } from './errors/error';
 export { ComponentType } from './overlay/generic-component-type';
 export * from './keyboard/keycodes';
-export * from './compatibility/style-compatibility';
+export * from './compatibility/default-mode';
 export * from './animation/animation';
 export { coerceBooleanProperty } from './coersion/boolean-property';
 export { coerceNumberProperty } from './coersion/number-property';
+export { DefaultStyleCompatibilityModeModule } from './compatibility/default-mode';
+export { NoConflictStyleCompatibilityMode } from './compatibility/no-conflict-mode';
 export declare class MdCoreModule {
     static forRoot(): ModuleWithProviders;
 }

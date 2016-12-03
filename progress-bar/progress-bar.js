@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { NgModule, Component, ChangeDetectionStrategy, HostBinding, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DefaultStyleCompatibilityModeModule } from '../core/compatibility/default-mode';
 // TODO(josephperrott): Benchpress tests.
 // TODO(josephperrott): Add ARIA attributes for progressbar "for".
 /**
@@ -79,7 +80,7 @@ export var MdProgressBar = (function () {
         __metadata('design:type', Object)
     ], MdProgressBar.prototype, "mode", void 0);
     MdProgressBar = __decorate([
-        Component({selector: 'md-progress-bar',
+        Component({selector: 'md-progress-bar, mat-progress-bar',
             host: {
                 'role': 'progressbar',
                 'aria-valuemin': '0',
@@ -110,8 +111,8 @@ export var MdProgressBarModule = (function () {
     };
     MdProgressBarModule = __decorate([
         NgModule({
-            imports: [CommonModule],
-            exports: [MdProgressBar],
+            imports: [CommonModule, DefaultStyleCompatibilityModeModule],
+            exports: [MdProgressBar, DefaultStyleCompatibilityModeModule],
             declarations: [MdProgressBar],
         }), 
         __metadata('design:paramtypes', [])

@@ -14,7 +14,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { NgModule, ChangeDetectionStrategy, Component, ElementRef, Input, Renderer, ViewEncapsulation } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { MdError } from '../core';
+import { MdError, DefaultStyleCompatibilityModeModule } from '../core';
 import { MdIconRegistry } from './icon-registry';
 export { MdIconRegistry } from './icon-registry';
 /** Exception thrown when an invalid icon name is passed to an md-icon component. */
@@ -241,7 +241,7 @@ export var MdIcon = (function () {
     ], MdIcon.prototype, "color", null);
     MdIcon = __decorate([
         Component({template: '<ng-content></ng-content>',
-            selector: 'md-icon',
+            selector: 'md-icon, mat-icon',
             styles: ["md-icon { background-repeat: no-repeat; display: inline-block; fill: currentColor; height: 24px; width: 24px; } /*# sourceMappingURL=icon.css.map */ "],
             host: {
                 'role': 'img',
@@ -264,8 +264,8 @@ export var MdIconModule = (function () {
     };
     MdIconModule = __decorate([
         NgModule({
-            imports: [HttpModule],
-            exports: [MdIcon],
+            imports: [HttpModule, DefaultStyleCompatibilityModeModule],
+            exports: [MdIcon, DefaultStyleCompatibilityModeModule],
             declarations: [MdIcon],
         }), 
         __metadata('design:paramtypes', [])

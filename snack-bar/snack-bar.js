@@ -8,7 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { NgModule, Injectable } from '@angular/core';
-import { ComponentPortal, Overlay, OverlayModule, OverlayState, PortalModule, OVERLAY_PROVIDERS, MdLiveAnnouncer } from '../core';
+import { ComponentPortal, Overlay, OverlayModule, OverlayState, PortalModule, OVERLAY_PROVIDERS, MdLiveAnnouncer, DefaultStyleCompatibilityModeModule } from '../core';
 import { CommonModule } from '@angular/common';
 import { MdSnackBarConfig } from './snack-bar-config';
 import { MdSnackBarRef } from './snack-bar-ref';
@@ -101,7 +101,6 @@ export var MdSnackBar = (function () {
     MdSnackBar.prototype._createOverlay = function () {
         var state = new OverlayState();
         state.positionStrategy = this._overlay.position().global()
-            .fixed()
             .centerHorizontally()
             .bottom('0');
         return this._overlay.create(state);
@@ -131,8 +130,8 @@ export var MdSnackBarModule = (function () {
     };
     MdSnackBarModule = __decorate([
         NgModule({
-            imports: [OverlayModule, PortalModule, CommonModule],
-            exports: [MdSnackBarContainer],
+            imports: [OverlayModule, PortalModule, CommonModule, DefaultStyleCompatibilityModeModule],
+            exports: [MdSnackBarContainer, DefaultStyleCompatibilityModeModule],
             declarations: [MdSnackBarContainer, SimpleSnackBar],
             entryComponents: [MdSnackBarContainer, SimpleSnackBar],
         }), 

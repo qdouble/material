@@ -64,7 +64,7 @@ export var MdMenuItem = (function () {
         __metadata('design:type', String)
     ], MdMenuItem.prototype, "isAriaDisabled", null);
     MdMenuItem = __decorate([
-        Component({selector: '[md-menu-item]',
+        Component({selector: '[md-menu-item], [mat-menu-item]',
             host: {
                 'role': 'menuitem',
                 '(click)': '_checkDisabled($event)',

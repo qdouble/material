@@ -123,13 +123,20 @@
   text-transform: none;
   width: 1px; }
 
-.md-overlay-container {
-  position: fixed;
+.md-overlay-container, .md-global-overlay-wrapper {
   pointer-events: none;
   top: 0;
   left: 0;
   height: 100%;
-  width: 100%;
+  width: 100%; }
+
+.md-overlay-container {
+  position: fixed;
+  z-index: 1000; }
+
+.md-global-overlay-wrapper {
+  display: flex;
+  position: absolute;
   z-index: 1000; }
 
 .md-overlay-pane {

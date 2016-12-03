@@ -35,6 +35,9 @@ export var OverlayRef = (function () {
         return this._portalHost.detach();
     };
     OverlayRef.prototype.dispose = function () {
+        if (this._state.positionStrategy) {
+            this._state.positionStrategy.dispose();
+        }
         this._detachBackdrop();
         this._portalHost.dispose();
     };
