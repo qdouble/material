@@ -1,6 +1,7 @@
 import { AboutUs } from './about-us';
 import { ContactUs } from './contact-us';
 import { FAQ } from './faq';
+import { ForgotPassword } from './forgot-password';
 import { Homepage } from './home';
 import { HowItWorks } from './how-it-works';
 import { Login } from './login';
@@ -26,6 +27,7 @@ export {
   ContactUs,
   CreditRequestComponent,
   FAQ,
+  ForgotPassword,
   Homepage,
   HowItWorks,
   Login,
@@ -57,6 +59,7 @@ export const PAGES_COMPONENTS = [
   CreditRequestComponent,
   CreditRequestTable,
   FAQ,
+  ForgotPassword,
   Homepage,
   HowItWorks,
   Login,

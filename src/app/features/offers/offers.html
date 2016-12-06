@@ -23,7 +23,7 @@
     [sideNavOpen]="sideNavOpen$ | async" >
     </os-offer-rows>
   <md-card id="no-completed-card" class="os-message-card accent-background white" *ngIf="selectedOption === 'Completed' && (offersCompleted$ | async)?.length < 1"> 
-    You Have No Completed Offers. Complete an offer on the Available Offers tab to level up!
+    You Have No Completed Offers. Complete an offer on the Available tab to level up!
   </md-card>
   <md-card *ngIf="selectedOption === 'Available' && (offers$ | async)?.length > 0" class="os-offer-page-footer">
   <p>*The level you reach determines the maximum amount of earnings you can receive per referral. The actual amount you make per referral is determined by the level your referrals reach (level reached multiplied by $5). All orders are subject to verification and cross-checks to validate the legitmacy of signups. In certain instances, we may put an account on hold until we receive proof of identity (ID/Proof of Address) and in rare instances we may ask for proof that completions were legitimate (card/transaction proof). Account holds will only be removed when such information is sent. If we detect fraudulent activity, an account may be held indefinetly or suspended. Please try the advertisers offers to the fullest and abide by our terms and conditions. </p>

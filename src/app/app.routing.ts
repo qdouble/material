@@ -15,6 +15,7 @@ import {
   ContactUs,
   CreditRequestComponent,
   FAQ,
+  ForgotPassword,
   Homepage,
   HowItWorks,
   Login,
@@ -59,6 +60,11 @@ export const routes: Routes = [
   {
     path: 'faq',
     component: FAQ,
+    canActivate: [LoggedInRedirectGuard]
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPassword,
     canActivate: [LoggedInRedirectGuard]
   },
   {
