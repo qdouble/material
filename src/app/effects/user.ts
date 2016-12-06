@@ -135,8 +135,8 @@ export class UserEffects {
     .map(action => <string>action.payload)
     .switchMap(offer => this.userService.recordClick(offer)
       .map(res => this.userActions.recordClickSuccess(res))
-      // .do((res: any) => res.payload.redirectTo ?
-      //   window.location.replace(res.payload.redirectTo) : null)
+      .do((res: any) => res.payload.redirectTo ?
+        window.location.replace(res.payload.redirectTo) : null)
       .catch((res) => Observable.of(
         this.userActions.recordClickFail(res)
       ))
