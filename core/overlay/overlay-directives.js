@@ -150,6 +150,12 @@ export var ConnectedOverlayDirective = (function () {
         if (this.height || this.height === 0) {
             overlayConfig.height = this.height;
         }
+        if (this.minWidth || this.minWidth === 0) {
+            overlayConfig.minWidth = this.minWidth;
+        }
+        if (this.minHeight || this.minHeight === 0) {
+            overlayConfig.minHeight = this.minHeight;
+        }
         overlayConfig.hasBackdrop = this.hasBackdrop;
         if (this.backdropClass) {
             overlayConfig.backdropClass = this.backdropClass;
@@ -243,6 +249,14 @@ export var ConnectedOverlayDirective = (function () {
         Input(), 
         __metadata('design:type', Object)
     ], ConnectedOverlayDirective.prototype, "height", void 0);
+    __decorate([
+        Input(), 
+        __metadata('design:type', Object)
+    ], ConnectedOverlayDirective.prototype, "minWidth", void 0);
+    __decorate([
+        Input(), 
+        __metadata('design:type', Object)
+    ], ConnectedOverlayDirective.prototype, "minHeight", void 0);
     __decorate([
         Input(), 
         __metadata('design:type', String)

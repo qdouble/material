@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { Component, ContentChildren, ElementRef, EventEmitter, Input, NgZone, Optional, Output, QueryList, Renderer, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, ContentChildren, ElementRef, EventEmitter, Input, Optional, Output, QueryList, Renderer, ViewEncapsulation, ViewChild } from '@angular/core';
 import { MdOption } from './option';
 import { ENTER, SPACE } from '../core/keyboard/keycodes';
 import { ListKeyManager } from '../core/a11y/list-key-manager';
@@ -52,10 +52,9 @@ export var SELECT_PANEL_PADDING_Y = 16;
  */
 export var SELECT_PANEL_VIEWPORT_PADDING = 8;
 export var MdSelect = (function () {
-    function MdSelect(_element, _renderer, _ngZone, _viewportRuler, _dir, _control) {
+    function MdSelect(_element, _renderer, _viewportRuler, _dir, _control) {
         this._element = _element;
         this._renderer = _renderer;
-        this._ngZone = _ngZone;
         this._viewportRuler = _viewportRuler;
         this._dir = _dir;
         this._control = _control;
@@ -69,6 +68,8 @@ export var MdSelect = (function () {
         this._disabled = false;
         /** The scroll position of the overlay panel, calculated to center the selected option. */
         this._scrollTop = 0;
+        /** The animation state of the placeholder. */
+        this._placeholderState = '';
         /** View -> model callback called when value changes */
         this._onChange = function (value) { };
         /** View -> model callback called when select has been touched */
@@ -156,11 +157,15 @@ export var MdSelect = (function () {
             return;
         }
         this._calculateOverlayPosition();
+        this._placeholderState = this._isRtl() ? 'floating-rtl' : 'floating-ltr';
         this._panelOpen = true;
     };
     /** Closes the overlay panel and focuses the host element. */
     MdSelect.prototype.close = function () {
         this._panelOpen = false;
+        if (!this._selected) {
+            this._placeholderState = '';
+        }
         this._focusHost();
     };
     /**
@@ -174,7 +179,7 @@ export var MdSelect = (function () {
             // the select's child options have been created. It's necessary to call
             // writeValue() again after the options have been created to ensure any
             // initial view value is set.
-            this._ngZone.onStable.first().subscribe(function () { return _this.writeValue(value); });
+            Promise.resolve(null).then(function () { return _this.writeValue(value); });
             return;
         }
         this.options.forEach(function (option) {
@@ -230,15 +235,6 @@ export var MdSelect = (function () {
      */
     MdSelect.prototype._getWidth = function () {
         return this._getTriggerRect().width;
-    };
-    /** The animation state of the placeholder. */
-    MdSelect.prototype._getPlaceholderState = function () {
-        if (this.panelOpen || this.selected) {
-            return this._isRtl() ? 'floating-rtl' : 'floating-ltr';
-        }
-        else {
-            return 'normal';
-        }
     };
     /** Ensures the panel opens if activated by the keyboard. */
     MdSelect.prototype._handleKeydown = function (event) {
@@ -324,7 +320,9 @@ export var MdSelect = (function () {
     MdSelect.prototype._onSelect = function (option) {
         this._selected = option;
         this._updateOptions();
-        this.close();
+        if (this.panelOpen) {
+            this.close();
+        }
     };
     /** Deselect each option that doesn't match the current selection. */
     MdSelect.prototype._updateOptions = function () {
@@ -526,8 +524,8 @@ export var MdSelect = (function () {
     ], MdSelect.prototype, "onClose", void 0);
     MdSelect = __decorate([
         Component({selector: 'md-select, mat-select',
-            template: "<div class=\"md-select-trigger\" overlay-origin (click)=\"toggle()\" #origin=\"overlayOrigin\" #trigger> <span class=\"md-select-placeholder\" [@transformPlaceholder]=\"_getPlaceholderState()\"> {{ placeholder }} </span> <span class=\"md-select-value\" *ngIf=\"selected\"> {{ selected?.viewValue }} </span> <span class=\"md-select-arrow\"></span> </div> <template connected-overlay [origin]=\"origin\"  [open]=\"panelOpen\" hasBackdrop (backdropClick)=\"close()\" backdropClass=\"md-overlay-transparent-backdrop\" [positions]=\"_positions\" [width]=\"_getWidth()\" [offsetY]=\"_offsetY\" [offsetX]=\"_offsetX\" (attach)=\"_setScrollTop()\"> <div class=\"md-select-panel\" [@transformPanel]=\"'showing'\" (@transformPanel.done)=\"_onPanelDone()\" (keydown)=\"_keyManager.onKeydown($event)\" [style.transformOrigin]=\"_transformOrigin\"> <div class=\"md-select-content\" [@fadeInContent]=\"'showing'\"> <ng-content></ng-content> </div> </div> </template> ",
-            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ md-select { display: inline-block; outline: none; } .md-select-trigger { display: flex; justify-content: space-between; align-items: center; height: 30px; min-width: 112px; cursor: pointer; position: relative; box-sizing: border-box; } [aria-disabled='true'] .md-select-trigger { background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%); background-size: 4px 1px; background-repeat: repeat-x; border-bottom: transparent; background-position: 0 bottom; cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-select-placeholder { padding: 0 2px; transform-origin: left top; } [dir='rtl'] .md-select-placeholder { transform-origin: right top; } [aria-required=true] .md-select-placeholder::after { content: '*'; } .md-select-value { position: absolute; left: 0; top: 6px; } [dir='rtl'] .md-select-value { left: auto; right: 0; } .md-select-arrow { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid; margin: 0 4px; } .md-select-panel { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; padding-top: 0; padding-bottom: 0; max-height: 256px; } md-option { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; cursor: pointer; outline: none; } md-option[disabled] { cursor: default; } md-option md-icon { margin-right: 16px; } [dir='rtl'] md-option md-icon { margin-left: 16px; } md-option[aria-disabled='true'] { cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-option-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } /*# sourceMappingURL=select.css.map */ "],
+            template: "<div class=\"md-select-trigger\" overlay-origin (click)=\"toggle()\" #origin=\"overlayOrigin\" #trigger> <span class=\"md-select-placeholder\" [class.md-floating-placeholder]=\"this.selected\" [@transformPlaceholder]=\"_placeholderState\"> {{ placeholder }} </span> <span class=\"md-select-value\" *ngIf=\"selected\"> {{ selected?.viewValue }} </span> <span class=\"md-select-arrow\"></span> </div> <template connected-overlay [origin]=\"origin\"  [open]=\"panelOpen\" hasBackdrop (backdropClick)=\"close()\" backdropClass=\"md-overlay-transparent-backdrop\" [positions]=\"_positions\" [width]=\"_getWidth()\" [offsetY]=\"_offsetY\" [offsetX]=\"_offsetX\" (attach)=\"_setScrollTop()\"> <div class=\"md-select-panel\" [@transformPanel]=\"'showing'\" (@transformPanel.done)=\"_onPanelDone()\" (keydown)=\"_keyManager.onKeydown($event)\" [style.transformOrigin]=\"_transformOrigin\"> <div class=\"md-select-content\" [@fadeInContent]=\"'showing'\"> <ng-content></ng-content> </div> </div> </template> ",
+            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ /** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ md-select { display: inline-block; outline: none; } .md-select-trigger { display: flex; justify-content: space-between; align-items: center; height: 30px; min-width: 112px; cursor: pointer; position: relative; box-sizing: border-box; } [aria-disabled='true'] .md-select-trigger { background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%); background-size: 4px 1px; background-repeat: repeat-x; border-bottom: transparent; background-position: 0 bottom; cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-select-placeholder { position: relative; padding: 0 2px; transform-origin: left top; } .md-select-placeholder.md-floating-placeholder { top: -22px; left: -2px; transform: scale(0.75); } [dir='rtl'] .md-select-placeholder { transform-origin: right top; } [dir='rtl'] .md-select-placeholder.md-floating-placeholder { left: 2px; } [aria-required=true] .md-select-placeholder::after { content: '*'; } .md-select-value { position: absolute; left: 0; top: 6px; } [dir='rtl'] .md-select-value { left: auto; right: 0; } .md-select-arrow { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid; margin: 0 4px; } .md-select-panel { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; padding-top: 0; padding-bottom: 0; max-height: 256px; } @media screen and (-ms-high-contrast: active) { .md-select-panel { outline: solid 1px; } } md-option { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; cursor: pointer; outline: none; } md-option[disabled] { cursor: default; } md-option md-icon { margin-right: 16px; } [dir='rtl'] md-option md-icon { margin-left: 16px; } md-option[aria-disabled='true'] { cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-option-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } @media screen and (-ms-high-contrast: active) { .md-option-ripple { opacity: 0.5; } } /*# sourceMappingURL=select.css.map */ "],
             encapsulation: ViewEncapsulation.None,
             host: {
                 'role': 'listbox',
@@ -548,9 +546,9 @@ export var MdSelect = (function () {
             ],
             exportAs: 'mdSelect',
         }),
-        __param(4, Optional()),
-        __param(5, Optional()), 
-        __metadata('design:paramtypes', [ElementRef, Renderer, NgZone, ViewportRuler, Dir, NgControl])
+        __param(3, Optional()),
+        __param(4, Optional()), 
+        __metadata('design:paramtypes', [ElementRef, Renderer, ViewportRuler, Dir, NgControl])
     ], MdSelect);
     return MdSelect;
 }());

@@ -11,14 +11,15 @@ import { animate, state, style, transition, trigger } from '@angular/core';
  * depending on the text direction of the application.
  */
 export var transformPlaceholder = trigger('transformPlaceholder', [
-    state('normal', style({
-        transform: "translate3d(0, 0, 0) scale(1)"
-    })),
     state('floating-ltr', style({
-        transform: "translate3d(-2px, -22px, 0) scale(0.75)"
+        top: '-22px',
+        left: '-2px',
+        transform: "scale(0.75)"
     })),
     state('floating-rtl', style({
-        transform: "translate3d(2px, -22px, 0) scale(0.75)"
+        top: '-22px',
+        left: '2px',
+        transform: "scale(0.75)"
     })),
     transition('* => *', animate("400ms cubic-bezier(0.25, 0.8, 0.25, 1)"))
 ]);

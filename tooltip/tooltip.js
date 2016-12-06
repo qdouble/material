@@ -7,9 +7,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { NgModule, Component, Directive, Input, ElementRef, ViewContainerRef, style, trigger, state, transition, animate, NgZone } from '@angular/core';
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+import { NgModule, Component, Directive, Input, ElementRef, ViewContainerRef, style, trigger, state, transition, animate, NgZone, Optional } from '@angular/core';
 import { Overlay, OverlayState, OverlayModule, ComponentPortal, OVERLAY_PROVIDERS, DefaultStyleCompatibilityModeModule } from '../core';
 import { Subject } from 'rxjs/Subject';
+import { Dir } from '../core/rtl/dir';
 /** Time in ms to delay before changing the tooltip visibility to hidden */
 export var TOUCHEND_HIDE_DELAY = 1500;
 /**
@@ -19,11 +23,12 @@ export var TOUCHEND_HIDE_DELAY = 1500;
  * https://material.google.com/components/tooltips.html
  */
 export var MdTooltip = (function () {
-    function MdTooltip(_overlay, _elementRef, _viewContainerRef, _ngZone) {
+    function MdTooltip(_overlay, _elementRef, _viewContainerRef, _ngZone, _dir) {
         this._overlay = _overlay;
         this._elementRef = _elementRef;
         this._viewContainerRef = _viewContainerRef;
         this._ngZone = _ngZone;
+        this._dir = _dir;
         /** Allows the user to define the position of the tooltip relative to the parent element */
         this._position = 'below';
     }
@@ -117,20 +122,39 @@ export var MdTooltip = (function () {
     };
     /** Returns the origin position based on the user's position preference */
     MdTooltip.prototype._getOrigin = function () {
-        switch (this.position) {
-            case 'before': return { originX: 'start', originY: 'center' };
-            case 'after': return { originX: 'end', originY: 'center' };
-            case 'above': return { originX: 'center', originY: 'top' };
-            case 'below': return { originX: 'center', originY: 'bottom' };
+        if (this.position == 'above' || this.position == 'below') {
+            return { originX: 'center', originY: this.position == 'above' ? 'top' : 'bottom' };
+        }
+        var isDirectionLtr = !this._dir || this._dir.value == 'ltr';
+        if (this.position == 'left' ||
+            this.position == 'before' && isDirectionLtr ||
+            this.position == 'after' && !isDirectionLtr) {
+            return { originX: 'start', originY: 'center' };
+        }
+        if (this.position == 'right' ||
+            this.position == 'after' && isDirectionLtr ||
+            this.position == 'before' && !isDirectionLtr) {
+            return { originX: 'end', originY: 'center' };
         }
     };
     /** Returns the overlay position based on the user's preference */
     MdTooltip.prototype._getOverlayPosition = function () {
-        switch (this.position) {
-            case 'before': return { overlayX: 'end', overlayY: 'center' };
-            case 'after': return { overlayX: 'start', overlayY: 'center' };
-            case 'above': return { overlayX: 'center', overlayY: 'bottom' };
-            case 'below': return { overlayX: 'center', overlayY: 'top' };
+        if (this.position == 'above') {
+            return { overlayX: 'center', overlayY: 'bottom' };
+        }
+        if (this.position == 'below') {
+            return { overlayX: 'center', overlayY: 'top' };
+        }
+        var isLtr = !this._dir || this._dir.value == 'ltr';
+        if (this.position == 'left' ||
+            this.position == 'before' && isLtr ||
+            this.position == 'after' && !isLtr) {
+            return { overlayX: 'end', overlayY: 'center' };
+        }
+        if (this.position == 'right' ||
+            this.position == 'after' && isLtr ||
+            this.position == 'before' && !isLtr) {
+            return { overlayX: 'start', overlayY: 'center' };
         }
     };
     /** Updates the tooltip message and repositions the overlay according to the new message length */
@@ -163,13 +187,15 @@ export var MdTooltip = (function () {
                 '(mouseleave)': 'hide()',
             },
             exportAs: 'mdTooltip',
-        }), 
-        __metadata('design:paramtypes', [Overlay, ElementRef, ViewContainerRef, NgZone])
+        }),
+        __param(4, Optional()), 
+        __metadata('design:paramtypes', [Overlay, ElementRef, ViewContainerRef, NgZone, Dir])
     ], MdTooltip);
     return MdTooltip;
 }());
 export var TooltipComponent = (function () {
-    function TooltipComponent() {
+    function TooltipComponent(_dir) {
+        this._dir = _dir;
         /** Whether interactions on the page should close the tooltip */
         this._closeOnInteraction = false;
         /** The transform origin used in the animation for showing and hiding the tooltip */
@@ -209,11 +235,18 @@ export var TooltipComponent = (function () {
     };
     /** Sets the tooltip transform origin according to the tooltip position */
     TooltipComponent.prototype._setTransformOrigin = function (value) {
+        var isLtr = !this._dir || this._dir.value == 'ltr';
         switch (value) {
             case 'before':
-                this._transformOrigin = 'right';
+                this._transformOrigin = isLtr ? 'right' : 'left';
                 break;
             case 'after':
+                this._transformOrigin = isLtr ? 'left' : 'right';
+                break;
+            case 'left':
+                this._transformOrigin = 'right';
+                break;
+            case 'right':
                 this._transformOrigin = 'left';
                 break;
             case 'above':
@@ -242,7 +275,7 @@ export var TooltipComponent = (function () {
     TooltipComponent = __decorate([
         Component({selector: 'md-tooltip-component, mat-tooltip-component',
             template: "<div class=\"md-tooltip\" [style.transform-origin]=\"_transformOrigin\" [@state]=\"_visibility\" (@state.done)=\"_afterVisibilityAnimation($event)\"> {{message}} </div>",
-            styles: [":host { pointer-events: none; } .md-tooltip { color: white; padding: 0 8px; border-radius: 2px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-size: 10px; margin: 14px; height: 22px; line-height: 22px; } /*# sourceMappingURL=tooltip.css.map */ "],
+            styles: ["/** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ :host { pointer-events: none; } .md-tooltip { color: white; padding: 0 8px; border-radius: 2px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-size: 10px; margin: 14px; height: 22px; line-height: 22px; } @media screen and (-ms-high-contrast: active) { .md-tooltip { outline: solid 1px; } } /*# sourceMappingURL=tooltip.css.map */ "],
             animations: [
                 trigger('state', [
                     state('void', style({ transform: 'scale(0)' })),
@@ -255,8 +288,9 @@ export var TooltipComponent = (function () {
             host: {
                 '(body:click)': 'this._handleBodyInteraction()'
             }
-        }), 
-        __metadata('design:paramtypes', [])
+        }),
+        __param(0, Optional()), 
+        __metadata('design:paramtypes', [Dir])
     ], TooltipComponent);
     return TooltipComponent;
 }());

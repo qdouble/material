@@ -1,9 +1,6 @@
 import { ModuleWithProviders, AfterContentInit, ElementRef, QueryList, EventEmitter, Renderer } from '@angular/core';
-import { Dir, MdError } from '../core';
-/** Exception thrown when two MdSidenav are matching the same side. */
-export declare class MdDuplicatedSidenavError extends MdError {
-    constructor(align: string);
-}
+import { Dir } from '../core';
+import { FocusTrap } from '../core/a11y/focus-trap';
 /** Sidenav toggle promise result. */
 export declare class MdSidenavToggleResult {
     type: 'open' | 'close';
@@ -19,6 +16,7 @@ export declare class MdSidenavToggleResult {
  */
 export declare class MdSidenav implements AfterContentInit {
     private _elementRef;
+    _focusTrap: FocusTrap;
     /** Alignment of the sidenav (direction neutral); whether 'start' or 'end'. */
     private _align;
     /** Whether this md-sidenav is part of a valid md-sidenav-layout configuration. */
@@ -46,6 +44,7 @@ export declare class MdSidenav implements AfterContentInit {
      * `null` if no animation is in progress.
      */
     private _resolveToggleAnimationPromise;
+    readonly isFocusTrapDisabled: boolean;
     /**
      * @param _elementRef The DOM element reference. Used for transition and width calculation.
      *     If not available we do not hook on transitions.

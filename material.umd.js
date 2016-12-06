@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs/Subject'), require('@angular/platform-browser'), require('@angular/forms'), require('rxjs/Observable'), require('@angular/common'), require('@angular/http'), require('rxjs/add/observable/forkJoin'), require('rxjs/add/observable/of'), require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('rxjs/add/operator/do'), require('rxjs/add/operator/share'), require('rxjs/add/operator/finally'), require('rxjs/add/operator/catch'), require('rxjs/add/operator/first')) :
-    typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'rxjs/Subject', '@angular/platform-browser', '@angular/forms', 'rxjs/Observable', '@angular/common', '@angular/http', 'rxjs/add/observable/forkJoin', 'rxjs/add/observable/of', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', 'rxjs/add/operator/do', 'rxjs/add/operator/share', 'rxjs/add/operator/finally', 'rxjs/add/operator/catch', 'rxjs/add/operator/first'], factory) :
-    (factory((global.ng = global.ng || {}, global.ng.material = global.ng.material || {}),global.ng.core,global.Rx,global.ng.platformBrowser,global.ng.forms,global.Rx,global.ng.common,global.ng.http,global.Rx.Observable,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype));
-}(this, (function (exports,_angular_core,rxjs_Subject,_angular_platformBrowser,_angular_forms,rxjs_Observable,_angular_common,_angular_http,rxjs_add_observable_forkJoin,rxjs_add_observable_of,rxjs_add_operator_map,rxjs_add_operator_filter,rxjs_add_operator_do,rxjs_add_operator_share,rxjs_add_operator_finally,rxjs_add_operator_catch,rxjs_add_operator_first) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs/Subject'), require('@angular/common'), require('@angular/platform-browser'), require('@angular/forms'), require('rxjs/Observable'), require('@angular/http'), require('rxjs/add/observable/forkJoin'), require('rxjs/add/observable/of'), require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('rxjs/add/operator/do'), require('rxjs/add/operator/share'), require('rxjs/add/operator/finally'), require('rxjs/add/operator/catch'), require('rxjs/add/operator/first')) :
+    typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'rxjs/Subject', '@angular/common', '@angular/platform-browser', '@angular/forms', 'rxjs/Observable', '@angular/http', 'rxjs/add/observable/forkJoin', 'rxjs/add/observable/of', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', 'rxjs/add/operator/do', 'rxjs/add/operator/share', 'rxjs/add/operator/finally', 'rxjs/add/operator/catch', 'rxjs/add/operator/first'], factory) :
+    (factory((global.ng = global.ng || {}, global.ng.material = global.ng.material || {}),global.ng.core,global.Rx,global.ng.common,global.ng.platformBrowser,global.ng.forms,global.Rx,global.ng.http,global.Rx.Observable,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype));
+}(this, (function (exports,_angular_core,rxjs_Subject,_angular_common,_angular_platformBrowser,_angular_forms,rxjs_Observable,_angular_http,rxjs_add_observable_forkJoin,rxjs_add_observable_of,rxjs_add_operator_map,rxjs_add_operator_filter,rxjs_add_operator_do,rxjs_add_operator_share,rxjs_add_operator_finally,rxjs_add_operator_catch,rxjs_add_operator_first) { 'use strict';
 
 var __decorate$2 = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1073,6 +1073,12 @@ var OverlayRef = (function () {
         if (this._state.height || this._state.height === 0) {
             this._pane.style.height = formatCssUnit(this._state.height);
         }
+        if (this._state.minWidth || this._state.minWidth === 0) {
+            this._pane.style.minWidth = formatCssUnit(this._state.minWidth);
+        }
+        if (this._state.minHeight || this._state.minHeight === 0) {
+            this._pane.style.minHeight = formatCssUnit(this._state.minHeight);
+        }
     };
     /** Attaches a backdrop for this overlay. */
     OverlayRef.prototype._attachBackdrop = function () {
@@ -1849,6 +1855,12 @@ var ConnectedOverlayDirective = (function () {
         if (this.height || this.height === 0) {
             overlayConfig.height = this.height;
         }
+        if (this.minWidth || this.minWidth === 0) {
+            overlayConfig.minWidth = this.minWidth;
+        }
+        if (this.minHeight || this.minHeight === 0) {
+            overlayConfig.minHeight = this.minHeight;
+        }
         overlayConfig.hasBackdrop = this.hasBackdrop;
         if (this.backdropClass) {
             overlayConfig.backdropClass = this.backdropClass;
@@ -1942,6 +1954,14 @@ var ConnectedOverlayDirective = (function () {
         _angular_core.Input(), 
         __metadata$6('design:type', Object)
     ], ConnectedOverlayDirective.prototype, "height", void 0);
+    __decorate$6([
+        _angular_core.Input(), 
+        __metadata$6('design:type', Object)
+    ], ConnectedOverlayDirective.prototype, "minWidth", void 0);
+    __decorate$6([
+        _angular_core.Input(), 
+        __metadata$6('design:type', Object)
+    ], ConnectedOverlayDirective.prototype, "minHeight", void 0);
     __decorate$6([
         _angular_core.Input(), 
         __metadata$6('design:type', String)
@@ -2249,6 +2269,11 @@ function getWindow(node) {
     return node.ownerDocument.defaultView || window;
 }
 
+/** Coerces a data-bound value (typically a string) to a boolean. */
+function coerceBooleanProperty(value) {
+    return value != null && "" + value !== 'false';
+}
+
 var __decorate$11 = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2267,9 +2292,38 @@ var __metadata$11 = (this && this.__metadata) || function (k, v) {
  * This will be replaced with a more intelligent solution before the library is considered stable.
  */
 var FocusTrap = (function () {
-    function FocusTrap(_checker) {
+    function FocusTrap(_checker, _ngZone) {
         this._checker = _checker;
+        this._ngZone = _ngZone;
+        this._disabled = false;
     }
+    Object.defineProperty(FocusTrap.prototype, "disabled", {
+        /** Whether the focus trap is active. */
+        get: function () { return this._disabled; },
+        set: function (val) { this._disabled = coerceBooleanProperty(val); },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Waits for microtask queue to empty, then focuses the first tabbable element within the focus
+     * trap region.
+     */
+    FocusTrap.prototype.focusFirstTabbableElementWhenReady = function () {
+        var _this = this;
+        this._ngZone.onMicrotaskEmpty.first().subscribe(function () {
+            _this.focusFirstTabbableElement();
+        });
+    };
+    /**
+     * Waits for microtask queue to empty, then focuses the last tabbable element within the focus
+     * trap region.
+     */
+    FocusTrap.prototype.focusLastTabbableElementWhenReady = function () {
+        var _this = this;
+        this._ngZone.onMicrotaskEmpty.first().subscribe(function () {
+            _this.focusLastTabbableElement();
+        });
+    };
     /** Focuses the first tabbable element within the focus trap region. */
     FocusTrap.prototype.focusFirstTabbableElement = function () {
         var rootElement = this.trappedContent.nativeElement;
@@ -2327,12 +2381,16 @@ var FocusTrap = (function () {
         _angular_core.ViewChild('trappedContent'), 
         __metadata$11('design:type', _angular_core.ElementRef)
     ], FocusTrap.prototype, "trappedContent", void 0);
+    __decorate$11([
+        _angular_core.Input(), 
+        __metadata$11('design:type', Boolean)
+    ], FocusTrap.prototype, "disabled", null);
     FocusTrap = __decorate$11([
         _angular_core.Component({selector: 'focus-trap',
-            template: "<div tabindex=\"0\" (focus)=\"focusLastTabbableElement()\"></div> <div #trappedContent><ng-content></ng-content></div> <div tabindex=\"0\" (focus)=\"focusFirstTabbableElement()\"></div> ",
+            template: "<div *ngIf=\"!disabled\" tabindex=\"0\" (focus)=\"focusLastTabbableElement()\"></div> <div #trappedContent><ng-content></ng-content></div> <div *ngIf=\"!disabled\" tabindex=\"0\" (focus)=\"focusFirstTabbableElement()\"></div> ",
             encapsulation: _angular_core.ViewEncapsulation.None,
         }), 
-        __metadata$11('design:paramtypes', [InteractivityChecker])
+        __metadata$11('design:paramtypes', [InteractivityChecker, _angular_core.NgZone])
     ], FocusTrap);
     return FocusTrap;
 }());
@@ -2418,7 +2476,7 @@ var A11yModule = (function () {
     };
     A11yModule = __decorate$10([
         _angular_core.NgModule({
-            imports: [PlatformModule],
+            imports: [_angular_common.CommonModule, PlatformModule],
             declarations: [FocusTrap],
             exports: [FocusTrap],
         }), 
@@ -2691,11 +2749,6 @@ var AnimationDurations = (function () {
     return AnimationDurations;
 }());
 ;
-
-/** Coerces a data-bound value (typically a string) to a boolean. */
-function coerceBooleanProperty(value) {
-    return value != null && "" + value !== 'false';
-}
 
 /** Coerces a data-bound value (typically a string) to a number. */
 function coerceNumberProperty(value, fallbackValue) {
@@ -3375,7 +3428,7 @@ var MdButton = (function () {
                 '(blur)': '_removeKeyboardFocus()',
             },
             template: "<span class=\"md-button-wrapper\"><ng-content></ng-content></span> <div md-ripple *ngIf=\"!_isRippleDisabled()\" class=\"md-button-ripple\" [class.md-button-ripple-round]=\"isRoundButton()\" [md-ripple-trigger]=\"getHostElement()\" [md-ripple-color]=\"isRoundButton() ? 'rgba(255, 255, 255, 0.2)' : ''\" md-ripple-background-color=\"rgba(0, 0, 0, 0)\"></div> <!-- the touchstart handler prevents the overlay from capturing the initial tap on touch devices --> <div class=\"md-button-focus-overlay\" (touchstart)=\"$event.preventDefault()\"></div> ",
-            styles: ["[md-raised-button], [md-fab], [md-mini-fab], [md-button], [md-icon-button] { box-sizing: border-box; position: relative; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; border: none; display: inline-block; white-space: nowrap; text-decoration: none; vertical-align: baseline; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; color: currentColor; text-align: center; margin: 0; min-width: 88px; line-height: 36px; padding: 0 16px; border-radius: 2px; } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab], [disabled][md-button], [disabled][md-icon-button] { cursor: default; } .md-button-focus[md-raised-button] .md-button-focus-overlay, .md-button-focus[md-fab] .md-button-focus-overlay, .md-button-focus[md-mini-fab] .md-button-focus-overlay, .md-button-focus[md-button] .md-button-focus-overlay, .md-button-focus[md-icon-button] .md-button-focus-overlay { opacity: 1; } [md-raised-button], [md-fab], [md-mini-fab] { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); } [md-raised-button]:active, [md-fab]:active, [md-mini-fab]:active { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab] { box-shadow: none; } [md-button]:hover .md-button-focus-overlay, [md-icon-button]:hover .md-button-focus-overlay { opacity: 1; } [md-button][disabled]:hover.md-primary, [md-button][disabled]:hover.md-accent, [md-button][disabled]:hover.md-warn, [md-button][disabled]:hover .md-button-focus-overlay, [md-icon-button][disabled]:hover.md-primary, [md-icon-button][disabled]:hover.md-accent, [md-icon-button][disabled]:hover.md-warn, [md-icon-button][disabled]:hover .md-button-focus-overlay { background-color: transparent; } [md-fab] { box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12); min-width: 0; border-radius: 50%; width: 56px; height: 56px; padding: 0; flex-shrink: 0; } [md-fab]:active { box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12); } [md-fab] i, [md-fab] md-icon { padding: 16px 0; line-height: 24px; } [md-mini-fab] { box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12); min-width: 0; border-radius: 50%; width: 40px; height: 40px; padding: 0; flex-shrink: 0; } [md-mini-fab]:active { box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12); } [md-mini-fab] i, [md-mini-fab] md-icon { padding: 8px 0; line-height: 24px; } [md-icon-button] { padding: 0; min-width: 0; width: 40px; height: 40px; flex-shrink: 0; line-height: 40px; border-radius: 50%; } [md-icon-button] i, [md-icon-button] md-icon { line-height: 24px; } [md-button] .md-button-wrapper > *, [md-raised-button] .md-button-wrapper > *, [md-icon-button] .md-button-wrapper > * { vertical-align: middle; } .md-button-ripple, .md-button-focus-overlay { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } .md-button-focus-overlay { background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; opacity: 0; } .md-button-ripple-round { border-radius: 50%; z-index: 1; } @media screen and (-ms-high-contrast: active) { .md-raised-button, .md-fab, .md-mini-fab { border: 1px solid #fff; } } /*# sourceMappingURL=button.css.map */ "],
+            styles: ["[md-raised-button], [md-fab], [md-mini-fab], [md-button], [md-icon-button] { box-sizing: border-box; position: relative; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; border: none; display: inline-block; white-space: nowrap; text-decoration: none; vertical-align: baseline; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; color: currentColor; text-align: center; margin: 0; min-width: 88px; line-height: 36px; padding: 0 16px; border-radius: 2px; } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab], [disabled][md-button], [disabled][md-icon-button] { cursor: default; } .md-button-focus[md-raised-button] .md-button-focus-overlay, .md-button-focus[md-fab] .md-button-focus-overlay, .md-button-focus[md-mini-fab] .md-button-focus-overlay, .md-button-focus[md-button] .md-button-focus-overlay, .md-button-focus[md-icon-button] .md-button-focus-overlay { opacity: 1; } [md-raised-button], [md-fab], [md-mini-fab] { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); } [md-raised-button]:active, [md-fab]:active, [md-mini-fab]:active { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab] { box-shadow: none; } /** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ [md-button]:hover .md-button-focus-overlay, [md-icon-button]:hover .md-button-focus-overlay { opacity: 1; } [md-button][disabled]:hover.md-primary, [md-button][disabled]:hover.md-accent, [md-button][disabled]:hover.md-warn, [md-button][disabled]:hover .md-button-focus-overlay, [md-icon-button][disabled]:hover.md-primary, [md-icon-button][disabled]:hover.md-accent, [md-icon-button][disabled]:hover.md-warn, [md-icon-button][disabled]:hover .md-button-focus-overlay { background-color: transparent; } [md-fab] { box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12); min-width: 0; border-radius: 50%; width: 56px; height: 56px; padding: 0; flex-shrink: 0; } [md-fab]:active { box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12); } [md-fab] i, [md-fab] md-icon { padding: 16px 0; line-height: 24px; } [md-mini-fab] { box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12); min-width: 0; border-radius: 50%; width: 40px; height: 40px; padding: 0; flex-shrink: 0; } [md-mini-fab]:active { box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12); } [md-mini-fab] i, [md-mini-fab] md-icon { padding: 8px 0; line-height: 24px; } [md-icon-button] { padding: 0; min-width: 0; width: 40px; height: 40px; flex-shrink: 0; line-height: 40px; border-radius: 50%; } [md-icon-button] i, [md-icon-button] md-icon { line-height: 24px; } [md-button] .md-button-wrapper > *, [md-raised-button] .md-button-wrapper > *, [md-icon-button] .md-button-wrapper > * { vertical-align: middle; } .md-button-ripple, .md-button-focus-overlay { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } .md-button-focus-overlay { background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; opacity: 0; } @media screen and (-ms-high-contrast: active) { .md-button-focus-overlay { background-color: rgba(255, 255, 255, 0.5); } } .md-button-ripple-round { border-radius: 50%; z-index: 1; } @media screen and (-ms-high-contrast: active) { [md-button], [md-raised-button], [md-icon-button], [md-fab], [md-mini-fab] { outline: solid 1px; } } /*# sourceMappingURL=button.css.map */ "],
             encapsulation: _angular_core.ViewEncapsulation.None,
             changeDetection: _angular_core.ChangeDetectionStrategy.OnPush,
         }), 
@@ -3430,7 +3483,7 @@ var MdAnchor = (function (_super) {
                 '(click)': '_haltDisabledEvents($event)',
             },
             template: "<span class=\"md-button-wrapper\"><ng-content></ng-content></span> <div md-ripple *ngIf=\"!_isRippleDisabled()\" class=\"md-button-ripple\" [class.md-button-ripple-round]=\"isRoundButton()\" [md-ripple-trigger]=\"getHostElement()\" [md-ripple-color]=\"isRoundButton() ? 'rgba(255, 255, 255, 0.2)' : ''\" md-ripple-background-color=\"rgba(0, 0, 0, 0)\"></div> <!-- the touchstart handler prevents the overlay from capturing the initial tap on touch devices --> <div class=\"md-button-focus-overlay\" (touchstart)=\"$event.preventDefault()\"></div> ",
-            styles: ["[md-raised-button], [md-fab], [md-mini-fab], [md-button], [md-icon-button] { box-sizing: border-box; position: relative; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; border: none; display: inline-block; white-space: nowrap; text-decoration: none; vertical-align: baseline; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; color: currentColor; text-align: center; margin: 0; min-width: 88px; line-height: 36px; padding: 0 16px; border-radius: 2px; } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab], [disabled][md-button], [disabled][md-icon-button] { cursor: default; } .md-button-focus[md-raised-button] .md-button-focus-overlay, .md-button-focus[md-fab] .md-button-focus-overlay, .md-button-focus[md-mini-fab] .md-button-focus-overlay, .md-button-focus[md-button] .md-button-focus-overlay, .md-button-focus[md-icon-button] .md-button-focus-overlay { opacity: 1; } [md-raised-button], [md-fab], [md-mini-fab] { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); } [md-raised-button]:active, [md-fab]:active, [md-mini-fab]:active { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab] { box-shadow: none; } [md-button]:hover .md-button-focus-overlay, [md-icon-button]:hover .md-button-focus-overlay { opacity: 1; } [md-button][disabled]:hover.md-primary, [md-button][disabled]:hover.md-accent, [md-button][disabled]:hover.md-warn, [md-button][disabled]:hover .md-button-focus-overlay, [md-icon-button][disabled]:hover.md-primary, [md-icon-button][disabled]:hover.md-accent, [md-icon-button][disabled]:hover.md-warn, [md-icon-button][disabled]:hover .md-button-focus-overlay { background-color: transparent; } [md-fab] { box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12); min-width: 0; border-radius: 50%; width: 56px; height: 56px; padding: 0; flex-shrink: 0; } [md-fab]:active { box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12); } [md-fab] i, [md-fab] md-icon { padding: 16px 0; line-height: 24px; } [md-mini-fab] { box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12); min-width: 0; border-radius: 50%; width: 40px; height: 40px; padding: 0; flex-shrink: 0; } [md-mini-fab]:active { box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12); } [md-mini-fab] i, [md-mini-fab] md-icon { padding: 8px 0; line-height: 24px; } [md-icon-button] { padding: 0; min-width: 0; width: 40px; height: 40px; flex-shrink: 0; line-height: 40px; border-radius: 50%; } [md-icon-button] i, [md-icon-button] md-icon { line-height: 24px; } [md-button] .md-button-wrapper > *, [md-raised-button] .md-button-wrapper > *, [md-icon-button] .md-button-wrapper > * { vertical-align: middle; } .md-button-ripple, .md-button-focus-overlay { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } .md-button-focus-overlay { background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; opacity: 0; } .md-button-ripple-round { border-radius: 50%; z-index: 1; } @media screen and (-ms-high-contrast: active) { .md-raised-button, .md-fab, .md-mini-fab { border: 1px solid #fff; } } /*# sourceMappingURL=button.css.map */ "],
+            styles: ["[md-raised-button], [md-fab], [md-mini-fab], [md-button], [md-icon-button] { box-sizing: border-box; position: relative; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; border: none; display: inline-block; white-space: nowrap; text-decoration: none; vertical-align: baseline; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; color: currentColor; text-align: center; margin: 0; min-width: 88px; line-height: 36px; padding: 0 16px; border-radius: 2px; } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab], [disabled][md-button], [disabled][md-icon-button] { cursor: default; } .md-button-focus[md-raised-button] .md-button-focus-overlay, .md-button-focus[md-fab] .md-button-focus-overlay, .md-button-focus[md-mini-fab] .md-button-focus-overlay, .md-button-focus[md-button] .md-button-focus-overlay, .md-button-focus[md-icon-button] .md-button-focus-overlay { opacity: 1; } [md-raised-button], [md-fab], [md-mini-fab] { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); } [md-raised-button]:active, [md-fab]:active, [md-mini-fab]:active { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); } [disabled][md-raised-button], [disabled][md-fab], [disabled][md-mini-fab] { box-shadow: none; } /** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ [md-button]:hover .md-button-focus-overlay, [md-icon-button]:hover .md-button-focus-overlay { opacity: 1; } [md-button][disabled]:hover.md-primary, [md-button][disabled]:hover.md-accent, [md-button][disabled]:hover.md-warn, [md-button][disabled]:hover .md-button-focus-overlay, [md-icon-button][disabled]:hover.md-primary, [md-icon-button][disabled]:hover.md-accent, [md-icon-button][disabled]:hover.md-warn, [md-icon-button][disabled]:hover .md-button-focus-overlay { background-color: transparent; } [md-fab] { box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12); min-width: 0; border-radius: 50%; width: 56px; height: 56px; padding: 0; flex-shrink: 0; } [md-fab]:active { box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12); } [md-fab] i, [md-fab] md-icon { padding: 16px 0; line-height: 24px; } [md-mini-fab] { box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12); min-width: 0; border-radius: 50%; width: 40px; height: 40px; padding: 0; flex-shrink: 0; } [md-mini-fab]:active { box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12); } [md-mini-fab] i, [md-mini-fab] md-icon { padding: 8px 0; line-height: 24px; } [md-icon-button] { padding: 0; min-width: 0; width: 40px; height: 40px; flex-shrink: 0; line-height: 40px; border-radius: 50%; } [md-icon-button] i, [md-icon-button] md-icon { line-height: 24px; } [md-button] .md-button-wrapper > *, [md-raised-button] .md-button-wrapper > *, [md-icon-button] .md-button-wrapper > * { vertical-align: middle; } .md-button-ripple, .md-button-focus-overlay { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } .md-button-focus-overlay { background-color: rgba(0, 0, 0, 0.12); border-radius: inherit; pointer-events: none; opacity: 0; } @media screen and (-ms-high-contrast: active) { .md-button-focus-overlay { background-color: rgba(255, 255, 255, 0.5); } } .md-button-ripple-round { border-radius: 50%; z-index: 1; } @media screen and (-ms-high-contrast: active) { [md-button], [md-raised-button], [md-icon-button], [md-fab], [md-mini-fab] { outline: solid 1px; } } /*# sourceMappingURL=button.css.map */ "],
             encapsulation: _angular_core.ViewEncapsulation.None
         }), 
         __metadata$21('design:paramtypes', [_angular_core.ElementRef, _angular_core.Renderer])
@@ -4479,7 +4532,7 @@ var MdOption = (function () {
                 '(keydown)': '_handleKeydown($event)'
             },
             template: "<ng-content></ng-content> <div class=\"md-option-ripple\" *ngIf=\"!disabled\" md-ripple md-ripple-background-color=\"rgba(0,0,0,0)\" [md-ripple-trigger]=\"_getHostElement()\"></div>",
-            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ md-select { display: inline-block; outline: none; } .md-select-trigger { display: flex; justify-content: space-between; align-items: center; height: 30px; min-width: 112px; cursor: pointer; position: relative; box-sizing: border-box; } [aria-disabled='true'] .md-select-trigger { background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%); background-size: 4px 1px; background-repeat: repeat-x; border-bottom: transparent; background-position: 0 bottom; cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-select-placeholder { padding: 0 2px; transform-origin: left top; } [dir='rtl'] .md-select-placeholder { transform-origin: right top; } [aria-required=true] .md-select-placeholder::after { content: '*'; } .md-select-value { position: absolute; left: 0; top: 6px; } [dir='rtl'] .md-select-value { left: auto; right: 0; } .md-select-arrow { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid; margin: 0 4px; } .md-select-panel { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; padding-top: 0; padding-bottom: 0; max-height: 256px; } md-option { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; cursor: pointer; outline: none; } md-option[disabled] { cursor: default; } md-option md-icon { margin-right: 16px; } [dir='rtl'] md-option md-icon { margin-left: 16px; } md-option[aria-disabled='true'] { cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-option-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } /*# sourceMappingURL=select.css.map */ "],
+            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ /** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ md-select { display: inline-block; outline: none; } .md-select-trigger { display: flex; justify-content: space-between; align-items: center; height: 30px; min-width: 112px; cursor: pointer; position: relative; box-sizing: border-box; } [aria-disabled='true'] .md-select-trigger { background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%); background-size: 4px 1px; background-repeat: repeat-x; border-bottom: transparent; background-position: 0 bottom; cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-select-placeholder { position: relative; padding: 0 2px; transform-origin: left top; } .md-select-placeholder.md-floating-placeholder { top: -22px; left: -2px; transform: scale(0.75); } [dir='rtl'] .md-select-placeholder { transform-origin: right top; } [dir='rtl'] .md-select-placeholder.md-floating-placeholder { left: 2px; } [aria-required=true] .md-select-placeholder::after { content: '*'; } .md-select-value { position: absolute; left: 0; top: 6px; } [dir='rtl'] .md-select-value { left: auto; right: 0; } .md-select-arrow { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid; margin: 0 4px; } .md-select-panel { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; padding-top: 0; padding-bottom: 0; max-height: 256px; } @media screen and (-ms-high-contrast: active) { .md-select-panel { outline: solid 1px; } } md-option { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; cursor: pointer; outline: none; } md-option[disabled] { cursor: default; } md-option md-icon { margin-right: 16px; } [dir='rtl'] md-option md-icon { margin-left: 16px; } md-option[aria-disabled='true'] { cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-option-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } @media screen and (-ms-high-contrast: active) { .md-option-ripple { opacity: 0.5; } } /*# sourceMappingURL=select.css.map */ "],
             encapsulation: _angular_core.ViewEncapsulation.None
         }), 
         __metadata$26('design:paramtypes', [_angular_core.ElementRef, _angular_core.Renderer])
@@ -4637,14 +4690,15 @@ var ListKeyManager = (function () {
  * depending on the text direction of the application.
  */
 var transformPlaceholder = _angular_core.trigger('transformPlaceholder', [
-    _angular_core.state('normal', _angular_core.style({
-        transform: "translate3d(0, 0, 0) scale(1)"
-    })),
     _angular_core.state('floating-ltr', _angular_core.style({
-        transform: "translate3d(-2px, -22px, 0) scale(0.75)"
+        top: '-22px',
+        left: '-2px',
+        transform: "scale(0.75)"
     })),
     _angular_core.state('floating-rtl', _angular_core.style({
-        transform: "translate3d(2px, -22px, 0) scale(0.75)"
+        top: '-22px',
+        left: '2px',
+        transform: "scale(0.75)"
     })),
     _angular_core.transition('* => *', _angular_core.animate("400ms cubic-bezier(0.25, 0.8, 0.25, 1)"))
 ]);
@@ -4732,10 +4786,9 @@ var SELECT_PANEL_PADDING_Y = 16;
  */
 var SELECT_PANEL_VIEWPORT_PADDING = 8;
 var MdSelect = (function () {
-    function MdSelect(_element, _renderer, _ngZone, _viewportRuler, _dir, _control) {
+    function MdSelect(_element, _renderer, _viewportRuler, _dir, _control) {
         this._element = _element;
         this._renderer = _renderer;
-        this._ngZone = _ngZone;
         this._viewportRuler = _viewportRuler;
         this._dir = _dir;
         this._control = _control;
@@ -4749,6 +4802,8 @@ var MdSelect = (function () {
         this._disabled = false;
         /** The scroll position of the overlay panel, calculated to center the selected option. */
         this._scrollTop = 0;
+        /** The animation state of the placeholder. */
+        this._placeholderState = '';
         /** View -> model callback called when value changes */
         this._onChange = function (value) { };
         /** View -> model callback called when select has been touched */
@@ -4836,11 +4891,15 @@ var MdSelect = (function () {
             return;
         }
         this._calculateOverlayPosition();
+        this._placeholderState = this._isRtl() ? 'floating-rtl' : 'floating-ltr';
         this._panelOpen = true;
     };
     /** Closes the overlay panel and focuses the host element. */
     MdSelect.prototype.close = function () {
         this._panelOpen = false;
+        if (!this._selected) {
+            this._placeholderState = '';
+        }
         this._focusHost();
     };
     /**
@@ -4854,7 +4913,7 @@ var MdSelect = (function () {
             // the select's child options have been created. It's necessary to call
             // writeValue() again after the options have been created to ensure any
             // initial view value is set.
-            this._ngZone.onStable.first().subscribe(function () { return _this.writeValue(value); });
+            Promise.resolve(null).then(function () { return _this.writeValue(value); });
             return;
         }
         this.options.forEach(function (option) {
@@ -4910,15 +4969,6 @@ var MdSelect = (function () {
      */
     MdSelect.prototype._getWidth = function () {
         return this._getTriggerRect().width;
-    };
-    /** The animation state of the placeholder. */
-    MdSelect.prototype._getPlaceholderState = function () {
-        if (this.panelOpen || this.selected) {
-            return this._isRtl() ? 'floating-rtl' : 'floating-ltr';
-        }
-        else {
-            return 'normal';
-        }
     };
     /** Ensures the panel opens if activated by the keyboard. */
     MdSelect.prototype._handleKeydown = function (event) {
@@ -5004,7 +5054,9 @@ var MdSelect = (function () {
     MdSelect.prototype._onSelect = function (option) {
         this._selected = option;
         this._updateOptions();
-        this.close();
+        if (this.panelOpen) {
+            this.close();
+        }
     };
     /** Deselect each option that doesn't match the current selection. */
     MdSelect.prototype._updateOptions = function () {
@@ -5206,8 +5258,8 @@ var MdSelect = (function () {
     ], MdSelect.prototype, "onClose", void 0);
     MdSelect = __decorate$25([
         _angular_core.Component({selector: 'md-select, mat-select',
-            template: "<div class=\"md-select-trigger\" overlay-origin (click)=\"toggle()\" #origin=\"overlayOrigin\" #trigger> <span class=\"md-select-placeholder\" [@transformPlaceholder]=\"_getPlaceholderState()\"> {{ placeholder }} </span> <span class=\"md-select-value\" *ngIf=\"selected\"> {{ selected?.viewValue }} </span> <span class=\"md-select-arrow\"></span> </div> <template connected-overlay [origin]=\"origin\"  [open]=\"panelOpen\" hasBackdrop (backdropClick)=\"close()\" backdropClass=\"md-overlay-transparent-backdrop\" [positions]=\"_positions\" [width]=\"_getWidth()\" [offsetY]=\"_offsetY\" [offsetX]=\"_offsetX\" (attach)=\"_setScrollTop()\"> <div class=\"md-select-panel\" [@transformPanel]=\"'showing'\" (@transformPanel.done)=\"_onPanelDone()\" (keydown)=\"_keyManager.onKeydown($event)\" [style.transformOrigin]=\"_transformOrigin\"> <div class=\"md-select-content\" [@fadeInContent]=\"'showing'\"> <ng-content></ng-content> </div> </div> </template> ",
-            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ md-select { display: inline-block; outline: none; } .md-select-trigger { display: flex; justify-content: space-between; align-items: center; height: 30px; min-width: 112px; cursor: pointer; position: relative; box-sizing: border-box; } [aria-disabled='true'] .md-select-trigger { background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%); background-size: 4px 1px; background-repeat: repeat-x; border-bottom: transparent; background-position: 0 bottom; cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-select-placeholder { padding: 0 2px; transform-origin: left top; } [dir='rtl'] .md-select-placeholder { transform-origin: right top; } [aria-required=true] .md-select-placeholder::after { content: '*'; } .md-select-value { position: absolute; left: 0; top: 6px; } [dir='rtl'] .md-select-value { left: auto; right: 0; } .md-select-arrow { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid; margin: 0 4px; } .md-select-panel { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; padding-top: 0; padding-bottom: 0; max-height: 256px; } md-option { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; cursor: pointer; outline: none; } md-option[disabled] { cursor: default; } md-option md-icon { margin-right: 16px; } [dir='rtl'] md-option md-icon { margin-left: 16px; } md-option[aria-disabled='true'] { cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-option-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } /*# sourceMappingURL=select.css.map */ "],
+            template: "<div class=\"md-select-trigger\" overlay-origin (click)=\"toggle()\" #origin=\"overlayOrigin\" #trigger> <span class=\"md-select-placeholder\" [class.md-floating-placeholder]=\"this.selected\" [@transformPlaceholder]=\"_placeholderState\"> {{ placeholder }} </span> <span class=\"md-select-value\" *ngIf=\"selected\"> {{ selected?.viewValue }} </span> <span class=\"md-select-arrow\"></span> </div> <template connected-overlay [origin]=\"origin\"  [open]=\"panelOpen\" hasBackdrop (backdropClick)=\"close()\" backdropClass=\"md-overlay-transparent-backdrop\" [positions]=\"_positions\" [width]=\"_getWidth()\" [offsetY]=\"_offsetY\" [offsetX]=\"_offsetX\" (attach)=\"_setScrollTop()\"> <div class=\"md-select-panel\" [@transformPanel]=\"'showing'\" (@transformPanel.done)=\"_onPanelDone()\" (keydown)=\"_keyManager.onKeydown($event)\" [style.transformOrigin]=\"_transformOrigin\"> <div class=\"md-select-content\" [@fadeInContent]=\"'showing'\"> <ng-content></ng-content> </div> </div> </template> ",
+            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ /** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ md-select { display: inline-block; outline: none; } .md-select-trigger { display: flex; justify-content: space-between; align-items: center; height: 30px; min-width: 112px; cursor: pointer; position: relative; box-sizing: border-box; } [aria-disabled='true'] .md-select-trigger { background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%); background-size: 4px 1px; background-repeat: repeat-x; border-bottom: transparent; background-position: 0 bottom; cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-select-placeholder { position: relative; padding: 0 2px; transform-origin: left top; } .md-select-placeholder.md-floating-placeholder { top: -22px; left: -2px; transform: scale(0.75); } [dir='rtl'] .md-select-placeholder { transform-origin: right top; } [dir='rtl'] .md-select-placeholder.md-floating-placeholder { left: 2px; } [aria-required=true] .md-select-placeholder::after { content: '*'; } .md-select-value { position: absolute; left: 0; top: 6px; } [dir='rtl'] .md-select-value { left: auto; right: 0; } .md-select-arrow { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid; margin: 0 4px; } .md-select-panel { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; padding-top: 0; padding-bottom: 0; max-height: 256px; } @media screen and (-ms-high-contrast: active) { .md-select-panel { outline: solid 1px; } } md-option { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; cursor: pointer; outline: none; } md-option[disabled] { cursor: default; } md-option md-icon { margin-right: 16px; } [dir='rtl'] md-option md-icon { margin-left: 16px; } md-option[aria-disabled='true'] { cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-option-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } @media screen and (-ms-high-contrast: active) { .md-option-ripple { opacity: 0.5; } } /*# sourceMappingURL=select.css.map */ "],
             encapsulation: _angular_core.ViewEncapsulation.None,
             host: {
                 'role': 'listbox',
@@ -5228,9 +5280,9 @@ var MdSelect = (function () {
             ],
             exportAs: 'mdSelect',
         }),
-        __param$5(4, _angular_core.Optional()),
-        __param$5(5, _angular_core.Optional()), 
-        __metadata$25('design:paramtypes', [_angular_core.ElementRef, _angular_core.Renderer, _angular_core.NgZone, ViewportRuler, Dir, _angular_forms.NgControl])
+        __param$5(3, _angular_core.Optional()),
+        __param$5(4, _angular_core.Optional()), 
+        __metadata$25('design:paramtypes', [_angular_core.ElementRef, _angular_core.Renderer, ViewportRuler, Dir, _angular_forms.NgControl])
     ], MdSelect);
     return MdSelect;
 }());
@@ -5535,7 +5587,7 @@ var MdSlideToggle = (function () {
                 '(mousedown)': '_setMousedown()'
             },
             template: "<label class=\"md-slide-toggle-label\"> <div class=\"md-slide-toggle-container\"> <div class=\"md-slide-toggle-bar\"></div> <div class=\"md-slide-toggle-thumb-container\" (slidestart)=\"_onDragStart()\" (slide)=\"_onDrag($event)\" (slideend)=\"_onDragEnd()\"> <div class=\"md-slide-toggle-thumb\"> <div class=\"md-ink-ripple\"></div> </div> </div> <input #input class=\"md-slide-toggle-input md-visually-hidden\" type=\"checkbox\" [id]=\"getInputId()\" [required]=\"required\" [tabIndex]=\"tabIndex\" [checked]=\"checked\" [disabled]=\"disabled\" [attr.name]=\"name\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledby\" (blur)=\"_onInputBlur()\" (focus)=\"_onInputFocus()\" (change)=\"_onChangeEvent($event)\" (click)=\"_onInputClick($event)\"> </div> <span class=\"md-slide-toggle-content\"> <ng-content></ng-content> </span> </label> ",
-            styles: ["md-slide-toggle { display: flex; height: 24px; margin: 16px 0; line-height: 24px; white-space: nowrap; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; } md-slide-toggle.md-checked .md-slide-toggle-thumb-container { transform: translate3d(100%, 0, 0); } md-slide-toggle .md-ink-ripple { border-radius: 50%; opacity: 0; height: 48px; left: 50%; overflow: hidden; pointer-events: none; position: absolute; top: 50%; transform: translate(-50%, -50%); transition: opacity ease 280ms, background-color ease 280ms; width: 48px; } md-slide-toggle.md-slide-toggle-focused .md-ink-ripple { opacity: 1; } md-slide-toggle.md-slide-toggle-disabled .md-ink-ripple { background-color: #000; } md-slide-toggle.md-disabled .md-slide-toggle-label, md-slide-toggle.md-disabled .md-slide-toggle-container { cursor: default; } .md-slide-toggle-content { font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; } .md-slide-toggle-label { display: flex; flex: 1; cursor: pointer; } .md-slide-toggle-container { cursor: -webkit-grab; cursor: grab; width: 36px; height: 24px; position: relative; margin-right: 8px; } [dir='rtl'] .md-slide-toggle-container { margin-left: 8px; margin-right: 0; } .md-slide-toggle-thumb-container { position: absolute; top: 2px; left: 0; z-index: 1; width: 16px; transform: translate3d(0, 0, 0); transition: all 80ms linear; transition-property: transform; } .md-slide-toggle-thumb-container.md-dragging { transition-duration: 0ms; } .md-slide-toggle-thumb { position: absolute; margin: 0; left: 0; top: 0; height: 20px; width: 20px; border-radius: 50%; box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); } .md-slide-toggle-bar { position: absolute; left: 1px; top: 5px; width: 34px; height: 14px; border-radius: 8px; } .md-slide-toggle-input { bottom: 0; left: 10px; } .md-slide-toggle-bar, .md-slide-toggle-thumb { transition: all 80ms linear; transition-property: background-color; transition-delay: 50ms; } /*# sourceMappingURL=slide-toggle.css.map */ "],
+            styles: ["/** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ md-slide-toggle { display: flex; height: 24px; margin: 16px 0; line-height: 24px; white-space: nowrap; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; } md-slide-toggle.md-checked .md-slide-toggle-thumb-container { transform: translate3d(100%, 0, 0); } md-slide-toggle .md-ink-ripple { border-radius: 50%; opacity: 0; height: 48px; left: 50%; overflow: hidden; pointer-events: none; position: absolute; top: 50%; transform: translate(-50%, -50%); transition: opacity ease 280ms, background-color ease 280ms; width: 48px; } md-slide-toggle.md-slide-toggle-focused .md-ink-ripple { opacity: 1; } md-slide-toggle.md-slide-toggle-disabled .md-ink-ripple { background-color: #000; } md-slide-toggle.md-disabled .md-slide-toggle-label, md-slide-toggle.md-disabled .md-slide-toggle-container { cursor: default; } .md-slide-toggle-content { font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; } .md-slide-toggle-label { display: flex; flex: 1; cursor: pointer; } .md-slide-toggle-container { cursor: -webkit-grab; cursor: grab; width: 36px; height: 24px; position: relative; margin-right: 8px; } [dir='rtl'] .md-slide-toggle-container { margin-left: 8px; margin-right: 0; } .md-slide-toggle-thumb-container { position: absolute; top: 2px; left: 0; z-index: 1; width: 16px; transform: translate3d(0, 0, 0); transition: all 80ms linear; transition-property: transform; } .md-slide-toggle-thumb-container.md-dragging { transition-duration: 0ms; } .md-slide-toggle-thumb { position: absolute; margin: 0; left: 0; top: 0; height: 20px; width: 20px; border-radius: 50%; box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); } @media screen and (-ms-high-contrast: active) { .md-slide-toggle-thumb { background: #fff; border: solid 1px #000; } } .md-slide-toggle-bar { position: absolute; left: 1px; top: 5px; width: 34px; height: 14px; border-radius: 8px; } @media screen and (-ms-high-contrast: active) { .md-slide-toggle-bar { background: #fff; } } .md-slide-toggle-input { bottom: 0; left: 10px; } .md-slide-toggle-bar, .md-slide-toggle-thumb { transition: all 80ms linear; transition-property: background-color; transition-delay: 50ms; } /*# sourceMappingURL=slide-toggle.css.map */ "],
             providers: [MD_SLIDE_TOGGLE_VALUE_ACCESSOR],
             encapsulation: _angular_core.ViewEncapsulation.None,
             changeDetection: _angular_core.ChangeDetectionStrategy.OnPush
@@ -6186,11 +6238,6 @@ var MdSliderModule = (function () {
     return MdSliderModule;
 }());
 
-var __extends$7 = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var __decorate$29 = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6203,14 +6250,6 @@ var __metadata$29 = (this && this.__metadata) || function (k, v) {
 var __param$7 = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-/** Exception thrown when two MdSidenav are matching the same side. */
-var MdDuplicatedSidenavError = (function (_super) {
-    __extends$7(MdDuplicatedSidenavError, _super);
-    function MdDuplicatedSidenavError(align) {
-        _super.call(this, "A sidenav was already declared for 'align=\"" + align + "\"'");
-    }
-    return MdDuplicatedSidenavError;
-}(MdError));
 /** Sidenav toggle promise result. */
 var MdSidenavToggleResult = (function () {
     function MdSidenavToggleResult(type, animationFinished) {
@@ -6290,6 +6329,14 @@ var MdSidenav = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(MdSidenav.prototype, "isFocusTrapDisabled", {
+        get: function () {
+            // The focus trap is only enabled when the sidenav is open in any mode other than side.
+            return !this.opened || this.mode == 'side';
+        },
+        enumerable: true,
+        configurable: true
+    });
     MdSidenav.prototype.ngAfterContentInit = function () {
         // This can happen when the sidenav is set to opened in the template and the transition
         // isn't ended.
@@ -6344,6 +6391,9 @@ var MdSidenav = (function () {
         }
         else {
             this.onCloseStart.emit();
+        }
+        if (!this.isFocusTrapDisabled) {
+            this._focusTrap.focusFirstTabbableElementWhenReady();
         }
         if (this._toggleAnimationPromise) {
             this._resolveToggleAnimationPromise(false);
@@ -6442,6 +6492,10 @@ var MdSidenav = (function () {
         configurable: true
     });
     __decorate$29([
+        _angular_core.ViewChild(FocusTrap), 
+        __metadata$29('design:type', FocusTrap)
+    ], MdSidenav.prototype, "_focusTrap", void 0);
+    __decorate$29([
         _angular_core.Input(), 
         __metadata$29('design:type', Object)
     ], MdSidenav.prototype, "align", null);
@@ -6475,7 +6529,7 @@ var MdSidenav = (function () {
     ], MdSidenav.prototype, "opened", null);
     MdSidenav = __decorate$29([
         _angular_core.Component({selector: 'md-sidenav, mat-sidenav',
-            template: '<ng-content></ng-content>',
+            template: '<focus-trap [disabled]="isFocusTrapDisabled"><ng-content></ng-content></focus-trap>',
             host: {
                 '(transitionend)': '_onTransitionEnd($event)',
                 // must prevent the browser from aligning text based on value
@@ -6682,7 +6736,7 @@ var MdSidenavLayout = (function () {
             // technically it is a sibling of MdSidenav (on the content tree) and isn't updated when MdSidenav
             // changes its state.
             template: "<div class=\"md-sidenav-backdrop\" (click)=\"_onBackdropClicked()\" [class.md-sidenav-shown]=\"_isShowingBackdrop()\"></div> <ng-content select=\"md-sidenav, mat-sidenav\"></ng-content> <div class=\"md-sidenav-content\" [ngStyle]=\"_getStyles()\"> <ng-content></ng-content> </div> ",
-            styles: ["md-sidenav-layout { position: relative; transform: translate3d(0, 0, 0); box-sizing: border-box; -webkit-overflow-scrolling: touch; display: block; overflow: hidden; } md-sidenav-layout[fullscreen] { position: absolute; top: 0; left: 0; right: 0; bottom: 0; } md-sidenav-layout[fullscreen].md-sidenav-opened { overflow: hidden; } .md-sidenav-backdrop { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: block; z-index: 2; visibility: hidden; } .md-sidenav-backdrop.md-sidenav-shown { visibility: visible; } .md-sidenav-content { position: relative; transform: translate3d(0, 0, 0); display: block; height: 100%; overflow: auto; } md-sidenav { position: relative; transform: translate3d(0, 0, 0); display: block; position: absolute; top: 0; bottom: 0; z-index: 3; min-width: 5%; overflow-y: auto; transform: translate3d(-100%, 0, 0); } md-sidenav.md-sidenav-closed { visibility: hidden; } md-sidenav.md-sidenav-closing { transform: translate3d(-100%, 0, 0); } md-sidenav.md-sidenav-opening { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } md-sidenav.md-sidenav-opened { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } md-sidenav.md-sidenav-side { z-index: 1; } md-sidenav.md-sidenav-end { right: 0; transform: translate3d(100%, 0, 0); } md-sidenav.md-sidenav-end.md-sidenav-closed { visibility: hidden; } md-sidenav.md-sidenav-end.md-sidenav-closing { transform: translate3d(100%, 0, 0); } md-sidenav.md-sidenav-end.md-sidenav-opening { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } md-sidenav.md-sidenav-end.md-sidenav-opened { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav { transform: translate3d(100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-closed { visibility: hidden; } [dir='rtl'] md-sidenav.md-sidenav-closing { transform: translate3d(100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-opening { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-opened { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end { left: 0; right: auto; transform: translate3d(-100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-closed { visibility: hidden; } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-closing { transform: translate3d(-100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-opening { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-opened { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } .md-sidenav-invalid { display: none; } /*# sourceMappingURL=sidenav.css.map */ ",
+            styles: ["/** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ md-sidenav-layout { position: relative; transform: translate3d(0, 0, 0); box-sizing: border-box; -webkit-overflow-scrolling: touch; display: block; overflow: hidden; } md-sidenav-layout[fullscreen] { position: absolute; top: 0; left: 0; right: 0; bottom: 0; } md-sidenav-layout[fullscreen].md-sidenav-opened { overflow: hidden; } .md-sidenav-backdrop { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: block; z-index: 2; visibility: hidden; } .md-sidenav-backdrop.md-sidenav-shown { visibility: visible; } @media screen and (-ms-high-contrast: active) { .md-sidenav-backdrop { opacity: 0.5; } } .md-sidenav-content { position: relative; transform: translate3d(0, 0, 0); display: block; height: 100%; overflow: auto; } md-sidenav { position: relative; transform: translate3d(0, 0, 0); display: block; position: absolute; top: 0; bottom: 0; z-index: 3; min-width: 5%; overflow-y: auto; transform: translate3d(-100%, 0, 0); } md-sidenav.md-sidenav-closed { visibility: hidden; } md-sidenav.md-sidenav-closing { transform: translate3d(-100%, 0, 0); } md-sidenav.md-sidenav-opening { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } md-sidenav.md-sidenav-opened { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } md-sidenav.md-sidenav-side { z-index: 1; } md-sidenav.md-sidenav-end { right: 0; transform: translate3d(100%, 0, 0); } md-sidenav.md-sidenav-end.md-sidenav-closed { visibility: hidden; } md-sidenav.md-sidenav-end.md-sidenav-closing { transform: translate3d(100%, 0, 0); } md-sidenav.md-sidenav-end.md-sidenav-opening { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } md-sidenav.md-sidenav-end.md-sidenav-opened { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav { transform: translate3d(100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-closed { visibility: hidden; } [dir='rtl'] md-sidenav.md-sidenav-closing { transform: translate3d(100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-opening { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-opened { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end { left: 0; right: auto; transform: translate3d(-100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-closed { visibility: hidden; } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-closing { transform: translate3d(-100%, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-opening { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); visibility: visible; transform: translate3d(0, 0, 0); } [dir='rtl'] md-sidenav.md-sidenav-end.md-sidenav-opened { box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12); transform: translate3d(0, 0, 0); } .md-sidenav-invalid { display: none; } /*# sourceMappingURL=sidenav.css.map */ ",
 "md-sidenav { transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-sidenav-content { transition: transform 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } .md-sidenav-backdrop.md-sidenav-shown { transition: background-color 400ms cubic-bezier(0.25, 0.8, 0.25, 1); } /*# sourceMappingURL=sidenav-transitions.css.map */ "],
             encapsulation: _angular_core.ViewEncapsulation.None,
         }),
@@ -6702,7 +6756,7 @@ var MdSidenavModule = (function () {
     };
     MdSidenavModule = __decorate$29([
         _angular_core.NgModule({
-            imports: [_angular_common.CommonModule, DefaultStyleCompatibilityModeModule],
+            imports: [_angular_common.CommonModule, DefaultStyleCompatibilityModeModule, A11yModule],
             exports: [MdSidenavLayout, MdSidenav, DefaultStyleCompatibilityModeModule],
             declarations: [MdSidenavLayout, MdSidenav],
         }), 
@@ -6926,7 +6980,7 @@ var MdGridTileText = (function () {
     return MdGridTileText;
 }());
 
-var __extends$8 = (this && this.__extends) || function (d, b) {
+var __extends$7 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -6935,7 +6989,7 @@ var __extends$8 = (this && this.__extends) || function (d, b) {
  * Exception thrown when cols property is missing from grid-list
  */
 var MdGridListColsError = (function (_super) {
-    __extends$8(MdGridListColsError, _super);
+    __extends$7(MdGridListColsError, _super);
     function MdGridListColsError() {
         _super.call(this, "md-grid-list: must pass in number of columns. Example: <md-grid-list cols=\"3\">");
     }
@@ -6945,7 +6999,7 @@ var MdGridListColsError = (function (_super) {
  * Exception thrown when a tile's colspan is longer than the number of cols in list
  */
 var MdGridTileTooWideError = (function (_super) {
-    __extends$8(MdGridTileTooWideError, _super);
+    __extends$7(MdGridTileTooWideError, _super);
     function MdGridTileTooWideError(cols, listLength) {
         _super.call(this, "md-grid-list: tile with colspan " + cols + " is wider than grid with cols=\"" + listLength + "\".");
     }
@@ -6955,7 +7009,7 @@ var MdGridTileTooWideError = (function (_super) {
  * Exception thrown when an invalid ratio is passed in as a rowHeight
  */
 var MdGridListBadRatioError = (function (_super) {
-    __extends$8(MdGridListBadRatioError, _super);
+    __extends$7(MdGridListBadRatioError, _super);
     function MdGridListBadRatioError(value) {
         _super.call(this, "md-grid-list: invalid ratio given for row-height: \"" + value + "\"");
     }
@@ -7084,7 +7138,7 @@ var TilePosition = (function () {
     return TilePosition;
 }());
 
-var __extends$9 = (this && this.__extends) || function (d, b) {
+var __extends$8 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -7191,7 +7245,7 @@ var TileStyler = (function () {
  * TODO: internal
  */
 var FixedTileStyler = (function (_super) {
-    __extends$9(FixedTileStyler, _super);
+    __extends$8(FixedTileStyler, _super);
     function FixedTileStyler(fixedRowHeight) {
         _super.call(this);
         this.fixedRowHeight = fixedRowHeight;
@@ -7217,7 +7271,7 @@ var FixedTileStyler = (function (_super) {
  * TODO: internal
  */
 var RatioTileStyler = (function (_super) {
-    __extends$9(RatioTileStyler, _super);
+    __extends$8(RatioTileStyler, _super);
     function RatioTileStyler(value) {
         _super.call(this);
         this._parseRatio(value);
@@ -7249,7 +7303,7 @@ var RatioTileStyler = (function (_super) {
  *  In other words, the row height will reflect the total height of the container divided
  *  by the number of rows.  Example <md-grid-list cols="3" rowHeight="fit"> */
 var FitTileStyler = (function (_super) {
-    __extends$9(FitTileStyler, _super);
+    __extends$8(FitTileStyler, _super);
     function FitTileStyler() {
         _super.apply(this, arguments);
     }
@@ -7538,7 +7592,7 @@ var MdCard = (function () {
     MdCard = __decorate$33([
         _angular_core.Component({selector: 'md-card, mat-card',
             template: "<ng-content></ng-content> ",
-            styles: ["md-card { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); will-change: box-shadow; display: block; position: relative; padding: 24px; border-radius: 2px; font-family: Roboto, \"Helvetica Neue\", sans-serif; } .md-card-flat { box-shadow: none; } md-card-title, md-card-subtitle, md-card-content, md-card-actions { display: block; margin-bottom: 16px; } md-card-title { font-size: 24px; font-weight: 400; } md-card-subtitle { font-size: 14px; } md-card-content { font-size: 14px; } md-card-actions { margin-left: -16px; margin-right: -16px; padding: 8px 0; } md-card-actions[align='end'] { display: flex; justify-content: flex-end; } [md-card-image] { width: calc(100% + 48px); margin: 0 -24px 16px -24px; } [md-card-xl-image] { width: 240px; height: 240px; margin: -8px; } md-card-footer { position: absolute; width: 100%; min-height: 5px; bottom: 0; left: 0; } md-card-actions [md-button], md-card-actions [md-raised-button] { margin: 0 4px; } md-card-header { display: flex; flex-direction: row; height: 40px; margin: -8px 0 16px 0; } .md-card-header-text { height: 40px; margin: 0 8px; } [md-card-avatar] { height: 40px; width: 40px; border-radius: 50%; } md-card-header md-card-title { font-size: 14px; } [md-card-sm-image], [md-card-md-image], [md-card-lg-image] { margin: -8px 0; } md-card-title-group { display: flex; justify-content: space-between; margin: 0 -8px; } [md-card-sm-image] { width: 80px; height: 80px; } [md-card-md-image] { width: 112px; height: 112px; } [md-card-lg-image] { width: 152px; height: 152px; } @media (max-width: 600px) { md-card { padding: 24px 16px; } [md-card-image] { width: calc(100% + 32px); margin: 16px -16px; } md-card-title-group { margin: 0; } [md-card-xl-image] { margin-left: 0; margin-right: 0; } md-card-header { margin: -8px 0 0 0; } } md-card > :first-child, md-card-content > :first-child { margin-top: 0; } md-card > :last-child, md-card-content > :last-child { margin-bottom: 0; } [md-card-image]:first-child { margin-top: -24px; } md-card > md-card-actions:last-child { margin-bottom: -16px; padding-bottom: 0; } md-card-actions [md-button]:first-child, md-card-actions [md-raised-button]:first-child { margin-left: 0; margin-right: 0; } md-card-title:not(:first-child), md-card-subtitle:not(:first-child) { margin-top: -4px; } md-card-header md-card-subtitle:not(:first-child) { margin-top: -8px; } md-card > [md-card-xl-image]:first-child { margin-top: -8px; } md-card > [md-card-xl-image]:last-child { margin-bottom: -8px; } /*# sourceMappingURL=card.css.map */ "],
+            styles: ["/** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ md-card { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1); will-change: box-shadow; display: block; position: relative; padding: 24px; border-radius: 2px; font-family: Roboto, \"Helvetica Neue\", sans-serif; } @media screen and (-ms-high-contrast: active) { md-card { outline: solid 1px; } } .md-card-flat { box-shadow: none; } md-card-title, md-card-subtitle, md-card-content, md-card-actions { display: block; margin-bottom: 16px; } md-card-title { font-size: 24px; font-weight: 400; } md-card-subtitle { font-size: 14px; } md-card-content { font-size: 14px; } md-card-actions { margin-left: -16px; margin-right: -16px; padding: 8px 0; } md-card-actions[align='end'] { display: flex; justify-content: flex-end; } [md-card-image] { width: calc(100% + 48px); margin: 0 -24px 16px -24px; } [md-card-xl-image] { width: 240px; height: 240px; margin: -8px; } md-card-footer { position: absolute; width: 100%; min-height: 5px; bottom: 0; left: 0; } md-card-actions [md-button], md-card-actions [md-raised-button] { margin: 0 4px; } md-card-header { display: flex; flex-direction: row; height: 40px; margin: -8px 0 16px 0; } .md-card-header-text { height: 40px; margin: 0 8px; } [md-card-avatar] { height: 40px; width: 40px; border-radius: 50%; } md-card-header md-card-title { font-size: 14px; } [md-card-sm-image], [md-card-md-image], [md-card-lg-image] { margin: -8px 0; } md-card-title-group { display: flex; justify-content: space-between; margin: 0 -8px; } [md-card-sm-image] { width: 80px; height: 80px; } [md-card-md-image] { width: 112px; height: 112px; } [md-card-lg-image] { width: 152px; height: 152px; } @media (max-width: 600px) { md-card { padding: 24px 16px; } [md-card-image] { width: calc(100% + 32px); margin: 16px -16px; } md-card-title-group { margin: 0; } [md-card-xl-image] { margin-left: 0; margin-right: 0; } md-card-header { margin: -8px 0 0 0; } } md-card > :first-child, md-card-content > :first-child { margin-top: 0; } md-card > :last-child, md-card-content > :last-child { margin-bottom: 0; } [md-card-image]:first-child { margin-top: -24px; } md-card > md-card-actions:last-child { margin-bottom: -16px; padding-bottom: 0; } md-card-actions [md-button]:first-child, md-card-actions [md-raised-button]:first-child { margin-left: 0; margin-right: 0; } md-card-title:not(:first-child), md-card-subtitle:not(:first-child) { margin-top: -4px; } md-card-header md-card-subtitle:not(:first-child) { margin-top: -8px; } md-card > [md-card-xl-image]:first-child { margin-top: -8px; } md-card > [md-card-xl-image]:last-child { margin-bottom: -8px; } /*# sourceMappingURL=card.css.map */ "],
             encapsulation: _angular_core.ViewEncapsulation.None,
             changeDetection: _angular_core.ChangeDetectionStrategy.OnPush,
         }), 
@@ -7710,7 +7764,7 @@ var MdChipsModule = (function () {
     return MdChipsModule;
 }());
 
-var __extends$11 = (this && this.__extends) || function (d, b) {
+var __extends$10 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -7726,7 +7780,7 @@ var __metadata$37 = (this && this.__metadata) || function (k, v) {
 };
 /** Exception thrown when attempting to load an icon with a name that cannot be found. */
 var MdIconNameNotFoundError = (function (_super) {
-    __extends$11(MdIconNameNotFoundError, _super);
+    __extends$10(MdIconNameNotFoundError, _super);
     function MdIconNameNotFoundError(iconName) {
         _super.call(this, "Unable to find icon with the name \"" + iconName + "\"");
     }
@@ -7737,7 +7791,7 @@ var MdIconNameNotFoundError = (function (_super) {
  * <svg> tag.
  */
 var MdIconSvgTagNotFoundError = (function (_super) {
-    __extends$11(MdIconSvgTagNotFoundError, _super);
+    __extends$10(MdIconSvgTagNotFoundError, _super);
     function MdIconSvgTagNotFoundError() {
         _super.call(this, '<svg> tag not found');
     }
@@ -8072,7 +8126,7 @@ function cloneSvg(svg) {
     return svg.cloneNode(true);
 }
 
-var __extends$10 = (this && this.__extends) || function (d, b) {
+var __extends$9 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -8088,7 +8142,7 @@ var __metadata$36 = (this && this.__metadata) || function (k, v) {
 };
 /** Exception thrown when an invalid icon name is passed to an md-icon component. */
 var MdIconInvalidNameError = (function (_super) {
-    __extends$10(MdIconInvalidNameError, _super);
+    __extends$9(MdIconInvalidNameError, _super);
     function MdIconInvalidNameError(iconName) {
         _super.call(this, "Invalid icon name: \"" + iconName + "\"");
     }
@@ -8342,7 +8396,7 @@ var MdIconModule = (function () {
     return MdIconModule;
 }());
 
-var __extends$12 = (this && this.__extends) || function (d, b) {
+var __extends$11 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -8564,7 +8618,7 @@ var MdProgressCircle = (function () {
  * indeterminate <md-progress-circle> instance.
  */
 var MdSpinner = (function (_super) {
-    __extends$12(MdSpinner, _super);
+    __extends$11(MdSpinner, _super);
     function MdSpinner(changeDetectorRef, elementRef, ngZone) {
         _super.call(this, changeDetectorRef, ngZone, elementRef);
         this.mode = 'indeterminate';
@@ -8877,7 +8931,7 @@ var MdTextareaAutosize = (function () {
     return MdTextareaAutosize;
 }());
 
-var __extends$13 = (this && this.__extends) || function (d, b) {
+var __extends$12 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -8905,21 +8959,21 @@ var MD_INPUT_INVALID_INPUT_TYPE = [
 ];
 var nextUniqueId$1 = 0;
 var MdInputPlaceholderConflictError = (function (_super) {
-    __extends$13(MdInputPlaceholderConflictError, _super);
+    __extends$12(MdInputPlaceholderConflictError, _super);
     function MdInputPlaceholderConflictError() {
         _super.call(this, 'Placeholder attribute and child element were both specified.');
     }
     return MdInputPlaceholderConflictError;
 }(MdError));
 var MdInputUnsupportedTypeError = (function (_super) {
-    __extends$13(MdInputUnsupportedTypeError, _super);
+    __extends$12(MdInputUnsupportedTypeError, _super);
     function MdInputUnsupportedTypeError(type) {
         _super.call(this, "Input type \"" + type + "\" isn't supported by md-input.");
     }
     return MdInputUnsupportedTypeError;
 }(MdError));
 var MdInputDuplicatedHintError = (function (_super) {
-    __extends$13(MdInputDuplicatedHintError, _super);
+    __extends$12(MdInputDuplicatedHintError, _super);
     function MdInputDuplicatedHintError(align) {
         _super.call(this, "A hint was already declared for 'align=\"" + align + "\"'.");
     }
@@ -9488,20 +9542,20 @@ var MdSnackBarRef = (function () {
     return MdSnackBarRef;
 }());
 
-var __extends$15 = (this && this.__extends) || function (d, b) {
+var __extends$14 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var MdSnackBarContentAlreadyAttached = (function (_super) {
-    __extends$15(MdSnackBarContentAlreadyAttached, _super);
+    __extends$14(MdSnackBarContentAlreadyAttached, _super);
     function MdSnackBarContentAlreadyAttached() {
         _super.call(this, 'Attempting to attach snack bar content after content is already attached');
     }
     return MdSnackBarContentAlreadyAttached;
 }(MdError));
 
-var __extends$14 = (this && this.__extends) || function (d, b) {
+var __extends$13 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -9523,7 +9577,7 @@ var HIDE_ANIMATION = '195ms cubic-bezier(0.0,0.0,0.2,1)';
  * Internal component that wraps user-provided snack bar content.
  */
 var MdSnackBarContainer = (function (_super) {
-    __extends$14(MdSnackBarContainer, _super);
+    __extends$13(MdSnackBarContainer, _super);
     function MdSnackBarContainer(_ngZone) {
         _super.call(this);
         this._ngZone = _ngZone;
@@ -9581,7 +9635,7 @@ var MdSnackBarContainer = (function (_super) {
     MdSnackBarContainer = __decorate$43([
         _angular_core.Component({selector: 'snack-bar-container',
             template: "<template portalHost></template>",
-            styles: [":host { box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12); background: #323232; border-radius: 2px; box-sizing: content-box; display: block; height: 20px; max-width: 568px; min-width: 288px; overflow: hidden; padding: 14px 24px; transform: translateY(100%); } /*# sourceMappingURL=snack-bar-container.css.map */ "],
+            styles: ["/** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ :host { box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12); background: #323232; border-radius: 2px; box-sizing: content-box; display: block; height: 20px; max-width: 568px; min-width: 288px; overflow: hidden; padding: 14px 24px; transform: translateY(100%); } @media screen and (-ms-high-contrast: active) { :host { border: solid 1px; } } /*# sourceMappingURL=snack-bar-container.css.map */ "],
             host: {
                 'role': 'alert',
                 '[@state]': 'animationState',
@@ -9800,7 +9854,7 @@ var MdSnackBarModule = (function () {
     return MdSnackBarModule;
 }());
 
-var __extends$16 = (this && this.__extends) || function (d, b) {
+var __extends$15 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -9816,7 +9870,7 @@ var __metadata$46 = (this && this.__metadata) || function (k, v) {
 };
 /** Used to flag tab labels for use with the portal directive */
 var MdTabLabel = (function (_super) {
-    __extends$16(MdTabLabel, _super);
+    __extends$15(MdTabLabel, _super);
     function MdTabLabel(templateRef, viewContainerRef) {
         _super.call(this, templateRef, viewContainerRef);
     }
@@ -9916,7 +9970,7 @@ var MdInkBar = (function () {
     return MdInkBar;
 }());
 
-var __extends$17 = (this && this.__extends) || function (d, b) {
+var __extends$16 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -9991,7 +10045,7 @@ var MdTabLink = (function () {
  * adds the ripple behavior to nav bar labels.
  */
 var MdTabLinkRipple = (function (_super) {
-    __extends$17(MdTabLinkRipple, _super);
+    __extends$16(MdTabLinkRipple, _super);
     function MdTabLinkRipple(_element) {
         _super.call(this, _element);
         this._element = _element;
@@ -10630,6 +10684,9 @@ var __decorate$53 = (this && this.__decorate) || function (decorators, target, k
 var __metadata$53 = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param$10 = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 /** Time in ms to delay before changing the tooltip visibility to hidden */
 var TOUCHEND_HIDE_DELAY = 1500;
 /**
@@ -10639,11 +10696,12 @@ var TOUCHEND_HIDE_DELAY = 1500;
  * https://material.google.com/components/tooltips.html
  */
 var MdTooltip = (function () {
-    function MdTooltip(_overlay, _elementRef, _viewContainerRef, _ngZone) {
+    function MdTooltip(_overlay, _elementRef, _viewContainerRef, _ngZone, _dir) {
         this._overlay = _overlay;
         this._elementRef = _elementRef;
         this._viewContainerRef = _viewContainerRef;
         this._ngZone = _ngZone;
+        this._dir = _dir;
         /** Allows the user to define the position of the tooltip relative to the parent element */
         this._position = 'below';
     }
@@ -10737,20 +10795,39 @@ var MdTooltip = (function () {
     };
     /** Returns the origin position based on the user's position preference */
     MdTooltip.prototype._getOrigin = function () {
-        switch (this.position) {
-            case 'before': return { originX: 'start', originY: 'center' };
-            case 'after': return { originX: 'end', originY: 'center' };
-            case 'above': return { originX: 'center', originY: 'top' };
-            case 'below': return { originX: 'center', originY: 'bottom' };
+        if (this.position == 'above' || this.position == 'below') {
+            return { originX: 'center', originY: this.position == 'above' ? 'top' : 'bottom' };
+        }
+        var isDirectionLtr = !this._dir || this._dir.value == 'ltr';
+        if (this.position == 'left' ||
+            this.position == 'before' && isDirectionLtr ||
+            this.position == 'after' && !isDirectionLtr) {
+            return { originX: 'start', originY: 'center' };
+        }
+        if (this.position == 'right' ||
+            this.position == 'after' && isDirectionLtr ||
+            this.position == 'before' && !isDirectionLtr) {
+            return { originX: 'end', originY: 'center' };
         }
     };
     /** Returns the overlay position based on the user's preference */
     MdTooltip.prototype._getOverlayPosition = function () {
-        switch (this.position) {
-            case 'before': return { overlayX: 'end', overlayY: 'center' };
-            case 'after': return { overlayX: 'start', overlayY: 'center' };
-            case 'above': return { overlayX: 'center', overlayY: 'bottom' };
-            case 'below': return { overlayX: 'center', overlayY: 'top' };
+        if (this.position == 'above') {
+            return { overlayX: 'center', overlayY: 'bottom' };
+        }
+        if (this.position == 'below') {
+            return { overlayX: 'center', overlayY: 'top' };
+        }
+        var isLtr = !this._dir || this._dir.value == 'ltr';
+        if (this.position == 'left' ||
+            this.position == 'before' && isLtr ||
+            this.position == 'after' && !isLtr) {
+            return { overlayX: 'end', overlayY: 'center' };
+        }
+        if (this.position == 'right' ||
+            this.position == 'after' && isLtr ||
+            this.position == 'before' && !isLtr) {
+            return { overlayX: 'start', overlayY: 'center' };
         }
     };
     /** Updates the tooltip message and repositions the overlay according to the new message length */
@@ -10783,13 +10860,15 @@ var MdTooltip = (function () {
                 '(mouseleave)': 'hide()',
             },
             exportAs: 'mdTooltip',
-        }), 
-        __metadata$53('design:paramtypes', [Overlay, _angular_core.ElementRef, _angular_core.ViewContainerRef, _angular_core.NgZone])
+        }),
+        __param$10(4, _angular_core.Optional()), 
+        __metadata$53('design:paramtypes', [Overlay, _angular_core.ElementRef, _angular_core.ViewContainerRef, _angular_core.NgZone, Dir])
     ], MdTooltip);
     return MdTooltip;
 }());
 var TooltipComponent = (function () {
-    function TooltipComponent() {
+    function TooltipComponent(_dir) {
+        this._dir = _dir;
         /** Whether interactions on the page should close the tooltip */
         this._closeOnInteraction = false;
         /** The transform origin used in the animation for showing and hiding the tooltip */
@@ -10829,11 +10908,18 @@ var TooltipComponent = (function () {
     };
     /** Sets the tooltip transform origin according to the tooltip position */
     TooltipComponent.prototype._setTransformOrigin = function (value) {
+        var isLtr = !this._dir || this._dir.value == 'ltr';
         switch (value) {
             case 'before':
-                this._transformOrigin = 'right';
+                this._transformOrigin = isLtr ? 'right' : 'left';
                 break;
             case 'after':
+                this._transformOrigin = isLtr ? 'left' : 'right';
+                break;
+            case 'left':
+                this._transformOrigin = 'right';
+                break;
+            case 'right':
                 this._transformOrigin = 'left';
                 break;
             case 'above':
@@ -10862,7 +10948,7 @@ var TooltipComponent = (function () {
     TooltipComponent = __decorate$53([
         _angular_core.Component({selector: 'md-tooltip-component, mat-tooltip-component',
             template: "<div class=\"md-tooltip\" [style.transform-origin]=\"_transformOrigin\" [@state]=\"_visibility\" (@state.done)=\"_afterVisibilityAnimation($event)\"> {{message}} </div>",
-            styles: [":host { pointer-events: none; } .md-tooltip { color: white; padding: 0 8px; border-radius: 2px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-size: 10px; margin: 14px; height: 22px; line-height: 22px; } /*# sourceMappingURL=tooltip.css.map */ "],
+            styles: ["/** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ :host { pointer-events: none; } .md-tooltip { color: white; padding: 0 8px; border-radius: 2px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-size: 10px; margin: 14px; height: 22px; line-height: 22px; } @media screen and (-ms-high-contrast: active) { .md-tooltip { outline: solid 1px; } } /*# sourceMappingURL=tooltip.css.map */ "],
             animations: [
                 _angular_core.trigger('state', [
                     _angular_core.state('void', _angular_core.style({ transform: 'scale(0)' })),
@@ -10875,8 +10961,9 @@ var TooltipComponent = (function () {
             host: {
                 '(body:click)': 'this._handleBodyInteraction()'
             }
-        }), 
-        __metadata$53('design:paramtypes', [])
+        }),
+        __param$10(0, _angular_core.Optional()), 
+        __metadata$53('design:paramtypes', [Dir])
     ], TooltipComponent);
     return TooltipComponent;
 }());
@@ -10901,7 +10988,7 @@ var MdTooltipModule = (function () {
     return MdTooltipModule;
 }());
 
-var __extends$18 = (this && this.__extends) || function (d, b) {
+var __extends$17 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -10910,7 +10997,7 @@ var __extends$18 = (this && this.__extends) || function (d, b) {
  * Exception thrown when menu trigger doesn't have a valid md-menu instance
  */
 var MdMenuMissingError = (function (_super) {
-    __extends$18(MdMenuMissingError, _super);
+    __extends$17(MdMenuMissingError, _super);
     function MdMenuMissingError() {
         _super.call(this, "md-menu-trigger: must pass in an md-menu instance.\n\n    Example:\n      <md-menu #menu=\"mdMenu\"></md-menu>\n      <button [md-menu-trigger-for]=\"menu\"></button>\n    ");
     }
@@ -10921,7 +11008,7 @@ var MdMenuMissingError = (function (_super) {
  * In other words, it doesn't match 'before' or 'after'.
  */
 var MdMenuInvalidPositionX = (function (_super) {
-    __extends$18(MdMenuInvalidPositionX, _super);
+    __extends$17(MdMenuInvalidPositionX, _super);
     function MdMenuInvalidPositionX() {
         _super.call(this, "x-position value must be either 'before' or after'.\n      Example: <md-menu x-position=\"before\" #menu=\"mdMenu\"></md-menu>\n    ");
     }
@@ -10932,7 +11019,7 @@ var MdMenuInvalidPositionX = (function (_super) {
  * In other words, it doesn't match 'above' or 'below'.
  */
 var MdMenuInvalidPositionY = (function (_super) {
-    __extends$18(MdMenuInvalidPositionY, _super);
+    __extends$17(MdMenuInvalidPositionY, _super);
     function MdMenuInvalidPositionY() {
         _super.call(this, "y-position value must be either 'above' or below'.\n      Example: <md-menu y-position=\"above\" #menu=\"mdMenu\"></md-menu>\n    ");
     }
@@ -11070,7 +11157,7 @@ var __decorate$55 = (this && this.__decorate) || function (decorators, target, k
 var __metadata$55 = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param$10 = (this && this.__param) || function (paramIndex, decorator) {
+var __param$11 = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var MdMenu = (function () {
@@ -11175,7 +11262,7 @@ var MdMenu = (function () {
         _angular_core.Component({selector: 'md-menu, mat-menu',
             host: { 'role': 'menu' },
             template: "<template> <div class=\"md-menu-panel\" [ngClass]=\"_classList\" (keydown)=\"_keyManager.onKeydown($event)\" (click)=\"_emitCloseEvent()\" [@transformMenu]=\"'showing'\"> <div class=\"md-menu-content\" [@fadeInItems]=\"'showing'\"> <ng-content></ng-content> </div> </div> </template> ",
-            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ .md-menu-panel { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; max-height: calc(100vh + 48px); } .md-menu-panel.md-menu-after.md-menu-below { transform-origin: left top; } .md-menu-panel.md-menu-after.md-menu-above { transform-origin: left bottom; } .md-menu-panel.md-menu-before.md-menu-below { transform-origin: right top; } .md-menu-panel.md-menu-before.md-menu-above { transform-origin: right bottom; } [dir='rtl'] .md-menu-panel.md-menu-after.md-menu-below { transform-origin: right top; } [dir='rtl'] .md-menu-panel.md-menu-after.md-menu-above { transform-origin: right bottom; } [dir='rtl'] .md-menu-panel.md-menu-before.md-menu-below { transform-origin: left top; } [dir='rtl'] .md-menu-panel.md-menu-before.md-menu-above { transform-origin: left bottom; } .md-menu-content { padding-top: 8px; padding-bottom: 8px; } [md-menu-item] { cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; border: none; white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; } [md-menu-item][disabled] { cursor: default; } [md-menu-item] md-icon { margin-right: 16px; } [dir='rtl'] [md-menu-item] md-icon { margin-left: 16px; } button[md-menu-item] { width: 100%; } .md-menu-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } /*# sourceMappingURL=menu.css.map */ "],
+            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ /** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ .md-menu-panel { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; max-height: calc(100vh + 48px); } .md-menu-panel.md-menu-after.md-menu-below { transform-origin: left top; } .md-menu-panel.md-menu-after.md-menu-above { transform-origin: left bottom; } .md-menu-panel.md-menu-before.md-menu-below { transform-origin: right top; } .md-menu-panel.md-menu-before.md-menu-above { transform-origin: right bottom; } [dir='rtl'] .md-menu-panel.md-menu-after.md-menu-below { transform-origin: right top; } [dir='rtl'] .md-menu-panel.md-menu-after.md-menu-above { transform-origin: right bottom; } [dir='rtl'] .md-menu-panel.md-menu-before.md-menu-below { transform-origin: left top; } [dir='rtl'] .md-menu-panel.md-menu-before.md-menu-above { transform-origin: left bottom; } @media screen and (-ms-high-contrast: active) { .md-menu-panel { outline: solid 1px; } } .md-menu-content { padding-top: 8px; padding-bottom: 8px; } [md-menu-item] { cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; border: none; white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; } [md-menu-item][disabled] { cursor: default; } [md-menu-item] md-icon { margin-right: 16px; } [dir='rtl'] [md-menu-item] md-icon { margin-left: 16px; } button[md-menu-item] { width: 100%; } .md-menu-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } /*# sourceMappingURL=menu.css.map */ "],
             encapsulation: _angular_core.ViewEncapsulation.None,
             animations: [
                 transformMenu,
@@ -11183,8 +11270,8 @@ var MdMenu = (function () {
             ],
             exportAs: 'mdMenu'
         }),
-        __param$10(0, _angular_core.Attribute('x-position')),
-        __param$10(1, _angular_core.Attribute('y-position')), 
+        __param$11(0, _angular_core.Attribute('x-position')),
+        __param$11(1, _angular_core.Attribute('y-position')), 
         __metadata$55('design:paramtypes', [String, String])
     ], MdMenu);
     return MdMenu;
@@ -11199,7 +11286,7 @@ var __decorate$57 = (this && this.__decorate) || function (decorators, target, k
 var __metadata$57 = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param$11 = (this && this.__param) || function (paramIndex, decorator) {
+var __param$12 = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 /**
@@ -11407,7 +11494,7 @@ var MdMenuTrigger = (function () {
             },
             exportAs: 'mdMenuTrigger'
         }),
-        __param$11(4, _angular_core.Optional()), 
+        __param$12(4, _angular_core.Optional()), 
         __metadata$57('design:paramtypes', [Overlay, _angular_core.ElementRef, _angular_core.ViewContainerRef, _angular_core.Renderer, Dir])
     ], MdMenuTrigger);
     return MdMenuTrigger;
@@ -11502,21 +11589,21 @@ var DialogInjector = (function () {
     return DialogInjector;
 }());
 
-var __extends$20 = (this && this.__extends) || function (d, b) {
+var __extends$19 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 /** Exception thrown when a ComponentPortal is attached to a DomPortalHost without an origin. */
 var MdDialogContentAlreadyAttachedError = (function (_super) {
-    __extends$20(MdDialogContentAlreadyAttachedError, _super);
+    __extends$19(MdDialogContentAlreadyAttachedError, _super);
     function MdDialogContentAlreadyAttachedError() {
         _super.call(this, 'Attempting to attach dialog content after content is already attached');
     }
     return MdDialogContentAlreadyAttachedError;
 }(MdError));
 
-var __extends$19 = (this && this.__extends) || function (d, b) {
+var __extends$18 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -11534,7 +11621,7 @@ var __metadata$59 = (this && this.__metadata) || function (k, v) {
  * Internal component that wraps user-provided dialog content.
  */
 var MdDialogContainer = (function (_super) {
-    __extends$19(MdDialogContainer, _super);
+    __extends$18(MdDialogContainer, _super);
     function MdDialogContainer(_ngZone) {
         _super.call(this);
         this._ngZone = _ngZone;
@@ -11586,7 +11673,7 @@ var MdDialogContainer = (function (_super) {
     MdDialogContainer = __decorate$59([
         _angular_core.Component({selector: 'md-dialog-container, mat-dialog-container',
             template: "<focus-trap> <template portalHost></template> </focus-trap> ",
-            styles: ["md-dialog-container { box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12); display: block; padding: 24px; border-radius: 2px; box-sizing: border-box; overflow: auto; width: 100%; height: 100%; } /*# sourceMappingURL=dialog-container.css.map */ "],
+            styles: ["/** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ md-dialog-container { box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12); display: block; padding: 24px; border-radius: 2px; box-sizing: border-box; overflow: auto; width: 100%; height: 100%; } @media screen and (-ms-high-contrast: active) { md-dialog-container { outline: solid 1px; } } /*# sourceMappingURL=dialog-container.css.map */ "],
             host: {
                 'class': 'md-dialog-container',
                 '[attr.role]': 'dialogConfig?.role',
@@ -12005,7 +12092,6 @@ exports.SELECT_PANEL_PADDING_X = SELECT_PANEL_PADDING_X;
 exports.SELECT_PANEL_PADDING_Y = SELECT_PANEL_PADDING_Y;
 exports.SELECT_PANEL_VIEWPORT_PADDING = SELECT_PANEL_VIEWPORT_PADDING;
 exports.MdSelect = MdSelect;
-exports.MdDuplicatedSidenavError = MdDuplicatedSidenavError;
 exports.MdSidenavToggleResult = MdSidenavToggleResult;
 exports.MdSidenav = MdSidenav;
 exports.MdSidenavLayout = MdSidenavLayout;

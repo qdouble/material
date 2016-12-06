@@ -3,6 +3,11 @@
  * This mixin adds the correct panel transform styles based
  * on the direction that the menu panel opens.
  */
+/**
+ * Applies styles for users in high contrast mode. Note that this only applies
+ * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`
+ * attribute, however Chrome handles high contrast differently.
+ */
 md-select {
   display: inline-block;
   outline: none; }
@@ -29,10 +34,17 @@ md-select {
     user-select: none; }
 
 .md-select-placeholder {
+  position: relative;
   padding: 0 2px;
   transform-origin: left top; }
+  .md-select-placeholder.md-floating-placeholder {
+    top: -22px;
+    left: -2px;
+    transform: scale(0.75); }
   [dir='rtl'] .md-select-placeholder {
     transform-origin: right top; }
+    [dir='rtl'] .md-select-placeholder.md-floating-placeholder {
+      left: 2px; }
   [aria-required=true] .md-select-placeholder::after {
     content: '*'; }
 
@@ -61,6 +73,9 @@ md-select {
   padding-top: 0;
   padding-bottom: 0;
   max-height: 256px; }
+  @media screen and (-ms-high-contrast: active) {
+    .md-select-panel {
+      outline: solid 1px; } }
 
 md-option {
   white-space: nowrap;
@@ -97,5 +112,8 @@ md-option {
   left: 0;
   bottom: 0;
   right: 0; }
+  @media screen and (-ms-high-contrast: active) {
+    .md-option-ripple {
+      opacity: 0.5; } }
 
 /*# sourceMappingURL=select.css.map */

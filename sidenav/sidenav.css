@@ -1,3 +1,8 @@
+/**
+ * Applies styles for users in high contrast mode. Note that this only applies
+ * to Microsoft browsers. Chrome can be included by checking for the `html[hc]`
+ * attribute, however Chrome handles high contrast differently.
+ */
 md-sidenav-layout {
   position: relative;
   transform: translate3d(0, 0, 0);
@@ -25,6 +30,9 @@ md-sidenav-layout {
   visibility: hidden; }
   .md-sidenav-backdrop.md-sidenav-shown {
     visibility: visible; }
+  @media screen and (-ms-high-contrast: active) {
+    .md-sidenav-backdrop {
+      opacity: 0.5; } }
 
 .md-sidenav-content {
   position: relative;

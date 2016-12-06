@@ -37,6 +37,10 @@ export declare class ConnectedOverlayDirective implements OnDestroy {
     width: number | string;
     /** The height of the overlay panel. */
     height: number | string;
+    /** The min width of the overlay panel. */
+    minWidth: number | string;
+    /** The min height of the overlay panel. */
+    minHeight: number | string;
     /** The custom class to be set on the backdrop element. */
     backdropClass: string;
     /** Whether or not the overlay should attach a backdrop. */

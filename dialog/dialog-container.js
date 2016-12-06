@@ -73,7 +73,7 @@ export var MdDialogContainer = (function (_super) {
     MdDialogContainer = __decorate([
         Component({selector: 'md-dialog-container, mat-dialog-container',
             template: "<focus-trap> <template portalHost></template> </focus-trap> ",
-            styles: ["md-dialog-container { box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12); display: block; padding: 24px; border-radius: 2px; box-sizing: border-box; overflow: auto; width: 100%; height: 100%; } /*# sourceMappingURL=dialog-container.css.map */ "],
+            styles: ["/** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ md-dialog-container { box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12); display: block; padding: 24px; border-radius: 2px; box-sizing: border-box; overflow: auto; width: 100%; height: 100%; } @media screen and (-ms-high-contrast: active) { md-dialog-container { outline: solid 1px; } } /*# sourceMappingURL=dialog-container.css.map */ "],
             host: {
                 'class': 'md-dialog-container',
                 '[attr.role]': 'dialogConfig?.role',

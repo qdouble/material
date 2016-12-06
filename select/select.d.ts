@@ -1,4 +1,4 @@
-import { AfterContentInit, ElementRef, EventEmitter, NgZone, OnDestroy, QueryList, Renderer } from '@angular/core';
+import { AfterContentInit, ElementRef, EventEmitter, OnDestroy, QueryList, Renderer } from '@angular/core';
 import { MdOption } from './option';
 import { ListKeyManager } from '../core/a11y/list-key-manager';
 import { Dir } from '../core/rtl/dir';
@@ -39,7 +39,6 @@ export declare const SELECT_PANEL_VIEWPORT_PADDING: number;
 export declare class MdSelect implements AfterContentInit, ControlValueAccessor, OnDestroy {
     private _element;
     private _renderer;
-    private _ngZone;
     private _viewportRuler;
     private _dir;
     _control: NgControl;
@@ -59,6 +58,8 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
     private _disabled;
     /** The scroll position of the overlay panel, calculated to center the selected option. */
     private _scrollTop;
+    /** The animation state of the placeholder. */
+    _placeholderState: string;
     /** Manages keyboard events for options in the panel. */
     _keyManager: ListKeyManager;
     /** View -> model callback called when value changes */
@@ -101,7 +102,7 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
     required: any;
     onOpen: EventEmitter<{}>;
     onClose: EventEmitter<{}>;
-    constructor(_element: ElementRef, _renderer: Renderer, _ngZone: NgZone, _viewportRuler: ViewportRuler, _dir: Dir, _control: NgControl);
+    constructor(_element: ElementRef, _renderer: Renderer, _viewportRuler: ViewportRuler, _dir: Dir, _control: NgControl);
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
     /** Toggles the overlay panel open or closed. */
@@ -141,8 +142,6 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
      * the overlay width to the trigger width.
      */
     _getWidth(): number;
-    /** The animation state of the placeholder. */
-    _getPlaceholderState(): string;
     /** Ensures the panel opens if activated by the keyboard. */
     _handleKeydown(event: KeyboardEvent): void;
     /**
