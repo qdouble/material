@@ -283,6 +283,14 @@ export class UserActions {
     };
   }
 
+  static SET_CREDIT_TOTAL = '[User] Set Credit Total';
+  setCreditTotal(total: number): Action {
+    return {
+      type: UserActions.SET_CREDIT_TOTAL,
+      payload: total
+    };
+  }
+
   static SET_ORDER_PENDING = '[User] Set Order Pending';
   setOrderPending(pending: boolean): Action {
     return {

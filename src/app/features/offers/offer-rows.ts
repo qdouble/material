@@ -11,10 +11,12 @@ import { Offer } from '../../models/offer';
 export class OfferRows {
   publish = PUBLISH;
   offer: Offer;
+  @Input() loggedIn: boolean;
   @Input() mobile: boolean;
   @Input() offers: Offer[];
   @Input() showingAvailable: boolean;
   @Input() sideNavOpen: boolean;
+  @Input() creditTotal: number;
   @Input() userCredits: number = 0;
   @Input() userLevel: number = 0;
 }

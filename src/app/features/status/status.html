@@ -18,7 +18,7 @@
       <md-card-content *ngIf="loaded$ | async">
         <p>Welcome {{user?.firstName}}!</p>
         <p><b>You are currently on level:</b> {{user?.currentLevel}}</p>
-        <p><b>You have:</b> {{creditTotal}} credits</p>
+        <p><b>You have:</b> {{creditTotal$ | async}} credits</p>
         <ng-container *ngIf="user?.currentSponsor">
           <p><b>Your Sponsor is:</b></p>
           <p>{{user?.currentSponsor}} &#60;{{user?.currentSponsorEmail}}&#62;</p>

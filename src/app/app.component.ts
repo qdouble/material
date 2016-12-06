@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 
 import { AppState } from './reducers';
+import { Credit } from './models/credit';
 import { Notify } from './models/notify';
 import { PrizeActions } from './actions/prize';
 import { UIActions } from './actions/ui';
@@ -15,6 +16,7 @@ import { getUILatestVersion, getUIVersion } from './reducers/ui';
 import {
   getUserOnAdminPage, getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy
 } from './reducers/user';
+import { getCreditCollection } from './reducers/user';
 import { getNotifyCollection } from './reducers/notify';
 import { validateUserName } from './validators';
 
@@ -40,6 +42,7 @@ export class AppComponent implements OnDestroy, OnInit {
   action: boolean = false;
   /////////////////////
   destroyed$: Subject<any> = new Subject<any>();
+  credits$: Observable<Credit[]>;
   onAdminLoginPage$: Observable<boolean>;
   HMR = HMR;
   latestVersion$: Observable<string>;
@@ -109,6 +112,19 @@ export class AppComponent implements OnDestroy, OnInit {
         if (validateUserName(this.referredBy)) {
           this.store.dispatch(this.userActions.setReferredBy(this.referredBy));
         }
+      });
+    this.credits$ = store.let(getCreditCollection());
+    this.credits$
+      .takeUntil(this.destroyed$)
+      // .filter(c => c !== undefined && c.length > 0)
+      .subscribe(credits => {
+        let creditTotal = 0;
+        credits.forEach(credit => {
+          if (credit.active) {
+            creditTotal += credit.creditValue;
+          }
+        });
+        this.store.dispatch(this.userActions.setCreditTotal(creditTotal));
       });
     this.store.dispatch(this.prizeActions.getPrizes());
     this.store.dispatch(this.userActions.checkLoggedIn());

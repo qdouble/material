@@ -1,10 +1,10 @@
 <div class="form-group">
   <label>{{label}}</label>
-  <select *ngIf="optionValues?.length > 0" [formControl]="dynamicControl">
-    <option #myOption *ngFor="let option of optionValues; let i = index" [value]="option">
+  <md-select *ngIf="optionValues?.length > 0" [formControl]="dynamicControl">
+    <md-option #myOption *ngFor="let option of optionValues; let i = index" [value]="option">
       {{optionLabels[i]}}
-    </option>
-  </select>
+    </md-option>
+  </md-select>
   <button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
 </div>
 <div *ngIf="help"><em>{{help}}</em></div>

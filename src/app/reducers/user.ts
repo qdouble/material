@@ -12,6 +12,7 @@ import { User } from '../models/user';
 export interface UserState {
   creditIds: string[];
   credits: { [id: string]: Credit };
+  creditTotal: number;
   entryEmail: string | null;
   loading: boolean;
   loaded: boolean;
@@ -28,6 +29,7 @@ export interface UserState {
 export const initialState: UserState = {
   creditIds: [],
   credits: {},
+  creditTotal: 0,
   entryEmail: null,
   loading: false,
   loaded: false,
@@ -138,7 +140,6 @@ export function userReducer(state = initialState, action: Action): UserState {
           });
         }
       });
-      console.log(referralMod);
       return Object.assign({}, state, {
         referrals: referralMod
       });
@@ -174,6 +175,11 @@ export function userReducer(state = initialState, action: Action): UserState {
     case UserActions.SET_ADMIN_LOGIN_PAGE:
       return Object.assign({}, state, {
         onAdminPage: action.payload
+      });
+
+    case UserActions.SET_CREDIT_TOTAL:
+      return Object.assign({}, state, {
+        creditTotal: action.payload
       });
 
     case UserActions.SET_ORDER_PENDING:
@@ -217,7 +223,6 @@ export function userReducer(state = initialState, action: Action): UserState {
       Object.keys(user).forEach(function (key, index) {
         userUpdate = Object.assign({}, userUpdate, { [key]: user[key] });
       });
-      console.log(userUpdate);
       return Object.assign({}, state, {
         loading: false,
         user: userUpdate
@@ -244,6 +249,11 @@ function _getCredits(offerIds: string[]) {
 function _getCreditIds() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.creditIds);
+}
+
+function _getCreditTotal() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.creditTotal);
 }
 
 function _getEntryEmail() {
@@ -333,6 +343,11 @@ export function getCreditCollection() {
     .let(getCreditIds())
     .switchMap(id => state$.let(getCredits(id)));
 }
+
+export function getCreditTotal() {
+  return compose(_getCreditTotal(), _getUserState());
+}
+
 
 export function getReferrals(ids: string[]) {
   return compose(_getReferrals(ids), _getUserState());

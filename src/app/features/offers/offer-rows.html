@@ -4,6 +4,7 @@
     [ngClass]="{'os-offer-card': sideNavOpen, 
     'os-offer-card-s-closed': !sideNavOpen }"
     [hideLevel]="((userCredits + offer.creditValue) | floor) === (userCredits | floor)"
+    [loggedIn]="loggedIn"
     [offerId]="offer.id"
     [showingAvailable]="showingAvailable"
     [sideNavOpen]="sideNavOpen"
@@ -57,8 +58,8 @@
       </span>
     </span>
     <span class="offer-card-level" offer-card-level>
-      {{offer.creditValue + userCredits | floor }}
+      {{offer.creditValue + creditTotal | floor }}
     </span>
-    <span class="offer-card-earn" offer-card-earn>{{(offer.creditValue + userCredits) * 5 | earnPerReferral}}</span>
+    <span class="offer-card-earn" offer-card-earn>{{(offer.creditValue + creditTotal) * 5 | earnPerReferral}}</span>
   </os-offer-card>
   </div>

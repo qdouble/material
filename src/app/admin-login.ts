@@ -40,7 +40,6 @@ export class AdminLogin implements OnDestroy, OnInit {
     this.store.dispatch(this.userActions.adminLogin(this.f.value));
   }
   ngOnDestroy() {
-    console.log('destroyed');
     this.store.dispatch(this.userActions.setAdminLoginPage(false));
   }
 }

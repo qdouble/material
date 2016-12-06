@@ -16,6 +16,8 @@
     </section>
   </span>
   <os-offer-rows 
+    [creditTotal]="creditTotal$ | async"
+    [loggedIn]="loggedIn$ | async"
     [showingAvailable]="selectedOption === 'Available'"
     [offers]="selectedOption === 'Available' ? (offersAvailable$ | async) : (offersCompleted$ | async)"
     [sideNavOpen]="sideNavOpen$ | async" >

@@ -20,5 +20,5 @@ export class SelectInput implements OnInit {
   ngOnInit() {
     this.dynamicControl = this.form.get(this.controlName);
   }
-  sayHello() { console.log('HELLO!'); }
+  sayHello() { }
 }

@@ -55,7 +55,6 @@ export class OrderEffects {
           this.store.dispatch(this.notifyActions.addNotify(res.payload));
         };
         if (res.payload.order) {
-          console.log('This should be executed!!!!!!!!');
           this.store.dispatch(this.userActions.setOrderPending(true));
         }
       }))

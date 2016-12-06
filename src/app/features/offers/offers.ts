@@ -12,7 +12,7 @@ import { Credit } from '../../models/credit';
 import { Offer } from '../../models/offer';
 import { getOfferCollection, getOfferLoaded, getOfferLoadedUserOffers } from '../../reducers/offer';
 import { getUIMobile, getUISideNavOpen } from '../../reducers/ui';
-import { getCreditCollection, getUserLoggedIn } from '../../reducers/user';
+import { getCreditCollection, getUserLoggedIn, getCreditTotal } from '../../reducers/user';
 import { OfferActions } from '../../actions/offer';
 import { UserActions } from '../../actions/user';
 
@@ -25,6 +25,7 @@ import { UserActions } from '../../actions/user';
 
 export class Offers implements AfterViewInit, OnDestroy {
   credits$: Observable<Credit[]>;
+  creditTotal$: Observable<number>;
   destroyed$: Subject<any> = new Subject<any>();
   lastCloseResult: string;
   loaded$: Observable<boolean>;
@@ -100,6 +101,8 @@ export class Offers implements AfterViewInit, OnDestroy {
         this.offersCompleted$ = Observable.combineLatest(
           this.offers$, Observable.of(creditedOfferIds), completed);
       });
+
+    this.creditTotal$ = store.let(getCreditTotal());
   }
 
   ngAfterViewInit() {

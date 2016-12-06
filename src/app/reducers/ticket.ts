@@ -86,7 +86,6 @@ export function ticketReducer(state = initialState, action: Action): TicketState
         }
       );
 
-      console.log(ticketsMod);
 
       return Object.assign({}, state, {
         entities: ticketsMod,
