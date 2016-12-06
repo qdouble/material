@@ -60,6 +60,24 @@ export function creditRequestReducer(state = initialState, action: Action): Cred
       });
     }
 
+    case CreditRequestActions.EDIT_CREDIT_REQUEST:
+      return Object.assign({}, state, { adding: true, added: false });
+    case CreditRequestActions.EDIT_CREDIT_REQUEST_FAIL:
+      return Object.assign({}, state, { adding: true, added: false });
+
+    case CreditRequestActions.EDIT_CREDIT_REQUEST_SUCCESS: {
+      let creditRequest = action.payload.creditRequest;
+      if (!action.payload.creditRequest)
+        return Object.assign({}, state, { adding: false, added: false });
+      return Object.assign({}, state, {
+        entities: Object.assign({}, state.entities, {
+          [creditRequest.id]: creditRequest
+        }),
+        added: true,
+        adding: false
+      });
+    }
+
 
     case CreditRequestActions.GET_CREDIT_REQUEST:
       return Object.assign({}, state, {

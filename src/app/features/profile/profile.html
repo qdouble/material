@@ -63,11 +63,13 @@
       </div>
       
       <md-checkbox color="primary" class="os-form-input" formControlName="receiveEmailNotifications">Receive Email Notifications</md-checkbox>
-      <ng-container *ngIf="f.get('receiveEmailNotifications').value">
-        <md-checkbox color="primary" class="os-form-input" formControlName="receiveNotificationsFromSponsor">Receive Notifications from Sponsor</md-checkbox>
-        <md-checkbox color="primary" class="os-form-input" formControlName="receiveNotificationsFromReferrals">Receive Notifications from Referrals</md-checkbox>
+      <div class="os-notification-types" style="margin-left: 30px;" *ngIf="f.get('receiveEmailNotifications').value">
+        <md-checkbox color="primary" class="os-form-input" formControlName="receiveUpdateNotifications">Receive Update Notifications</md-checkbox>
+        <md-checkbox color="primary" class="os-form-input" formControlName="receiveAdminMessages">Receive Admin Messages</md-checkbox>
+        <md-checkbox color="primary" class="os-form-input" formControlName="receiveSponsorMessages">Receive Sponsor Messages</md-checkbox>
+        <md-checkbox color="primary" class="os-form-input" formControlName="receiveReferralMessages">Receive Referrals Messages</md-checkbox>
         <md-checkbox color="primary" class="os-form-input" formControlName="optOutOfMassEmails">Opt out of Of Mass Emails</md-checkbox>
-      </ng-container>
+      </div>
       <button md-raised-button type="submit" color="primary" class="white" [disabled]="f.invalid || (f.value | json) === (initialFormValue | json )">Update Profile</button>
     </form>
   </md-card>

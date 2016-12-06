@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 import { UserActions } from '../../actions/user';
 import { AppState } from '../../reducers';
 
@@ -21,6 +22,7 @@ import { AppState } from '../../reducers';
 })
 
 export class OfferRedirect implements OnInit, OnDestroy {
+  destroyed$: Subject<any> = new Subject<any>();
   id: string;
   routerSub: Subscription;
   constructor(
@@ -30,6 +32,7 @@ export class OfferRedirect implements OnInit, OnDestroy {
     private userActions: UserActions
   ) {
     this.routerSub = this.route.queryParams
+    .takeUntil(this.destroyed$)
     .filter(query => query !== undefined)
     .subscribe(query => {
       this.id = query['id'];
@@ -39,6 +42,6 @@ export class OfferRedirect implements OnInit, OnDestroy {
     this.store.dispatch(this.userActions.recordClick(this.id));
   }
   ngOnDestroy() {
-    this.routerSub.unsubscribe();
+    this.destroyed$.next();
   }
 }

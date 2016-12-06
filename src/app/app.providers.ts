@@ -1,5 +1,6 @@
-import { AuthGuard, LoggedInRedirectGuard } from '../app/guards';
 import { Actions } from '@ngrx/effects';
+
+import { AuthGuard, LoggedInRedirectGuard } from '../app/guards';
 import { RESOLVE_DATA } from './resolve';
 import { services } from './services';
 import { actions } from './actions';

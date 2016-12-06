@@ -1,12 +1,12 @@
 <md-card id="offers-page" class="os-page-container">
   <span *ngIf="loggedIn$ | async">
-    <md-card [ngClass]="{'os-offer-page-header': sideNavOpen$ | async, 'os-offer-page-header-s-closed': !(sideNavOpen$ | async)  }">
+    <!--<md-card [ngClass]="{'os-offer-page-header': sideNavOpen$ | async, 'os-offer-page-header-s-closed': !(sideNavOpen$ | async)  }">
       <div [ngClass]="{'os-inner-offer-header': sideNavOpen$ | async, 'os-inner-offer-header-s-closed': !(sideNavOpen$ | async)  }">
         <div class="os-offer-header-col"></div>
         <div class="os-offer-header-col"></div>
         <div class="os-offer-header-col"></div>
       </div>
-    </md-card>
+    </md-card>-->
     <section class="os-offer-display-options">
       <md-button-toggle-group name="option" [(ngModel)]="selectedOption">
         <md-button-toggle *ngFor="let option of displayOptions" [value]="option">

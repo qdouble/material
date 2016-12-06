@@ -43,7 +43,7 @@
       <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address'" [controlName]="'paypal'" [form]="f">
       </os-form-input>
       <div class="os-agree-checkbox">
-        <md-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the Terms and Conditions</md-checkbox>
+        <md-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the <a routerLink="../terms-and-conditions">Terms and Conditions</a></md-checkbox>
       </div>
       <button class="white" md-raised-button color="primary" type="submit" [disabled]="!f.valid">Register</button>
       <p id="referred-by" *ngIf="f.get('referredBy').value">

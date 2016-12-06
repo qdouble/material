@@ -49,8 +49,10 @@ export class Profile implements OnDestroy, OnInit {
       paypal: ['', [Validators.pattern(RegexValues.email)]],
       birthday: ['', [Validators.required]],
       receiveEmailNotifications: true,
-      receiveNotificationsFromSponsor: true,
-      receiveNotificationsFromReferrals: true,
+      receiveUpdateNotifications: true,
+      receiveAdminMessages: true,
+      receiveSponsorMessages: true,
+      receiveReferralMessages: true,
       optOutOfMassEmails: false
     }, {
         validator: Validators.compose([

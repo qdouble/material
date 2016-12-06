@@ -20,7 +20,6 @@ import {
   CreditRequestComponent, CreditRequestTable, Support, SupportTicket, SupportTicketFormComponent,
   SupportTicketMessageComponent, SupportTicketTable, ViewTicket
 } from './support';
-import { TermsAndConditions } from './terms-and-conditions';
 
 export {
   AboutUs,
@@ -45,7 +44,6 @@ export {
   ReportSpam,
   Status,
   Support,
-  TermsAndConditions,
   ViewTicket
 }
 
@@ -84,6 +82,5 @@ export const PAGES_COMPONENTS = [
   SupportTicketFormComponent,
   SupportTicketMessageComponent,
   SupportTicketTable,
-  TermsAndConditions,
   ViewTicket
 ];

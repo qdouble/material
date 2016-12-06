@@ -8,12 +8,15 @@ import { Subject } from 'rxjs/Subject';
 import { RegexValues } from '../../validators';
 
 import { AppState } from '../../reducers';
+import { Credit } from '../../models/credit'
 import { Prize } from '../../models/prize';
 import { Referral } from '../../models/referral';
 import { User } from '../../models/user';
+
 import { NotifyActions } from '../../actions/notify';
 import { UserActions } from '../../actions/user';
 import { getPrize, getPrizeCollection } from '../../reducers/prize';
+import { getCreditCollection } from '../../reducers/user';
 import {
   getReferralCollection, getUser, getUserLoaded, getUserSettingPrize
 } from '../../reducers/user';
@@ -26,6 +29,8 @@ import {
 
 export class Status implements OnDestroy {
   changePrize = false;
+  credits$: Observable<Credit[]>;
+  creditTotal = 0;
   destroyed$: Subject<any> = new Subject<any>();
   loaded$: Observable<boolean>;
   prize$: Observable<Prize>;
@@ -71,6 +76,18 @@ export class Status implements OnDestroy {
                 selectedPrize.setValue(prizes[0].id);
             }
           });
+      });
+
+    this.credits$ = store.let(getCreditCollection());
+    this.credits$.takeUntil(this.destroyed$)
+      .filter(c => c != undefined && c.length > 0) // tslint-disable:disable-line
+      .subscribe(credits => {
+        this.creditTotal = 0;
+        credits.forEach(credit => {
+          if (credit.active) {
+            this.creditTotal += credit.creditValue;
+          }
+        });
       });
   }
   ngOnDestroy() {

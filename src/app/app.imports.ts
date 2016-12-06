@@ -1,4 +1,5 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
@@ -15,6 +16,7 @@ import { OfferEffects } from './effects/offer';
 import { OrderEffects } from './effects/order';
 import { PrizeEffects } from './effects/prize';
 import { TicketEffects } from './effects/ticket';
+import { UIEffects } from './effects/ui';
 import { UserEffects } from './effects/user';
 import { rootReducer } from './reducers';
 import { StoreDevToolsModule } from './features/store-devtools.module';
@@ -38,7 +40,9 @@ export const APP_IMPORTS = [
   EffectsModule.run(OrderEffects),
   EffectsModule.run(PrizeEffects),
   EffectsModule.run(TicketEffects),
+  EffectsModule.run(UIEffects),
   EffectsModule.run(UserEffects),
+  FlexLayoutModule.forRoot(),
   FormsModule,
   MaterialModule.forRoot(),
   ReactiveFormsModule,

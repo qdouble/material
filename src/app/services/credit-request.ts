@@ -19,6 +19,11 @@ export class CreditRequestService extends RequestBase {
       .map(res => res.json());
   }
 
+  editCreditRequest(creditRequest: CreditRequest): Observable<Response> {
+    return this.http.post(`${API_USER_URL}/editCreditRequest`, creditRequest, this.options)
+      .map(res => res.json());
+  }
+
   getCreditRequest(id: string): Observable<CreditRequest> {
     return this.http.get(`${API_USER_URL}/getCreditRequest?id=${id}`, this.optionsNoPre)
       .map(res => res.json());

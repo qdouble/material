@@ -95,6 +95,7 @@
     "@angular/compiler": "2.2.1",
     "@angular/compiler-cli": "2.2.1",
     "@angular/core": "2.2.1",
+    "@angular/flex-layout": "github:qdouble/flex-layout",
     "@angular/forms": "2.2.1",
     "@angular/http": "2.2.1",
     "@angular/material": "github:qdouble/material",

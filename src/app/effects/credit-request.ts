@@ -41,6 +41,19 @@ export class CreditRequestEffects {
       ))
     );
 
+  @Effect() editCreditRequest$ = this.actions$
+    .ofType(CreditRequestActions.EDIT_CREDIT_REQUEST)
+    .map(action => <CreditRequest>action.payload)
+    .switchMap(request => this.creditRequestService.editCreditRequest(request)
+      .mergeMap((res: any) => Observable.of(
+        this.creditRequestActions.editCreditRequestSuccess(res),
+        this.notifyActions.addNotify(res)
+        ))
+      .catch((err) => Observable.of(
+        this.creditRequestActions.editCreditRequestFail(err)
+      ))
+    );
+
 
   @Effect() getCreditRequest$ = this.actions$
     .ofType(CreditRequestActions.GET_CREDIT_REQUEST)

@@ -1,5 +1,5 @@
 <main class="os-home-container">
-  <div class="os-home-col">
+  <!--<div class="os-home-col">
   </div>
   <div class="os-home-col">
     <md-card class="os-home-card-top">
@@ -11,5 +11,34 @@
         <os-form-input [error]="''" [label]="'Email Address'" [controlName]="'email'" [form]="f" [submit]="'Submit'"></os-form-input>
       </form>
     </md-card>
+  </div>-->
+
+  <!--<div fx-layout='column' class="zero">
+    <div fx-flex="33" class="one"></div>
+    <div fx-flex="33%" fx-layout="row" class="two">
+      <div fx-flex="22%" class="two_one">Hello</div>
+      <div fx-flex="205px" class="two_two">Who Are You</div>
+      <div fx-flex="30" class="two_three">I am the Man</div>
+    </div>
+    <div fx-flex class="three"></div>
+  </div>-->
+
+  <div class="containerX">
+    <div fx-layout="row" fx-layout.xs="column" fx-layout.sm="column" fx-flex class="coloredContainerX box">
+      <div class="os-intro" fx-flex="">
+        <!--<p>Start Earning With</p>
+        <p>Level Rewards</p>-->
+      </div>
+      <div class="os-sign-up" fx-flex>
+          <!--<h4>Step 1: Choose How You Would Like to Receive Your Prize</h4>
+          <prizes-display [prizes]="prizes$ | async" [form]="prizeForm">
+          </prizes-display>
+          <h4> Step 2: Register or Extend Your Account</h4>
+          <form novalidate [formGroup]="f" (ngSubmit)="submitForm()">
+            <os-form-input [error]="''" [label]="'Email Address'" [controlName]="'email'" [form]="f" [submit]="'Submit'"></os-form-input>
+          </form>-->
+      </div>
+    </div>
   </div>
+
 </main>

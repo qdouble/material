@@ -1,10 +1,10 @@
 export const views: Object[] = [
-  {
-    name: 'Home',
-    icon: 'home',
-    link: [''],
-    loggedIn: false
-  },
+  // {
+  //   name: 'Home',
+  //   icon: 'home',
+  //   link: [''],
+  //   loggedIn: false
+  // },
   {
     name: 'Login',
     icon: 'input',

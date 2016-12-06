@@ -10,6 +10,7 @@ import { Notify } from './models/notify';
 import { PrizeActions } from './actions/prize';
 import { UIActions } from './actions/ui';
 import { UserActions } from './actions/user';
+import { getUILatestVersion, getUIVersion } from './reducers/ui';
 
 import {
   getUserOnAdminPage, getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy
@@ -41,6 +42,7 @@ export class AppComponent implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
   onAdminLoginPage$: Observable<boolean>;
   HMR = HMR;
+  latestVersion$: Observable<string>;
   loaded: boolean;
   loggedIn: boolean;
   notifications$: Observable<Notify[]>;
@@ -50,6 +52,8 @@ export class AppComponent implements OnDestroy, OnInit {
   userLoaded$: Observable<boolean>;
   userLoggedIn$: Observable<boolean>;
   userReferredBy$: Observable<string | null>;
+  version: string;
+  version$: Observable<string>;
   views = views;
   constructor(
     private cdr: ChangeDetectorRef,
@@ -61,6 +65,23 @@ export class AppComponent implements OnDestroy, OnInit {
     private uiActions: UIActions,
     private userActions: UserActions
   ) {
+    this.version$ = store.let(getUIVersion());
+    this.version$.subscribe(v => this.version = v);
+    this.latestVersion$ = store.let(getUILatestVersion());
+    this.latestVersion$
+      .filter(v => v !== null)
+      .takeUntil(this.destroyed$)
+      .subscribe(latestVersion => {
+        if (latestVersion !== this.version) {
+          window.location.reload();
+        }
+      });
+    let checkServer$ = Observable.interval(300000);
+    checkServer$
+      .takeUntil(this.destroyed$)
+      .subscribe(() => {
+        this.store.dispatch(this.uiActions.getVersion());
+      });
     this.onAdminLoginPage$ = store.let(getUserOnAdminPage());
     this.notifications$ = store.let(getNotifyCollection());
     this.notifications$

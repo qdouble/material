@@ -20,8 +20,10 @@ export interface User {
     readonly profilePending?: boolean;
     readonly pendingProfile?: any;
     readonly receiveEmailNotifications?: boolean;
-    readonly receiveNotificationsFromSponsor?: boolean;
-    readonly receiveNotificationsFromReferrals?: boolean;
+    readonly receiveUpdateNotifications?: boolean;
+    readonly receiveAdminMessages?: boolean;
+    readonly receiveSponsorMessages?: boolean;
+    readonly receiveReferralMessages?: boolean;
     readonly currentSponsor?: string;
     readonly currentSponsorEmail?: string;
     readonly referrals?: Object;

@@ -1,17 +1,43 @@
 <md-card class="os-page-container">
   <div class="os-support-tickets-table-container">
-  <md-card class="os-new-support-ticket">
-    <md-card-title class="primary">New Credit Request</md-card-title>
-    <md-card class="os-message-card" id="request-card-instructions">
-      Please include all header information from your confirmation e-mail. E-mail headers typically include information such as <b>Return-Path, Received, Date, Message-Id, To, From, Subject, etc.</b> If you're using a web based e-mail client you may need to change your configuration in order to see the full header information.
+    <md-card class="os-new-support-ticket">
+      <button md-button class="back-button" [routerLink]="['..']"><md-icon>navigate_before</md-icon>BACK TO SUPPORT PAGE</button>
+      <md-card-title class="primary">{{ view ? 'Credit Request' : 'New Credit Request' }}</md-card-title>
+      <div class="credit-request-details" *ngIf="view">
+        <p>Offer: {{creditRequest?.offerName}}</p>
+        <p>Completed On: {{creditRequest?.completedOn | slice: 0:10}}</p>
+        <p>Status: {{creditRequest?.status}}</p>
+        <p *ngIf="creditRequest?.userNotes && creditRequest?.status === 'More Information Needed'">
+          Message from Admin: <b>{{creditRequest?.userNotes}}</b>
+        </p>
+        <div *ngIf="creditRequest?.status !== 'More Information Needed'">
+          <p class="p2">&nbsp;</p>
+          <p class="underline">Confirmation Email Headers</p> 
+          <p>{{creditRequest?.headers}}</p>
+          <p class="p2">&nbsp;</p>
+          <p class="underline">Confirmation Email Body</p>
+          <p>{{creditRequest?.body}}</p>
+          <p class="p2">&nbsp;</p>
+          <p class="underline">Additional Details</p> 
+          <p>{{creditRequest?.additionalDetails}}</p>
+        </div>
+      </div>
+      <md-card *ngIf="!view" class="os-message-card" id="request-card-instructions">
+        Please include all header information from your confirmation e-mail. E-mail headers typically include information such as
+        <b>Return-Path, Received, Date, Message-Id, To, From, Subject, etc.</b> If you're using a web based e-mail
+        client you may need to change your configuration in order to see the full header information.
+      </md-card>
+      <form *ngIf="!view || creditRequest?.status === 'More Information Needed'" [formGroup]="f" (ngSubmit)="submitRequest(f.value)">
+        <ng-container *ngIf="!view">
+          <select-input controlName="offerId" label="Completed Offer: " [optionValues]="offerIds$ | async" [optionLabels]="offerNames$ | async"
+            [form]="f"></select-input>
+          <label>Date Completed:</label> <input type="date" id="myDate" formControlName="completedOn">
+        </ng-container>
+        <md-textarea [rows]="6" placeholder="Confirmation Email Headers" formControlName="headers"></md-textarea><br>
+        <md-textarea [rows]="6" placeholder="Confirmation Email Body" formControlName="body"></md-textarea><br>
+        <md-textarea [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></md-textarea><br>
+        <button md-raised-button class="white" color="primary" [disabled]="f.invalid || disableButton">{{ view ? 'UPDATE CREDIT REQUEST' : 'SUBMIT CREDIT REQUEST' }}</button>
+      </form>
     </md-card>
-    <form [formGroup]="f" (ngSubmit)="addRequest(f.value)">
-      <select-input controlName="offerId" label="Completed Offer: " [optionValues]="offerIds$ | async" [optionLabels]="offerNames$ | async" [form]="f"></select-input>
-      <label>Date Completed:</label> <input type="date" id="myDate" formControlName="completedOn">
-      <md-textarea [rows]="6" placeholder="Confirmation Email" formControlName="confirmationEmail"></md-textarea><br>
-      <md-textarea [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></md-textarea><br>
-      <button md-raised-button class="white" color="primary" [disabled]="!f.valid">SUBMIT CREDIT REQUEST</button>
-    </form>
-  </md-card>
   </div>
 </md-card>

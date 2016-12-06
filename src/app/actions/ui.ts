@@ -5,6 +5,29 @@ import { Action } from '@ngrx/store';
 @Injectable()
 
 export class UIActions {
+  static GET_VERSION = '[UI] Get Version';
+  getVersion(): Action {
+    return {
+      type: UIActions.GET_VERSION
+    };
+  }
+
+  static GET_VERSION_FAIL = '[UI] Get Version Fail';
+  getVersionFail(err: Error): Action {
+    return {
+      type: UIActions.GET_VERSION_FAIL,
+      payload: err
+    };
+  }
+
+  static GET_VERSION_SUCCESS = '[UI] Get Version Success';
+  getVersionSuccess(version: { version: string }): Action {
+    return {
+      type: UIActions.GET_VERSION_SUCCESS,
+      payload: version
+    };
+  }
+
   static SET_MOBILE = '[UI] Set Mobile';
   setMobile(mobile: boolean): Action {
     return {

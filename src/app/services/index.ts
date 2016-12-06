@@ -4,6 +4,7 @@ import { OfferService } from './offer';
 import { OrderService } from './order';
 import { PrizeService } from './prize';
 import { TicketService } from './ticket';
+import { UIService } from './ui';
 import { UserService } from './user';
 
 export const services = [
@@ -13,6 +14,7 @@ export const services = [
   OrderService,
   PrizeService,
   TicketService,
+  UIService,
   UserService
 ];
 

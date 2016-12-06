@@ -2,9 +2,9 @@
   <table class="mdl-data-table mdl-shadow--2dp">
     <thead>
       <tr>
-        <th style="padding-left: 8px; padding-right: 3px; vertical-align: bottom" class="mdl-data-table__cell--non-numeric"></th>
         <th class="mdl-data-table__cell--non-numeric hide-1">Submitted On</th>
         <th class="mdl-data-table__cell--non-numeric">Offer Name</th>
+        <th class="mdl-data-table__cell--non-numeric">Status</th>
         <th class="mdl-data-table__cell--non-numeric">
           <span style="position: relative; top: 6px"></span>
           <!--<button md-button (click)="reload.emit($event)" color="primary" id="reload-credit-requests" class="hide-small">
@@ -15,17 +15,17 @@
     </thead>
     <tbody>
         <tr *ngFor="let creditRequest of creditRequests">
-          <td class="unread-td">
-            <md-icon *ngIf="!creditRequest?.readByUser" style="font-size: 18px; color: #4CAF50">brightness_1</md-icon>
-          </td>
           <td class="mdl-data-table__cell--non-numeric hide-1">
             {{creditRequest.createdAt | date: 'shortDate'}}
           </td>
           <td class="mdl-data-table__cell--non-numeric">
-            <span md-tooltip="{{creditRequest.subject}}">{{creditRequest.offerName | slice:0:18 }}</span>
+            <span>{{creditRequest.offerName | slice:0:18 }}</span>
+          </td>
+          <td class="mdl-data-table__cell--non-numeric">
+            <span>{{creditRequest.status }}</span>
           </td>
           <td>
-            <button class="view-credit-request-btn" md-button color="primary" type="button" [routerLink]="['view-creditRequest', { id: creditRequest.id } ]">VIEW REQUEST</button>
+            <button class="view-credit-request-btn" md-button color="primary" type="button" [routerLink]="['credit-request', { id: creditRequest.id } ]">VIEW REQUEST</button>
           </td>
         </tr>
     </tbody>

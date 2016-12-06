@@ -30,7 +30,6 @@ import {
   ReportSpam,
   Status,
   Support,
-  TermsAndConditions,
   ViewTicket
 }  from './features';
 
@@ -46,7 +45,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: Homepage,
+    component: Login,
     canActivate: [LoggedInRedirectGuard]
   },
   {
@@ -147,7 +146,7 @@ export const routes: Routes = [
   },
   {
     path: 'terms-and-conditions',
-    component: TermsAndConditions
+    loadChildren: './features/terms-and-conditions/index#TermsAndConditionsModule'
   },
   {
     path: 'view-offers',

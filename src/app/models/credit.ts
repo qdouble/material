@@ -3,4 +3,5 @@ export interface Credit {
   offerName: string;
   offerId: string;
   creditValue: number;
+  active: boolean;
 }
