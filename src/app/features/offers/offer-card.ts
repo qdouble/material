@@ -13,5 +13,5 @@ export class OfferCard {
   @Input() showingAvailable: boolean;
   @Input() sideNavOpen: boolean;
   @Input() offerId: string;
-  @Input() userLevel: number;
+  @Input() creditTotal: number;
 }

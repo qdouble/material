@@ -25,7 +25,7 @@
       <div [md-tooltip]="loggedIn ? 'Calculation based on your current level and credits' : 'Not logged in. Calculated based on starting from level 0.'" *ngIf="hideLevel" class="os-md-card-level">
         <div>Complete and earn</div>
         <div>Partial Credit</div>
-        <div>towards reaching level {{userLevel + 1}}</div>
+        <div>towards reaching level {{(creditTotal + 1) | floor}}</div>
       </div>
     </ng-container>
   </md-card-actions>

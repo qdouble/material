@@ -17,6 +17,4 @@ export class OfferRows {
   @Input() showingAvailable: boolean;
   @Input() sideNavOpen: boolean;
   @Input() creditTotal: number;
-  @Input() userCredits: number = 0;
-  @Input() userLevel: number = 0;
 }
