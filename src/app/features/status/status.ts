@@ -13,8 +13,9 @@ import { Referral } from '../../models/referral';
 import { User } from '../../models/user';
 
 import { NotifyActions } from '../../actions/notify';
+import { PrizeActions } from '../../actions/prize';
 import { UserActions } from '../../actions/user';
-import { getPrize, getPrizeCollection } from '../../reducers/prize';
+import { getPrize, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
 import { getCreditTotal } from '../../reducers/user';
 import {
   getReferralCollection, getUser, getUserLoaded, getUserSettingPrize
@@ -45,6 +46,7 @@ export class Status implements OnDestroy {
     private fb: FormBuilder,
     private store: Store<AppState>,
     private notifyActions: NotifyActions,
+    private prizeActions: PrizeActions,
     private userActions: UserActions
   ) {
     this.selectPrizeForm = fb.group({ 'selectedPrize': null });
@@ -53,6 +55,12 @@ export class Status implements OnDestroy {
         'sponsorUserName': ['', [Validators.required, Validators.pattern(RegexValues.username)]]
       });
     this.loaded$ = store.let(getUserLoaded());
+    store.let(getPrizeLoaded())
+      .take(1)
+      .takeUntil(this.destroyed$)
+      .subscribe(loaded => {
+        if (loaded) this.store.dispatch(this.prizeActions.getPrizes());
+      });
     this.settingPrize$ = store.let(getUserSettingPrize());
     this.referrals$ = store.let(getReferralCollection());
     this.user$ = store.let(getUser());

@@ -14,7 +14,7 @@ import { Prize } from '../../models/prize';
 import { Order } from '../../models/order';
 import { User } from '../../models/user';
 import { AppState } from '../../reducers';
-import { getPrize, getPrizeCollection } from '../../reducers/prize';
+import { getPrize, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
 import { getOrderPlacing, getOrderCollection, getOrderLoaded } from '../../reducers/order';
 import { getUser, getUserLoaded, getUserSettingPrize } from '../../reducers/user';
 
@@ -63,6 +63,12 @@ export class OrderComponent implements OnDestroy {
     });
     this.loaded$ = store.let(getUserLoaded());
     this.placing$ = store.let(getOrderPlacing());
+    store.let(getPrizeLoaded())
+      .take(1)
+      .takeUntil(this.destroyed$)
+      .subscribe(loaded => {
+        if (loaded) this.store.dispatch(this.prizeActions.getPrizes());
+      });
     this.selectPrizeForm = fb.group({ 'selectedPrize': null });
     this.settingPrize$ = store.let(getUserSettingPrize());
     this.user$ = store.let(getUser());
