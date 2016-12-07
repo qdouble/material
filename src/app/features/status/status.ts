@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-// import { combineSort } from '../../helper/combine-sort';
 import { RegexValues } from '../../validators';
 
 import { AppState } from '../../reducers';

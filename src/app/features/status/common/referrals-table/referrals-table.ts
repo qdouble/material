@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 
 import { ReferralDetailsDialog } from './referral-details';
@@ -8,6 +8,7 @@ import { Ticket } from '../../../../models/ticket';
   selector: 'os-referrals-table',
   templateUrl: './referrals-table.html',
   styleUrls: ['./referrals-table.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class ReferralsTable {
