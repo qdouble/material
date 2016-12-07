@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Offer } from '../../../models/offer';
 
@@ -11,4 +11,6 @@ import { Offer } from '../../../models/offer';
 
 export class OfferDetailsCard {
   @Input() offer: Offer;
+  @Input() publish: boolean;
+  @Output() continueToOffer = new EventEmitter();
 }

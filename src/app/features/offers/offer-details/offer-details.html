@@ -3,6 +3,6 @@
     <md-card id="important-review" class="accent-background">
       <md-card-subtitle class="white">Important: Please review the following information before continuing with the offer!</md-card-subtitle>
     </md-card>
-    <os-offer-details-card [offer]="offer$ | async"></os-offer-details-card>
+    <os-offer-details-card [offer]="offer$ | async" [publish]="publish" (continueToOffer)="continueToOffer($event)"></os-offer-details-card>
   </div>
 </md-card>

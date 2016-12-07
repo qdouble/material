@@ -16,7 +16,7 @@
     </div>
   </md-card-content>
   <md-card-actions>
-    <button md-raised-button color="primary" class="white" (click)="continueToOffer(offer?.id)">CONTINUE WITH THIS OFFER</button>
+    <button md-raised-button color="primary" class="white" (click)="continueToOffer.emit(offer?.id)">CONTINUE WITH THIS OFFER</button>
   </md-card-actions>
   <md-card-content>
     Once you have completed the requirements listed above, credit is usually applied to your account
