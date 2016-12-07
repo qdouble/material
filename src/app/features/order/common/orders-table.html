@@ -24,8 +24,8 @@
           <td class="mdl-data-table__cell--non-numeric hide-1">
              <span [md-tooltip]="(order.updatedAt | date: 'medium')" tooltip-position="after">{{order.createdAt | date: 'mediumDate' }}</span>
           </td>
-          <td class="mdl-data-table__cell--non-numeric">
-            <span>{{order.processStatus}}</span>
+          <td [md-tooltip]="order.processStatus" class="mdl-data-table__cell--non-numeric">
+            <span>{{order.processStatus | slice: 0:10 }}</span>
           </td>
         </tr>
       </ng-container>
