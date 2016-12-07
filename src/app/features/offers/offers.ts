@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -20,7 +20,8 @@ import { UserActions } from '../../actions/user';
   selector: 'os-offers',
   templateUrl: './offers.html',
   styleUrls: ['./offers.css'],
-  providers: [MdUniqueSelectionDispatcher]
+  providers: [MdUniqueSelectionDispatcher],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class Offers implements AfterViewInit, OnDestroy {

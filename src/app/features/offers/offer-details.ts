@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -14,7 +14,8 @@ import { OfferActions } from '../../actions/offer';
 @Component({
   selector: 'os-offer-details',
   templateUrl: './offer-details.html',
-  styleUrls: ['./offer-details.css']
+  styleUrls: ['./offer-details.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OfferDetailsComponent implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();

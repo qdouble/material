@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'os-offer-card',
   templateUrl: './offer-card.html',
-  styleUrls: ['./offer-card.css']
+  styleUrls: ['./offer-card.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class OfferCard {

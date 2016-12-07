@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { Offer } from '../../models/offer';
 
 @Component({
   selector: 'os-offer-rows',
   templateUrl: './offer-rows.html',
-  styleUrls: ['./offer-rows.css']
+  styleUrls: ['./offer-rows.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class OfferRows {
