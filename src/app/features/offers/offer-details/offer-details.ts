@@ -1,21 +1,20 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import { openInNewTab } from '../../helper/open-in-new-tab';
+import { openInNewTab } from '../../../helper/open-in-new-tab';
 
-import { AppState } from '../../reducers';
-import { Offer } from '../../models/offer';
-import { getOffer } from '../../reducers/offer';
-import { OfferActions } from '../../actions/offer';
+import { AppState } from '../../../reducers';
+import { Offer } from '../../../models/offer';
+import { getOffer } from '../../../reducers/offer';
+import { OfferActions } from '../../../actions/offer';
 
 @Component({
   selector: 'os-offer-details',
   templateUrl: './offer-details.html',
-  styleUrls: ['./offer-details.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./offer-details.css']
 })
 export class OfferDetailsComponent implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
@@ -38,7 +37,9 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
       this.offer$ = this.store.let(getOffer(id));
       this.offer$
         .takeUntil(this.destroyed$)
-        .subscribe(o => this.offer = o);
+        .subscribe(o => {
+          this.offer = o;
+        });
     });
   }
 
