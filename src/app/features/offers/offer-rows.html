@@ -10,8 +10,8 @@
     [showingAvailable]="showingAvailable"
     [sideNavOpen]="sideNavOpen"
     >
-    <div class="offer-card-feature" offer-card-feature *ngIf="offer.featured">
-      *Featured
+    <div class="offer-card-feature" offer-card-feature>
+      <span [style.visibility]="offer.featured ? 'visible': 'hidden'">*Featured</span>
     </div>
     <div class="offer-card-image-container" offer-card-image [routerLink]="['../offer-details', { id: offer.id }]">
       <img class="os-offer-card-image" [src]="publish ? 'http://levelrewards.com/images/offer-images/' + offer.filename : (offer.directImageURL?.length > 1 ? offer.directImageURL : offer.imageURL)" alt="Offer Image">
