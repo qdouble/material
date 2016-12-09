@@ -6,6 +6,8 @@ import { back } from '@ngrx/router-store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
+import { todaysDate } from '../../../helper/todays-date';
+
 import { AppState } from '../../../reducers';
 import { CreditRequestActions } from '../../../actions/credit-request';
 import {
@@ -31,6 +33,7 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
   offerIds$: Observable<string[]>;
   offerNames: string[];
   offerNames$: Observable<string[]>;
+  todaysDate = todaysDate;
   view: boolean;
   constructor(
     private creditRequestActions: CreditRequestActions,
