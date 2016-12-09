@@ -20,6 +20,10 @@
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-2.2.1.tgz#86fdc34a370a4fcfe84ed9de4b3c43548612919c"
 
+"@angular/flex-layout@github:qdouble/flex-layout":
+  version "1.0.0-beta.1"
+  resolved "https://codeload.github.com/qdouble/flex-layout/tar.gz/a969678404d3afa962b6c53ebdafcfd21c13b2b2"
+
 "@angular/forms@2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-2.2.1.tgz#0e7154acc5127c583b4b52c59eac45d672c29da4"
@@ -28,9 +32,9 @@
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@angular/http/-/http-2.2.1.tgz#1626884a6c5f0cc602ce9d81e7420fcc02db3353"
 
-"@angular/material@github:qdouble/material":
-  version "2.0.0-alpha.10"
-  resolved "https://codeload.github.com/qdouble/material/tar.gz/e85312c1760899da434a715e310a0e65e1977b16"
+"@angular/material@2.0.0-alpha.11-2":
+  version "2.0.0-alpha.11-2"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-2.0.0-alpha.11-2.tgz#8d7edc10ea06bf3a00b43cccdc234e2ad1222865"
   dependencies:
     "@types/hammerjs" "^2.0.30"
 
