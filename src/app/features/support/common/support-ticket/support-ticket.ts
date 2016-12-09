@@ -14,7 +14,7 @@ import { TicketActions } from '../../../../actions/ticket';
     <form [formGroup]="f" (ngSubmit)="submitForm()">
       <md-input maxlength=90 placeholder="Subject" formControlName="subject"></md-input><br>
       <md-textarea [rows]="6" placeholder="Question" formControlName="question"></md-textarea><br>
-      <button md-raised-button color="primary" [disabled]="!f.valid">SUBMIT</button>
+      <button md-raised-button class="white" color="primary" [disabled]="!f.valid">SUBMIT</button>
     </form>
   </section>
   `,
