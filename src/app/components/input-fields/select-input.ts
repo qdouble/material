@@ -4,8 +4,9 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'select-input',
   templateUrl: './select-input.html',
-  styles: [` md-select { position: relative; top: -6px; } label { margin-right: 7px; }
-  md-option { width: 100% } `]
+  styles: [` md-select { position: relative; top: -6px; } 
+  label { margin-right: 7px; display: inline-table;}
+  md-select { width: 100%; overflow: hidden; } .form-group { display: flex; } `]
 })
 
 export class SelectInput implements OnInit {

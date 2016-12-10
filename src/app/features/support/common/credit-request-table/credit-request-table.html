@@ -19,10 +19,10 @@
             {{creditRequest.createdAt | date: 'shortDate'}}
           </td>
           <td class="mdl-data-table__cell--non-numeric">
-            <span>{{creditRequest.offerName | slice:0:18 }}</span>
+            <span>{{creditRequest.offerName | slice:0:15 }}</span>
           </td>
           <td class="mdl-data-table__cell--non-numeric">
-            <span>{{creditRequest.status }}</span>
+            <span>{{creditRequest.status  | slice:0:9 }}</span>
           </td>
           <td>
             <button class="view-credit-request-btn" md-button color="primary" type="button" [routerLink]="['credit-request', { id: creditRequest.id } ]">VIEW REQUEST</button>
