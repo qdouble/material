@@ -72,17 +72,20 @@ export class Status implements OnDestroy {
         this.selectedPrizeLabels$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
         this.selectedPrizeValues$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
         this.prizes$
-          .filter(prizes => prizes !== undefined && prizes.length > 0)
           .takeUntil(this.destroyed$)
           .subscribe(prizes => {
-            let selectedPrize = this.selectPrizeForm.get('selectedPrize');
-            if (!selectedPrize.value && this.user.selectedPrize !== undefined) {
-              this.user.selectedPrize !== undefined ? selectedPrize.setValue(user.selectedPrize) :
-                selectedPrize.setValue(prizes[0].id);
+            if (prizes && prizes.length > 0) {
+              let selectedPrize = this.selectPrizeForm.get('selectedPrize');
+              if (!selectedPrize.value && this.user.selectedPrize !== undefined) {
+                this.user.selectedPrize !== undefined ? selectedPrize.setValue(user.selectedPrize) :
+                  selectedPrize.setValue(prizes[0].id);
+              }
+            } else {
+              this.store.dispatch(this.prizeActions.getPrizes());
             }
           });
       });
-      this.creditTotal$ = store.let(getCreditTotal());
+    this.creditTotal$ = store.let(getCreditTotal());
   }
   ngOnDestroy() {
     this.destroyed$.next();
