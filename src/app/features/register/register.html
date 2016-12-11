@@ -36,8 +36,8 @@
         <label>Birthday</label>
         <input type="date" formControlName="birthday" class="form-control">
       </div>
-      
-      <select-input *ngIf="showPrizes" [label]="'How would you like to recieve your prize?'" [optionValues]="prizeIds$ | async"
+      <label>How would You like to recieve your prize?</label>
+      <select-input *ngIf="showPrizes" class="receive-prize" [optionValues]="prizeIds$ | async"
         [optionLabels]="prizeNames$ | async" [controlName]="'selectedPrize'" [form]="f">
       </select-input>
       <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address'" [controlName]="'paypal'" [form]="f">
