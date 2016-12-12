@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let ticket of tickets">
+        <tr *ngFor="let ticket of tickets; trackBy: trackById">
           <td class="unread-td">
             <md-icon *ngIf="!ticket?.readByUser" style="font-size: 18px; color: #4CAF50">brightness_1</md-icon>
           </td>

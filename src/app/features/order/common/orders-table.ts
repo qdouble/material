@@ -11,4 +11,7 @@ import { Order } from '../../../models/order';
 export class OrderTableComponent {
   @Input() loaded: boolean;
   @Input() orders: Order[];
+  trackById(index: number, order: Order) {
+    return order.id;
+  }
 }

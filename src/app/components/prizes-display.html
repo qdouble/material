@@ -1,5 +1,5 @@
 <form [formGroup]="form">
-  <span *ngFor="let prize of prizes; let i = index">
+  <span *ngFor="let prize of prizes; let i = index; trackBy: trackById;">
       <prize-item [prize]="prize" [index]="i" [form]="form">
       </prize-item>
     </span>

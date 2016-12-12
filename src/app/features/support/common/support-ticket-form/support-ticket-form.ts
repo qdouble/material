@@ -65,6 +65,10 @@ export class SupportTicketFormComponent implements OnDestroy, OnInit {
       });
   }
 
+  trackById(index: number, entry) {
+    return entry.id;
+  }
+
   ngOnDestroy() {
     this.destroyed$.next();
   }

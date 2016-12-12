@@ -1,6 +1,6 @@
  <div [ngClass]="{'os-offer-card-containter': sideNavOpen, 
     'os-offer-card-containter-s-closed': !sideNavOpen }">
-  <os-offer-card *ngFor="let offer of offers; trackBy: offer?.id" 
+  <os-offer-card *ngFor="let offer of offers; trackBy: trackById" 
     [ngClass]="{'os-offer-card': sideNavOpen, 
     'os-offer-card-s-closed': !sideNavOpen }"
     [creditTotal]="creditTotal"

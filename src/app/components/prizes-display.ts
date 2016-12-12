@@ -16,4 +16,7 @@ export class PrizesDisplay {
   @Input() currentPrize;
   @Input() prizes: Prize;
   @Output() selectPrize = new EventEmitter(false);
+  trackById(index: number, prize: Prize) {
+    return prize.id;
+  }
 }

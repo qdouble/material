@@ -18,4 +18,7 @@ export class OfferRows {
   @Input() showingAvailable: boolean;
   @Input() sideNavOpen: boolean;
   @Input() creditTotal: number;
+  trackById(index: number, offer: Offer) {
+    return offer.id;
+  }
 }

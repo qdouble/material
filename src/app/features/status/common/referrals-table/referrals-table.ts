@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 
 import { ReferralDetailsDialog } from './referral-details';
-import { Ticket } from '../../../../models/ticket';
+import { User } from '../../../../models/user';
 
 @Component({
   selector: 'os-referrals-table',
@@ -26,7 +26,7 @@ export class ReferralsTable {
     }
   };
   @Input() loading: boolean;
-  @Input() referrals: Ticket[];
+  @Input() referrals: User[];
   @Output() reload = new EventEmitter();
   @Output() sortBy = new EventEmitter();
   @Output() getReferral = new EventEmitter();
@@ -41,5 +41,8 @@ export class ReferralsTable {
       this.lastCloseResult = result;
       this.dialogRef = null;
     });
+  }
+  trackById(index: number, user: User) {
+    return user.id;
   }
 }

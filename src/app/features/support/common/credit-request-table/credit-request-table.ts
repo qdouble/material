@@ -12,4 +12,7 @@ export class CreditRequestTable {
   @Input() loading: boolean;
   @Input() creditRequests: CreditRequest[];
   @Output() viewCreditRequest = new EventEmitter();
+  trackById(index: number, credit: CreditRequest) {
+    return credit.id;
+  }
 }

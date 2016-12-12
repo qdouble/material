@@ -15,4 +15,7 @@ export class SupportTicketTable {
   @Output() reload = new EventEmitter();
   @Output() sortBy = new EventEmitter();
   @Output() viewTicket = new EventEmitter();
+  trackById(index: number, ticket: Ticket) {
+    return ticket.id;
+  }
 }
