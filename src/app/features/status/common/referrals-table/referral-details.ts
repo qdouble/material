@@ -32,7 +32,11 @@ export class ReferralDetailsDialog implements OnInit {
   constructor(public dialogRef: MdDialogRef<ReferralDetailsDialog>) { }
   ngOnInit() {
     if (this.referral.credits && this.referral.credits.length > 0) {
-      this.referral.credits.forEach(credit => this.credits += credit.creditValue);
+      this.referral.credits.forEach(credit => {
+        if (credit.active) {
+          this.credits += credit.creditValue;
+        }
+      });
     }
   }
 }
