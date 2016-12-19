@@ -126,9 +126,15 @@ export function userReducer(state = initialState, action: Action): UserState {
       });
     }
 
+    case UserActions.GET_REFERRAL:
+      return Object.assign({}, state, { loading: true });
+
+    case UserActions.GET_REFERRAL_FAIL:
+      return Object.assign({}, state, { loading: false });
+
     case UserActions.GET_REFERRAL_SUCCESS: {
       let referral = action.payload.referral;
-      if (!referral || !referral.id) return state;
+      if (!referral || !referral.id) return Object.assign({}, state, { loading: false });
       let id = referral.id;
       let referralMod = Object.assign({}, state.referrals);
       Object.keys(referral).forEach(key => {
@@ -141,7 +147,8 @@ export function userReducer(state = initialState, action: Action): UserState {
         }
       });
       return Object.assign({}, state, {
-        referrals: referralMod
+        referrals: referralMod,
+        loading: false
       });
     }
 
@@ -296,6 +303,11 @@ function _getReferralEntities() {
     .select(s => s.referrals);
 }
 
+function _getReferral(id: string) {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.referrals[id]);
+}
+
 function _getReferrals(offerIds: string[]) {
   return (state$: Observable<UserState>) => state$
     .let(_getReferralEntities())
@@ -348,6 +360,9 @@ export function getCreditTotal() {
   return compose(_getCreditTotal(), _getUserState());
 }
 
+export function getReferral(id: string) {
+  return compose(_getReferral(id), _getUserState());
+}
 
 export function getReferrals(ids: string[]) {
   return compose(_getReferrals(ids), _getUserState());

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
 import { Referral } from '../../../../models/referral';
@@ -11,6 +11,7 @@ import { Referral } from '../../../../models/referral';
   <div>Email: {{referral.email}}</div>
   <div>Current Level: {{referral.currentLevel}}</div>
   <div>Previous Level: {{referral.payBeyondLevel}}</div>
+  <div>Credits: {{credits | number: '1.2-2'}}</div>
   <div [ngClass]="{'primary': (referral.currentLevel - referral.payBeyondLevel) > 0 }">
     <b>Unpaid Levels: {{referral.currentLevel - referral.payBeyondLevel}}</b>
   </div>
@@ -23,9 +24,15 @@ import { Referral } from '../../../../models/referral';
   styles: [`.referral-details { border-bottom: 1px solid #ffe1ad; border-top: 1px solid #ffe1ad;
     color: #ffb436 } button { margin-top: 5px; width: 100%; }`]
 })
-export class ReferralDetailsDialog {
+export class ReferralDetailsDialog implements OnInit {
+  credits = 0;
   referral: Referral;
   jazzMessage = 'Jazzy jazz jazz';
 
   constructor(public dialogRef: MdDialogRef<ReferralDetailsDialog>) { }
+  ngOnInit() {
+    if (this.referral.credits && this.referral.credits.length > 0) {
+      this.referral.credits.forEach(credit => this.credits += credit.creditValue);
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -11,13 +11,15 @@ import { Prize } from '../../models/prize';
 import { Referral } from '../../models/referral';
 import { User } from '../../models/user';
 
+import { ReferralsTable } from './common/referrals-table';
 import { NotifyActions } from '../../actions/notify';
 import { PrizeActions } from '../../actions/prize';
 import { UserActions } from '../../actions/user';
 import { getPrize, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
 import { getCreditTotal } from '../../reducers/user';
 import {
-  getReferralCollection, getUser, getUserLoaded, getUserSettingPrize
+  getReferralCollection, getReferral, getUser, getUserLoaded, getUserLoading,
+  getUserSettingPrize
 } from '../../reducers/user';
 
 @Component({
@@ -31,6 +33,7 @@ export class Status implements OnDestroy {
   creditTotal$: Observable<number>;
   destroyed$: Subject<any> = new Subject<any>();
   loaded$: Observable<boolean>;
+  loading$: Observable<boolean>;
   prize$: Observable<Prize>;
   prizes$: Observable<Prize[]>;
   referrals$: Observable<Referral[]>;
@@ -41,6 +44,7 @@ export class Status implements OnDestroy {
   sponsorForm: FormGroup;
   user$: Observable<User>;
   user: User;
+  @ViewChild(ReferralsTable) referralTable: ReferralsTable;
   constructor(
     private fb: FormBuilder,
     private store: Store<AppState>,
@@ -54,6 +58,7 @@ export class Status implements OnDestroy {
         'sponsorUserName': ['', [Validators.required, Validators.pattern(RegexValues.username)]]
       });
     this.loaded$ = store.let(getUserLoaded());
+    this.loading$ = store.let(getUserLoading());
     store.let(getPrizeLoaded())
       .take(1)
       .takeUntil(this.destroyed$)
@@ -87,9 +92,6 @@ export class Status implements OnDestroy {
       });
     this.creditTotal$ = store.let(getCreditTotal());
   }
-  ngOnDestroy() {
-    this.destroyed$.next();
-  }
 
   cancelPrizeChange() {
     if (this.user.selectedPrize) {
@@ -111,11 +113,24 @@ export class Status implements OnDestroy {
     }
   }
 
-  getReferral(id: string) {
-    this.store.dispatch(this.userActions.getReferral(id));
+  getReferral(referral: User) {
+    this.store.dispatch(this.userActions.getReferral(referral.id));
+    this.loading$
+      .filter(l => l === false)
+      .take(1)
+      .subscribe(() => {
+        let referral$ = this.store.let(getReferral(referral.id));
+        referral$.take(1).subscribe(ref => {
+          this.referralTable.open(ref);
+        });
+      });
   }
 
   submitSponsor() {
     this.store.dispatch(this.userActions.setSponsor(this.sponsorForm.get('sponsorUserName').value));
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
   }
 }

@@ -1,3 +1,5 @@
+import { Credit } from './credit';
+
 export interface Referral {
   readonly id: string;
   readonly username: string;
@@ -12,4 +14,5 @@ export interface Referral {
   readonly active: boolean;
   readonly hold: boolean;
   readonly holdReason: string;
+  readonly credits: Credit[];
 }
