@@ -7,5 +7,5 @@ export class RegexValues {
     static password = '^([A-z0-9!@#$%^&*.]){6,30}$';
     static phone = '^([0-9Xx ()+.-]){7,30}$';
     static username = '^([^<>\\/\\\*$;&\'?!{}|=.@, :_#"~%^()+-]){3,30}$';
-    static zipCode = '^\\d{5}(?:[-\\s]\\d{4})?$';
+    static zipCode = '^([A-z0-9!@#$%^&*.]){3,13}$';
 }
