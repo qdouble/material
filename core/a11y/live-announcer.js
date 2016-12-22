@@ -11,19 +11,20 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 import { Injectable, OpaqueToken, Optional, Inject } from '@angular/core';
-export var LIVE_ANNOUNCER_ELEMENT_TOKEN = new OpaqueToken('mdLiveAnnouncerElement');
-export var MdLiveAnnouncer = (function () {
-    function MdLiveAnnouncer(elementToken) {
+export var LIVE_ANNOUNCER_ELEMENT_TOKEN = new OpaqueToken('liveAnnouncerElement');
+export var LiveAnnouncer = (function () {
+    function LiveAnnouncer(elementToken) {
         // We inject the live element as `any` because the constructor signature cannot reference
         // browser globals (HTMLElement) on non-browser environments, since having a class decorator
         // causes TypeScript to preserve the constructor signature types.
         this._liveElement = elementToken || this._createLiveElement();
     }
     /**
+     * Announces a message to screenreaders.
      * @param message Message to be announced to the screenreader
-     * @param politeness The politeness of the announcer element.
+     * @param politeness The politeness of the announcer element
      */
-    MdLiveAnnouncer.prototype.announce = function (message, politeness) {
+    LiveAnnouncer.prototype.announce = function (message, politeness) {
         var _this = this;
         if (politeness === void 0) { politeness = 'polite'; }
         this._liveElement.textContent = '';
@@ -37,26 +38,26 @@ export var MdLiveAnnouncer = (function () {
         setTimeout(function () { return _this._liveElement.textContent = message; }, 100);
     };
     /** Removes the aria-live element from the DOM. */
-    MdLiveAnnouncer.prototype._removeLiveElement = function () {
+    LiveAnnouncer.prototype._removeLiveElement = function () {
         if (this._liveElement && this._liveElement.parentNode) {
             this._liveElement.parentNode.removeChild(this._liveElement);
         }
     };
-    MdLiveAnnouncer.prototype._createLiveElement = function () {
+    LiveAnnouncer.prototype._createLiveElement = function () {
         var liveEl = document.createElement('div');
-        liveEl.classList.add('md-visually-hidden');
+        liveEl.classList.add('cdk-visually-hidden');
         liveEl.setAttribute('aria-atomic', 'true');
         liveEl.setAttribute('aria-live', 'polite');
         document.body.appendChild(liveEl);
         return liveEl;
     };
-    MdLiveAnnouncer = __decorate([
+    LiveAnnouncer = __decorate([
         Injectable(),
         __param(0, Optional()),
         __param(0, Inject(LIVE_ANNOUNCER_ELEMENT_TOKEN)), 
         __metadata('design:paramtypes', [Object])
-    ], MdLiveAnnouncer);
-    return MdLiveAnnouncer;
+    ], LiveAnnouncer);
+    return LiveAnnouncer;
 }());
 
 //# sourceMappingURL=live-announcer.js.map

@@ -13,6 +13,8 @@ import { MdSelect } from './select';
 import { MdOption } from './option';
 import { DefaultStyleCompatibilityModeModule, OVERLAY_PROVIDERS, MdRippleModule, OverlayModule } from '../core';
 export * from './select';
+export { MdOption } from './option';
+export { fadeInContent, transformPanel, transformPlaceholder } from './select-animations';
 export var MdSelectModule = (function () {
     function MdSelectModule() {
     }

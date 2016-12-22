@@ -17,17 +17,28 @@ export declare class MdMenuTrigger implements AfterViewInit, OnDestroy {
     private _backdropSubscription;
     private _positionSubscription;
     private _openedByMouse;
+    /** @deprecated */
+    _deprecatedMenuTriggerFor: MdMenuPanel;
+    /** References the menu instance that the trigger is associated with. */
     menu: MdMenuPanel;
+    /** Event emitted when the associated menu is opened. */
     onMenuOpen: EventEmitter<void>;
+    /** Event emitted when the associated menu is closed. */
     onMenuClose: EventEmitter<void>;
     constructor(_overlay: Overlay, _element: ElementRef, _viewContainerRef: ViewContainerRef, _renderer: Renderer, _dir: Dir);
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
+    /** Whether the menu is open. */
     readonly menuOpen: boolean;
+    /** Toggles the menu between the open and closed states. */
     toggleMenu(): void;
+    /** Opens the menu. */
     openMenu(): void;
+    /** Closes the menu. */
     closeMenu(): void;
+    /** Removes the menu from the DOM. */
     destroyMenu(): void;
+    /** Focuses the menu trigger. */
     focus(): void;
     /** The text direction of the containing app. */
     readonly dir: LayoutDirection;
@@ -51,7 +62,7 @@ export declare class MdMenuTrigger implements AfterViewInit, OnDestroy {
     private _setIsMenuOpen(isOpen);
     /**
      *  This method checks that a valid instance of MdMenu has been passed into
-     *  md-menu-trigger-for.  If not, an exception is thrown.
+     *  mdMenuTriggerFor. If not, an exception is thrown.
      */
     private _checkMenu();
     /**

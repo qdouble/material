@@ -8,7 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { NgModule } from '@angular/core';
-import { MdRippleModule, RtlModule, PortalModule, OverlayModule, A11yModule, ProjectionModule, DefaultStyleCompatibilityModeModule } from './core/index';
+import { MdRippleModule, RtlModule, ObserveContentModule, PortalModule, OverlayModule, A11yModule, ProjectionModule, DefaultStyleCompatibilityModeModule } from './core/index';
 import { MdButtonToggleModule } from './button-toggle/index';
 import { MdButtonModule } from './button/index';
 import { MdCheckboxModule } from './checkbox/index';
@@ -22,7 +22,7 @@ import { MdGridListModule } from './grid-list/index';
 import { MdCardModule } from './card/index';
 import { MdChipsModule } from './chips/index';
 import { MdIconModule } from './icon/index';
-import { MdProgressCircleModule } from './progress-circle/index';
+import { MdProgressSpinnerModule } from './progress-spinner/index';
 import { MdProgressBarModule } from './progress-bar/index';
 import { MdInputModule } from './input/index';
 import { MdSnackBarModule } from './snack-bar/snack-bar';
@@ -31,8 +31,10 @@ import { MdToolbarModule } from './toolbar/index';
 import { MdTooltipModule } from './tooltip/index';
 import { MdMenuModule } from './menu/index';
 import { MdDialogModule } from './dialog/index';
-import { PlatformModule } from './core/platform/platform';
+import { PlatformModule } from './core/platform/index';
+import { MdAutocompleteModule } from './autocomplete/index';
 var MATERIAL_MODULES = [
+    MdAutocompleteModule,
     MdButtonModule,
     MdButtonToggleModule,
     MdCardModule,
@@ -45,7 +47,7 @@ var MATERIAL_MODULES = [
     MdListModule,
     MdMenuModule,
     MdProgressBarModule,
-    MdProgressCircleModule,
+    MdProgressSpinnerModule,
     MdRadioModule,
     MdRippleModule,
     MdSelectModule,
@@ -63,6 +65,7 @@ var MATERIAL_MODULES = [
     PlatformModule,
     ProjectionModule,
     DefaultStyleCompatibilityModeModule,
+    ObserveContentModule
 ];
 export var MaterialRootModule = (function () {
     function MaterialRootModule() {
@@ -70,6 +73,7 @@ export var MaterialRootModule = (function () {
     MaterialRootModule = __decorate([
         NgModule({
             imports: [
+                MdAutocompleteModule.forRoot(),
                 MdButtonModule.forRoot(),
                 MdCardModule.forRoot(),
                 MdChipsModule.forRoot(),
@@ -78,7 +82,7 @@ export var MaterialRootModule = (function () {
                 MdInputModule.forRoot(),
                 MdListModule.forRoot(),
                 MdProgressBarModule.forRoot(),
-                MdProgressCircleModule.forRoot(),
+                MdProgressSpinnerModule.forRoot(),
                 MdRippleModule.forRoot(),
                 MdSelectModule.forRoot(),
                 MdSidenavModule.forRoot(),
@@ -87,6 +91,7 @@ export var MaterialRootModule = (function () {
                 PortalModule.forRoot(),
                 ProjectionModule.forRoot(),
                 RtlModule.forRoot(),
+                ObserveContentModule.forRoot(),
                 // These modules include providers.
                 A11yModule.forRoot(),
                 MdButtonToggleModule.forRoot(),

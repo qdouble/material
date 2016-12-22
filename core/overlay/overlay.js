@@ -14,6 +14,7 @@ import { OverlayRef } from './overlay-ref';
 import { OverlayPositionBuilder } from './position/overlay-position-builder';
 import { ViewportRuler } from './position/viewport-ruler';
 import { OverlayContainer } from './overlay-container';
+import { ScrollDispatcher } from './scroll/scroll-dispatcher';
 /** Next overlay unique ID. */
 var nextUniqueId = 0;
 /** The default state for newly created overlays. */
@@ -38,7 +39,7 @@ export var Overlay = (function () {
     /**
      * Creates an overlay.
      * @param state State to apply to the overlay.
-     * @returns A reference to the created overlay.
+     * @returns Reference to the created overlay.
      */
     Overlay.prototype.create = function (state) {
         if (state === void 0) { state = defaultState; }
@@ -53,12 +54,12 @@ export var Overlay = (function () {
     };
     /**
      * Creates the DOM element for an overlay and appends it to the overlay container.
-     * @returns Promise resolving to the created element.
+     * @returns Newly-created pane element
      */
     Overlay.prototype._createPaneElement = function () {
         var pane = document.createElement('div');
-        pane.id = "md-overlay-" + nextUniqueId++;
-        pane.classList.add('md-overlay-pane');
+        pane.id = "cdk-overlay-" + nextUniqueId++;
+        pane.classList.add('cdk-overlay-pane');
         this._overlayContainer.getContainerElement().appendChild(pane);
         return pane;
     };
@@ -74,7 +75,6 @@ export var Overlay = (function () {
      * Creates an OverlayRef for an overlay in the given DOM element.
      * @param pane DOM element for the overlay
      * @param state
-     * @returns {OverlayRef}
      */
     Overlay.prototype._createOverlayRef = function (pane, state) {
         return new OverlayRef(this._createPortalHost(pane), pane, state, this._ngZone);
@@ -91,6 +91,7 @@ export var OVERLAY_PROVIDERS = [
     OverlayPositionBuilder,
     Overlay,
     OverlayContainer,
+    ScrollDispatcher,
 ];
 
 //# sourceMappingURL=overlay.js.map

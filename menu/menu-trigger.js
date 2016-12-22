@@ -28,9 +28,18 @@ export var MdMenuTrigger = (function () {
         // tracking input type is necessary so it's possible to only auto-focus
         // the first item of the list when the menu is opened via the keyboard
         this._openedByMouse = false;
+        /** Event emitted when the associated menu is opened. */
         this.onMenuOpen = new EventEmitter();
+        /** Event emitted when the associated menu is closed. */
         this.onMenuClose = new EventEmitter();
     }
+    Object.defineProperty(MdMenuTrigger.prototype, "_deprecatedMenuTriggerFor", {
+        /** @deprecated */
+        get: function () { return this.menu; },
+        set: function (v) { this.menu = v; },
+        enumerable: true,
+        configurable: true
+    });
     MdMenuTrigger.prototype.ngAfterViewInit = function () {
         var _this = this;
         this._checkMenu();
@@ -38,13 +47,16 @@ export var MdMenuTrigger = (function () {
     };
     MdMenuTrigger.prototype.ngOnDestroy = function () { this.destroyMenu(); };
     Object.defineProperty(MdMenuTrigger.prototype, "menuOpen", {
+        /** Whether the menu is open. */
         get: function () { return this._menuOpen; },
         enumerable: true,
         configurable: true
     });
+    /** Toggles the menu between the open and closed states. */
     MdMenuTrigger.prototype.toggleMenu = function () {
         return this._menuOpen ? this.closeMenu() : this.openMenu();
     };
+    /** Opens the menu. */
     MdMenuTrigger.prototype.openMenu = function () {
         if (!this._menuOpen) {
             this._createOverlay();
@@ -53,6 +65,7 @@ export var MdMenuTrigger = (function () {
             this._initMenu();
         }
     };
+    /** Closes the menu. */
     MdMenuTrigger.prototype.closeMenu = function () {
         if (this._overlayRef) {
             this._overlayRef.detach();
@@ -60,6 +73,7 @@ export var MdMenuTrigger = (function () {
             this._resetMenu();
         }
     };
+    /** Removes the menu from the DOM. */
     MdMenuTrigger.prototype.destroyMenu = function () {
         if (this._overlayRef) {
             this._overlayRef.dispose();
@@ -67,6 +81,7 @@ export var MdMenuTrigger = (function () {
             this._cleanUpSubscriptions();
         }
     };
+    /** Focuses the menu trigger. */
     MdMenuTrigger.prototype.focus = function () {
         this._renderer.invokeElementMethod(this._element.nativeElement, 'focus');
     };
@@ -124,7 +139,7 @@ export var MdMenuTrigger = (function () {
     };
     /**
      *  This method checks that a valid instance of MdMenu has been passed into
-     *  md-menu-trigger-for.  If not, an exception is thrown.
+     *  mdMenuTriggerFor. If not, an exception is thrown.
      */
     MdMenuTrigger.prototype._checkMenu = function () {
         if (!this.menu) {
@@ -152,7 +167,7 @@ export var MdMenuTrigger = (function () {
         overlayState.positionStrategy = this._getPosition()
             .withDirection(this.dir);
         overlayState.hasBackdrop = true;
-        overlayState.backdropClass = 'md-overlay-transparent-backdrop';
+        overlayState.backdropClass = 'cdk-overlay-transparent-backdrop';
         overlayState.direction = this.dir;
         return overlayState;
     };
@@ -199,6 +214,10 @@ export var MdMenuTrigger = (function () {
     __decorate([
         Input('md-menu-trigger-for'), 
         __metadata('design:type', Object)
+    ], MdMenuTrigger.prototype, "_deprecatedMenuTriggerFor", null);
+    __decorate([
+        Input('mdMenuTriggerFor'), 
+        __metadata('design:type', Object)
     ], MdMenuTrigger.prototype, "menu", void 0);
     __decorate([
         Output(), 
@@ -210,7 +229,7 @@ export var MdMenuTrigger = (function () {
     ], MdMenuTrigger.prototype, "onMenuClose", void 0);
     MdMenuTrigger = __decorate([
         Directive({
-            selector: '[md-menu-trigger-for], [mat-menu-trigger-for]',
+            selector: '[md-menu-trigger-for], [mat-menu-trigger-for], [mdMenuTriggerFor]',
             host: {
                 'aria-haspopup': 'true',
                 '(mousedown)': '_handleMousedown($event)',

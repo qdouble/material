@@ -19,6 +19,7 @@ import { FocusTrap } from '../core/a11y/focus-trap';
 import 'rxjs/add/operator/first';
 /**
  * Internal component that wraps user-provided dialog content.
+ * @docs-private
  */
 export var MdDialogContainer = (function (_super) {
     __extends(MdDialogContainer, _super);
@@ -28,7 +29,10 @@ export var MdDialogContainer = (function (_super) {
         /** Element that was focused before the dialog was opened. Save this to restore upon close. */
         this._elementFocusedBeforeDialogWasOpened = null;
     }
-    /** Attach a portal as content to this dialog container. */
+    /**
+     * Attach a portal as content to this dialog container.
+     * @param portal Portal to be attached as the dialog content.
+     */
     MdDialogContainer.prototype.attachComponentPortal = function (portal) {
         var _this = this;
         if (this._portalHost.hasAttached()) {
@@ -44,10 +48,14 @@ export var MdDialogContainer = (function (_super) {
         });
         return attachResult;
     };
+    /** @docs-private */
     MdDialogContainer.prototype.attachTemplatePortal = function (portal) {
         throw Error('Not yet implemented');
     };
-    /** Handles the user pressing the Escape key. */
+    /**
+     * Handles the user pressing the Escape key.
+     * @docs-private
+     */
     MdDialogContainer.prototype.handleEscapeKey = function () {
         if (!this.dialogConfig.disableClose) {
             this.dialogRef.close();
@@ -72,8 +80,8 @@ export var MdDialogContainer = (function (_super) {
     ], MdDialogContainer.prototype, "_focusTrap", void 0);
     MdDialogContainer = __decorate([
         Component({selector: 'md-dialog-container, mat-dialog-container',
-            template: "<focus-trap> <template portalHost></template> </focus-trap> ",
-            styles: ["/** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ md-dialog-container { box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12); display: block; padding: 24px; border-radius: 2px; box-sizing: border-box; overflow: auto; width: 100%; height: 100%; } @media screen and (-ms-high-contrast: active) { md-dialog-container { outline: solid 1px; } } /*# sourceMappingURL=dialog-container.css.map */ "],
+            template: "<cdk-focus-trap><template cdkPortalHost></template></cdk-focus-trap>",
+            styles: ["md-dialog-container{box-shadow:0 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12);display:block;padding:24px;border-radius:2px;box-sizing:border-box;overflow:auto;max-width:80vw;width:100%;height:100%}@media screen and (-ms-high-contrast:active){md-dialog-container{outline:solid 1px}}[mat-dialog-content],[md-dialog-content],mat-dialog-content,md-dialog-content{display:block;margin:0 -24px;padding:0 24px;max-height:65vh;overflow:auto}[mat-dialog-title],[md-dialog-title]{font-size:20px;font-weight:700;margin:0 0 20px;display:block}[mat-dialog-actions],[md-dialog-actions],mat-dialog-actions,md-dialog-actions{padding:12px 0;display:block}[mat-dialog-actions]:last-child,[md-dialog-actions]:last-child,mat-dialog-actions:last-child,md-dialog-actions:last-child{margin-bottom:-24px}"],
             host: {
                 'class': 'md-dialog-container',
                 '[attr.role]': 'dialogConfig?.role',

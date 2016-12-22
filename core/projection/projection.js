@@ -13,18 +13,20 @@ import { Injectable, Directive, NgModule, ElementRef } from '@angular/core';
 function _replaceWith(toReplaceEl, otherEl) {
     toReplaceEl.parentElement.replaceChild(otherEl, toReplaceEl);
 }
+/** @docs-private */
 export var DomProjectionHost = (function () {
     function DomProjectionHost(ref) {
         this.ref = ref;
     }
     DomProjectionHost = __decorate([
         Directive({
-            selector: 'dom-projection-host'
+            selector: 'cdk-dom-projection-host'
         }), 
         __metadata('design:paramtypes', [ElementRef])
     ], DomProjectionHost);
     return DomProjectionHost;
 }());
+/** @docs-private */
 export var DomProjection = (function () {
     function DomProjection() {
     }
@@ -38,10 +40,10 @@ export var DomProjection = (function () {
      * ```
      *   @Component({
      *     template: `<div>
-     *       <dom-projection-host>
+     *       <cdk-dom-projection-host>
      *         <div>other</div>
      *         <ng-content></ng-content>
-     *       </dom-projection-host>
+     *       </cdk-dom-projection-host>
      *     </div>`
      *   })
      *   class Cmpt {
@@ -55,6 +57,9 @@ export var DomProjection = (function () {
      * contain the `<div>other</div>` HTML as well as its own children.
      *
      * Note: without `<ng-content></ng-content>` the projection will project an empty element.
+     *
+     * @param ref ElementRef to be projected.
+     * @param host Projection host into which to project the `ElementRef`.
      */
     DomProjection.prototype.project = function (ref, host) {
         var projectedEl = ref.nativeElement;
@@ -83,6 +88,7 @@ export var DomProjection = (function () {
     ], DomProjection);
     return DomProjection;
 }());
+/** @docs-private */
 export var ProjectionModule = (function () {
     function ProjectionModule() {
     }

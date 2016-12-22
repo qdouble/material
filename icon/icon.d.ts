@@ -44,12 +44,17 @@ export declare class MdIcon implements OnChanges, OnInit, AfterViewChecked {
     private _renderer;
     private _mdIconRegistry;
     private _color;
-    svgSrc: string;
+    /** Name of the icon in the SVG icon set. */
     svgIcon: string;
+    /** Font set that the icon is a part of. */
     fontSet: string;
+    /** Name of an icon within a font set. */
     fontIcon: string;
+    /** Alt label to be used for accessibility. */
     alt: string;
+    /** Screenreader label for the icon. */
     hostAriaLabel: string;
+    /** Color of the icon. */
     color: string;
     private _previousFontSetClass;
     private _previousFontIconClass;
@@ -70,13 +75,10 @@ export declare class MdIcon implements OnChanges, OnInit, AfterViewChecked {
      *   'a:b:c' -> (throws MdIconInvalidNameError)
      */
     private _splitIconName(iconName);
-    /** TODO: internal */
     ngOnChanges(changes: {
         [propertyName: string]: SimpleChange;
     }): void;
-    /** TODO: internal */
     ngOnInit(): void;
-    /** TODO: internal */
     ngAfterViewChecked(): void;
     private _updateAriaLabel();
     private _getAriaLabel();

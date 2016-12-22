@@ -1,6 +1,7 @@
 @import '../core/style/menu-common';
+@import '../core/style/list-common';
 @import '../core/style/form-common';
-@import '../a11y/_a11y';
+@import '../core/a11y/a11y';
 
 $md-select-trigger-height: 30px !default;
 $md-select-trigger-min-width: 112px !default;
@@ -63,6 +64,7 @@ md-select {
 
 .md-select-value {
   position: absolute;
+  @include md-truncate-line();
 
   // Firefox and some versions of IE incorrectly keep absolutely
   // positioned children of flex containers in the flex flow when calculating
@@ -98,7 +100,7 @@ md-select {
   padding-bottom: 0;
   max-height: $md-select-panel-max-height;
 
-  @include md-high-contrast {
+  @include cdk-high-contrast {
     outline: solid 1px;
   }
 }
@@ -123,7 +125,7 @@ md-option {
   right: 0;
 
   // In high contrast mode this completely covers the text.
-  @include md-high-contrast {
+  @include cdk-high-contrast {
     opacity: 0.5;
   }
 }

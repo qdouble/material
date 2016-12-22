@@ -1,7 +1,8 @@
-import { ModuleWithProviders, ElementRef, ViewContainerRef, AnimationTransitionEvent, NgZone } from '@angular/core';
+import { ModuleWithProviders, ElementRef, ViewContainerRef, AnimationTransitionEvent, NgZone, OnDestroy } from '@angular/core';
 import { Overlay, OverlayRef, OverlayConnectionPosition, OriginConnectionPosition } from '../core';
 import { Observable } from 'rxjs/Observable';
 import { Dir } from '../core/rtl/dir';
+import 'rxjs/add/operator/first';
 export declare type TooltipPosition = 'left' | 'right' | 'above' | 'below' | 'before' | 'after';
 /** Time in ms to delay before changing the tooltip visibility to hidden */
 export declare const TOUCHEND_HIDE_DELAY: number;
@@ -11,7 +12,7 @@ export declare const TOUCHEND_HIDE_DELAY: number;
  *
  * https://material.google.com/components/tooltips.html
  */
-export declare class MdTooltip {
+export declare class MdTooltip implements OnDestroy {
     private _overlay;
     private _elementRef;
     private _viewContainerRef;
@@ -19,18 +20,28 @@ export declare class MdTooltip {
     private _dir;
     _overlayRef: OverlayRef;
     _tooltipInstance: TooltipComponent;
-    /** Allows the user to define the position of the tooltip relative to the parent element */
     private _position;
+    /** Allows the user to define the position of the tooltip relative to the parent element */
     position: TooltipPosition;
-    /** The message to be displayed in the tooltip */
+    /** @deprecated */
+    _positionDeprecated: TooltipPosition;
+    /** The default delay in ms before showing the tooltip after show is called */
+    showDelay: number;
+    /** The default delay in ms before hiding the tooltip after hide is called */
+    hideDelay: number;
     private _message;
+    /** The message to be displayed in the tooltip */
     message: string;
+    /** @deprecated */
+    _deprecatedMessage: string;
     constructor(_overlay: Overlay, _elementRef: ElementRef, _viewContainerRef: ViewContainerRef, _ngZone: NgZone, _dir: Dir);
-    /** Dispose the tooltip when destroyed */
+    /**
+     * Dispose the tooltip when destroyed.
+     */
     ngOnDestroy(): void;
-    /** Shows the tooltip */
-    show(): void;
-    /** Hides the tooltip after the provided delay in ms, defaulting to 0ms. */
+    /** Shows the tooltip after the delay in ms, defaults to tooltip-delay-show or 0ms if no input */
+    show(delay?: number): void;
+    /** Hides the tooltip after the delay in ms, defaults to tooltip-delay-hide or 0ms if no input */
     hide(delay?: number): void;
     /** Shows/hides the tooltip */
     toggle(): void;
@@ -49,11 +60,17 @@ export declare class MdTooltip {
     /** Updates the tooltip message and repositions the overlay according to the new message length */
     private _setTooltipMessage(message);
 }
-export declare type TooltipVisibility = 'visible' | 'hidden';
+export declare type TooltipVisibility = 'initial' | 'visible' | 'hidden';
+/**
+ * Internal component that wraps the tooltip's content.
+ * @docs-private
+ */
 export declare class TooltipComponent {
     private _dir;
     /** Message to display in the tooltip */
     message: string;
+    /** The timeout ID of any current timer set to show the tooltip */
+    _showTimeoutId: number;
     /** The timeout ID of any current timer set to hide the tooltip */
     _hideTimeoutId: number;
     /** Property watched by the animation framework to show or hide the tooltip */
@@ -65,13 +82,24 @@ export declare class TooltipComponent {
     /** Subject for notifying that the tooltip has been hidden from the view */
     private _onHide;
     constructor(_dir: Dir);
-    /** Shows the tooltip with an animation originating from the provided origin */
-    show(position: TooltipPosition): void;
-    /** Begins the animation to hide the tooltip after the provided delay in ms */
+    /**
+     * Shows the tooltip with an animation originating from the provided origin
+     * @param position Position of the tooltip.
+     * @param delay Amount of milliseconds to the delay showing the tooltip.
+     */
+    show(position: TooltipPosition, delay: number): void;
+    /**
+     * Begins the animation to hide the tooltip after the provided delay in ms.
+     * @param delay Amount of milliseconds to delay showing the tooltip.
+     */
     hide(delay: number): void;
-    /** Returns an observable that notifies when the tooltip has been hidden from view */
+    /**
+     * Returns an observable that notifies when the tooltip has been hidden from view
+     */
     afterHidden(): Observable<void>;
-    /** Whether the tooltip is being displayed */
+    /**
+     * Whether the tooltip is being displayed
+     */
     isVisible(): boolean;
     /** Sets the tooltip transform origin according to the tooltip position */
     _setTransformOrigin(value: TooltipPosition): void;

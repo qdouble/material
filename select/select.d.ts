@@ -58,8 +58,20 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
     private _disabled;
     /** The scroll position of the overlay panel, calculated to center the selected option. */
     private _scrollTop;
+    /** The placeholder displayed in the trigger of the select. */
+    private _placeholder;
     /** The animation state of the placeholder. */
     _placeholderState: string;
+    /**
+     * The width of the trigger. Must be saved to set the min width of the overlay panel
+     * and the width of the selected value.
+     */
+    _triggerWidth: number;
+    /**
+     * The width of the selected option's value. Must be set programmatically
+     * to ensure its overflow is clipped, as it's absolutely positioned.
+     */
+    _selectedValueWidth: number;
     /** Manages keyboard events for options in the panel. */
     _keyManager: ListKeyManager;
     /** View -> model callback called when value changes */
@@ -94,13 +106,21 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
         overlayX: string;
         overlayY: string;
     }[];
+    /** Trigger that opens the select. */
     trigger: ElementRef;
+    /** Overlay pane containing the options. */
     overlayDir: ConnectedOverlayDirective;
+    /** All of the defined select options. */
     options: QueryList<MdOption>;
+    /** Placeholder to be shown if no value has been selected. */
     placeholder: string;
+    /** Whether the component is disabled. */
     disabled: any;
+    /** Whether the component is required. */
     required: any;
+    /** Event emitted when the select has been opened. */
     onOpen: EventEmitter<{}>;
+    /** Event emitted when the select has been closed. */
     onClose: EventEmitter<{}>;
     constructor(_element: ElementRef, _renderer: Renderer, _viewportRuler: ViewportRuler, _dir: Dir, _control: NgControl);
     ngAfterContentInit(): void;
@@ -114,23 +134,31 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
     /**
      * Sets the select's value. Part of the ControlValueAccessor interface
      * required to integrate with Angular's core forms API.
+     *
+     * @param value New value to be written to the model.
      */
     writeValue(value: any): void;
     /**
      * Saves a callback function to be invoked when the select's value
      * changes from user input. Part of the ControlValueAccessor interface
      * required to integrate with Angular's core forms API.
+     *
+     * @param fn Callback to be triggered when the value changes.
      */
     registerOnChange(fn: (value: any) => void): void;
     /**
      * Saves a callback function to be invoked when the select is blurred
      * by the user. Part of the ControlValueAccessor interface required
      * to integrate with Angular's core forms API.
+     *
+     * @param fn Callback to be triggered when the component has been touched.
      */
     registerOnTouched(fn: () => {}): void;
     /**
      * Disables the select. Part of the ControlValueAccessor interface required
      * to integrate with Angular's core forms API.
+     *
+     * @param isDisabled Sets whether the component is disabled.
      */
     setDisabledState(isDisabled: boolean): void;
     /** Whether or not the overlay panel is open. */
@@ -162,6 +190,13 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
      * present in the DOM.
      */
     _setScrollTop(): void;
+    /**
+     * Sets the selected option based on a value. If no option can be
+     * found with the designated value, the select trigger is cleared.
+     */
+    private _setSelectionByValue(value);
+    /** Clears the select trigger and deselects every option in the list. */
+    private _clearSelection();
     private _getTriggerRect();
     /** Sets up a key manager to listen to keyboard events on the overlay panel. */
     private _initKeyManager();
@@ -177,6 +212,12 @@ export declare class MdSelect implements AfterContentInit, ControlValueAccessor,
     private _onSelect(option);
     /** Deselect each option that doesn't match the current selection. */
     private _updateOptions();
+    /**
+     * Must set the width of the selected option's value programmatically
+     * because it is absolutely positioned and otherwise will not clip
+     * overflow. The selection arrow is 9px wide, add 4px of padding = 13
+     */
+    private _setValueWidth();
     /** Focuses the selected item. If no option is selected, it will focus
      * the first item instead.
      */

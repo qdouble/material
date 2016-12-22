@@ -23,7 +23,10 @@ export var MdLine = (function () {
     ], MdLine);
     return MdLine;
 }());
-/* Helper that takes a query list of lines and sets the correct class on the host */
+/**
+ * Helper that takes a query list of lines and sets the correct class on the host.
+ * @docs-private
+ */
 export var MdLineSetter = (function () {
     function MdLineSetter(_lines, _renderer, _element) {
         var _this = this;

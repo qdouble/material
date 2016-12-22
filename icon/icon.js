@@ -63,15 +63,13 @@ export var MdIcon = (function () {
         this._elementRef = _elementRef;
         this._renderer = _renderer;
         this._mdIconRegistry = _mdIconRegistry;
+        /** Screenreader label for the icon. */
         this.hostAriaLabel = '';
     }
     Object.defineProperty(MdIcon.prototype, "color", {
-        get: function () {
-            return this._color;
-        },
-        set: function (value) {
-            this._updateColor(value);
-        },
+        /** Color of the icon. */
+        get: function () { return this._color; },
+        set: function (value) { this._updateColor(value); },
         enumerable: true,
         configurable: true
     });
@@ -113,7 +111,6 @@ export var MdIcon = (function () {
                 throw new MdIconInvalidNameError(iconName);
         }
     };
-    /** TODO: internal */
     MdIcon.prototype.ngOnChanges = function (changes) {
         var _this = this;
         var changedInputs = Object.keys(changes);
@@ -123,16 +120,12 @@ export var MdIcon = (function () {
                 var _a = this._splitIconName(this.svgIcon), namespace = _a[0], iconName = _a[1];
                 this._mdIconRegistry.getNamedSvgIcon(iconName, namespace).first().subscribe(function (svg) { return _this._setSvgElement(svg); }, function (err) { return console.log("Error retrieving icon: " + err); });
             }
-            else if (this.svgSrc) {
-                this._mdIconRegistry.getSvgIconFromUrl(this.svgSrc).first().subscribe(function (svg) { return _this._setSvgElement(svg); }, function (err) { return console.log("Error retrieving icon: " + err); });
-            }
         }
         if (this._usingFontIcon()) {
             this._updateFontIconClasses();
         }
         this._updateAriaLabel();
     };
-    /** TODO: internal */
     MdIcon.prototype.ngOnInit = function () {
         // Update font classes because ngOnChanges won't be called if none of the inputs are present,
         // e.g. <md-icon>arrow</md-icon>. In this case we need to add a CSS class for the default font.
@@ -140,7 +133,6 @@ export var MdIcon = (function () {
             this._updateFontIconClasses();
         }
     };
-    /** TODO: internal */
     MdIcon.prototype.ngAfterViewChecked = function () {
         // Update aria label here because it may depend on the projected text content.
         // (e.g. <md-icon>home</md-icon> should use 'home').
@@ -174,7 +166,7 @@ export var MdIcon = (function () {
         return null;
     };
     MdIcon.prototype._usingFontIcon = function () {
-        return !(this.svgIcon || this.svgSrc);
+        return !this.svgIcon;
     };
     MdIcon.prototype._setSvgElement = function (svg) {
         var layoutElement = this._elementRef.nativeElement;
@@ -214,10 +206,6 @@ export var MdIcon = (function () {
     __decorate([
         Input(), 
         __metadata('design:type', String)
-    ], MdIcon.prototype, "svgSrc", void 0);
-    __decorate([
-        Input(), 
-        __metadata('design:type', String)
     ], MdIcon.prototype, "svgIcon", void 0);
     __decorate([
         Input(), 
@@ -242,7 +230,7 @@ export var MdIcon = (function () {
     MdIcon = __decorate([
         Component({template: '<ng-content></ng-content>',
             selector: 'md-icon, mat-icon',
-            styles: ["md-icon { background-repeat: no-repeat; display: inline-block; fill: currentColor; height: 24px; width: 24px; } /*# sourceMappingURL=icon.css.map */ "],
+            styles: ["md-icon{background-repeat:no-repeat;display:inline-block;fill:currentColor;height:24px;width:24px}"],
             host: {
                 'role': 'img',
             },

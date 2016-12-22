@@ -13,6 +13,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 import { ViewChild, Component, Input, Output, EventEmitter, trigger, state, style, animate, transition, ElementRef, Optional } from '@angular/core';
 import { TemplatePortal, PortalHostDirective, Dir } from '../core';
 import 'rxjs/add/operator/map';
+/**
+ * Wrapper for the contents of a tab.
+ */
 export var MdTabBody = (function () {
     function MdTabBody(_elementRef, _dir) {
         this._elementRef = _elementRef;
@@ -38,6 +41,7 @@ export var MdTabBody = (function () {
         configurable: true
     });
     Object.defineProperty(MdTabBody.prototype, "origin", {
+        /** The origin position from which this tab should appear when it is centered into view. */
         set: function (origin) {
             if (origin == null) {
                 return;
@@ -124,7 +128,7 @@ export var MdTabBody = (function () {
     ], MdTabBody.prototype, "origin", null);
     MdTabBody = __decorate([
         Component({selector: 'md-tab-body',
-            template: "<div class=\"md-tab-body-content\" #content [@translateTab]=\"_position\" (@translateTab.start)=\"_onTranslateTabStarted($event)\" (@translateTab.done)=\"_onTranslateTabComplete($event)\"> <template portalHost></template> </div> ",
+            template: "<div class=\"md-tab-body-content\" #content [@translateTab]=\"_position\" (@translateTab.start)=\"_onTranslateTabStarted($event)\" (@translateTab.done)=\"_onTranslateTabComplete($event)\"><template cdkPortalHost></template></div>",
             animations: [
                 trigger('translateTab', [
                     state('left', style({ transform: 'translate3d(-100%, 0, 0)' })),

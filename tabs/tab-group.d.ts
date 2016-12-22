@@ -1,6 +1,4 @@
-import { ModuleWithProviders, NgZone, QueryList, ElementRef, Renderer } from '@angular/core';
-import { MdTabLabelWrapper } from './tab-label-wrapper';
-import { MdInkBar } from './ink-bar';
+import { ModuleWithProviders, QueryList, ElementRef, Renderer } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { MdTab } from './tab';
@@ -15,11 +13,8 @@ export declare class MdTabChangeEvent {
  * See: https://www.google.com/design/spec/components/tabs.html
  */
 export declare class MdTabGroup {
-    private _zone;
     private _renderer;
     _tabs: QueryList<MdTab>;
-    _labelWrappers: QueryList<MdTabLabelWrapper>;
-    _inkBar: MdInkBar;
     _tabBodyWrapper: ElementRef;
     /** Whether this component has been initialized. */
     private _isInitialized;
@@ -30,18 +25,21 @@ export declare class MdTabGroup {
     /** Whether the tab group should grow to the size of the active tab */
     private _dynamicHeight;
     dynamicHeight: boolean;
-    /** The index of the active tab. */
+    /** @deprecated */
+    _dynamicHeightDeprecated: boolean;
     private _selectedIndex;
+    /** The index of the active tab. */
     selectedIndex: number;
     /** Output to enable support for two-way binding on `selectedIndex`. */
     readonly selectedIndexChange: Observable<number>;
     private _onFocusChange;
+    /** Event emitted when focus has changed within a tab group. */
     readonly focusChange: Observable<MdTabChangeEvent>;
     private _onSelectChange;
+    /** Event emitted when the tab selection has changed. */
     readonly selectChange: Observable<MdTabChangeEvent>;
-    private _focusIndex;
     private _groupId;
-    constructor(_zone: NgZone, _renderer: Renderer);
+    constructor(_renderer: Renderer);
     /**
      * After the content is checked, this component knows what tabs have been defined
      * and what the selected index should be. This is where we can know exactly what position
@@ -51,34 +49,10 @@ export declare class MdTabGroup {
     ngAfterContentChecked(): void;
     /**
      * Waits one frame for the view to update, then updates the ink bar
-     * Note: This must be run outside of the zone or it will create an infinite change detection loop
-     * TODO: internal
+     * Note: This must be run outside of the zone or it will create an infinite change detection loop.
      */
     ngAfterViewChecked(): void;
-    /**
-     * Determines if an index is valid.  If the tabs are not ready yet, we assume that the user is
-     * providing a valid index and return true.
-     */
-    isValidIndex(index: number): boolean;
-    /** Tells the ink-bar to align itself to the current label wrapper */
-    private _updateInkBar();
-    /**
-     * Reference to the current label wrapper; defaults to null for initial render before the
-     * ViewChildren references are ready.
-     */
-    private readonly _currentLabelWrapper;
-    /** Tracks which element has focus; used for keyboard navigation */
-    /** When the focus index is set, we must manually send focus to the correct label */
-    focusIndex: number;
-    handleKeydown(event: KeyboardEvent): void;
-    /**
-     * Moves the focus left or right depending on the offset provided.  Valid offsets are 1 and -1.
-     */
-    moveFocus(offset: number): void;
-    /** Increment the focus index by 1 until a valid tab is found. */
-    focusNextTab(): void;
-    /** Decrement the focus index by 1 until a valid tab is found. */
-    focusPreviousTab(): void;
+    _focusChanged(index: number): void;
     private _createChangeEvent(index);
     /** Returns a unique id for each tab label element */
     _getTabLabelId(i: number): string;
