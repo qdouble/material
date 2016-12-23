@@ -13,7 +13,6 @@
 	<link rel="stylesheet" href="styles.css" />
 	<link rel="stylesheet" href="main.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<style>#str-dlls { display: none }</style>
 </head>
 <body>
 	<my-app>
@@ -22,11 +21,11 @@
 	<script type="text/javascript" src="hammer.min.js"></script>
 	<script type="text/javascript" src="modernizer-touch-events.js"></script>
 	<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=console.*,Intl.~locale.en&gated=1"></script>
-	<div id="str-dlls">
-		<%= '<' %>script src="/polyfill.dll.js"<%= '>' %><%= '<' %>/script<%= '>' %>
-		<%= '<' %>script src="/vendor.dll.js"<%= '>' %><%= '<' %>/script<%= '>' %>
-	</div>
-	<script src="/index.js"></script>
+	<% if (htmlWebpackPlugin.options.metadata.isDevServer) { %>
+  <!-- DLL files -->
+		<script src="/polyfill.dll.js"></script>
+		<script src="/vendor.dll.js"></script>
+  <% } %>
 	<script src="//static.getclicky.com/js" type="text/javascript"></script>
 	<script type="text/javascript">try{ clicky.init(101008881); }catch(e){}</script>
 	<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101008881ns.gif" /></p></noscript>
