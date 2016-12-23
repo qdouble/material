@@ -55,9 +55,9 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
       offerId: ['', Validators.minLength(2)],
       offerName: '',
       completedOn: '2016-11-27',
-      headers: ['', [Validators.required, Validators.maxLength(10000)]],
-      body: ['', [Validators.required, Validators.maxLength(10000)]],
-      additionalDetails: ['', Validators.maxLength(10000)]
+      headers: ['', [Validators.required, Validators.maxLength(30000)]],
+      body: ['', [Validators.required, Validators.maxLength(30000)]],
+      additionalDetails: ['', Validators.maxLength(30000)]
     });
     if (this.creditRequest$) {
       this.creditRequest$
