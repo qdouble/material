@@ -5,7 +5,7 @@
       <md-card class="order-status accent-background white">You have an order that is currently pending. You can not place another order until order is resolved. All pending completions
         will be processed at the same time.</md-card>
     </ng-container>
-    <ng-container *ngIf="!user?.orderPending && !user?.hasQualifiedReferrals">
+    <ng-container *ngIf="(!user?.orderPending && !user?.hasQualifiedReferrals)">
       <md-card class="os-message-card warn-background white">
         <ng-container *ngIf="user?.currentLevel < 1">
           <div style="text-align: left; padding: 4px;">
@@ -23,9 +23,10 @@
         <ng-container *ngIf="user?.currentLevel >= 1 && !user?.hasReferralsBeyondLevel">
           You have no referrals that you can currently place an order on.
         </ng-container>
+        
       </md-card>
     </ng-container>
-    <ng-container *ngIf="!user?.orderPending && user?.hasQualifiedReferrals">
+    <ng-container *ngIf="!user?.orderPending && user?.hasQualifiedReferrals && !user?.hold">
       <md-card class="order-status primary-background white">Congratulations! You have met all requirements! Place your order!</md-card>
       <md-card-subtitle>After approval, your order will be paid through:</md-card-subtitle>
       <os-selected-prize [changePrize]="changePrize" [form]="selectPrizeForm" [prize]="prize$ | async" [prizes]="prizes$ | async"
@@ -38,7 +39,13 @@
         </os-order-form>
       </div>
     </ng-container>
+
+    <md-card class="os-message-card warn-background white" *ngIf="!user?.orderPending && user?.hasQualifiedReferrals && user?.hold">
+          You are currently on hold and can not place any orders until your hold is removed.
   </md-card>
+
+  </md-card>
+  
   <md-card *ngIf="(orders$| async)?.length > 0" class="os-form-container">
     <md-card-title class="primary">Orders</md-card-title>
     <os-orders-table [loaded]="ordersLoaded$ | async" [orders]="orders$ | async">

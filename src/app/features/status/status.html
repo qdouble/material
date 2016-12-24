@@ -3,7 +3,7 @@
     <md-card *ngIf="user?.hold" class="os-message-card warn-background white">
       <h5>Your Account is on Hold</h5>
       <p>{{user.holdReason}}</p>
-      <p>{{user.holdMessage}}</p>
+      <pre>{{user.holdMessage}}</pre>
     </md-card>
   </div>
   <div class="os-status-page-section">
