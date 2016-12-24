@@ -17,6 +17,9 @@ export interface User {
     readonly paypal?: string;
     readonly birthday?: string;
     readonly selectedPrize?: string;
+    readonly hold?: boolean;
+    readonly holdReason?: String;
+    readonly holdMessage?: String;
     readonly profilePending?: boolean;
     readonly pendingProfile?: any;
     readonly receiveEmailNotifications?: boolean;
