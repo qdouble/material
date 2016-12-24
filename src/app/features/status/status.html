@@ -1,5 +1,12 @@
 <div class="os-page-container">
   <div class="os-status-page-section">
+    <md-card *ngIf="user?.hold" class="os-message-card warn-background white">
+      <h5>Your Account is on Hold</h5>
+      <p>{{user.holdReason}}</p>
+      <p>{{user.holdMessage}}</p>
+    </md-card>
+  </div>
+  <div class="os-status-page-section">
     <md-card id="announcements-section">
       <md-card-title class="primary">Announcements</md-card-title>
       <md-card-content>
