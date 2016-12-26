@@ -6,6 +6,11 @@ table {
   margin: 0 auto;
 }
 
+.table {
+  max-width: 430px;
+  margin: 0 auto;
+}
+
 #green-key {
   background: green;
   width: 14px;
@@ -48,14 +53,41 @@ table {
   }
 }
 
-@media screen and (max-width: 330px) {
+@media screen and (max-width: 413px) {
   .hide-1, .hide-2 {
     display: none;
   }
 }
 
-@media screen and (min-width: 330px) and (max-width: 500px) {
+@media screen and (min-width: 413px) and (max-width: 500px) {
   .hide-1 {
     display: none;
   }
 }
+
+
+.last-cell {
+  white-space: nowrap;
+  width: 100%;
+}
+
+@media screen and (max-width: 390px) {
+  .hide-mail {
+    display: none
+  }
+}
+
+
+.long-username {
+  display: none;
+  @media screen and (min-width: 366px) {
+    display: inline;
+  }
+}
+
+@media screen and (min-width: 366px) {
+  .short-username {
+    display: none
+  }
+}
+

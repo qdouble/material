@@ -1,25 +1,22 @@
 <div class="os-table-container">
  
-  <table class="mdl-data-table mdl-shadow--2dp">
-    <thead>
-      <tr>
-        <th class="mdl-data-table__cell--non-numeric hide-1" (click)="sortBy.emit('addedOn')">Added On</th>
-        <th class="mdl-data-table__cell--non-numeric" (click)="sortBy.emit('username')">Username</th>
-        <th class="mdl-data-table__cell" (click)="sortBy.emit('level')">Level</th>
-        <th class="mdl-data-table__cell--non-numeric">
-        </th>
-      </tr>
-    </thead>
-    <tbody>
+  <div class="table">
+      <div class="row header">
+        <div class="cell hide-1" (click)="sortBy.emit('addedOn')">Added On</div>
+        <div class="cell" (click)="sortBy.emit('username')">Username</div>
+        <div class="cell" (click)="sortBy.emit('level')">Level</div>
+        <div class="cell"></div>
+      </div>
       <ng-container *ngFor="let referral of referrals">
-        <tr [ngClass]="{'primary-background': referral.payBeyondLevel < referral.currentLevel, 'warn': referral.hold }">
-          <td class="mdl-data-table__cell--non-numeric hide-1">
+        <div [ngClass]="{'green': referral.payBeyondLevel < referral.currentLevel, 'red': referral.hold, 'row': true }">
+          <div class="cell hide-1"style="white-space: nowrap;">
             {{referral.addedOn | date: medium }}
-          </td>
-          <td class="mdl-data-table__cell--non-numeric">
-            <span>{{referral.username | slice:0:20 }}</span>
-          </td>
-          <td class="mdl-data-table__cell center">
+          </div>
+          <div class="cell">
+            <span class="long-username">{{referral.username | slice:0:20 }}</span>
+            <span class="short-username">{{referral.username | slice:0:10 }}</span>
+          </div>
+          <div class="cell" style="white-space: nowrap">
             <ng-container *ngIf="!referral.hold">
               <span>{{referral.currentLevel}}</span>
               <ng-container *ngIf="referral.payBeyondLevel < referral.currentLevel">
@@ -27,18 +24,17 @@
               </ng-container>
             </ng-container>
             <ng-container *ngIf="referral.hold"> Hold </ng-container>
-          </td>
-          <td>
-            <button md-icon-button [ngClass]="{'white-background': (!referral.leveledUp || referral.hold) , 'primary-background':  (referral.leveledUp && !referral.hold) }" 
+          </div>
+          <div class="cell last-cell">
+            <button md-icon-button [ngClass]="{'white-background': (!referral.leveledUp || referral.hold) , 'primary-background':  (referral.leveledUp && !referral.hold), 'warn-background': referral.hold }" 
               (click)="getReferral.emit(referral)">
               <md-icon>remove_red_eye</md-icon>
             </button>
-            <button md-icon-button  md-tooltip="Send Message (Coming Soon)" tooltip-position="before" [ngClass]="{'hide-2': true, 'white-background': (!referral.leveledUp || referral.hold) , 'primary-background':  (referral.leveledUp && !referral.hold) }">
+            <button md-icon-button  md-tooltip="Send Message (Coming Soon)" tooltip-position="before" [ngClass]="{'hide-mail': true, 'white-background': (!referral.leveledUp || referral.hold) , 'primary-background':  (referral.leveledUp && !referral.hold), 'warn-background': referral.hold }">
               <md-icon>email</md-icon>
             </button>
-          </td>
-        </tr>
+          </div>
+        </div>
       </ng-container>
-    </tbody>
-  </table>
+  </div>
 </div>
