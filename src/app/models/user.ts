@@ -38,6 +38,8 @@ export interface User {
     readonly hasQualifiedReferrals?: boolean;
     readonly hasReferralsBeyondLevel?: boolean;
     readonly orderPending?: boolean;
+    readonly updatedAt?: Date;
+    readonly createdAt?: Date;
     // Helpers //
     credits?: Credit[];
     requiresApproval?: true;

@@ -24,6 +24,11 @@ export class UserService extends RequestBase {
       .map(res => res.json());
   }
 
+  checkIfUserUpdated(): Observable<string> {
+    return this.http.get(`${API_USER_URL}/checkIfUserUpdated`, this.optionsNoPre)
+      .map(res => res.json());
+  }
+
   checkLoggedIn(): Observable<string> {
     return this.http.get(`${API_USER_URL}/loggedIn`, this.optionsNoPre)
       .map(res => res.text());

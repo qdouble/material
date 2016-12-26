@@ -51,6 +51,8 @@ export class AppComponent implements OnDestroy, OnInit {
   notifications$: Observable<Notify[]>;
   referredBy: string;
   snackRefs = [];
+  updatedAt: string;
+  updatedAt$: Observable<string>;
   userLoading$: Observable<boolean>;
   userLoaded$: Observable<boolean>;
   userLoggedIn$: Observable<boolean>;
@@ -84,7 +86,26 @@ export class AppComponent implements OnDestroy, OnInit {
       .takeUntil(this.destroyed$)
       .subscribe(() => {
         this.store.dispatch(this.uiActions.getVersion());
+        this.store.dispatch(this.userActions.checkIfUserUpdated());
       });
+
+    this.updatedAt$ = store.select(s => s.user.updatedAt);
+    this.updatedAt$
+      .takeUntil(this.destroyed$)
+      .subscribe(updatedAt => {
+        this.updatedAt = updatedAt;
+      });
+    let lastUpdate$ = store.select(s => s.user.lastUpdate);
+    lastUpdate$
+      .filter(l => l !== null && l !== undefined)
+      .takeUntil(this.destroyed$)
+      .subscribe(lastUpdate => {
+        if (this.updatedAt && lastUpdate !== this.updatedAt) {
+          store.dispatch(userActions.getProfile());
+        }
+      });
+
+
     this.onAdminLoginPage$ = store.let(getUserOnAdminPage());
     this.notifications$ = store.let(getNotifyCollection());
     this.notifications$
@@ -116,7 +137,6 @@ export class AppComponent implements OnDestroy, OnInit {
     this.credits$ = store.let(getCreditCollection());
     this.credits$
       .takeUntil(this.destroyed$)
-      // .filter(c => c !== undefined && c.length > 0)
       .subscribe(credits => {
         let creditTotal = 0;
         credits.forEach(credit => {
@@ -124,7 +144,7 @@ export class AppComponent implements OnDestroy, OnInit {
             creditTotal += credit.creditValue;
           }
         });
-        creditTotal =  Math.floor(creditTotal * 100) / 100;
+        creditTotal = Math.floor(creditTotal * 100) / 100;
         this.store.dispatch(this.userActions.setCreditTotal(creditTotal));
       });
     this.store.dispatch(this.prizeActions.getPrizes());

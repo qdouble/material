@@ -82,6 +82,29 @@ export class UserActions {
     };
   }
 
+  static CHECK_IF_USER_UPDATED = '[User] Check If User Updated';
+  checkIfUserUpdated(): Action {
+    return {
+      type: UserActions.CHECK_IF_USER_UPDATED
+    };
+  }
+
+  static CHECK_IF_USER_UPDATED_FAIL = '[User] Check If User Updated Fail';
+  checkIfUserUpdatedFail(res: any): Action {
+    return {
+      type: UserActions.CHECK_IF_USER_UPDATED_FAIL,
+      payload: res
+    };
+  }
+
+  static CHECK_IF_USER_UPDATED_SUCCESS = '[User] Check If User Updated Success';
+  checkIfUserUpdatedSuccess(res: any): Action {
+    return {
+      type: UserActions.CHECK_IF_USER_UPDATED_SUCCESS,
+      payload: res
+    };
+  }
+
   static CHECK_LOGGED_IN = '[User] Check Logged In';
   checkLoggedIn(): Action {
     return {

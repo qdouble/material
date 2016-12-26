@@ -14,6 +14,7 @@ export interface UserState {
   credits: { [id: string]: Credit };
   creditTotal: number;
   entryEmail: string | null;
+  lastUpdate: string;
   loading: boolean;
   loaded: boolean;
   loginChecked: boolean;
@@ -23,6 +24,7 @@ export interface UserState {
   referralIds: string[];
   referrals: { [id: string]: Referral };
   settingPrize: boolean;
+  updatedAt: string;
   user: User;
 };
 
@@ -31,6 +33,7 @@ export const initialState: UserState = {
   credits: {},
   creditTotal: 0,
   entryEmail: null,
+  lastUpdate: null,
   loading: false,
   loaded: false,
   loginChecked: false,
@@ -40,6 +43,7 @@ export const initialState: UserState = {
   referralIds: [],
   referrals: {},
   settingPrize: false,
+  updatedAt: null,
   user: {}
 };
 
@@ -75,6 +79,14 @@ export function userReducer(state = initialState, action: Action): UserState {
     case UserActions.CHECK_EMAIL_SUCCESS: {
       return Object.assign({}, state, {
         loading: false
+      });
+    }
+
+    case UserActions.CHECK_IF_USER_UPDATED_SUCCESS: {
+      let updatedAt = action.payload.updatedAt;
+      if (!updatedAt) return state;
+      return Object.assign({}, state, {
+        lastUpdate: updatedAt
       });
     }
 
@@ -118,10 +130,12 @@ export function userReducer(state = initialState, action: Action): UserState {
       return Object.assign({}, state, {
         creditIds: creditIds,
         credits: creditEntities,
+        lastUpdate: user.updatedAt,
         loaded: true,
         loading: false,
         referralIds: user.referralIds || [],
         referrals: user.referrals || {},
+        updatedAt: user.updatedAt,
         user: userOnly
       });
     }

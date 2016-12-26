@@ -64,6 +64,16 @@ export class UserEffects {
       ))
     );
 
+    @Effect() checkIfUserUpdated$ = this.actions$
+    .ofType(UserActions.CHECK_IF_USER_UPDATED)
+    .map(action => action.payload)
+    .switchMap(() => this.userService.checkIfUserUpdated()
+      .map((res) => this.userActions.checkIfUserUpdatedSuccess(res))
+      .catch((res) => Observable.of(
+        this.userActions.checkIfUserUpdatedFail(res)
+      ))
+    );
+
   @Effect() checkLoggedIn$ = this.actions$
     .ofType(UserActions.CHECK_LOGGED_IN)
     .map(action => <string>action.payload)

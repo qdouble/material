@@ -42,6 +42,8 @@ export class Status implements OnDestroy {
   selectedPrizeValues$: Observable<string[]>;
   settingPrize$: Observable<boolean>;
   sponsorForm: FormGroup;
+  updatedAt: string;
+  updatedAt$: Observable<string>;
   user$: Observable<User>;
   user: User;
   @ViewChild(ReferralsTable) referralTable: ReferralsTable;
@@ -91,6 +93,25 @@ export class Status implements OnDestroy {
           });
       });
     this.creditTotal$ = store.let(getCreditTotal());
+
+    this.updatedAt$ = store.select(s => s.user.updatedAt);
+    this.updatedAt$
+      .takeUntil(this.destroyed$)
+      .subscribe(updatedAt => {
+        this.updatedAt = updatedAt;
+        if (updatedAt) {
+          this.store.dispatch(this.userActions.checkIfUserUpdated());
+        }
+      });
+    let lastUpdate$ = store.select(s => s.user.lastUpdate);
+    lastUpdate$
+      .filter(l => l !== null && l !== undefined)
+      .takeUntil(this.destroyed$)
+      .subscribe(lastUpdate => {
+        if (this.updatedAt && lastUpdate !== this.updatedAt) {
+          store.dispatch(userActions.getProfile());
+        }
+      });
   }
 
   cancelPrizeChange() {
