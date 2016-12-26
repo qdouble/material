@@ -1,26 +1,40 @@
-th { 
-  cursor: pointer; 
-}
-
-table {
-  margin: 0 auto;
-}
-
-@media screen and (max-width: 550px) {
-  .mdl-data-table td, .mdl-data-table th {
-    padding-right: 10px !important;
-    padding-left:  8px;
-  }
-}
-
-@media screen and (max-width: 330px) {
-  .hide-1, .hide-2 {
+@media screen and (max-width: 319px) {
+  .hide-amount {
     display: none;
   }
 }
 
-@media screen and (min-width: 330px) and (max-width: 550px) {
-  .hide-1 {
+@media screen and (max-width: 510px) {
+  .hide-prize, {
     display: none;
+  }
+}
+
+@media screen and (max-width: 413px) {
+  .hide-updated {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 560px) {
+  .short-date {
+    display: none;
+  }
+}
+
+.medium-date {
+  display: none;
+  @media screen and (min-width: 560px) {
+    display: inline;
+  }
+  @media screen and (min-width: 620px) {
+    display: none;
+  }
+}
+
+.long-date {
+  display: none;
+  @media screen and (min-width: 620px) {
+    display: inline;
   }
 }

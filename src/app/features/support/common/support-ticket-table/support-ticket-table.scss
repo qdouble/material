@@ -1,54 +1,65 @@
-th { 
-  cursor: pointer; 
+
+.unread-cell {
+  padding: 9px 0px 0 8px;
+  vertical-align: middle;
 }
 
-table {
-  margin: 0 auto;
+.close-ticket-btn {
+  display: none;
+  @media screen and (min-width: 540px) {
+    display: inline;
+  }
 }
 
-.mdl-data-table { 
-  font-size: 13px !important
-}
-
-#reload-tickets {
-  position: relative; 
-  top: 5px;
-  left: 22px;
-}
-
-.unread-td {
-  padding-left: 8px; 
-  padding-right: 3px; 
-  vertical-align: bottom;
-}
-
-@media screen and (max-width: 400px) {
-  .hide-1 {
+@media screen and (max-width: 444px) {
+  .hide-date {
     display: none;
   }
 }
 
-
-@media screen and (max-width: 500px) {
-  .hide-small {
-    display: none !important;
-  }
-  .mdl-data-table td, .mdl-data-table th {
-    padding: 0 4px 0 !important;
-  }
-  .unread-td {
-    vertical-align: middle !important;
-    top: 4px;
+.short-date {
+  display: inline;
+  @media screen and (min-width: 480px) {
+    display: none;
   }
 }
 
-@media screen and (min-width: 500px) and (max-width: 600px) {
-  .mdl-data-table td, .mdl-data-table th {
-    padding: 0 0px 12px 10px;
-    text-align: right;
+.medium-date {
+  display: none;
+  @media screen and (min-width: 480px) {
+    display: inline;
   }
-  #reload-tickets {
-    left: 0px;
+  @media screen and (min-width: 620px) {
+    display: none;
   }
 }
 
+.long-date {
+  display: none;
+  @media screen and (min-width: 620px) {
+    display: inline;
+  }
+  @media screen and (min-width: 670px) {
+    display: none;
+  }
+}
+
+.full-date {
+  display: none;
+  @media screen and (min-width: 670px) {
+    display: inline;
+  }
+}
+
+.long-subject {
+  display: none;
+  @media screen and (min-width: 355px) {
+    display: inline;
+  }
+}
+
+.short-subject {
+  @media screen and (min-width: 355px) {
+    display: none;
+  }
+}

@@ -1,10 +1,9 @@
 <div class="os-table-container">
- 
   <div class="table">
       <div class="row header">
         <div class="cell hide-1" (click)="sortBy.emit('addedOn')">Added On</div>
         <div class="cell" (click)="sortBy.emit('username')">Username</div>
-        <div class="cell" (click)="sortBy.emit('level')">Level</div>
+        <div class="cell center" (click)="sortBy.emit('level')">Level</div>
         <div class="cell"></div>
       </div>
       <ng-container *ngFor="let referral of referrals">
@@ -16,7 +15,7 @@
             <span class="long-username">{{referral.username | slice:0:20 }}</span>
             <span class="short-username">{{referral.username | slice:0:10 }}</span>
           </div>
-          <div class="cell nowrap">
+          <div class="cell nowrap center">
             <ng-container *ngIf="!referral.hold">
               <span>{{referral.currentLevel}}</span>
               <ng-container *ngIf="referral.payBeyondLevel < referral.currentLevel">

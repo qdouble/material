@@ -1,11 +1,3 @@
-th { 
-  cursor: pointer; 
-}
-
-table {
-  margin: 0 auto;
-}
-
 .table {
   max-width: 430px;
   margin: 0 auto;
@@ -17,25 +9,6 @@ table {
   height: 14px;
 }
 
-.mdl-data-table { 
-  font-size: 13px !important
-}
-
-
-#hold-td {
-  text-align: left;
-  :nth-child(1) {
-    font-size: 12px;
-    font-weight: 600;
-  }
-  :nth-child(2) {
-    font-size: 11px;
-  }
-  p {
-    margin-bottom: 0px;
-  }
-}
-
 #reload-referrals {
   position: relative; 
   top: 5px;
@@ -44,13 +17,6 @@ table {
 
 .white-background {
   background: white;
-}
-
-@media screen and (max-width: 500px) {
-  .mdl-data-table td, .mdl-data-table th {
-    padding-right: 10px !important;
-    padding-left:  8px;
-  }
 }
 
 @media screen and (max-width: 413px) {
@@ -65,7 +31,6 @@ table {
   }
 }
 
-
 .last-cell {
   white-space: nowrap;
   width: 100%;
@@ -76,7 +41,6 @@ table {
     display: none
   }
 }
-
 
 .long-username {
   display: none;

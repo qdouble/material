@@ -12,7 +12,6 @@ export class SupportTicketTable {
   @Input() loading: boolean;
   @Input() tickets: Ticket[];
   @Output() closeTicket = new EventEmitter();
-  @Output() reload = new EventEmitter();
   @Output() sortBy = new EventEmitter();
   @Output() viewTicket = new EventEmitter();
   trackById(index: number, ticket: Ticket) {

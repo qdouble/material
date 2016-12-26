@@ -61,9 +61,6 @@ export class Support {
   closeTicket(ticket: { id: string, close: boolean }) {
     this.store.dispatch(this.ticketActions.closeTicket(ticket));
   }
-  reload(event) {
-    this.store.dispatch(this.ticketActions.getTickets());
-  }
   sortBy(prop: string) {
     if (prop === this.lastSort && !this.reverseSort) {
       this.reverseSort = true;

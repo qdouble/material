@@ -18,7 +18,6 @@
           <os-support-ticket-table
             [tickets]="closedTickets$ | async"
             (closeTicket)=closeTicket($event)
-            (reload)=reload($event)
             (sortBy)=sortBy($event)>
           </os-support-ticket-table>
       </md-card>
