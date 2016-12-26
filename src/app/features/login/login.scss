@@ -1,5 +1,11 @@
 @import '../../variables.scss';
 
+.login-header {
+  display: block;
+  width: 100%;
+  height: 300px;
+}
+
 md-card-title {
   color: $primary-color-x-dark;
 }
