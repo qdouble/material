@@ -19,6 +19,7 @@ export interface UserState {
   loaded: boolean;
   loginChecked: boolean;
   loggedIn: boolean | null;
+  matches: boolean | undefined;
   onAdminPage: boolean;
   referredBy: string | null;
   referralIds: string[];
@@ -38,6 +39,7 @@ export const initialState: UserState = {
   loaded: false,
   loginChecked: false,
   loggedIn: null,
+  matches: undefined,
   onAdminPage: false,
   referredBy: null,
   referralIds: [],
@@ -87,6 +89,20 @@ export function userReducer(state = initialState, action: Action): UserState {
       if (!updatedAt) return state;
       return Object.assign({}, state, {
         lastUpdate: updatedAt
+      });
+    }
+
+    case UserActions.CHECK_IP_MATCH:
+    case UserActions.CHECK_IP_MATCH_FAIL:
+    return Object.assign({}, state, {
+        matches: undefined
+      });
+
+    case UserActions.CHECK_IP_MATCH_SUCCESS: {
+      let matches: boolean = action.payload.matches;
+      if (matches === undefined) return state;
+      return Object.assign({}, state, {
+        matches: matches
       });
     }
 

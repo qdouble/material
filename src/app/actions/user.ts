@@ -105,6 +105,30 @@ export class UserActions {
     };
   }
 
+  static CHECK_IP_MATCH = '[User] Check IP Match';
+  checkIPMatch(): Action {
+    return {
+      type: UserActions.CHECK_IP_MATCH
+    };
+  }
+
+  static CHECK_IP_MATCH_FAIL = '[User] Check IP Match Fail';
+  checkIPMatchFail(err: Error): Action {
+    return {
+      type: UserActions.CHECK_IP_MATCH_FAIL,
+      payload: err
+    };
+  }
+
+
+  static CHECK_IP_MATCH_SUCCESS = '[User] Check IP Match Success';
+  checkIPMatchSuccess(res): Action {
+    return {
+      type: UserActions.CHECK_IP_MATCH_SUCCESS,
+      payload: res
+    };
+  }
+
   static CHECK_LOGGED_IN = '[User] Check Logged In';
   checkLoggedIn(): Action {
     return {

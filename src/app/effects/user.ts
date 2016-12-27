@@ -74,6 +74,16 @@ export class UserEffects {
       ))
     );
 
+    @Effect() checkIPMatch$ = this.actions$
+    .ofType(UserActions.CHECK_IP_MATCH)
+    .map(action => action.payload)
+    .switchMap(() => this.userService.checkIPMatch()
+      .map((res) => this.userActions.checkIPMatchSuccess(res))
+      .catch((res) => Observable.of(
+        this.userActions.checkIPMatchFail(res)
+      ))
+    );
+
   @Effect() checkLoggedIn$ = this.actions$
     .ofType(UserActions.CHECK_LOGGED_IN)
     .map(action => <string>action.payload)

@@ -29,7 +29,6 @@ import { Referral } from '../../../../models/referral';
 export class ReferralDetailsDialog implements OnInit {
   credits = 0;
   referral: Referral;
-  jazzMessage = 'Jazzy jazz jazz';
 
   constructor(public dialogRef: MdDialogRef<ReferralDetailsDialog>) { }
   ngOnInit() {

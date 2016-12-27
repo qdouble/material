@@ -1,6 +1,7 @@
 /* tslint:disable: variable-name */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -16,6 +17,8 @@ import { getPrizeSelected, getPrizeCollection, getPrizeLoaded } from '../../redu
 import { getUserEntryEmail, getUserReferredBy } from '../../reducers/user';
 import { CustomValidators, RegexValues, UsernameValidator } from '../../validators';
 
+import { IPMatchFoundDialog } from './ip-match-found.dialog';
+
 @Component({
   selector: 'os-register',
   providers: [UsernameValidator],
@@ -25,12 +28,25 @@ import { CustomValidators, RegexValues, UsernameValidator } from '../../validato
 
 export class Register implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
+  dialogRef: MdDialogRef<IPMatchFoundDialog>;
+  config: MdDialogConfig = {
+    disableClose: false,
+    width: '90%',
+    height: '',
+    position: {
+      top: '',
+      bottom: '',
+      left: '',
+      right: ''
+    }
+  };
   countries$: Observable<Country[]>;
   countryIds$: Observable<(string | undefined)[]>;
   countryNames$: Observable<(string | undefined)[]>;
   countryLoaded$: Observable<boolean>;
   f: FormGroup;
   entryEmail$: Observable<string | null>;
+  matches$: Observable<boolean>;
   prizes$: Observable<Prize[]>;
   prizeIds$: Observable<(string | undefined)[]>;
   prizeNames$: Observable<(string | undefined)[]>;
@@ -44,6 +60,7 @@ export class Register implements OnDestroy, OnInit {
 
   constructor(
     private countryActions: CountryActions,
+    public dialog: MdDialog,
     private prizeActions: PrizeActions,
     private store: Store<AppState>,
     private userActions: UserActions,
@@ -162,8 +179,31 @@ export class Register implements OnDestroy, OnInit {
       .subscribe(id => this.f.patchValue({ selectedPrize: id }));
   }
 
+  open() {
+    this.dialogRef = this.dialog.open(IPMatchFoundDialog, this.config);
+
+    this.dialogRef.afterClosed().subscribe(proceed => {
+      if (proceed) {
+        this.store.dispatch(this.userActions.register(this.f.value));
+      }
+      this.dialogRef = null;
+    });
+  }
+
   submitForm() {
-    this.store.dispatch(this.userActions.register(this.f.value));
+    let matches$ = this.store.select(s => s.user.matches);
+    matches$
+      .filter(m => m !== undefined)
+      .take(1)
+      .takeUntil(this.destroyed$)
+      .subscribe(match => {
+        if (match) {
+          this.open();
+        } else {
+          this.store.dispatch(this.userActions.register(this.f.value));
+        }
+      });
+      this.store.dispatch(this.userActions.checkIPMatch());
   }
 
   ngOnDestroy() {

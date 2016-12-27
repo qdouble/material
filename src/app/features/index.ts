@@ -14,7 +14,7 @@ import { PrivacyPolicy } from './privacy-policy';
 import { Profile } from './profile';
 import { Promotions } from './promotions';
 import { ProofPicGallery } from './proof-pic-gallery';
-import { Register } from './register';
+import { IPMatchFoundDialog, Register } from './register';
 import { ReportSpam } from './report-spam';
 import { ReferralDetailsDialog, ReferralsTable, SelectedPrizeComponent, Status } from './status';
 import {
@@ -30,6 +30,7 @@ export {
   ForgotPassword,
   Homepage,
   HowItWorks,
+  IPMatchFoundDialog,
   Login,
   Logout,
   MessagesComponent,
@@ -62,6 +63,7 @@ export const PAGES_COMPONENTS = [
   ForgotPassword,
   Homepage,
   HowItWorks,
+  IPMatchFoundDialog,
   Login,
   Logout,
   MessagesComponent,
