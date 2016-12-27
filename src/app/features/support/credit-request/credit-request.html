@@ -29,7 +29,7 @@
       </md-card>
       <form *ngIf="!view || creditRequest?.status === 'More Information Needed'" [formGroup]="f" (ngSubmit)="submitRequest(f.value)">
         <ng-container *ngIf="!view">
-          <select-input controlName="offerId" label="Completed Offer: " [optionValues]="offerIds$ | async" [optionLabels]="offerNames$ | async"
+          <select-input controlName="offerId" label="Completed Offer: " [fullWidth]="true" [optionValues]="offerIds$ | async" [optionLabels]="offerNames$ | async"
             [form]="f"></select-input>
           <label>Date Completed:</label> <input type="date" id="myDate" [value]="todaysDate" formControlName="completedOn">
         </ng-container>

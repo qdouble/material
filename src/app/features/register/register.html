@@ -2,8 +2,8 @@
   <md-card class="os-form-container">
     <md-card-title>Register</md-card-title>
     <md-card id="registration-text">
-      All information provided is used for verifying your account and paying out prizes.
-      Invalid information will lead to this account being placed on hold. Your information will not be used for spam or sold to third parties.
+      All information provided is used for verifying your account and paying out prizes. Invalid information will lead to this
+      account being placed on hold. Your information will not be used for spam or sold to third parties.
     </md-card>
     <form [formGroup]="f" (ngSubmit)="submitForm()">
       <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
@@ -28,19 +28,21 @@
       <os-form-input class="os-form-input" type="text" controlName="city" placeholder="City" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" type="text" controlName="State" placeholder="State" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" type="text" controlName="zipCode" placeholder="Zip Code" [form]="f"></os-form-input>
-      <select-input [label]="'Country'" [optionValues]="countryIds$ | async"
-        [optionLabels]="countryNames$ | async" [controlName]="'country'" [form]="f">
+      <select-input [label]="'Country'" [optionValues]="countryIds$ | async" [optionLabels]="countryNames$ | async" [controlName]="'country'"
+        [form]="f">
       </select-input>
       <os-form-input class="os-form-input" type="text" controlName="phone" placeholder="Phone Number" [form]="f"></os-form-input>
       <div class="form-group">
         <label>Birthday</label>
         <input type="date" formControlName="birthday" class="form-control">
       </div>
-      <label>How would You like to recieve your prize?</label>
-      <select-input *ngIf="showPrizes" class="receive-prize" [optionValues]="prizeIds$ | async"
-        [optionLabels]="prizeNames$ | async" [controlName]="'selectedPrize'" [form]="f">
-      </select-input>
-      <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address'" [controlName]="'paypal'" [form]="f">
+      <div>
+        <select-input *ngIf="showPrizes" class="receive-prize" label="How would You like to recieve your prize?" [optionValues]="prizeIds$ | async" [optionLabels]="prizeNames$ | async"
+          [controlName]="'selectedPrize'" [form]="f">
+        </select-input>
+      </div>
+      <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address'" [controlName]="'paypal'"
+        [form]="f">
       </os-form-input>
       <div class="os-agree-checkbox">
         <md-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the <a routerLink="../terms-and-conditions">Terms and Conditions</a></md-checkbox>
