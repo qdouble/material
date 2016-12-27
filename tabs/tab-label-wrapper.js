@@ -8,7 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Directive, ElementRef, Renderer, Input } from '@angular/core';
-import { coerceBooleanProperty } from '../core/coercion/boolean-property';
+import { coerceBooleanProperty } from '../core/coersion/boolean-property';
 /** Used in the `md-tab-group` view to display tab labels */
 export var MdTabLabelWrapper = (function () {
     function MdTabLabelWrapper(elementRef, _renderer) {
@@ -18,7 +18,6 @@ export var MdTabLabelWrapper = (function () {
         this._disabled = false;
     }
     Object.defineProperty(MdTabLabelWrapper.prototype, "disabled", {
-        /** Whether the element is disabled. */
         get: function () { return this._disabled; },
         set: function (value) { this._disabled = coerceBooleanProperty(value); },
         enumerable: true,

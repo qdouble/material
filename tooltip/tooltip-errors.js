@@ -4,10 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 import { MdError } from '../core';
-/**
- * Exception thrown when a tooltip has an invalid position.
- * @docs-private
- */
+/** Exception thrown when a tooltip has an invalid position. */
 export var MdTooltipInvalidPositionError = (function (_super) {
     __extends(MdTooltipInvalidPositionError, _super);
     function MdTooltipInvalidPositionError(position) {

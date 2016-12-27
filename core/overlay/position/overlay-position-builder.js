@@ -16,18 +16,11 @@ export var OverlayPositionBuilder = (function () {
     function OverlayPositionBuilder(_viewportRuler) {
         this._viewportRuler = _viewportRuler;
     }
-    /**
-     * Creates a global position strategy.
-     */
+    /** Creates a global position strategy. */
     OverlayPositionBuilder.prototype.global = function () {
         return new GlobalPositionStrategy();
     };
-    /**
-     * Creates a relative position strategy.
-     * @param elementRef
-     * @param originPos
-     * @param overlayPos
-     */
+    /** Creates a relative position strategy. */
     OverlayPositionBuilder.prototype.connectedTo = function (elementRef, originPos, overlayPos) {
         return new ConnectedPositionStrategy(elementRef, originPos, overlayPos, this._viewportRuler);
     };

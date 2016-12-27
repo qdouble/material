@@ -20,7 +20,7 @@ $md-tooltip-padding: 8px;
   height: $md-tooltip-height;
   line-height: $md-tooltip-height;
 
-  @include cdk-high-contrast {
+  @include md-high-contrast {
     outline: solid 1px;
   }
 }

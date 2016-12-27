@@ -1,6 +1,5 @@
 import { ModuleWithProviders, ElementRef, EventEmitter } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { HammerInput } from '../core';
 import { Dir } from '../core/rtl/dir';
 /**
  * Provider Expression that allows md-slider to register as a ControlValueAccessor.
@@ -12,24 +11,18 @@ export declare class MdSliderChange {
     source: MdSlider;
     value: number;
 }
-/**
- * Allows users to select from a range of values by moving the slider thumb. It is similar in
- * behavior to the native `<input type="range">` element.
- */
 export declare class MdSlider implements ControlValueAccessor {
     private _dir;
     /** A renderer to handle updating the slider's thumb and fill track. */
     private _renderer;
     /** The dimensions of the slider. */
     private _sliderDimensions;
-    private _disabled;
     /** Whether or not the slider is disabled. */
+    private _disabled;
     disabled: boolean;
-    private _thumbLabel;
     /** Whether or not to show the thumb label. */
+    private _thumbLabel;
     thumbLabel: boolean;
-    /** @deprecated */
-    _thumbLabelDeprecated: boolean;
     private _controlValueAccessorChangeFn;
     /** The last value for which a change event was emitted. */
     private _lastEmittedValue;
@@ -45,31 +38,29 @@ export declare class MdSlider implements ControlValueAccessor {
      * Used to shrink and grow the thumb as according to the Material Design spec.
      */
     _isActive: boolean;
-    private _step;
     /** The values at which the thumb will snap. */
+    private _step;
     step: number;
-    private _tickInterval;
     /**
      * How often to show ticks. Relative to the step so that a tick always appears on a step.
      * Ex: Tick interval of 4 with a step of 3 will draw a tick every 4 steps (every 12 values).
      */
+    private _tickInterval;
     tickInterval: number | "auto";
-    /** @deprecated */
-    _tickIntervalDeprecated: number | "auto";
-    private _tickIntervalPercent;
     /** The size of a tick interval as a percentage of the size of the track. */
+    private _tickIntervalPercent;
     readonly tickIntervalPercent: number;
-    private _percent;
     /** The percentage of the slider that coincides with the value. */
+    private _percent;
     readonly percent: number;
-    private _value;
     /** Value of the slider. */
+    private _value;
     value: number;
-    private _min;
     /** The miniumum value that the slider can have. */
+    private _min;
     min: number;
-    private _max;
     /** The maximum value that the slider can have. */
+    private _max;
     max: number;
     /** Whether the slider is inverted. */
     invert: any;
@@ -104,7 +95,6 @@ export declare class MdSlider implements ControlValueAccessor {
     };
     /** The language direction for this slider element. */
     readonly direction: string;
-    /** Event emitted when the slider value has changed. */
     change: EventEmitter<MdSliderChange>;
     constructor(_dir: Dir, elementRef: ElementRef);
     _onMouseenter(): void;
@@ -128,28 +118,13 @@ export declare class MdSlider implements ControlValueAccessor {
     private _calculateValue(percentage);
     /** Return a number between two numbers. */
     private _clamp(value, min?, max?);
-    /**
-     * Sets the model value. Implemented as part of ControlValueAccessor.
-     * @param value
-     */
+    /** Implemented as part of ControlValueAccessor. */
     writeValue(value: any): void;
-    /**
-     * Registers a callback to eb triggered when the value has changed.
-     * Implemented as part of ControlValueAccessor.
-     * @param fn Callback to be registered.
-     */
+    /** Implemented as part of ControlValueAccessor. */
     registerOnChange(fn: (value: any) => void): void;
-    /**
-     * Registers a callback to be triggered when the component is touched.
-     * Implemented as part of ControlValueAccessor.
-     * @param fn Callback to be registered.
-     */
+    /** Implemented as part of ControlValueAccessor. */
     registerOnTouched(fn: any): void;
-    /**
-     * Sets whether the component should be disabled.
-     * Implemented as part of ControlValueAccessor.
-     * @param isDisabled
-     */
+    /** Implemented as part of ControlValueAccessor. */
     setDisabledState(isDisabled: boolean): void;
 }
 /**

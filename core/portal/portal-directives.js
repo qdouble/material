@@ -12,7 +12,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { NgModule, Directive, TemplateRef, ComponentFactoryResolver, ViewContainerRef, Input } from '@angular/core';
+import { NgModule, Directive, TemplateRef, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { TemplatePortal, BasePortalHost } from './portal';
 /**
  * Directive version of a `TemplatePortal`. Because the directive *is* a TemplatePortal,
@@ -30,8 +30,8 @@ export var TemplatePortalDirective = (function (_super) {
     }
     TemplatePortalDirective = __decorate([
         Directive({
-            selector: '[cdk-portal], [portal]',
-            exportAs: 'cdkPortal',
+            selector: '[portal]',
+            exportAs: 'portal',
         }), 
         __metadata('design:paramtypes', [TemplateRef, ViewContainerRef])
     ], TemplatePortalDirective);
@@ -42,7 +42,7 @@ export var TemplatePortalDirective = (function (_super) {
  * directly attached to it, enabling declarative use.
  *
  * Usage:
- * <template [cdkPortalHost]="greeting"></template>
+ * <template [portalHost]="greeting"></template>
  */
 export var PortalHostDirective = (function (_super) {
     __extends(PortalHostDirective, _super);
@@ -51,15 +51,7 @@ export var PortalHostDirective = (function (_super) {
         this._componentFactoryResolver = _componentFactoryResolver;
         this._viewContainerRef = _viewContainerRef;
     }
-    Object.defineProperty(PortalHostDirective.prototype, "_deprecatedPortal", {
-        /** @deprecated */
-        get: function () { return this.portal; },
-        set: function (v) { this.portal = v; },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(PortalHostDirective.prototype, "portal", {
-        /** Portal associated with the Portal host. */
         get: function () {
             return this._portal;
         },
@@ -74,11 +66,7 @@ export var PortalHostDirective = (function (_super) {
     PortalHostDirective.prototype.ngOnDestroy = function () {
         this.dispose();
     };
-    /**
-     * Attach the given ComponentPortal to this PortalHost using the ComponentFactoryResolver.
-     *
-     * @param portal Portal to be attached to the portal host.
-     */
+    /** Attach the given ComponentPortal to this PortalHost using the ComponentFactoryResolver. */
     PortalHostDirective.prototype.attachComponentPortal = function (portal) {
         portal.setAttachedHost(this);
         // If the portal specifies an origin, use that as the logical location of the component
@@ -91,10 +79,7 @@ export var PortalHostDirective = (function (_super) {
         this.setDisposeFn(function () { return ref.destroy(); });
         return ref;
     };
-    /**
-     * Attach the given TemplatePortal to this PortlHost as an embedded View.
-     * @param portal Portal to be attached.
-     */
+    /** Attach the given TemplatePortal to this PortlHost as an embedded View. */
     PortalHostDirective.prototype.attachTemplatePortal = function (portal) {
         var _this = this;
         portal.setAttachedHost(this);
@@ -113,14 +98,10 @@ export var PortalHostDirective = (function (_super) {
             this._portal = p;
         }
     };
-    __decorate([
-        Input('portalHost'), 
-        __metadata('design:type', Object)
-    ], PortalHostDirective.prototype, "_deprecatedPortal", null);
     PortalHostDirective = __decorate([
         Directive({
-            selector: '[cdkPortalHost], [portalHost]',
-            inputs: ['portal: cdkPortalHost']
+            selector: '[portalHost]',
+            inputs: ['portal: portalHost']
         }), 
         __metadata('design:paramtypes', [ComponentFactoryResolver, ViewContainerRef])
     ], PortalHostDirective);

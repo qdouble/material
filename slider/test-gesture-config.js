@@ -13,9 +13,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Injectable } from '@angular/core';
-import { GestureConfig } from '../core';
+import { MdGestureConfig } from '../core';
 /**
- * An extension of GestureConfig that exposes the underlying HammerManager instances.
+ * An extension of MdGestureConfig that exposes the underlying HammerManager instances.
  * Tests can use these instances to emit fake gesture events.
  */
 export var TestGestureConfig = (function (_super) {
@@ -55,6 +55,6 @@ export var TestGestureConfig = (function (_super) {
         __metadata('design:paramtypes', [])
     ], TestGestureConfig);
     return TestGestureConfig;
-}(GestureConfig));
+}(MdGestureConfig));
 
 //# sourceMappingURL=test-gesture-config.js.map

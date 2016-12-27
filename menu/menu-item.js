@@ -22,8 +22,9 @@ export var MdMenuItem = (function () {
     };
     Object.defineProperty(MdMenuItem.prototype, "disabled", {
         // this is necessary to support anchors
-        /** Whether the menu item is disabled. */
-        get: function () { return this._disabled; },
+        get: function () {
+            return this._disabled;
+        },
         set: function (value) {
             this._disabled = (value === false || value === undefined) ? null : true;
         },
@@ -31,13 +32,16 @@ export var MdMenuItem = (function () {
         configurable: true
     });
     Object.defineProperty(MdMenuItem.prototype, "isAriaDisabled", {
-        /** Sets the aria-disabled property on the menu item. */
-        get: function () { return String(!!this.disabled); },
+        get: function () {
+            return String(!!this.disabled);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(MdMenuItem.prototype, "_tabindex", {
-        get: function () { return this.disabled ? '-1' : '0'; },
+        get: function () {
+            return this.disabled ? '-1' : '0';
+        },
         enumerable: true,
         configurable: true
     });
@@ -66,7 +70,7 @@ export var MdMenuItem = (function () {
                 '(click)': '_checkDisabled($event)',
                 '[attr.tabindex]': '_tabindex'
             },
-            template: "<ng-content></ng-content><div class=\"md-menu-ripple\" *ngIf=\"!disabled\" md-ripple mdRippleBackgroundColor=\"rgba(0,0,0,0)\" [mdRippleTrigger]=\"_getHostElement()\"></div>",
+            template: "<ng-content></ng-content> <div class=\"md-menu-ripple\" *ngIf=\"!disabled\" md-ripple md-ripple-background-color=\"rgba(0,0,0,0)\" [md-ripple-trigger]=\"_getHostElement()\"> </div> ",
             exportAs: 'mdMenuItem'
         }), 
         __metadata('design:paramtypes', [Renderer, ElementRef])

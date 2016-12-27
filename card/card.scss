@@ -17,7 +17,7 @@ md-card {
   border-radius: $md-card-border-radius;
   font-family: $md-font-family;
 
-  @include cdk-high-contrast {
+  @include md-high-contrast {
     outline: solid 1px;
   }
 }

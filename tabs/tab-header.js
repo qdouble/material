@@ -44,6 +44,7 @@ export var MdTabHeader = (function () {
         this._disableScrollAfter = true;
         /** Whether the tab list can be scrolled more towards the beginning of the tab label list. */
         this._disableScrollBefore = true;
+        /** The index of the active tab. */
         this._selectedIndex = 0;
         /** Event emitted when the option is selected. */
         this.selectFocusedIndex = new EventEmitter();
@@ -52,7 +53,6 @@ export var MdTabHeader = (function () {
     }
     Object.defineProperty(MdTabHeader.prototype, "selectedIndex", {
         get: function () { return this._selectedIndex; },
-        /** The index of the active tab. */
         set: function (value) {
             this._selectedIndexChanged = this._selectedIndex != value;
             this._selectedIndex = value;
@@ -64,7 +64,9 @@ export var MdTabHeader = (function () {
     MdTabHeader.prototype.ngAfterContentChecked = function () {
         // If the number of tab labels have changed, check if scrolling should be enabled
         if (this._tabLabelCount != this._labelWrappers.length) {
-            this._updatePagination();
+            this._checkPaginationEnabled();
+            this._checkScrollingControls();
+            this._updateTabScrollPosition();
             this._tabLabelCount = this._labelWrappers.length;
         }
         // If the selected index has changed, scroll to the label and check if the scrolling controls
@@ -83,7 +85,7 @@ export var MdTabHeader = (function () {
     };
     /**
      * Waits one frame for the view to update, then updates the ink bar and scroll.
-     * Note: This must be run outside of the zone or it will create an infinite change detection loop.
+     * Note: This must be run outside of the zone or it will create an infinite change detection loop
      */
     MdTabHeader.prototype.ngAfterViewChecked = function () {
         var _this = this;
@@ -105,14 +107,6 @@ export var MdTabHeader = (function () {
                 this.selectFocusedIndex.emit(this.focusIndex);
                 break;
         }
-    };
-    /**
-     * Updating the view whether pagination should be enabled or not
-     */
-    MdTabHeader.prototype._updatePagination = function () {
-        this._checkPaginationEnabled();
-        this._checkScrollingControls();
-        this._updateTabScrollPosition();
     };
     Object.defineProperty(MdTabHeader.prototype, "focusIndex", {
         /** Tracks which element has focus; used for keyboard navigation */
@@ -336,8 +330,8 @@ export var MdTabHeader = (function () {
     ], MdTabHeader.prototype, "indexFocused", void 0);
     MdTabHeader = __decorate([
         Component({selector: 'md-tab-header',
-            template: "<div class=\"md-tab-header-pagination md-tab-header-pagination-before md-elevation-z4\" aria-hidden=\"true\" md-ripple [mdRippleDisabled]=\"_disableScrollBefore\" [class.md-tab-header-pagination-disabled]=\"_disableScrollBefore\" (click)=\"_scrollHeader('before')\"><div class=\"md-tab-header-pagination-chevron\"></div></div><div class=\"md-tab-label-container\" #tabListContainer (keydown)=\"_handleKeydown($event)\"><div class=\"md-tab-list\" #tabList role=\"tablist\" (cdkObserveContent)=\"_updatePagination()\"><ng-content></ng-content><md-ink-bar></md-ink-bar></div></div><div class=\"md-tab-header-pagination md-tab-header-pagination-after md-elevation-z4\" aria-hidden=\"true\" md-ripple [mdRippleDisabled]=\"_disableScrollAfter\" [class.md-tab-header-pagination-disabled]=\"_disableScrollAfter\" (click)=\"_scrollHeader('after')\"><div class=\"md-tab-header-pagination-chevron\"></div></div>",
-            styles: [".md-tab-header{overflow:hidden;position:relative;display:flex;flex-direction:row;flex-shrink:0}.md-tab-label{line-height:48px;height:48px;padding:0 12px;font-size:14px;font-family:Roboto,\"Helvetica Neue\",sans-serif;font-weight:500;cursor:pointer;box-sizing:border-box;color:currentColor;opacity:.6;min-width:160px;text-align:center;position:relative}.md-tab-label:focus{outline:0;opacity:1}@media (max-width:600px){.md-tab-label{min-width:72px}}md-ink-bar{position:absolute;bottom:0;height:2px;transition:.5s cubic-bezier(.35,0,.25,1)}.md-tab-header-pagination{position:relative;display:none;justify-content:center;align-items:center;min-width:32px;cursor:pointer;z-index:2}.md-tab-header-pagination-controls-enabled .md-tab-header-pagination,.md-tab-list{display:flex}.md-tab-header-pagination-before,.md-tab-header-rtl .md-tab-header-pagination-after{padding-left:4px}.md-tab-header-pagination-before .md-tab-header-pagination-chevron,.md-tab-header-rtl .md-tab-header-pagination-after .md-tab-header-pagination-chevron{transform:rotate(-135deg)}.md-tab-header-pagination-after,.md-tab-header-rtl .md-tab-header-pagination-before{padding-right:4px}.md-tab-header-pagination-after .md-tab-header-pagination-chevron,.md-tab-header-rtl .md-tab-header-pagination-before .md-tab-header-pagination-chevron{transform:rotate(45deg)}.md-tab-header-pagination-chevron{border-style:solid;border-width:2px 2px 0 0;content:'';height:8px;width:8px}.md-tab-header-pagination-disabled{box-shadow:none;cursor:default}.md-tab-header-pagination-disabled .md-tab-header-pagination-chevron{border-color:#ccc}.md-tab-label-container{display:flex;flex-grow:1;overflow:hidden;z-index:1}.md-tab-list{flex-grow:1;position:relative;transition:transform .5s cubic-bezier(.35,0,.25,1)}"],
+            template: "<div class=\"md-tab-header-pagination md-tab-header-pagination-before md-elevation-z4\" aria-hidden=\"true\" md-ripple [md-ripple-disabled]=\"_disableScrollBefore\" [class.md-tab-header-pagination-disabled]=\"_disableScrollBefore\" (click)=\"_scrollHeader('before')\"> <div class=\"md-tab-header-pagination-chevron\"></div> </div> <div class=\"md-tab-label-container\" #tabListContainer (keydown)=\"_handleKeydown($event)\"> <div class=\"md-tab-list\" #tabList role=\"tablist\"> <ng-content></ng-content> <md-ink-bar></md-ink-bar> </div> </div> <div class=\"md-tab-header-pagination md-tab-header-pagination-after md-elevation-z4\" aria-hidden=\"true\" md-ripple [md-ripple-disabled]=\"_disableScrollAfter\" [class.md-tab-header-pagination-disabled]=\"_disableScrollAfter\" (click)=\"_scrollHeader('after')\"> <div class=\"md-tab-header-pagination-chevron\"></div> </div>",
+            styles: [".md-tab-header { overflow: hidden; position: relative; display: flex; flex-direction: row; flex-shrink: 0; } .md-tab-label { line-height: 48px; height: 48px; padding: 0 12px; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; cursor: pointer; box-sizing: border-box; color: currentColor; opacity: 0.6; min-width: 160px; text-align: center; position: relative; } .md-tab-label:focus { outline: none; opacity: 1; } @media (max-width: 600px) { .md-tab-label { min-width: 72px; } } md-ink-bar { position: absolute; bottom: 0; height: 2px; transition: 500ms cubic-bezier(0.35, 0, 0.25, 1); } .md-tab-header-pagination { position: relative; display: none; justify-content: center; align-items: center; min-width: 32px; cursor: pointer; z-index: 2; } .md-tab-header-pagination-controls-enabled .md-tab-header-pagination { display: flex; } .md-tab-header-pagination-before, .md-tab-header-rtl .md-tab-header-pagination-after { padding-left: 4px; } .md-tab-header-pagination-before .md-tab-header-pagination-chevron, .md-tab-header-rtl .md-tab-header-pagination-after .md-tab-header-pagination-chevron { transform: rotate(-135deg); } .md-tab-header-rtl .md-tab-header-pagination-before, .md-tab-header-pagination-after { padding-right: 4px; } .md-tab-header-rtl .md-tab-header-pagination-before .md-tab-header-pagination-chevron, .md-tab-header-pagination-after .md-tab-header-pagination-chevron { transform: rotate(45deg); } .md-tab-header-pagination-chevron { border-style: solid; border-width: 2px 2px 0 0; content: ''; height: 8px; width: 8px; } .md-tab-header-pagination-disabled { box-shadow: none; cursor: default; } .md-tab-header-pagination-disabled .md-tab-header-pagination-chevron { border-color: #ccc; } .md-tab-label-container { display: flex; flex-grow: 1; overflow: hidden; z-index: 1; } .md-tab-list { display: flex; flex-grow: 1; position: relative; transition: transform 500ms cubic-bezier(0.35, 0, 0.25, 1); } /*# sourceMappingURL=tab-header.css.map */ "],
             encapsulation: ViewEncapsulation.None,
             host: {
                 'class': 'md-tab-header',

@@ -1,7 +1,9 @@
-import { Injector } from '@angular/core';
+import { ModuleWithProviders, Injector } from '@angular/core';
 import { Overlay, ComponentType } from '../core';
 import { MdDialogConfig } from './dialog-config';
 import { MdDialogRef } from './dialog-ref';
+export { MdDialogConfig } from './dialog-config';
+export { MdDialogRef } from './dialog-ref';
 /**
  * Service to open Material Design modal dialogs.
  */
@@ -14,8 +16,7 @@ export declare class MdDialog {
     /**
      * Opens a modal dialog containing the given component.
      * @param component Type of the component to load into the load.
-     * @param config Extra configuration options.
-     * @returns Reference to the newly-opened dialog.
+     * @param config
      */
     open<T>(component: ComponentType<T>, config?: MdDialogConfig): MdDialogRef<T>;
     /**
@@ -51,7 +52,9 @@ export declare class MdDialog {
     private _getOverlayState(dialogConfig);
     /**
      * Removes a dialog from the array of open dialogs.
-     * @param dialogRef Dialog to be removed.
      */
     private _removeOpenDialog(dialogRef);
+}
+export declare class MdDialogModule {
+    static forRoot(): ModuleWithProviders;
 }

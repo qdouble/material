@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Component, ViewEncapsulation, ViewChild, ElementRef, Input, NgZone } from '@angular/core';
 import { InteractivityChecker } from './interactivity-checker';
-import { coerceBooleanProperty } from '../coercion/boolean-property';
+import { coerceBooleanProperty } from '../coersion/boolean-property';
 /**
  * Directive for trapping focus within a region.
  *
@@ -51,23 +51,19 @@ export var FocusTrap = (function () {
             _this.focusLastTabbableElement();
         });
     };
-    /**
-     * Focuses the first tabbable element within the focus trap region.
-     */
+    /** Focuses the first tabbable element within the focus trap region. */
     FocusTrap.prototype.focusFirstTabbableElement = function () {
         var rootElement = this.trappedContent.nativeElement;
-        var redirectToElement = rootElement.querySelector('[cdk-focus-start]') ||
+        var redirectToElement = rootElement.querySelector('[md-focus-start]') ||
             this._getFirstTabbableElement(rootElement);
         if (redirectToElement) {
             redirectToElement.focus();
         }
     };
-    /**
-     * Focuses the last tabbable element within the focus trap region.
-     */
+    /** Focuses the last tabbable element within the focus trap region. */
     FocusTrap.prototype.focusLastTabbableElement = function () {
         var rootElement = this.trappedContent.nativeElement;
-        var focusTargets = rootElement.querySelectorAll('[cdk-focus-end]');
+        var focusTargets = rootElement.querySelectorAll('[md-focus-end]');
         var redirectToElement = null;
         if (focusTargets.length) {
             redirectToElement = focusTargets[focusTargets.length - 1];
@@ -117,8 +113,8 @@ export var FocusTrap = (function () {
         __metadata('design:type', Boolean)
     ], FocusTrap.prototype, "disabled", null);
     FocusTrap = __decorate([
-        Component({selector: 'cdk-focus-trap, focus-trap',
-            template: "<div *ngIf=\"!disabled\" tabindex=\"0\" (focus)=\"focusLastTabbableElement()\"></div><div #trappedContent class=\"cdk-focus-trap-content\"><ng-content></ng-content></div><div *ngIf=\"!disabled\" tabindex=\"0\" (focus)=\"focusFirstTabbableElement()\"></div>",
+        Component({selector: 'focus-trap',
+            template: "<div *ngIf=\"!disabled\" tabindex=\"0\" (focus)=\"focusLastTabbableElement()\"></div> <div #trappedContent class=\"cdk-focus-trap-content\"><ng-content></ng-content></div> <div *ngIf=\"!disabled\" tabindex=\"0\" (focus)=\"focusFirstTabbableElement()\"></div> ",
             encapsulation: ViewEncapsulation.None,
         }), 
         __metadata('design:paramtypes', [InteractivityChecker, NgZone])

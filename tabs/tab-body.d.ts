@@ -19,9 +19,6 @@ export declare type MdTabBodyPositionState = 'left' | 'center' | 'right' | 'left
  * origin of right because its index was greater than the prior selected index.
  */
 export declare type MdTabBodyOriginState = 'left' | 'right';
-/**
- * Wrapper for the contents of a tab.
- */
 export declare class MdTabBody implements OnInit {
     private _elementRef;
     private _dir;
@@ -36,8 +33,8 @@ export declare class MdTabBody implements OnInit {
     /** The shifted index position of the tab body, where zero represents the active center tab. */
     _position: MdTabBodyPositionState;
     position: number;
-    _origin: MdTabBodyOriginState;
     /** The origin position from which this tab should appear when it is centered into view. */
+    _origin: MdTabBodyOriginState;
     origin: number;
     constructor(_elementRef: ElementRef, _dir: Dir);
     /**

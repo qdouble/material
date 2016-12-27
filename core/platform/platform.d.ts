@@ -3,7 +3,7 @@
  * checking browser-specific global properties.
  * @docs-private
  */
-export declare class Platform {
+export declare class MdPlatform {
     /** Layout Engines */
     EDGE: boolean;
     TRIDENT: boolean;

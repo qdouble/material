@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { TemplatePortal } from '../core/portal/portal';
 import { ViewContainerRef, Input, TemplateRef, ViewChild, ContentChild, Component } from '@angular/core';
-import { coerceBooleanProperty } from '../core/coercion/boolean-property';
+import { coerceBooleanProperty } from '../core/coersion/boolean-property';
 import { MdTabLabel } from './tab-label';
 export var MdTab = (function () {
     function MdTab(_viewContainerRef) {
@@ -37,7 +37,6 @@ export var MdTab = (function () {
     });
     Object.defineProperty(MdTab.prototype, "disabled", {
         get: function () { return this._disabled; },
-        /** Whether the tab is disabled */
         set: function (value) { this._disabled = coerceBooleanProperty(value); },
         enumerable: true,
         configurable: true
@@ -64,7 +63,7 @@ export var MdTab = (function () {
     ], MdTab.prototype, "disabled", null);
     MdTab = __decorate([
         Component({selector: 'md-tab',
-            template: "<template><ng-content></ng-content></template>",
+            template: "<!-- Create a template for the content of the <md-tab> so that we can grab a reference to this TemplateRef and use it in a Portal to render the tab content in the appropriate place in the tab-group. --> <template><ng-content></ng-content></template> ",
         }), 
         __metadata('design:paramtypes', [ViewContainerRef])
     ], MdTab);

@@ -4,7 +4,6 @@ import { OverlayRef } from './overlay-ref';
 import { OverlayPositionBuilder } from './position/overlay-position-builder';
 import { ViewportRuler } from './position/viewport-ruler';
 import { OverlayContainer } from './overlay-container';
-import { ScrollDispatcher } from './scroll/scroll-dispatcher';
 /**
  * Service to create Overlays. Overlays are dynamically added pieces of floating UI, meant to be
  * used as a low-level building building block for other components. Dialogs, tooltips, menus,
@@ -24,7 +23,7 @@ export declare class Overlay {
     /**
      * Creates an overlay.
      * @param state State to apply to the overlay.
-     * @returns Reference to the created overlay.
+     * @returns A reference to the created overlay.
      */
     create(state?: OverlayState): OverlayRef;
     /**
@@ -34,7 +33,7 @@ export declare class Overlay {
     position(): OverlayPositionBuilder;
     /**
      * Creates the DOM element for an overlay and appends it to the overlay container.
-     * @returns Newly-created pane element
+     * @returns Promise resolving to the created element.
      */
     private _createPaneElement();
     /**
@@ -47,8 +46,9 @@ export declare class Overlay {
      * Creates an OverlayRef for an overlay in the given DOM element.
      * @param pane DOM element for the overlay
      * @param state
+     * @returns {OverlayRef}
      */
     private _createOverlayRef(pane, state);
 }
 /** Providers for Overlay and its related injectables. */
-export declare const OVERLAY_PROVIDERS: (typeof ViewportRuler | typeof ScrollDispatcher | typeof OverlayPositionBuilder | typeof OverlayContainer | typeof Overlay)[];
+export declare const OVERLAY_PROVIDERS: (typeof ViewportRuler | typeof OverlayPositionBuilder | typeof OverlayContainer | typeof Overlay)[];

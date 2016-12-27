@@ -17,7 +17,7 @@ import { ListKeyManager } from '../core/a11y/list-key-manager';
 import { Dir } from '../core/rtl/dir';
 import { transformPlaceholder, transformPanel, fadeInContent } from './select-animations';
 import { NgControl } from '@angular/forms';
-import { coerceBooleanProperty } from '../core/coercion/boolean-property';
+import { coerceBooleanProperty } from '../core/coersion/boolean-property';
 import { ConnectedOverlayDirective } from '../core/overlay/overlay-directives';
 import { ViewportRuler } from '../core/overlay/position/viewport-ruler';
 /**
@@ -110,17 +110,16 @@ export var MdSelect = (function () {
                 overlayY: 'bottom',
             },
         ];
-        /** Event emitted when the select has been opened. */
         this.onOpen = new EventEmitter();
-        /** Event emitted when the select has been closed. */
         this.onClose = new EventEmitter();
         if (this._control) {
             this._control.valueAccessor = this;
         }
     }
     Object.defineProperty(MdSelect.prototype, "placeholder", {
-        /** Placeholder to be shown if no value has been selected. */
-        get: function () { return this._placeholder; },
+        get: function () {
+            return this._placeholder;
+        },
         set: function (value) {
             var _this = this;
             this._placeholder = value;
@@ -131,8 +130,9 @@ export var MdSelect = (function () {
         configurable: true
     });
     Object.defineProperty(MdSelect.prototype, "disabled", {
-        /** Whether the component is disabled. */
-        get: function () { return this._disabled; },
+        get: function () {
+            return this._disabled;
+        },
         set: function (value) {
             this._disabled = coerceBooleanProperty(value);
         },
@@ -140,9 +140,12 @@ export var MdSelect = (function () {
         configurable: true
     });
     Object.defineProperty(MdSelect.prototype, "required", {
-        /** Whether the component is required. */
-        get: function () { return this._required; },
-        set: function (value) { this._required = coerceBooleanProperty(value); },
+        get: function () {
+            return this._required;
+        },
+        set: function (value) {
+            this._required = coerceBooleanProperty(value);
+        },
         enumerable: true,
         configurable: true
     });
@@ -181,8 +184,6 @@ export var MdSelect = (function () {
     /**
      * Sets the select's value. Part of the ControlValueAccessor interface
      * required to integrate with Angular's core forms API.
-     *
-     * @param value New value to be written to the model.
      */
     MdSelect.prototype.writeValue = function (value) {
         var _this = this;
@@ -194,14 +195,16 @@ export var MdSelect = (function () {
             Promise.resolve(null).then(function () { return _this.writeValue(value); });
             return;
         }
-        this._setSelectionByValue(value);
+        this.options.forEach(function (option) {
+            if (option.value === value) {
+                option.select();
+            }
+        });
     };
     /**
      * Saves a callback function to be invoked when the select's value
      * changes from user input. Part of the ControlValueAccessor interface
      * required to integrate with Angular's core forms API.
-     *
-     * @param fn Callback to be triggered when the value changes.
      */
     MdSelect.prototype.registerOnChange = function (fn) {
         this._onChange = fn;
@@ -210,8 +213,6 @@ export var MdSelect = (function () {
      * Saves a callback function to be invoked when the select is blurred
      * by the user. Part of the ControlValueAccessor interface required
      * to integrate with Angular's core forms API.
-     *
-     * @param fn Callback to be triggered when the component has been touched.
      */
     MdSelect.prototype.registerOnTouched = function (fn) {
         this._onTouched = fn;
@@ -219,8 +220,6 @@ export var MdSelect = (function () {
     /**
      * Disables the select. Part of the ControlValueAccessor interface required
      * to integrate with Angular's core forms API.
-     *
-     * @param isDisabled Sets whether the component is disabled.
      */
     MdSelect.prototype.setDisabledState = function (isDisabled) {
         this.disabled = isDisabled;
@@ -291,26 +290,6 @@ export var MdSelect = (function () {
         var scrollContainer = this.overlayDir.overlayRef.overlayElement.querySelector('.md-select-panel');
         scrollContainer.scrollTop = this._scrollTop;
     };
-    /**
-     * Sets the selected option based on a value. If no option can be
-     * found with the designated value, the select trigger is cleared.
-     */
-    MdSelect.prototype._setSelectionByValue = function (value) {
-        var options = this.options.toArray();
-        for (var i = 0; i < this.options.length; i++) {
-            if (options[i].value === value) {
-                options[i].select();
-                return;
-            }
-        }
-        // Clear selection if no item was selected.
-        this._clearSelection();
-    };
-    /** Clears the select trigger and deselects every option in the list. */
-    MdSelect.prototype._clearSelection = function () {
-        this._selected = null;
-        this._updateOptions();
-    };
     MdSelect.prototype._getTriggerRect = function () {
         return this.trigger.nativeElement.getBoundingClientRect();
     };
@@ -355,7 +334,6 @@ export var MdSelect = (function () {
         this._selected = option;
         this._updateOptions();
         this._setValueWidth();
-        this._placeholderState = '';
         if (this.panelOpen) {
             this.close();
         }
@@ -479,8 +457,8 @@ export var MdSelect = (function () {
     MdSelect.prototype._checkOverlayWithinViewport = function (maxScroll) {
         var viewportRect = this._viewportRuler.getViewportRect();
         var triggerRect = this._getTriggerRect();
-        var topSpaceAvailable = triggerRect.top - SELECT_PANEL_VIEWPORT_PADDING;
-        var bottomSpaceAvailable = viewportRect.height - triggerRect.bottom - SELECT_PANEL_VIEWPORT_PADDING;
+        var topSpaceAvailable = triggerRect.top - viewportRect.top - SELECT_PANEL_VIEWPORT_PADDING;
+        var bottomSpaceAvailable = viewportRect.bottom - triggerRect.bottom - SELECT_PANEL_VIEWPORT_PADDING;
         var panelHeightTop = Math.abs(this._offsetY);
         var totalPanelHeight = Math.min(this.options.length * SELECT_OPTION_HEIGHT, SELECT_PANEL_MAX_HEIGHT);
         var panelHeightBottom = totalPanelHeight - panelHeightTop - triggerRect.height;
@@ -568,8 +546,8 @@ export var MdSelect = (function () {
     ], MdSelect.prototype, "onClose", void 0);
     MdSelect = __decorate([
         Component({selector: 'md-select, mat-select',
-            template: "<div class=\"md-select-trigger\" cdk-overlay-origin (click)=\"toggle()\" #origin=\"cdkOverlayOrigin\" #trigger><span class=\"md-select-placeholder\" [class.md-floating-placeholder]=\"this.selected\" [@transformPlaceholder]=\"_placeholderState\" [style.width.px]=\"_selectedValueWidth\">{{ placeholder }} </span><span class=\"md-select-value\" *ngIf=\"selected\">{{ selected?.viewValue }} </span><span class=\"md-select-arrow\"></span></div><template cdk-connected-overlay [origin]=\"origin\" [open]=\"panelOpen\" hasBackdrop (backdropClick)=\"close()\" backdropClass=\"cdk-overlay-transparent-backdrop\" [positions]=\"_positions\" [minWidth]=\"_triggerWidth\" [offsetY]=\"_offsetY\" [offsetX]=\"_offsetX\" (attach)=\"_setScrollTop()\"><div class=\"md-select-panel\" [@transformPanel]=\"'showing'\" (@transformPanel.done)=\"_onPanelDone()\" (keydown)=\"_keyManager.onKeydown($event)\" [style.transformOrigin]=\"_transformOrigin\"><div class=\"md-select-content\" [@fadeInContent]=\"'showing'\"><ng-content></ng-content></div></div></template>",
-            styles: [".md-select-value,md-option{white-space:nowrap;text-overflow:ellipsis}md-select{display:inline-block;outline:0}.md-select-trigger{display:flex;justify-content:space-between;align-items:center;height:30px;min-width:112px;cursor:pointer;position:relative;box-sizing:border-box}[aria-disabled=true] .md-select-trigger{background-image:linear-gradient(to right,rgba(0,0,0,.26) 0,rgba(0,0,0,.26) 33%,transparent 0);background-size:4px 1px;background-repeat:repeat-x;border-bottom:transparent;background-position:0 bottom;cursor:default;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.md-select-placeholder{position:relative;padding:0 2px;transform-origin:left top}.md-select-placeholder.md-floating-placeholder{top:-22px;left:-2px;transform:scale(.75)}[dir=rtl] .md-select-placeholder{transform-origin:right top}[dir=rtl] .md-select-placeholder.md-floating-placeholder{left:2px}[aria-required=true] .md-select-placeholder::after{content:'*'}.md-select-value{position:absolute;overflow-x:hidden;left:0;top:6px}[dir=rtl] .md-select-value{left:auto;right:0}.md-select-arrow{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid;margin:0 4px}.md-select-panel{box-shadow:0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12);min-width:112px;max-width:280px;overflow:auto;-webkit-overflow-scrolling:touch;padding-top:0;padding-bottom:0;max-height:256px}@media screen and (-ms-high-contrast:active){.md-select-panel{outline:solid 1px}.md-option-ripple{opacity:.5}}md-option{overflow-x:hidden;display:flex;flex-direction:row;align-items:center;height:48px;padding:0 16px;font-size:16px;font-family:Roboto,\"Helvetica Neue\",sans-serif;text-align:start;text-decoration:none;position:relative;cursor:pointer;outline:0}md-option[disabled]{cursor:default}md-option md-icon{margin-right:16px}[dir=rtl] md-option md-icon{margin-left:16px}md-option[aria-disabled=true]{cursor:default;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.md-option-ripple{position:absolute;top:0;left:0;bottom:0;right:0}"],
+            template: "<div class=\"md-select-trigger\" overlay-origin (click)=\"toggle()\" #origin=\"overlayOrigin\" #trigger> <span class=\"md-select-placeholder\" [class.md-floating-placeholder]=\"this.selected\" [@transformPlaceholder]=\"_placeholderState\" [style.width.px]=\"_selectedValueWidth\"> {{ placeholder }} </span> <span class=\"md-select-value\" *ngIf=\"selected\"> {{ selected?.viewValue }} </span> <span class=\"md-select-arrow\"></span> </div> <template connected-overlay [origin]=\"origin\"  [open]=\"panelOpen\" hasBackdrop (backdropClick)=\"close()\" backdropClass=\"md-overlay-transparent-backdrop\" [positions]=\"_positions\" [minWidth]=\"_triggerWidth\" [offsetY]=\"_offsetY\" [offsetX]=\"_offsetX\" (attach)=\"_setScrollTop()\"> <div class=\"md-select-panel\" [@transformPanel]=\"'showing'\" (@transformPanel.done)=\"_onPanelDone()\" (keydown)=\"_keyManager.onKeydown($event)\" [style.transformOrigin]=\"_transformOrigin\"> <div class=\"md-select-content\" [@fadeInContent]=\"'showing'\"> <ng-content></ng-content> </div> </div> </template> ",
+            styles: ["/** The mixins below are shared between md-menu and md-select */ /** * This mixin adds the correct panel transform styles based * on the direction that the menu panel opens. */ /** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ md-select { display: inline-block; outline: none; } .md-select-trigger { display: flex; justify-content: space-between; align-items: center; height: 30px; min-width: 112px; cursor: pointer; position: relative; box-sizing: border-box; } [aria-disabled='true'] .md-select-trigger { background-image: linear-gradient(to right, rgba(0, 0, 0, 0.26) 0%, rgba(0, 0, 0, 0.26) 33%, transparent 0%); background-size: 4px 1px; background-repeat: repeat-x; border-bottom: transparent; background-position: 0 bottom; cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-select-placeholder { position: relative; padding: 0 2px; transform-origin: left top; } .md-select-placeholder.md-floating-placeholder { top: -22px; left: -2px; transform: scale(0.75); } [dir='rtl'] .md-select-placeholder { transform-origin: right top; } [dir='rtl'] .md-select-placeholder.md-floating-placeholder { left: 2px; } [aria-required=true] .md-select-placeholder::after { content: '*'; } .md-select-value { position: absolute; white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; left: 0; top: 6px; } [dir='rtl'] .md-select-value { left: auto; right: 0; } .md-select-arrow { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid; margin: 0 4px; } .md-select-panel { box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12); min-width: 112px; max-width: 280px; overflow: auto; -webkit-overflow-scrolling: touch; padding-top: 0; padding-bottom: 0; max-height: 256px; } @media screen and (-ms-high-contrast: active) { .md-select-panel { outline: solid 1px; } } md-option { white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; display: flex; flex-direction: row; align-items: center; height: 48px; padding: 0 16px; font-size: 16px; font-family: Roboto, \"Helvetica Neue\", sans-serif; text-align: start; text-decoration: none; position: relative; cursor: pointer; outline: none; } md-option[disabled] { cursor: default; } md-option md-icon { margin-right: 16px; } [dir='rtl'] md-option md-icon { margin-left: 16px; } md-option[aria-disabled='true'] { cursor: default; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-option-ripple { position: absolute; top: 0; left: 0; bottom: 0; right: 0; } @media screen and (-ms-high-contrast: active) { .md-option-ripple { opacity: 0.5; } } /*# sourceMappingURL=select.css.map */ "],
             encapsulation: ViewEncapsulation.None,
             host: {
                 'role': 'listbox',

@@ -8,16 +8,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { NgModule } from '@angular/core';
-import { Platform } from './platform';
-export * from './platform';
-export * from './features';
+import { MdPlatform } from './platform';
 export var PlatformModule = (function () {
     function PlatformModule() {
     }
     PlatformModule.forRoot = function () {
         return {
             ngModule: PlatformModule,
-            providers: [Platform],
+            providers: [MdPlatform],
         };
     };
     PlatformModule = __decorate([

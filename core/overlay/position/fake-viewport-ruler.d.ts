@@ -1,4 +1,3 @@
-/** @docs-private */
 export declare class FakeViewportRuler {
     getViewportRect(): {
         left: number;

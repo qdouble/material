@@ -8,7 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { NgModule, Injectable } from '@angular/core';
-import { ComponentPortal, Overlay, OverlayModule, OverlayState, PortalModule, OVERLAY_PROVIDERS, LiveAnnouncer, DefaultStyleCompatibilityModeModule } from '../core';
+import { ComponentPortal, Overlay, OverlayModule, OverlayState, PortalModule, OVERLAY_PROVIDERS, MdLiveAnnouncer, DefaultStyleCompatibilityModeModule } from '../core';
 import { CommonModule } from '@angular/common';
 import { MdSnackBarConfig } from './snack-bar-config';
 import { MdSnackBarRef } from './snack-bar-ref';
@@ -26,9 +26,6 @@ export var MdSnackBar = (function () {
     /**
      * Creates and dispatches a snack bar with a custom component for the content, removing any
      * currently opened snack bars.
-     *
-     * @param component Component to be instantiated.
-     * @param config Extra configuration for the snack bar.
      */
     MdSnackBar.prototype.openFromComponent = function (component, config) {
         var _this = this;
@@ -69,6 +66,7 @@ export var MdSnackBar = (function () {
      * @param message The message to show in the snackbar.
      * @param action The label for the snackbar action.
      * @param config Additional configuration options for the snackbar.
+     * @returns {MdSnackBarRef<SimpleSnackBar>}
      */
     MdSnackBar.prototype.open = function (message, action, config) {
         if (action === void 0) { action = ''; }
@@ -109,7 +107,7 @@ export var MdSnackBar = (function () {
     };
     MdSnackBar = __decorate([
         Injectable(), 
-        __metadata('design:paramtypes', [Overlay, LiveAnnouncer])
+        __metadata('design:paramtypes', [Overlay, MdLiveAnnouncer])
     ], MdSnackBar);
     return MdSnackBar;
 }());
@@ -127,7 +125,7 @@ export var MdSnackBarModule = (function () {
     MdSnackBarModule.forRoot = function () {
         return {
             ngModule: MdSnackBarModule,
-            providers: [MdSnackBar, OVERLAY_PROVIDERS, LiveAnnouncer]
+            providers: [MdSnackBar, OVERLAY_PROVIDERS, MdLiveAnnouncer]
         };
     };
     MdSnackBarModule = __decorate([

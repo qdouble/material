@@ -3,7 +3,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-import { NullPortalHostError, PortalAlreadyAttachedError, NoPortalAttachedError, NullPortalError, PortalHostAlreadyDisposedError, UnknownPortalTypeError } from './portal-errors';
+import { MdNullPortalHostError, MdPortalAlreadyAttachedError, MdNoPortalAttachedError, MdNullPortalError, MdPortalHostAlreadyDisposedError, MdUnknownPortalTypeError } from './portal-errors';
 /**
  * A `Portal` is something that you want to render somewhere else.
  * It can be attach to / detached from a `PortalHost`.
@@ -14,10 +14,10 @@ export var Portal = (function () {
     /** Attach this portal to a host. */
     Portal.prototype.attach = function (host) {
         if (host == null) {
-            throw new NullPortalHostError();
+            throw new MdNullPortalHostError();
         }
         if (host.hasAttached()) {
-            throw new PortalAlreadyAttachedError();
+            throw new MdPortalAlreadyAttachedError();
         }
         this._attachedHost = host;
         return host.attach(this);
@@ -26,7 +26,7 @@ export var Portal = (function () {
     Portal.prototype.detach = function () {
         var host = this._attachedHost;
         if (host == null) {
-            throw new NoPortalAttachedError();
+            throw new MdNoPortalAttachedError();
         }
         this._attachedHost = null;
         return host.detach();
@@ -112,13 +112,13 @@ export var BasePortalHost = (function () {
     };
     BasePortalHost.prototype.attach = function (portal) {
         if (portal == null) {
-            throw new NullPortalError();
+            throw new MdNullPortalError();
         }
         if (this.hasAttached()) {
-            throw new PortalAlreadyAttachedError();
+            throw new MdPortalAlreadyAttachedError();
         }
         if (this._isDisposed) {
-            throw new PortalHostAlreadyDisposedError();
+            throw new MdPortalHostAlreadyDisposedError();
         }
         if (portal instanceof ComponentPortal) {
             this._attachedPortal = portal;
@@ -128,7 +128,7 @@ export var BasePortalHost = (function () {
             this._attachedPortal = portal;
             return this.attachTemplatePortal(portal);
         }
-        throw new UnknownPortalTypeError();
+        throw new MdUnknownPortalTypeError();
     };
     BasePortalHost.prototype.detach = function () {
         if (this._attachedPortal) {

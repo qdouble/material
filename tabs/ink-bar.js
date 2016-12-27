@@ -35,6 +35,7 @@ export var MdInkBar = (function () {
     /**
      * Generates the pixel distance from the left based on the provided element in string format.
      * @param element
+     * @returns {string}
      */
     MdInkBar.prototype._getLeftPosition = function (element) {
         return element ? element.offsetLeft + 'px' : '0';
@@ -42,6 +43,7 @@ export var MdInkBar = (function () {
     /**
      * Generates the pixel width from the provided element in string format.
      * @param element
+     * @returns {string}
      */
     MdInkBar.prototype._getElementWidth = function (element) {
         return element ? element.offsetWidth + 'px' : '0';
