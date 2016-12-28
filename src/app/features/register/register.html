@@ -37,7 +37,8 @@
         <input type="date" formControlName="birthday" class="form-control">
       </div>
       <div>
-        <select-input *ngIf="showPrizes" class="receive-prize" label="How would You like to recieve your prize?" [optionValues]="prizeIds$ | async" [optionLabels]="prizeNames$ | async"
+        <label>How would You like to recieve your prize?</label>
+        <select-input *ngIf="showPrizes" class="receive-prize" fullWidth="true" [optionValues]="prizeIds$ | async" [optionLabels]="prizeNames$ | async"
           [controlName]="'selectedPrize'" [form]="f">
         </select-input>
       </div>
