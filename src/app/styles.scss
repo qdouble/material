@@ -123,6 +123,10 @@ $theme: md-light-theme($primary, $accent, $warn);
   background: md-color($warn);
 }
 
+.row.gray {
+  background: #c5c5c5;
+}
+
 .cell {
   padding: 6px 12px;
   display: table-cell;
