@@ -12,7 +12,7 @@
     </md-button-toggle-group>
   </div>
   <div class="os-offer-display-options">
-    <md-checkbox style="margin-top: 7px" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([])" color="primary">Add Up Offers</md-checkbox>
+    <md-checkbox style="margin-top: 7px" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []" color="primary">Add Up Offers</md-checkbox>
   </div>
   <div *ngIf="addUp" class="add-up-instruct">
     <p><b>Check Offers Below to Add Them Up</b></p>
