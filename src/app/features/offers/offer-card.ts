@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'os-offer-card',
@@ -8,6 +8,8 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 })
 
 export class OfferCard {
+  @Input() addUp: boolean;
+  @Input() creditValue: number;
   @Input() hideLevel: boolean;
   @Input() loggedIn: boolean;
   @Input() mobile: boolean;
@@ -15,4 +17,5 @@ export class OfferCard {
   @Input() sideNavOpen: boolean;
   @Input() offerId: string;
   @Input() creditTotal: number;
+  @Output() checkOffer = new EventEmitter();
 }

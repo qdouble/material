@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Offer } from '../../models/offer';
 
@@ -12,12 +12,14 @@ import { Offer } from '../../models/offer';
 export class OfferRows {
   publish = PUBLISH;
   offer: Offer;
+  @Input() addUp: boolean;
   @Input() loggedIn: boolean;
   @Input() mobile: boolean;
   @Input() offers: Offer[];
   @Input() showingAvailable: boolean;
   @Input() sideNavOpen: boolean;
   @Input() creditTotal: number;
+  @Output() checkOffer = new EventEmitter();
   trackById(index: number, offer: Offer) {
     return offer.id;
   }

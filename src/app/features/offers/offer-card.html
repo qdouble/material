@@ -1,6 +1,7 @@
 <md-card [ngClass]="{'offer-face': sideNavOpen, 'offer-face-s-closed': !sideNavOpen }">
   <md-card-subtitle *ngIf="showingAvailable">
     <ng-content select="[offer-card-feature]"></ng-content>
+    <md-checkbox *ngIf="addUp" color="primary" (change)="checkOffer.emit({id: offerId, creditValue: creditValue, checked: $event.checked})"></md-checkbox>
   </md-card-subtitle>
   <md-card-title>
     <ng-content select="[offer-card-name]"></ng-content>

@@ -29,6 +29,10 @@ import { UserActions } from '../../actions/user';
 })
 
 export class Offers implements AfterViewInit, OnDestroy {
+  addUp: boolean;
+  checkedOffers: { id: string, creditValue: number, checked: boolean }[] = [];
+  checkedOffers$: Subject<{ id: string, creditValue: number, checked: boolean }[]>
+  = new Subject<{ id: string, creditValue: number, checked: boolean }[]>();
   credits$: Observable<Credit[]>;
   creditTotal$: Observable<number>;
   destroyed$: Subject<any> = new Subject<any>();
@@ -52,6 +56,8 @@ export class Offers implements AfterViewInit, OnDestroy {
   sortBy = 'featured';
   sortBy$: Subject<any> = new Subject();
   reverse = false;
+  offersSelected = 0;
+  offersSelectedCreditValue = 0;
   displayOptions = [
     'Available',
     'Completed'
@@ -132,12 +138,32 @@ export class Offers implements AfterViewInit, OnDestroy {
           });
       });
     this.creditTotal$ = store.let(getCreditTotal());
+    this.checkedOffers$.subscribe(offers => {
+      let values = offers.map(o => o.creditValue);
+      let selected = 0;
+      let creditValue = 0;
+      values.forEach(value => {
+        selected += 1;
+        creditValue += value;
+      });
+      this.offersSelected = selected;
+      this.offersSelectedCreditValue = creditValue;
+    });
   }
 
   ngAfterViewInit() {
     if (this.route.snapshot.params['new']) {
       (typeof document !== 'undefined') ? (document.getElementById('offers-page').scrollIntoView()) : {};  // tslint:disable-line
     }
+  }
+
+  checkOffer(event: { id: string, creditValue: number, checked: boolean }) {
+    if (event.checked) {
+      this.checkedOffers = [...this.checkedOffers, event];
+    } else {
+      this.checkedOffers = this.checkedOffers.filter(offer => offer.id !== event.id);
+    }
+    this.checkedOffers$.next(this.checkedOffers);
   }
 
   changeSort(value: string | null) {

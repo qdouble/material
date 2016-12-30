@@ -3,12 +3,15 @@
   <os-offer-card *ngFor="let offer of offers; trackBy: trackById" 
     [ngClass]="{'os-offer-card': sideNavOpen, 
     'os-offer-card-s-closed': !sideNavOpen }"
+    [addUp]="addUp"
     [creditTotal]="creditTotal"
     [hideLevel]="((creditTotal + offer.creditValue) | floor) === (creditTotal | floor)"
     [loggedIn]="loggedIn"
     [offerId]="offer.id"
+    [creditValue]="offer.creditValue"
     [showingAvailable]="showingAvailable"
     [sideNavOpen]="sideNavOpen"
+    (checkOffer)="checkOffer.emit($event)"
     >
     <div class="offer-card-feature" offer-card-feature>
       <span [style.visibility]="offer.featured ? 'visible': 'hidden'">*Featured</span>

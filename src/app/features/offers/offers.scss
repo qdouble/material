@@ -1,3 +1,18 @@
+.add-up-instruct {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.credit-value-overlay {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: black;
+  z-index: 1000;
+}
+
 #no-completed-card {
   max-width: 600px;
   margin-top: 10px;
@@ -119,6 +134,7 @@ md-button-toggle-group {
 
 os-offer-rows {
   display: block;
+  margin-top: 10px;
   // margin-bottom: 290px;
 }
 
