@@ -20,6 +20,7 @@ export interface User {
     readonly hold?: boolean;
     readonly holdReason?: String;
     readonly holdMessage?: String;
+    readonly active?: boolean;
     readonly profilePending?: boolean;
     readonly pendingProfile?: any;
     readonly receiveEmailNotifications?: boolean;

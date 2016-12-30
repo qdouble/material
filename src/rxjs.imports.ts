@@ -18,6 +18,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/pluck';
 import 'rxjs/add/operator/sample';
 import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/takeUntil';

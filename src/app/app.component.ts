@@ -41,6 +41,7 @@ export class AppComponent implements OnDestroy, OnInit {
   actionButtonLabel: string = 'Close';
   action: boolean = false;
   /////////////////////
+  stopChecking$: Subject<any> = new Subject<any>();
   destroyed$: Subject<any> = new Subject<any>();
   credits$: Observable<Credit[]>;
   onAdminLoginPage$: Observable<boolean>;
@@ -70,6 +71,12 @@ export class AppComponent implements OnDestroy, OnInit {
     private uiActions: UIActions,
     private userActions: UserActions
   ) {
+    let active$ = store.select(s => s.user.user.active);
+    active$.takeUntil(this.destroyed$)
+      .filter(active => active === false)
+      .subscribe(active => {
+        this.store.dispatch(this.userActions.logout());
+      });
     this.version$ = store.let(getUIVersion());
     this.version$.subscribe(v => this.version = v);
     this.latestVersion$ = store.let(getUILatestVersion());
@@ -81,12 +88,14 @@ export class AppComponent implements OnDestroy, OnInit {
           window.location.reload();
         }
       });
-    let checkServer$ = Observable.interval(300000);
+    let checkServer$ = Observable.interval(60000);
     checkServer$
       .takeUntil(this.destroyed$)
       .subscribe(() => {
         this.store.dispatch(this.uiActions.getVersion());
-        this.store.dispatch(this.userActions.checkIfUserUpdated());
+        if (this.loggedIn) {
+          this.store.dispatch(this.userActions.checkIfUserUpdated());
+        }
       });
 
     this.updatedAt$ = store.select(s => s.user.updatedAt);
@@ -104,8 +113,6 @@ export class AppComponent implements OnDestroy, OnInit {
           store.dispatch(userActions.getProfile());
         }
       });
-
-
     this.onAdminLoginPage$ = store.let(getUserOnAdminPage());
     this.notifications$ = store.let(getNotifyCollection());
     this.notifications$
@@ -119,6 +126,14 @@ export class AppComponent implements OnDestroy, OnInit {
         setTimeout(() => { this.snackRefs[index].dismiss(); }, 5000);
       });
     this.userLoaded$ = store.let(getUserLoaded());
+
+    this.userLoaded$
+      .filter(loaded => loaded === false)
+      .skip(1)
+      .takeUntil(this.destroyed$)
+      .subscribe(loaded => {
+        console.log('ITS FALSE');
+      });
     this.userLoading$ = store.let(getUserLoading());
     this.userLoggedIn$ = store.let(getUserLoggedIn());
     this.userLoggedIn$

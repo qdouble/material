@@ -7,6 +7,7 @@ export interface Offer {
   imageURL?: string;
   directImageURL?: string;
   featured?: boolean;
+  costToUser?: number;
   offerOrder?: number;
   description?: string;
   requirements?: string;

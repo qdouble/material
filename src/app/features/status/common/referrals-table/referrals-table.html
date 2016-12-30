@@ -7,38 +7,40 @@
       <div class="cell"></div>
     </div>
     <ng-container *ngFor="let referral of referrals">
-      <div *ngIf="referral" [ngClass]="{'green': referral.payBeyondLevel < referral.currentLevel, 'red': referral.hold, 'gray': !referral.currentSponsor, 'row': true }">
-        <div class="cell hide-1 nowrap">
-          {{referral?.addedOn | date: medium }}
-        </div>
-        <div class="cell">
-          <span class="long-username">{{referral?.username | slice:0:20 }}</span>
-          <span class="short-username">{{referral?.username | slice:0:10 }}</span>
-        </div>
-        <div class="cell nowrap center">
-          <ng-container *ngIf="referral.currentSponsor">
-            <ng-container *ngIf="!referral?.hold">
-              <span>{{referral?.currentLevel}}</span>
-              <ng-container *ngIf="referral?.payBeyondLevel < referral?.currentLevel">
-                <span><b>({{ referral?.currentLevel - referral?.payBeyondLevel }})</b></span>
+      <ng-container *ngIf="referral.active">
+        <div *ngIf="referral" [ngClass]="{'green': referral.payBeyondLevel < referral.currentLevel, 'red': referral.hold, 'gray': !referral.currentSponsor, 'row': true }">
+          <div class="cell hide-1 nowrap">
+            {{referral?.addedOn | date: medium }}
+          </div>
+          <div class="cell">
+            <span class="long-username">{{referral?.username | slice:0:20 }}</span>
+            <span class="short-username">{{referral?.username | slice:0:10 }}</span>
+          </div>
+          <div class="cell nowrap center">
+            <ng-container *ngIf="referral.currentSponsor">
+              <ng-container *ngIf="!referral?.hold">
+                <span>{{referral?.currentLevel}}</span>
+                <ng-container *ngIf="referral?.payBeyondLevel < referral?.currentLevel">
+                  <span><b>({{ referral?.currentLevel - referral?.payBeyondLevel }})</b></span>
+                </ng-container>
               </ng-container>
+              <ng-container *ngIf="referral.hold">Hold</ng-container>
             </ng-container>
-            <ng-container *ngIf="referral.hold">Hold</ng-container>
-          </ng-container>
-          <ng-container *ngIf="!referral.currentSponsor">
-            <ng-container>T</ng-container>
-          </ng-container>
-        </div>
-        <div class="cell last-cell">
-          <button md-icon-button [ngClass]="{'transparent': (!referral?.leveledUp || referral?.hold) , 'primary-background':  (referral?.leveledUp && !referral?.hold), 'warn-background': referral?.hold }"
-            (click)="getReferral.emit(referral)">
+            <ng-container *ngIf="!referral.currentSponsor">
+              <ng-container>T</ng-container>
+            </ng-container>
+          </div>
+          <div class="cell last-cell">
+            <button md-icon-button [ngClass]="{'transparent': (!referral?.leveledUp || referral?.hold) , 'primary-background':  (referral?.leveledUp && !referral?.hold), 'warn-background': referral?.hold }"
+              (click)="getReferral.emit(referral)">
               <md-icon>remove_red_eye</md-icon>
             </button>
-          <button md-icon-button md-tooltip="Send Message (Coming Soon)" tooltip-position="before" [ngClass]="{'hide-mail': true, 'transparent': (!referral?.leveledUp || referral?.hold) , 'primary-background':  (referral?.leveledUp && !referral?.hold), 'warn-background': referral.hold }">
+            <button md-icon-button md-tooltip="Send Message (Coming Soon)" tooltip-position="before" [ngClass]="{'hide-mail': true, 'transparent': (!referral?.leveledUp || referral?.hold) , 'primary-background':  (referral?.leveledUp && !referral?.hold), 'warn-background': referral.hold }">
               <md-icon>email</md-icon>
             </button>
+          </div>
         </div>
-      </div>
+      </ng-container>
     </ng-container>
   </div>
 </div>

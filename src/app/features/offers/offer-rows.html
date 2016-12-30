@@ -29,11 +29,14 @@
       {{ offer.creditValue | number: '1.2-2' }}
     </span>
     <span class="offer-card-cost" offer-card-cost>
-      <span *ngIf="offer.costToUser > 0">
+      <span *ngIf="offer.costToUser > 0.001">
         {{offer.costToUser | currency:'USD':true:'1.2-2'}}
       </span>
-      <span *ngIf="offer.costToUser <= 0">
-        <b>{{offer.costToUser| costToUser}}</b>
+      <span *ngIf="offer.costToUser === 0">
+        <b [ngClass]="{ 'dark-green': offer.costToUser === 0}">Free</b>
+      </span>
+      <span *ngIf="offer.costToUser === 0.001">
+        <b [ngClass]="{ 'dark-green': offer.costToUser === 0}">Varies</b>
       </span>
     </span>
     <span class="offer-card-credits" offer-card-credits>

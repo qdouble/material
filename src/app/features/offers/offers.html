@@ -8,6 +8,11 @@
       </div>
     </md-card>-->
     <section class="os-offer-display-options">
+      <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
+        <md-button-toggle *ngFor="let option of sortByValues; let i = index" [value]="option">
+          {{sortByLabels[i]}}
+        </md-button-toggle>
+      </md-button-toggle-group>
       <md-button-toggle-group name="option" [(ngModel)]="selectedOption">
         <md-button-toggle *ngFor="let option of displayOptions" [value]="option">
           {{option}}
@@ -15,7 +20,7 @@
       </md-button-toggle-group>
     </section>
   </span>
-  <os-offer-rows 
+    <os-offer-rows 
     [creditTotal]="creditTotal$ | async"
     [loggedIn]="loggedIn$ | async"
     [showingAvailable]="selectedOption === 'Available'"

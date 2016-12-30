@@ -3,6 +3,11 @@
   margin-top: 10px;
 }
 
+md-button-toggle-group {
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+
 .os-offer-page-header { 
   min-height: 140px; 
   margin: 0 auto;
@@ -106,9 +111,10 @@
 }
 
 .os-offer-display-options {
-  width: 189px;
-  margin: 0 auto;
-  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 os-offer-rows {

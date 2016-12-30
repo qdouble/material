@@ -1,4 +1,7 @@
-import { AfterViewInit, Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import {
+  AfterViewInit, Component, ChangeDetectionStrategy,
+  ChangeDetectorRef, OnDestroy
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -6,6 +9,7 @@ import { Subject } from 'rxjs/Subject';
 import { MdUniqueSelectionDispatcher } from '@angular/material';
 
 const firstBy = require('thenby');
+import { combineSort } from '../../helper/combine-sort';
 
 import { AppState } from '../../reducers';
 import { Credit } from '../../models/credit';
@@ -42,19 +46,33 @@ export class Offers implements AfterViewInit, OnDestroy {
   offersFeatured$: Observable<Offer[]>;
   offersNonFeatured$: Observable<Offer[]>;
   offersAvailable$: Observable<Offer[]>;
+  offersAvailableSortBy$: Observable<Offer[]>;
   sideNavOpen$: Observable<boolean>;
   selectedOption = 'Available';
+  sortBy = 'featured';
+  sortBy$: Subject<any> = new Subject();
+  reverse = false;
   displayOptions = [
     'Available',
     'Completed'
   ];
+  sortByLabels = [
+    'Featured',
+    'Cost',
+    'Credit Value'
+  ];
+  sortByValues = [
+    'featured',
+    'costToUser',
+    'creditValue'
+  ];
   constructor(
+    private cdr: ChangeDetectorRef,
     private offerActions: OfferActions,
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private userActions: UserActions
   ) {
-
     this.mobile$ = this.store.let(getUIMobile());
     this.sideNavOpen$ = this.store.let(getUISideNavOpen());
     this.loaded$ = this.store.let(getOfferLoaded());
@@ -81,28 +99,31 @@ export class Offers implements AfterViewInit, OnDestroy {
       });
 
     this.offersUnSorted$ = this.store.let(getOfferCollection());
-    this.offers$ = this.offersUnSorted$.map(arr => arr.sort(
-      firstBy('featured', { direction: -1 }).thenBy('order').thenBy('name')));
-
-    this.offersAvailable$ = this.offers$;
-    let available = (arr: Offer[], offerIds) => {
-      return arr.filter(offer => !offerIds.includes(offer.id));
-    };
-    let completed = (arr: Offer[], offerIds) => {
-      return arr.filter(offer => offerIds.includes(offer.id));
-    };
-    this.credits$ = this.store.let(getCreditCollection());
-    this.credits$
+    this.sortBy$
       .takeUntil(this.destroyed$)
-      .filter(credits => credits.length > 0)
-      .subscribe(credits => {
-        let creditedOfferIds: string[] = credits.map(credit => credit.offerId);
-        this.offersAvailable$ = Observable.combineLatest(
-          this.offers$, Observable.of(creditedOfferIds), available);
-        this.offersCompleted$ = Observable.combineLatest(
-          this.offers$, Observable.of(creditedOfferIds), completed);
+      .subscribe((sortBy: string) => {
+        this.offers$ = this.offersUnSorted$.map(arr => arr.sort(
+          firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
+          .thenBy('order').thenBy('name')));
+        this.offersAvailable$ = this.offers$;
+        let available = (arr: Offer[], offerIds) => {
+          return arr.filter(offer => !offerIds.includes(offer.id));
+        };
+        let completed = (arr: Offer[], offerIds) => {
+          return arr.filter(offer => offerIds.includes(offer.id));
+        };
+        this.credits$ = this.store.let(getCreditCollection());
+        this.credits$
+          .takeUntil(this.destroyed$)
+          .filter(credits => credits.length > 0)
+          .subscribe(credits => {
+            let creditedOfferIds: string[] = credits.map(credit => credit.offerId);
+            this.offersAvailable$ = Observable.combineLatest(
+              this.offers$, Observable.of(creditedOfferIds), available);
+            this.offersCompleted$ = Observable.combineLatest(
+              this.offers$, Observable.of(creditedOfferIds), completed);
+          });
       });
-
     this.creditTotal$ = store.let(getCreditTotal());
   }
 
@@ -110,6 +131,10 @@ export class Offers implements AfterViewInit, OnDestroy {
     if (this.route.snapshot.params['new']) {
       (typeof document !== 'undefined') ? (document.getElementById('offers-page').scrollIntoView()) : {};  // tslint:disable-line
     }
+  }
+
+  changeSort(value: string | null) {
+    this.sortBy$.next(value);
   }
 
   ngOnDestroy() {
