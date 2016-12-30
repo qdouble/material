@@ -102,9 +102,15 @@ export class Offers implements AfterViewInit, OnDestroy {
     this.sortBy$
       .takeUntil(this.destroyed$)
       .subscribe((sortBy: string) => {
-        this.offers$ = this.offersUnSorted$.map(arr => arr.sort(
-          firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
-          .thenBy('order').thenBy('name')));
+        if (sortBy === 'feature') {
+          this.offers$ = this.offersUnSorted$.map(arr => arr.sort(
+            firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
+              .thenBy('order').thenBy('name')));
+        } else {
+          this.offers$ = this.offersUnSorted$.map(arr => arr.sort(
+            firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
+              .thenBy('featured', -1).thenBy('order').thenBy('name')));
+        }
         this.offersAvailable$ = this.offers$;
         let available = (arr: Offer[], offerIds) => {
           return arr.filter(offer => !offerIds.includes(offer.id));
