@@ -1,6 +1,6 @@
 import {
   AfterViewInit, Component, ChangeDetectionStrategy,
-  ChangeDetectorRef, OnDestroy
+  ChangeDetectorRef
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -28,14 +28,13 @@ import { UserActions } from '../../actions/user';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class Offers implements AfterViewInit, OnDestroy {
+export class Offers implements AfterViewInit {
   addUp: boolean;
   checkedOffers: { id: string, creditValue: number, checked: boolean }[] = [];
   checkedOffers$: Subject<{ id: string, creditValue: number, checked: boolean }[]>
   = new Subject<{ id: string, creditValue: number, checked: boolean }[]>();
   credits$: Observable<Credit[]>;
   creditTotal$: Observable<number>;
-  destroyed$: Subject<any> = new Subject<any>();
   lastCloseResult: string;
   loaded$: Observable<boolean>;
   loaded: boolean;
@@ -83,15 +82,12 @@ export class Offers implements AfterViewInit, OnDestroy {
     this.sideNavOpen$ = this.store.let(getUISideNavOpen());
     this.loaded$ = this.store.let(getOfferLoaded());
     this.loaded$
-      .takeUntil(this.destroyed$)
       .subscribe(l => this.loaded = l);
     this.loadedUserOffers$ = this.store.let(getOfferLoadedUserOffers());
     this.loadedUserOffers$
-      .takeUntil(this.destroyed$)
       .subscribe(l => this.loadedUserOffers = l);
     this.loggedIn$ = this.store.let(getUserLoggedIn());
     this.loggedIn$
-      .takeUntil(this.destroyed$)
       .subscribe(loggedIn => {
         if (!this.loaded) {
           if (loggedIn) {
@@ -107,7 +103,6 @@ export class Offers implements AfterViewInit, OnDestroy {
 
     this.offersUnSorted$ = this.store.let(getOfferCollection());
     this.sortBy$
-      .takeUntil(this.destroyed$)
       .subscribe((sortBy: string) => {
         if (sortBy === 'feature') {
           this.offers$ = this.offersUnSorted$.map(arr => arr.sort(
@@ -127,7 +122,6 @@ export class Offers implements AfterViewInit, OnDestroy {
         };
         this.credits$ = this.store.let(getCreditCollection());
         this.credits$
-          .takeUntil(this.destroyed$)
           .filter(credits => credits.length > 0)
           .subscribe(credits => {
             let creditedOfferIds: string[] = credits.map(credit => credit.offerId);
@@ -168,9 +162,5 @@ export class Offers implements AfterViewInit, OnDestroy {
 
   changeSort(value: string | null) {
     this.sortBy$.next(value);
-  }
-
-  ngOnDestroy() {
-    this.destroyed$.next();
   }
 }
