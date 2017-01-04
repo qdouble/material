@@ -27,6 +27,7 @@ export class PasswordReset implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.forEach(param => {
+      console.log(param);
       this.f = new FormGroup({
         email: new FormControl(param['email'], [Validators.required,
         Validators.pattern(RegexValues.email)]),
