@@ -45,7 +45,7 @@ export class UserEffects {
       .mergeMap((res: any) => Observable.of(
         this.userActions.changeSelectedPrizeSuccess(res),
         // res['message_type'] !== 'success' ? this.notifyActions.addNotify(res) : null
-        ))
+      ))
       .catch((err) => Observable.of(
         this.userActions.changeSelectedPrizeFail(err)
       ))
@@ -64,7 +64,7 @@ export class UserEffects {
       ))
     );
 
-    @Effect() checkIfUserUpdated$ = this.actions$
+  @Effect() checkIfUserUpdated$ = this.actions$
     .ofType(UserActions.CHECK_IF_USER_UPDATED)
     .map(action => action.payload)
     .switchMap(() => this.userService.checkIfUserUpdated()
@@ -74,7 +74,7 @@ export class UserEffects {
       ))
     );
 
-    @Effect() checkIPMatch$ = this.actions$
+  @Effect() checkIPMatch$ = this.actions$
     .ofType(UserActions.CHECK_IP_MATCH)
     .map(action => action.payload)
     .switchMap(() => this.userService.checkIPMatch()
@@ -104,6 +104,23 @@ export class UserEffects {
       ))
     );
 
+  @Effect() forgotPassword$ = this.actions$
+    .ofType(UserActions.FORGOT_PASSWORD)
+    .map(action => <string>action.payload)
+    .switchMap((email) => this.userService.forgotPassword(email)
+      .mergeMap(res => Observable.of(
+        this.userActions.forgotPasswordSuccess(res),
+        this.notifyActions.addNotify(res)
+      ))
+      .do((res: any) => res.payload.redirectTo ?
+        this.store.dispatch(go([res.payload.redirectTo], undefined,
+          { preserveQueryParams: true })) : null)
+      .catch((res) => Observable.of(
+        this.userActions.forgotPasswordFail(res),
+        this.notifyActions.addNotify(res)
+      ))
+    );
+
   @Effect() getProfile$ = this.actions$
     .ofType(UserActions.GET_PROFILE)
     .map(action => <string>action.payload)
@@ -114,7 +131,7 @@ export class UserEffects {
       ))
     );
 
-    @Effect() getReferral$ = this.actions$
+  @Effect() getReferral$ = this.actions$
     .ofType(UserActions.GET_REFERRAL)
     .map(action => <string>action.payload)
     .switchMap((id) => this.userService.getReferral(id)
@@ -177,6 +194,22 @@ export class UserEffects {
       })
       .catch((res) => Observable.of(
         this.userActions.registerFail(res)
+      ))
+    );
+
+  @Effect() resetPassword$ = this.actions$
+    .ofType(UserActions.RESET_PASSWORD)
+    .map(action => <{email: string, code: string, password: string}>action.payload)
+    .switchMap((email) => this.userService.resetPassword(email)
+      .mergeMap(res => Observable.of(
+        this.userActions.resetPasswordSuccess(res),
+        this.notifyActions.addNotify(res)
+      ))
+      .do((res: any) => res.payload.redirectTo ?
+        this.store.dispatch(go([res.payload.redirectTo])) : null)
+      .catch((res) => Observable.of(
+        this.userActions.resetPasswordFail(res),
+        this.notifyActions.addNotify(res)
       ))
     );
 

@@ -10,6 +10,7 @@ import { MessagesComponent } from './messages';
 import { NotificationsComponent } from './notifications';
 import { OfferDetailsComponent, Offers, OFFERS_COMMON } from './offers';
 import { OrderComponent, OrderFormComponent, OrderTableComponent } from './order';
+import { PasswordReset } from './password-reset';
 import { PrivacyPolicy } from './privacy-policy';
 import { Profile } from './profile';
 import { Promotions } from './promotions';
@@ -38,6 +39,7 @@ export {
   Offers,
   OfferDetailsComponent,
   OrderComponent,
+  PasswordReset,
   PrivacyPolicy,
   Profile,
   Promotions,
@@ -72,6 +74,7 @@ export const PAGES_COMPONENTS = [
   OrderComponent,
   OrderFormComponent,
   OrderTableComponent,
+  PasswordReset,
   PrivacyPolicy,
   Profile,
   Promotions,

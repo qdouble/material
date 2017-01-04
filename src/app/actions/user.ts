@@ -176,6 +176,30 @@ export class UserActions {
     };
   }
 
+  static FORGOT_PASSWORD = '[User] Forgot Password';
+  forgotPassword(email: string): Action {
+    return {
+      type: UserActions.FORGOT_PASSWORD,
+      payload: email
+    };
+  }
+
+  static FORGOT_PASSWORD_SUCCESS = '[User] Forgot Password Success';
+  forgotPasswordSuccess(res: any): Action {
+    return {
+      type: UserActions.FORGOT_PASSWORD_SUCCESS,
+      payload: res
+    };
+  }
+
+  static FORGOT_PASSWORD_FAIL = '[User] Forgot Password Fail';
+  forgotPasswordFail(err: Error): Action {
+    return {
+      type: UserActions.FORGOT_PASSWORD_FAIL,
+      payload: err
+    };
+  }
+
   static GET_PROFILE = '[User] Get Profile';
   getProfile(): Action {
     return {
@@ -319,6 +343,30 @@ export class UserActions {
     return {
       type: UserActions.REGISTER_SUCCESS,
       payload: user
+    };
+  }
+
+  static RESET_PASSWORD = '[User] Reset Password';
+  resetPassword(reset: {email: string, code: string, password: string}): Action {
+    return {
+      type: UserActions.RESET_PASSWORD,
+      payload: reset
+    };
+  }
+
+  static RESET_PASSWORD_SUCCESS = '[User] Reset Password Success';
+  resetPasswordSuccess(res: any): Action {
+    return {
+      type: UserActions.RESET_PASSWORD_SUCCESS,
+      payload: res
+    };
+  }
+
+  static RESET_PASSWORD_FAIL = '[User] Reset Password Fail';
+  resetPasswordFail(err: Error): Action {
+    return {
+      type: UserActions.RESET_PASSWORD_FAIL,
+      payload: err
     };
   }
 

@@ -24,6 +24,7 @@ export interface UserState {
   referredBy: string | null;
   referralIds: string[];
   referrals: { [id: string]: Referral };
+  resetEmailSent: boolean;
   settingPrize: boolean;
   updatedAt: string;
   user: User;
@@ -44,6 +45,7 @@ export const initialState: UserState = {
   referredBy: null,
   referralIds: [],
   referrals: {},
+  resetEmailSent: false,
   settingPrize: false,
   updatedAt: null,
   user: {}
@@ -94,7 +96,7 @@ export function userReducer(state = initialState, action: Action): UserState {
 
     case UserActions.CHECK_IP_MATCH:
     case UserActions.CHECK_IP_MATCH_FAIL:
-    return Object.assign({}, state, {
+      return Object.assign({}, state, {
         matches: undefined
       });
 
@@ -118,6 +120,15 @@ export function userReducer(state = initialState, action: Action): UserState {
         user: Object.assign({}, state.user, { profilePending: false })
       });
     }
+
+    case UserActions.FORGOT_PASSWORD:
+      return Object.assign({}, state, { loading: true, resetEmailSent: false });
+
+    case UserActions.FORGOT_PASSWORD_FAIL:
+      return Object.assign({}, state, { loading: false });
+
+    case UserActions.FORGOT_PASSWORD_SUCCESS:
+      return Object.assign({}, state, { loading: false, resetEmailSent: true });
 
     case UserActions.GET_PROFILE: {
       return Object.assign({}, state, { loading: true });

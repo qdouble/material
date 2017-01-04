@@ -23,6 +23,7 @@ import {
   OfferDetailsComponent,
   Offers,
   OrderComponent,
+  PasswordReset,
   Profile,
   PrivacyPolicy,
   Promotions,
@@ -99,6 +100,11 @@ export const routes: Routes = [
     path: 'order',
     component: OrderComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'password-reset',
+    component: PasswordReset,
+    canActivate: [LoggedInRedirectGuard]
   },
   {
     path: 'privacy-policy',

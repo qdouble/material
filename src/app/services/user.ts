@@ -44,6 +44,11 @@ export class UserService extends RequestBase {
       .map(res => res.text());
   }
 
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${API_USER_URL}/forgotPassword`, { email: email }, this.options)
+      .map(res => res.json());
+  }
+
   getProfile(): Observable<User> {
     return this.http.get(`${API_USER_URL}/getProfile`, this.optionsNoPre)
       .map(res => res.json());
@@ -76,6 +81,11 @@ export class UserService extends RequestBase {
 
   registerUser(user: User): Observable<User> {
     return this.http.post(`${API_USER_URL}/registerUser`, user, this.options)
+      .map(res => res.json());
+  }
+
+  resetPassword(reset: {email: string, code: string, password: string }): Observable<any> {
+    return this.http.post(`${API_USER_URL}/resetPassword`, reset, this.options)
       .map(res => res.json());
   }
 
