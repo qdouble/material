@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { CustomValidators } from '../../validators';
 
 import { AppState } from '../../reducers';
 import { UserActions } from '../../actions/user';
@@ -26,15 +27,14 @@ export class PasswordReset implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.queryParams.forEach(param => {
-      console.log(param);
+    this.route.queryParams.forEach(params => {
       this.f = new FormGroup({
-        email: new FormControl(param['email'], [Validators.required,
+        email: new FormControl(params['email'], [Validators.required,
         Validators.pattern(RegexValues.email)]),
-        code: new FormControl(param['code'], [Validators.required]),
+        code: new FormControl(params['code'], [Validators.required]),
         password: new FormControl(PUBLISH ? '' : 'password', Validators.required),
         confirmPassword: new FormControl(PUBLISH ? '' : 'password', Validators.required)
-      });
+      }, CustomValidators.compare('password', 'confirmPassword', 'comparePassword'));
     });
     this.loading$ = this.store.select(s => s.user.loading);
   }
