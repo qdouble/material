@@ -25,7 +25,6 @@ import {
   OrderComponent,
   PasswordReset,
   Profile,
-  PrivacyPolicy,
   Promotions,
   ProofPicGallery,
   Register,
@@ -108,7 +107,7 @@ export const routes: Routes = [
   },
   {
     path: 'privacy-policy',
-    component: PrivacyPolicy
+    loadChildren: './features/privacy-policy/index#PrivacyPolicyModule'
   },
   {
     path: 'profile',

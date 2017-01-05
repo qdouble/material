@@ -2,6 +2,7 @@ import { AboutUs } from './about-us';
 import { ContactUs } from './contact-us';
 import { FAQ } from './faq';
 import { ForgotPassword } from './forgot-password';
+import { FooterComponent } from './footer';
 import { Homepage } from './home';
 import { HowItWorks } from './how-it-works';
 import { Login } from './login';
@@ -11,7 +12,6 @@ import { NotificationsComponent } from './notifications';
 import { OfferDetailsComponent, Offers, OFFERS_COMMON } from './offers';
 import { OrderComponent, OrderFormComponent, OrderTableComponent } from './order';
 import { PasswordReset } from './password-reset';
-import { PrivacyPolicy } from './privacy-policy';
 import { Profile } from './profile';
 import { Promotions } from './promotions';
 import { ProofPicGallery } from './proof-pic-gallery';
@@ -40,7 +40,6 @@ export {
   OfferDetailsComponent,
   OrderComponent,
   PasswordReset,
-  PrivacyPolicy,
   Profile,
   Promotions,
   ProofPicGallery,
@@ -62,6 +61,7 @@ export const PAGES_COMPONENTS = [
   CreditRequestComponent,
   CreditRequestTable,
   FAQ,
+  FooterComponent,
   ForgotPassword,
   Homepage,
   HowItWorks,
@@ -75,7 +75,6 @@ export const PAGES_COMPONENTS = [
   OrderFormComponent,
   OrderTableComponent,
   PasswordReset,
-  PrivacyPolicy,
   Profile,
   Promotions,
   ProofPicGallery,
