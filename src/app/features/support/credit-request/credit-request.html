@@ -31,7 +31,7 @@
         <ng-container *ngIf="!view">
           <select-input controlName="offerId" label="Completed Offer: " [fullWidth]="true" [optionValues]="offerIds$ | async" [optionLabels]="offerNames$ | async"
             [form]="f"></select-input>
-          <label>Date Completed:</label> <input type="date" id="myDate" [value]="todaysDate" formControlName="completedOn">
+          <label>Date Completed:</label> <input type="date" id="myDate" formControlName="completedOn">
         </ng-container>
         <md-textarea [rows]="6" placeholder="Confirmation Email Headers" formControlName="headers"></md-textarea><br>
         <md-textarea [rows]="6" placeholder="Confirmation Email Body" formControlName="body"></md-textarea><br>
