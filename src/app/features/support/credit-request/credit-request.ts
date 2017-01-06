@@ -54,7 +54,7 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
     this.f = fb.group({
       offerId: ['', Validators.minLength(2)],
       offerName: '',
-      completedOn: '2016-11-27',
+      completedOn: ['', Validators.required],
       headers: ['', [Validators.required, Validators.maxLength(200000)]],
       body: ['', [Validators.required, Validators.maxLength(200000)]],
       additionalDetails: ['', Validators.maxLength(200000)]
