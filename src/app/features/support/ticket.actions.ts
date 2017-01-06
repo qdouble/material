@@ -1,9 +1,8 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-// import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
 
-import { Ticket, TicketMessage } from '../models/ticket';
+import { Ticket, TicketMessage } from './ticket.model';
 
 @Injectable()
 

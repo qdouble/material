@@ -7,7 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
 import { AppState } from '../../../../reducers';
-import { Ticket, TicketMessage } from '../../../../models/ticket';
+import { Ticket, TicketMessage } from '../../ticket.model';
 
 @Component({
   selector: 'os-support-ticket-form',

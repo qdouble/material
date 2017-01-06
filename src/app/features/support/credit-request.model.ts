@@ -1,4 +1,4 @@
-export { OfferClick } from './offer-clicks';
+export { OfferClick } from './offer-click.model';
 export interface CreditRequest {
   readonly id?: string;
   readonly offerId?: string;

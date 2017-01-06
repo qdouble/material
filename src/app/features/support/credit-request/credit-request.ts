@@ -9,11 +9,11 @@ import { Subject } from 'rxjs/Subject';
 import { todaysDate } from '../../../helper/todays-date';
 
 import { AppState } from '../../../reducers';
-import { CreditRequestActions } from '../../../actions/credit-request';
+import { CreditRequestActions } from '../credit-request.actions';
 import {
   getCreditRequest, getOfferClickCollection, getOfferClicksLoaded
 } from '../../../reducers/credit-request';
-import { CreditRequest, OfferClick } from '../../../models/credit-request';
+import { CreditRequest, OfferClick } from '../credit-request.model';
 
 @Component({
   selector: 'os-credit-request',

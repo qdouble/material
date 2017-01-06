@@ -5,9 +5,9 @@ import { back } from '@ngrx/router-store';
 import { Observable } from 'rxjs/Observable';
 
 import { AppState } from '../../../reducers';
-import { TicketActions } from '../../../actions/ticket';
+import { TicketActions } from '../ticket.actions';
 import { getTicket, getTicketAddedMessage, getTicketAddingMessage } from '../../../reducers/ticket';
-import { Ticket, TicketMessage } from '../../../models/ticket';
+import { Ticket, TicketMessage } from '../ticket.model';
 
 @Component({
   selector: 'os-view-ticket',

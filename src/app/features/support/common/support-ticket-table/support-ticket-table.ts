@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Ticket } from '../../../../models/ticket';
+import { Ticket } from '../../ticket.model';
 
 @Component({
   selector: 'os-support-ticket-table',

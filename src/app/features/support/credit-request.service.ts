@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-import { API_USER_URL } from './constants';
-import { CreditRequest } from '../models/credit-request';
-import { RequestBase } from './request-base';
+import { API_USER_URL } from '../../services/constants';
+import { CreditRequest } from './credit-request.model';
+import { RequestBase } from '../../services/request-base';
 
 @Injectable()
 export class CreditRequestService extends RequestBase {

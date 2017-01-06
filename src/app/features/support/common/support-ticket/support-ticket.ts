@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { AppState } from '../../../../reducers';
-import { TicketActions } from '../../../../actions/ticket';
+import { TicketActions } from '../../ticket.actions';
 
 @Component({
   selector: 'os-support-ticket',

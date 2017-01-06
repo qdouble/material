@@ -2,7 +2,7 @@ import { AboutUs } from './about-us';
 import { ContactUs } from './contact-us';
 import { FAQ } from './faq';
 import { ForgotPassword } from './forgot-password';
-import { FooterComponent } from './footer';
+import { FooterModule } from './footer';
 import { Homepage } from './home';
 import { HowItWorks } from './how-it-works';
 import { Login } from './login';
@@ -18,15 +18,10 @@ import { ProofPicGallery } from './proof-pic-gallery';
 import { IPMatchFoundDialog, Register } from './register';
 import { ReportSpam } from './report-spam';
 import { ReferralDetailsDialog, ReferralsTable, SelectedPrizeComponent, Status } from './status';
-import {
-  CreditRequestComponent, CreditRequestTable, Support, SupportTicket, SupportTicketFormComponent,
-  SupportTicketMessageComponent, SupportTicketTable, ViewTicket
-} from './support';
 
 export {
   AboutUs,
   ContactUs,
-  CreditRequestComponent,
   FAQ,
   ForgotPassword,
   Homepage,
@@ -46,10 +41,12 @@ export {
   ReferralDetailsDialog,
   Register,
   ReportSpam,
-  Status,
-  Support,
-  ViewTicket
+  Status
 }
+
+export const FEATURE_MODULES = [
+  FooterModule
+];
 
 export const PAGES_COMMON = [
   OFFERS_COMMON
@@ -58,10 +55,7 @@ export const PAGES_COMMON = [
 export const PAGES_COMPONENTS = [
   AboutUs,
   ContactUs,
-  CreditRequestComponent,
-  CreditRequestTable,
   FAQ,
-  FooterComponent,
   ForgotPassword,
   Homepage,
   HowItWorks,
@@ -83,11 +77,5 @@ export const PAGES_COMPONENTS = [
   Register,
   ReportSpam,
   SelectedPrizeComponent,
-  Status,
-  Support,
-  SupportTicket,
-  SupportTicketFormComponent,
-  SupportTicketMessageComponent,
-  SupportTicketTable,
-  ViewTicket
+  Status
 ];

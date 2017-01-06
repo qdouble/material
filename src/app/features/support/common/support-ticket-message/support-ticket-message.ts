@@ -5,7 +5,7 @@ import {
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
 
-import { TicketMessage } from '../../../../models/ticket';
+import { TicketMessage } from '../../ticket.model';
 
 @Component({
   selector: 'os-support-ticket-message',

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { CreditRequest } from '../../../../models/credit-request';
+import { CreditRequest } from '../../credit-request.model';
 
 @Component({
   selector: 'os-credit-request-table',

@@ -1,9 +1,8 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-// import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
 
-import { CreditRequest } from '../models/credit-request';
+import { CreditRequest } from './credit-request.model';
 
 @Injectable()
 

@@ -13,7 +13,6 @@ import { AdminLogin } from './admin-login';
 import {
   AboutUs,
   ContactUs,
-  CreditRequestComponent,
   FAQ,
   ForgotPassword,
   Homepage,
@@ -29,9 +28,7 @@ import {
   ProofPicGallery,
   Register,
   ReportSpam,
-  Status,
-  Support,
-  ViewTicket
+  Status
 }  from './features';
 
 import {
@@ -140,20 +137,7 @@ export const routes: Routes = [
   {
     path: 'support',
     canActivate: [AuthGuard],
-    children: [
-      {
-        path: '',
-        component: Support
-      },
-      {
-        path: 'credit-request',
-        component: CreditRequestComponent
-      },
-      {
-        path: 'view-ticket',
-        component: ViewTicket
-      }
-    ]
+    loadChildren: './features/support/index#SupportModule'
   },
   {
     path: 'terms-and-conditions',

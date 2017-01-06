@@ -5,8 +5,8 @@ import { compose } from '@ngrx/core/compose';
 import { Action } from '@ngrx/store';
 
 import { AppState } from './';
-import { CreditRequestActions } from '../actions/credit-request';
-import { CreditRequest, OfferClick } from '../models/credit-request';
+import { CreditRequestActions } from '../features/support/credit-request.actions';
+import { CreditRequest, OfferClick } from '../features/support/credit-request.model';
 
 export interface CreditRequestState {
   ids: string[];

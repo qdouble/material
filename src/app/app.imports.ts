@@ -9,13 +9,15 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { useLogMonitor } from '@ngrx/store-log-monitor';
 
+import { FEATURE_MODULES } from './features';
+import { SelectInputModule } from './components/input-fields/select-input';
+import { TextareaInputModule } from './components/input-fields/textarea-input';
+
 import { routes } from './app.routing';
 import { CountryEffects } from './effects/country';
-import { CreditRequestEffects } from './effects/credit-request';
 import { OfferEffects } from './effects/offer';
 import { OrderEffects } from './effects/order';
 import { PrizeEffects } from './effects/prize';
-import { TicketEffects } from './effects/ticket';
 import { UIEffects } from './effects/ui';
 import { UserEffects } from './effects/user';
 import { rootReducer } from './reducers';
@@ -35,20 +37,21 @@ if (ENV === 'development' && !AOT &&
 
 export const APP_IMPORTS = [
   EffectsModule.run(CountryEffects),
-  EffectsModule.run(CreditRequestEffects),
   EffectsModule.run(OfferEffects),
   EffectsModule.run(OrderEffects),
   EffectsModule.run(PrizeEffects),
-  EffectsModule.run(TicketEffects),
   EffectsModule.run(UIEffects),
   EffectsModule.run(UserEffects),
+  FEATURE_MODULES,
   FlexLayoutModule.forRoot(),
   FormsModule,
   MaterialModule.forRoot(),
   ReactiveFormsModule,
   RouterModule.forRoot(routes),
   RouterStoreModule.connectRouter(),
+  SelectInputModule,
   StoreModule.provideStore(rootReducer),
   STORE_DEV_TOOLS_IMPORTS,
-  StoreDevToolsModule
+  StoreDevToolsModule,
+  TextareaInputModule
 ];

@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-import { API_USER_URL } from './constants';
-import { Ticket, TicketMessage } from '../models/ticket';
-import { RequestBase } from './request-base';
+import { API_USER_URL } from '../../services/constants';
+import { Ticket, TicketMessage } from './ticket.model';
+import { RequestBase } from '../../services/request-base';
 
 @Injectable()
 export class TicketService extends RequestBase {

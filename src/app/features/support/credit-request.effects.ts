@@ -5,11 +5,11 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { go } from '@ngrx/router-store';
 
-import { AppState } from '../reducers';
-import { NotifyActions } from '../actions/notify';
-import { CreditRequest } from '../models/credit-request';
-import { CreditRequestService } from '../services/credit-request';
-import { CreditRequestActions } from '../actions/credit-request';
+import { AppState } from '../../reducers';
+import { NotifyActions } from '../../actions/notify';
+import { CreditRequest } from './credit-request.model';
+import { CreditRequestActions } from './credit-request.actions';
+import { CreditRequestService } from './credit-request.service';
 
 @Injectable()
 

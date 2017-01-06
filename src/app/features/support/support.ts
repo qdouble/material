@@ -6,10 +6,10 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { combineSort } from '../../helper/combine-sort';
 
 import { AppState } from '../../reducers';
-import { CreditRequest } from '../../models/credit-request';
-import { Ticket } from '../../models/ticket';
-import { CreditRequestActions } from '../../actions/credit-request';
-import { TicketActions } from '../../actions/ticket';
+import { CreditRequest } from './credit-request.model';
+import { Ticket } from './ticket.model';
+import { CreditRequestActions } from './credit-request.actions';
+import { TicketActions } from './ticket.actions';
 import { getCreditRequestCollection } from '../../reducers/credit-request';
 import { getTicketCollection } from '../../reducers/ticket';
 

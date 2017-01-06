@@ -4,11 +4,11 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { AppState } from '../reducers';
-import { NotifyActions } from '../actions/notify';
-import { Ticket, TicketMessage } from '../models/ticket';
-import { TicketService } from '../services/ticket';
-import { TicketActions } from '../actions/ticket';
+import { AppState } from '../../reducers';
+import { NotifyActions } from '../../actions/notify';
+import { Ticket, TicketMessage } from './ticket.model';
+import { TicketActions } from './ticket.actions';
+import { TicketService } from './ticket.service';
 
 @Injectable()
 
