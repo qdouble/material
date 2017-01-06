@@ -1,15 +1,15 @@
 <md-card class="os-page-container">
     <div class="os-support-tickets-table-container">
       <a [routerLink]="['credit-request']">
-      <md-card id="credit-request-tab" class="os-message-card accent-background white">
-        Missing credit for an offer you completed? <b>Click Here to File a Missing Credit Request.</b>
-      </md-card></a>
+        <md-card id="credit-request-tab" class="os-message-card accent-background white">
+          Missing credit for an offer you completed? <b>Click Here to File a Missing Credit Request.</b>
+        </md-card>
+      </a>
       <md-card *ngIf="(openTickets$ | async)?.length > 0" class="os-support-ticket-section">
         <md-card-title>Open Tickets</md-card-title>
         <os-support-ticket-table
           [tickets]="openTickets$ | async"
           (closeTicket)=closeTicket($event)
-          (reload)=reload($event)
           (sortBy)=sortBy($event)>
         </os-support-ticket-table>
       </md-card>
