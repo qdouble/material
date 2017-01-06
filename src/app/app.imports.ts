@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '@angular/material';
-import { RouterModule } from '@angular/router';
+import { RouterModule, PreloadAllModules } from '@angular/router';
 
 import { EffectsModule } from '@ngrx/effects';
 import { RouterStoreModule } from '@ngrx/router-store';
@@ -47,7 +47,7 @@ export const APP_IMPORTS = [
   FormsModule,
   MaterialModule.forRoot(),
   ReactiveFormsModule,
-  RouterModule.forRoot(routes),
+  RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
   RouterStoreModule.connectRouter(),
   SelectInputModule,
   StoreModule.provideStore(rootReducer),
