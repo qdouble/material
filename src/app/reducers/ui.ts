@@ -17,7 +17,7 @@ export const initialState: UIState = {
   mobile: false,
   sideNavOpen: false,
   latestVersion: null,
-  version: '0.0.29'
+  version: '0.0.30'
 };
 
 export function uiReducer(state = initialState, action: Action): UIState {
