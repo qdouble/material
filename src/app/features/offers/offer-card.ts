@@ -1,4 +1,9 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, EventEmitter,
+  Input, OnInit, Output
+} from '@angular/core';
+
+import { Offer } from '../../models/offer';
 
 @Component({
   selector: 'os-offer-card',
@@ -7,7 +12,8 @@ import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class OfferCard {
+export class OfferCard implements OnInit {
+  isNew: boolean;
   @Input() addUp: boolean;
   @Input() creditValue: number;
   @Input() hideLevel: boolean;
@@ -16,6 +22,12 @@ export class OfferCard {
   @Input() showingAvailable: boolean;
   @Input() sideNavOpen: boolean;
   @Input() offerId: string;
+  @Input() offer: Offer;
   @Input() creditTotal: number;
   @Output() checkOffer = new EventEmitter();
+  ngOnInit() {
+    const dateNow = new Date();
+    const createdDate = new Date(this.offer.createdAt);
+    this.isNew = dateNow.getTime() - createdDate.getTime() < 604800000;
+  }
 }

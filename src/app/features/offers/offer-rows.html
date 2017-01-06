@@ -8,6 +8,7 @@
     [hideLevel]="((creditTotal + offer.creditValue) | floor) === (creditTotal | floor)"
     [loggedIn]="loggedIn"
     [offerId]="offer.id"
+    [offer]="offer"
     [creditValue]="offer.creditValue"
     [showingAvailable]="showingAvailable"
     [sideNavOpen]="sideNavOpen"
@@ -24,9 +25,6 @@
     </div>
     <div [ngClass]="{'offer-card-subtitle': true, 'shrink-subtitle': (offer?.subTitle?.length > 35) }" offer-card-subtitle>
       {{ offer.subTitle?.length > 1 ? offer.subTitle : '&#8239;' }}
-    </div>
-    <div class="offer-card-description" offer-card-description>
-      {{ offer.description }}
     </div>
     <span class="offer-card-value" offer-card-value>
       {{ offer.creditValue | number: '1.2-2' }}

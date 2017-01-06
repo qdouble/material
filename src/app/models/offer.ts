@@ -18,4 +18,6 @@ export interface Offer {
   minTimeToCreditType?: string;
   maxTimeToCredit?: number;
   maxTimeToCreditType?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
