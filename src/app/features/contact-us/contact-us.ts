@@ -17,7 +17,7 @@ import { RegexValues } from '../../validators';
 export class ContactUs implements OnDestroy {
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
-  hideForm: boolean = true;
+  hideForm: boolean;
   sending$: Observable<boolean>;
   sent$: Observable<boolean>;
   constructor(
