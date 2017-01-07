@@ -21,6 +21,20 @@ export class UIEffects {
     private uiService: UIService
   ) { }
 
+  @Effect() contactUs$ = this.actions$
+    .ofType(UIActions.CONTACT_US)
+    .map(action => <{ email: string, subject: string, question: string }>action.payload)
+    .switchMap((contact) => this.uiService.contactUs(contact)
+      .mergeMap((res: any) => Observable.of(
+        this.uiActions.contactUsSuccess(res),
+        this.notifyActions.addNotify(res)
+      ))
+      .catch((err) => Observable.of(
+        this.uiActions.contactUsFail(err),
+        this.notifyActions.addNotify(err)
+      ))
+    );
+
   @Effect() getProfile$ = this.actions$
     .ofType(UIActions.GET_VERSION)
     .map(action => <string>action.payload)

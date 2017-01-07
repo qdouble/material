@@ -5,6 +5,30 @@ import { Action } from '@ngrx/store';
 @Injectable()
 
 export class UIActions {
+  static CONTACT_US = '[UI] Contact Us';
+  contactUs(contact: { email: string, subject: string, question: string }): Action {
+    return {
+      type: UIActions.CONTACT_US,
+      payload: contact
+    };
+  }
+
+  static CONTACT_US_FAIL = '[UI] Contact Us Fail';
+  contactUsFail(err: Error): Action {
+    return {
+      type: UIActions.CONTACT_US_FAIL,
+      payload: err
+    };
+  }
+
+  static CONTACT_US_SUCCESS = '[UI] Contact Us Success';
+  contactUsSuccess(version: { version: string }): Action {
+    return {
+      type: UIActions.CONTACT_US_SUCCESS,
+      payload: version
+    };
+  }
+
   static GET_VERSION = '[UI] Get Version';
   getVersion(): Action {
     return {

@@ -1,0 +1,26 @@
+@import '../../variables.scss';
+
+.contact-sent {
+  margin: 0 auto;
+  text-align: center;
+  color: $primary-color-x-dark;
+}
+
+md-input, md-textarea {
+  width: 100%;
+}
+
+md-card-title {
+  color: $primary-color-x-dark;
+}
+
+md-card-subtitle {
+  color: $primary-color-x-dark;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+.warn {
+  font-size: 10px;
+  margin-top: -10px;
+}

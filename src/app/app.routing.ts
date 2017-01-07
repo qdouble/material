@@ -12,7 +12,6 @@ import { AdminLogin } from './admin-login';
 
 import {
   AboutUs,
-  ContactUs,
   FAQ,
   ForgotPassword,
   Homepage,
@@ -52,7 +51,8 @@ export const routes: Routes = [
   },
   {
     path: 'contact-us',
-    component: ContactUs
+    canActivate: [LoggedInRedirectGuard],
+    loadChildren: './features/contact-us/index#ContactUsModule'
   },
   {
     path: 'faq',

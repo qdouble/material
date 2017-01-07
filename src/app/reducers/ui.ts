@@ -7,14 +7,18 @@ import { AppState } from './';
 import { UIActions } from '../actions/ui';
 
 export interface UIState {
+  contactRequestSent: boolean;
   mobile: boolean;
+  sendingContact: boolean;
   sideNavOpen: boolean;
   latestVersion: string;
   version: string;
 };
 
 export const initialState: UIState = {
+  contactRequestSent: false,
   mobile: false,
+  sendingContact: false,
   sideNavOpen: false,
   latestVersion: null,
   version: '0.0.31'
@@ -23,9 +27,25 @@ export const initialState: UIState = {
 export function uiReducer(state = initialState, action: Action): UIState {
   switch (action.type) {
 
+    case UIActions.CONTACT_US:
+      return Object.assign({}, state, {
+        contactRequestSent: false,
+        sendingContact: true
+      });
+
+    case UIActions.CONTACT_US:
+      return Object.assign({}, state, { sendingContact: false });
+
+    case UIActions.CONTACT_US_SUCCESS:
+      if (!action.payload.success) return Object.assign({});
+      return Object.assign({}, state, {
+        contactRequestSent: true,
+        sendingContact: false
+      });
+
     case UIActions.GET_VERSION_SUCCESS:
-    let version = action.payload.version;
-    if (!version || typeof version !== 'string') return state;
+      let version = action.payload.version;
+      if (!version || typeof version !== 'string') return state;
       return Object.assign({}, state, {
         latestVersion: action.payload.version
       });

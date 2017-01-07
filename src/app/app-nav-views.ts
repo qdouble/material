@@ -24,6 +24,12 @@ export const views: Object[] = [
     loggedIn: false
   },
   {
+    name: 'Contact Us',
+    icon: 'chat',
+    link: ['contact-us'],
+    loggedIn: false
+  },
+  {
     name: 'Status',
     icon: 'code',
     link: ['status'],
