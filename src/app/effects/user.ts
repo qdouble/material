@@ -10,6 +10,7 @@ import { User } from '../models/user';
 import { AppState } from '../reducers';
 import { UserService } from '../services/user';
 import { NotifyActions } from '../actions/notify';
+import { OfferActions } from '../actions/offer';
 
 @Injectable()
 
@@ -19,6 +20,7 @@ export class UserEffects {
     private injector: Injector,
     private notifyActions: NotifyActions,
     private store: Store<AppState>,
+    private offerActions: OfferActions,
     private userActions: UserActions,
     private userService: UserService
   ) { }
@@ -147,12 +149,19 @@ export class UserEffects {
     .switchMap(user => this.userService.loginUser(user)
       .mergeMap(res => Observable.of(
         this.userActions.loginSuccess(res),
-        res['message_type'] !== 'success' ? this.notifyActions.addNotify(res) : null
+        this.notifyActions.addNotify(res)
       ))
-      .do((res: any) => res.payload.redirectTo ?
-        this.store.dispatch(go([res.payload.redirectTo])) : null)
-      .catch(() => Observable.of(
-        this.userActions.loginFail(user)
+      .do((res: any) => {
+        if (res.payload.redirectTo) {
+          this.store.dispatch(go([res.payload.redirectTo]));
+        }
+        if (res.payload.redirectTo === 'status') {
+          this.store.dispatch(go([res.payload.redirectTo]));
+          this.store.dispatch(this.offerActions.clearOffers());
+        }
+      })
+      .catch((err) => Observable.of(
+        this.userActions.loginFail(err)
       ))
     );
 
@@ -199,7 +208,7 @@ export class UserEffects {
 
   @Effect() resetPassword$ = this.actions$
     .ofType(UserActions.RESET_PASSWORD)
-    .map(action => <{email: string, code: string, password: string}>action.payload)
+    .map(action => <{ email: string, code: string, password: string }>action.payload)
     .switchMap((email) => this.userService.resetPassword(email)
       .mergeMap(res => Observable.of(
         this.userActions.resetPasswordSuccess(res),

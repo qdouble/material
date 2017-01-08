@@ -28,6 +28,14 @@ export const initialState: OfferState = {
 export function offerReducer(state = initialState, action: Action): OfferState {
   switch (action.type) {
 
+    case OfferActions.CLEAR_OFFERS:
+      return Object.assign({}, state, {
+        ids: [],
+        entities: {},
+        loaded: false,
+        loadedUserOffers: false
+      });
+
     case OfferActions.GET_OFFER:
     case OfferActions.GET_OFFERS:
       return Object.assign({}, state, { loading: true });

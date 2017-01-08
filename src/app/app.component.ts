@@ -127,13 +127,6 @@ export class AppComponent implements OnDestroy, OnInit {
       });
     this.userLoaded$ = store.let(getUserLoaded());
 
-    this.userLoaded$
-      .filter(loaded => loaded === false)
-      .skip(1)
-      .takeUntil(this.destroyed$)
-      .subscribe(loaded => {
-        console.log('ITS FALSE');
-      });
     this.userLoading$ = store.let(getUserLoading());
     this.userLoggedIn$ = store.let(getUserLoggedIn());
     this.userLoggedIn$

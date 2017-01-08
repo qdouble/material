@@ -8,6 +8,14 @@ import { Offer } from '../models/offer';
 @Injectable()
 
 export class OfferActions {
+
+  static CLEAR_OFFERS = '[Offer] Clear Offers';
+  clearOffers(): Action {
+    return {
+      type: OfferActions.CLEAR_OFFERS
+    };
+  }
+
   static GET_OFFER = '[Offer] Get Offer';
   getOffer(id: string): Action {
     return {
