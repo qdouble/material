@@ -1,5 +1,4 @@
 import { AboutUs } from './about-us';
-import { FAQ } from './faq';
 import { ForgotPassword } from './forgot-password';
 import { FooterModule } from './footer';
 import { Homepage } from './home';
@@ -20,7 +19,6 @@ import { ReferralDetailsDialog, ReferralsTable, SelectedPrizeComponent, Status }
 
 export {
   AboutUs,
-  FAQ,
   ForgotPassword,
   Homepage,
   HowItWorks,
@@ -52,7 +50,6 @@ export const PAGES_COMMON = [
 
 export const PAGES_COMPONENTS = [
   AboutUs,
-  FAQ,
   ForgotPassword,
   Homepage,
   HowItWorks,

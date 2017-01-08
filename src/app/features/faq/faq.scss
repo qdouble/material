@@ -1,0 +1,12 @@
+@import '../../variables.scss';
+
+md-card-title {
+  color: $primary-color-x-dark;
+}
+
+.os-faq-container {
+  position: relative;
+  max-width: 650px;
+  margin: 0 auto;
+  border-bottom: 5px solid $primary-color;
+}

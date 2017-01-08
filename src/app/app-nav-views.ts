@@ -17,6 +17,12 @@ export const views: Object[] = [
     link: ['register'],
     loggedIn: false
   },
+   {
+    name: 'FAQ',
+    icon: 'loyalty',
+    link: ['faq'],
+    loggedIn: false
+  },
   {
     name: 'Offers',
     icon: 'loyalty',
