@@ -3,7 +3,7 @@
     <div class="row header">
       <div class="cell hide-1" (click)="sortBy.emit('addedOn')">Added On</div>
       <div class="cell" (click)="sortBy.emit('username')">Username</div>
-      <div class="cell center" (click)="sortBy.emit('level')">Level</div>
+      <div class="cell center" (click)="sortBy.emit('currentLevel')">Level</div>
       <div class="cell"></div>
     </div>
     <ng-container *ngFor="let referral of referrals">

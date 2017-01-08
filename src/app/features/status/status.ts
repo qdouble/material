@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
+import { combineSort } from '../../helper/combine-sort';
 import { RegexValues } from '../../validators';
 
 import { AppState } from '../../reducers';
@@ -37,10 +38,12 @@ export class Status implements OnDestroy {
   prize$: Observable<Prize>;
   prizes$: Observable<Prize[]>;
   referrals$: Observable<Referral[]>;
+  reverse = false;
   selectPrizeForm: FormGroup;
   selectedPrizeLabels$: Observable<string[]>;
   selectedPrizeValues$: Observable<string[]>;
   settingPrize$: Observable<boolean>;
+  sortingBy: { sortBy: string, reverse: boolean };
   sponsorForm: FormGroup;
   updatedAt: string;
   updatedAt$: Observable<string>;
@@ -68,7 +71,12 @@ export class Status implements OnDestroy {
         if (loaded) this.store.dispatch(this.prizeActions.getPrizes());
       });
     this.settingPrize$ = store.let(getUserSettingPrize());
-    this.referrals$ = store.let(getReferralCollection());
+    let referralsUnsorted$ = store.let(getReferralCollection());
+    let sortReferralBy$ = store.select(s => s.user.sortReferralBy);
+    let sortReferralsByToArray$ = sortReferralBy$.map(sort => [sort.sortBy, sort.reverse]);
+    sortReferralBy$.subscribe(sort => this.sortingBy = sort);
+    this.referrals$ = Observable
+      .combineLatest(sortReferralsByToArray$, referralsUnsorted$, combineSort);
     this.user$ = store.let(getUser());
     this.user$
       .takeUntil(this.destroyed$)
@@ -145,6 +153,16 @@ export class Status implements OnDestroy {
           this.referralTable.open(ref);
         });
       });
+  }
+
+  sortBy(sortBy: string) {
+    if (sortBy === this.sortingBy.sortBy) {
+      this.store.dispatch(
+        this.userActions.sortReferralsBy({ sortBy: sortBy, reverse: !this.sortingBy.reverse }));
+    } else {
+      this.store.dispatch(
+        this.userActions.sortReferralsBy({ sortBy: sortBy, reverse: false }));
+    }
   }
 
   submitSponsor() {

@@ -26,6 +26,7 @@ export interface UserState {
   referrals: { [id: string]: Referral };
   resetEmailSent: boolean;
   settingPrize: boolean;
+  sortReferralBy: { sortBy: string, reverse: boolean };
   updatedAt: string;
   user: User;
 };
@@ -47,6 +48,7 @@ export const initialState: UserState = {
   referrals: {},
   resetEmailSent: false,
   settingPrize: false,
+  sortReferralBy: { sortBy: 'addedOn', reverse: false },
   updatedAt: null,
   user: {}
 };
@@ -251,6 +253,12 @@ export function userReducer(state = initialState, action: Action): UserState {
         });
       }
       return state;
+    }
+
+    case UserActions.SORT_REFERRALS_BY: {
+      return Object.assign({}, state, {
+        sortReferralBy: action.payload
+      });
     }
 
     case UserActions.UPDATE_PROFILE:

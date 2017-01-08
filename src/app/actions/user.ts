@@ -426,6 +426,14 @@ export class UserActions {
     };
   }
 
+  static SORT_REFERRALS_BY = '[User] Sort Referrals By';
+  sortReferralsBy(sort: { sortBy: string, reverse: boolean }): Action {
+    return {
+      type: UserActions.SORT_REFERRALS_BY,
+      payload: sort
+    };
+  }
+
   static UPDATE_PROFILE = '[User] Update Profile';
   updateProfile(user: User): Action {
     return {
