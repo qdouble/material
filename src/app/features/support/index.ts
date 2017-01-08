@@ -3,18 +3,18 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
-import { EffectsModule } from '@ngrx/effects';
+// import { EffectsModule } from '@ngrx/effects';
 
 import { FooterModule } from '../footer';
 import { SelectInputModule } from '../../components/input-fields/select-input';
 import { TextareaInputModule } from '../../components/input-fields/textarea-input';
 
-import { CreditRequestActions } from './credit-request.actions';
-import { CreditRequestEffects } from './credit-request.effects';
-import { CreditRequestService } from './credit-request.service';
-import { TicketActions } from './ticket.actions';
-import { TicketEffects } from './ticket.effects';
-import { TicketService } from './ticket.service';
+// import { CreditRequestActions } from './credit-request.actions';
+// import { CreditRequestEffects } from './credit-request.effects';
+// import { CreditRequestService } from './credit-request.service';
+// import { TicketActions } from './ticket.actions';
+// import { TicketEffects } from './ticket.effects';
+// import { TicketService } from './ticket.service';
 
 import { CreditRequestComponent } from './credit-request';
 import { CreditRequestTable } from './common/credit-request-table';
@@ -32,8 +32,8 @@ import { routes } from './support.routing';
     CommonModule,
     FooterModule,
     ReactiveFormsModule,
-    EffectsModule.run(CreditRequestEffects),
-    EffectsModule.run(TicketEffects),
+    // EffectsModule.run(CreditRequestEffects),
+    // EffectsModule.run(TicketEffects),
     MaterialModule,
     RouterModule.forChild(routes),
     SelectInputModule,
@@ -50,10 +50,10 @@ import { routes } from './support.routing';
     ViewTicket
   ],
   providers: [
-    CreditRequestActions,
-    CreditRequestService,
-    TicketActions,
-    TicketService
+    // CreditRequestActions,
+    // CreditRequestService,
+    // TicketActions,
+    // TicketService
   ]
 })
 

@@ -13,6 +13,9 @@ import { FEATURE_MODULES } from './features';
 import { SelectInputModule } from './components/input-fields/select-input';
 import { TextareaInputModule } from './components/input-fields/textarea-input';
 
+import { CreditRequestEffects } from './features/support/credit-request.effects';
+import { TicketEffects } from './features/support/ticket.effects';
+
 import { routes } from './app.routing';
 import { CountryEffects } from './effects/country';
 import { OfferEffects } from './effects/offer';
@@ -37,9 +40,11 @@ if (ENV === 'development' && !AOT &&
 
 export const APP_IMPORTS = [
   EffectsModule.run(CountryEffects),
+  EffectsModule.run(CreditRequestEffects),
   EffectsModule.run(OfferEffects),
   EffectsModule.run(OrderEffects),
   EffectsModule.run(PrizeEffects),
+  EffectsModule.run(TicketEffects),
   EffectsModule.run(UIEffects),
   EffectsModule.run(UserEffects),
   FEATURE_MODULES,
