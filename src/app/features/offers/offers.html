@@ -18,9 +18,9 @@
   <div *ngIf="addUp" class="add-up-instruct">
     <p><b>&#8681; Check the Offers Below to Add Them Up &#8681;</b></p>
     <p>Offers Checked: {{offersSelected}}</p>
-    <p>Credit Value: {{offersSelectedCreditValue | number: '1.2-2'}}</p>
+    <p>Credit Value of Checked: {{offersSelectedCreditValue | number: '1.2-2'}}</p>
     <p>Your Current Level: {{creditTotal$ | async | floor}}</p>
-    <p>Your Current Credits: {{creditTotal$ | async | floor}}</p>
+    <p>Your Current Credits: {{(creditTotal$ | async | floor) | number: '1.2-2'}}</p>
     <p>You Will Reach Level: <b>{{offersSelectedCreditValue + (creditTotal$ | async) | floor}}</b></p>
     <p>Your Total Credits Will Be: <b>{{offersSelectedCreditValue + (creditTotal$ | async) | number: '1.2-2'}}</b></p>
     <p>You Could Earn Up to <b>${{(offersSelectedCreditValue + (creditTotal$ | async) | floor) * 5 | number: '1.2-2'}} per referral</b></p>
