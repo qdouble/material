@@ -113,10 +113,10 @@ export class Offers implements AfterViewInit {
             firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
               .thenBy('featured', -1).thenBy('order').thenBy('name')));
         }
-        this.offersAvailable$ = this.offers$;
-        let available = (arr: Offer[], offerIds) => {
-          return arr.filter(offer => !offerIds.includes(offer.id));
-        };
+        // this.offersAvailable$ = this.offers$;
+        // let available = (arr: Offer[], offerIds) => {
+        //   return arr.filter(offer => !offerIds.includes(offer.id));
+        // };
         let completed = (arr: Offer[], offerIds) => {
           return arr.filter(offer => offerIds.includes(offer.id));
         };
@@ -125,8 +125,8 @@ export class Offers implements AfterViewInit {
           .filter(credits => credits.length > 0)
           .subscribe(credits => {
             let creditedOfferIds: string[] = credits.map(credit => credit.offerId);
-            this.offersAvailable$ = Observable.combineLatest(
-              this.offers$, Observable.of(creditedOfferIds), available);
+            // this.offersAvailable$ = Observable.combineLatest(
+            //   this.offers$, Observable.of(creditedOfferIds), available);
             this.offersCompleted$ = Observable.combineLatest(
               this.offers$, Observable.of(creditedOfferIds), completed);
           });
