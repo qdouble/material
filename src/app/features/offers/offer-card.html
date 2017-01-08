@@ -19,12 +19,12 @@
   <md-card-actions>
     <button md-button color="primary" [routerLink]="['../offer-details', {id: offerId}]">VIEW OFFER</button>
     <ng-container *ngIf="showingAvailable">
-      <div [md-tooltip]="loggedIn ? 'Calculation based on your current level and credits' : 'Not logged in. Calculated based on starting from level 0.'" *ngIf="!hideLevel" class="os-md-card-level">
+      <div *ngIf="!hideLevel" class="os-md-card-level">
         <div>Complete and reach</div>
         <div>Level <ng-content select="[offer-card-level]"></ng-content></div>
         <div>Earn up to $<ng-content select="[offer-card-earn]"></ng-content> per referral&#42;</div>
       </div>
-      <div [md-tooltip]="loggedIn ? 'Calculation based on your current level and credits' : 'Not logged in. Calculated based on starting from level 0.'" *ngIf="hideLevel" class="os-md-card-level">
+      <div *ngIf="hideLevel" class="os-md-card-level">
         <div>Complete and earn</div>
         <div>Partial Credit</div>
         <div>towards reaching level {{(creditTotal + 1) | floor}}</div>

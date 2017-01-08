@@ -42,7 +42,7 @@
     </span>
     <span class="offer-card-credits" offer-card-credits>
       <span *ngIf="offer.minTimeToCredit === 0 && offer.maxTimeToCredit === 0">
-        <em md-tooltip="Instantly or Within 6 Hours">Quickly</em>
+        <em>Quickly</em>
       </span>
       <span *ngIf="!(offer.minTimeToCredit === 0 && offer.maxTimeToCredit === 0)">
         <span *ngIf="offer.minTimeToCredit > 0">
