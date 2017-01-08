@@ -55,8 +55,7 @@ export const routes: Routes = [
   },
   {
     path: 'faq',
-    loadChildren: './features/faq/index#FAQModule',
-    canActivate: [LoggedInRedirectGuard]
+    loadChildren: './features/faq/index#FAQModule'
   },
   {
     path: 'forgot-password',

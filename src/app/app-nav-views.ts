@@ -19,7 +19,7 @@ export const views: Object[] = [
   },
    {
     name: 'FAQ',
-    icon: 'loyalty',
+    icon: 'beenhere',
     link: ['faq'],
     loggedIn: false
   },
@@ -57,6 +57,12 @@ export const views: Object[] = [
     name: 'Profile',
     icon: 'perm_identity',
     link: ['profile'],
+    loggedIn: true
+  },
+  {
+    name: 'FAQ',
+    icon: 'beenhere',
+    link: ['faq'],
     loggedIn: true
   },
   {
