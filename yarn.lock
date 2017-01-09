@@ -76,6 +76,10 @@
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@angularclass/hmr/-/hmr-1.2.1.tgz#991314ee4e9babeb0908dee25ee7c1b0aa31d44f"
 
+"@angularclass/idle-preload@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@angularclass/idle-preload/-/idle-preload-1.0.4.tgz#41eeea532cc4998167c825f6dca62cb98f4b7028"
+
 "@ngrx/core@1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@ngrx/core/-/core-1.2.0.tgz#882b46abafa2e0e6d887cb71a1b2c2fa3e6d0dc6"
