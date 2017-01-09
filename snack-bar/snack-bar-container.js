@@ -22,6 +22,7 @@ export var SHOW_ANIMATION = '225ms cubic-bezier(0.4,0.0,1,1)';
 export var HIDE_ANIMATION = '195ms cubic-bezier(0.0,0.0,0.2,1)';
 /**
  * Internal component that wraps user-provided snack bar content.
+ * @docs-private
  */
 export var MdSnackBarContainer = (function (_super) {
     __extends(MdSnackBarContainer, _super);
@@ -46,19 +47,11 @@ export var MdSnackBarContainer = (function (_super) {
     MdSnackBarContainer.prototype.attachTemplatePortal = function (portal) {
         throw Error('Not yet implemented');
     };
-    /** Begin animation of the snack bar exiting from view. */
-    MdSnackBarContainer.prototype.exit = function () {
-        this.animationState = 'complete';
-        return this.onExit.asObservable();
-    };
     /** Handle end of animations, updating the state of the snackbar. */
     MdSnackBarContainer.prototype.onAnimationEnd = function (event) {
         var _this = this;
         if (event.toState === 'void' || event.toState === 'complete') {
-            this._ngZone.run(function () {
-                _this.onExit.next();
-                _this.onExit.complete();
-            });
+            this._completeExit();
         }
         if (event.toState === 'visible') {
             this._ngZone.run(function () {
@@ -73,7 +66,34 @@ export var MdSnackBarContainer = (function (_super) {
     };
     /** Returns an observable resolving when the enter animation completes.  */
     MdSnackBarContainer.prototype._onEnter = function () {
+        this.animationState = 'visible';
         return this.onEnter.asObservable();
+    };
+    /** Begin animation of the snack bar exiting from view. */
+    MdSnackBarContainer.prototype.exit = function () {
+        this.animationState = 'complete';
+        return this._onExit();
+    };
+    /** Returns an observable that completes after the closing animation is done. */
+    MdSnackBarContainer.prototype._onExit = function () {
+        return this.onExit.asObservable();
+    };
+    /**
+     * Makes sure the exit callbacks have been invoked when the element is destroyed.
+     */
+    MdSnackBarContainer.prototype.ngOnDestroy = function () {
+        this._completeExit();
+    };
+    /**
+     * Waits for the zone to settle before removing the element. Helps prevent
+     * errors where we end up removing an element which is in the middle of an animation.
+     */
+    MdSnackBarContainer.prototype._completeExit = function () {
+        var _this = this;
+        this._ngZone.onMicrotaskEmpty.first().subscribe(function () {
+            _this.onExit.next();
+            _this.onExit.complete();
+        });
     };
     __decorate([
         ViewChild(PortalHostDirective), 
@@ -81,8 +101,8 @@ export var MdSnackBarContainer = (function (_super) {
     ], MdSnackBarContainer.prototype, "_portalHost", void 0);
     MdSnackBarContainer = __decorate([
         Component({selector: 'snack-bar-container',
-            template: "<template portalHost></template>",
-            styles: ["/** * Applies styles for users in high contrast mode. Note that this only applies * to Microsoft browsers. Chrome can be included by checking for the `html[hc]` * attribute, however Chrome handles high contrast differently. */ :host { box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12); background: #323232; border-radius: 2px; box-sizing: content-box; display: block; height: 20px; max-width: 568px; min-width: 288px; overflow: hidden; padding: 14px 24px; transform: translateY(100%); } @media screen and (-ms-high-contrast: active) { :host { border: solid 1px; } } /*# sourceMappingURL=snack-bar-container.css.map */ "],
+            template: "<template cdkPortalHost></template>",
+            styles: [":host{box-shadow:0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);background:#323232;border-radius:2px;box-sizing:content-box;display:block;height:20px;max-width:568px;min-width:288px;overflow:hidden;padding:14px 24px;transform:translateY(100%)}@media screen and (-ms-high-contrast:active){:host{border:1px solid}}"],
             host: {
                 'role': 'alert',
                 '[@state]': 'animationState',

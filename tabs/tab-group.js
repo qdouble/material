@@ -17,6 +17,7 @@ import { MdInkBar } from './ink-bar';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { MdRippleModule } from '../core/ripple/ripple';
+import { ObserveContentModule } from '../core/observe-content/observe-content';
 import { MdTab } from './tab';
 import { MdTabBody } from './tab-body';
 import { ViewportRuler } from '../core/overlay/position/viewport-ruler';
@@ -45,26 +46,28 @@ export var MdTabGroup = (function () {
         this._tabBodyWrapperHeight = null;
         /** Whether the tab group should grow to the size of the active tab */
         this._dynamicHeight = false;
-        /** The index of the active tab. */
         this._selectedIndex = null;
         this._onFocusChange = new EventEmitter();
         this._onSelectChange = new EventEmitter(true);
         this._groupId = nextId++;
     }
     Object.defineProperty(MdTabGroup.prototype, "dynamicHeight", {
-        set: function (value) {
-            this._dynamicHeight = coerceBooleanProperty(value);
-        },
+        get: function () { return this._dynamicHeight; },
+        set: function (value) { this._dynamicHeight = coerceBooleanProperty(value); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MdTabGroup.prototype, "_dynamicHeightDeprecated", {
+        /** @deprecated */
+        get: function () { return this._dynamicHeight; },
+        set: function (value) { this._dynamicHeight = value; },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(MdTabGroup.prototype, "selectedIndex", {
-        get: function () {
-            return this._selectedIndex;
-        },
-        set: function (value) {
-            this._indexToSelect = value;
-        },
+        get: function () { return this._selectedIndex; },
+        /** The index of the active tab. */
+        set: function (value) { this._indexToSelect = value; },
         enumerable: true,
         configurable: true
     });
@@ -77,6 +80,7 @@ export var MdTabGroup = (function () {
         configurable: true
     });
     Object.defineProperty(MdTabGroup.prototype, "focusChange", {
+        /** Event emitted when focus has changed within a tab group. */
         get: function () {
             return this._onFocusChange.asObservable();
         },
@@ -84,6 +88,7 @@ export var MdTabGroup = (function () {
         configurable: true
     });
     Object.defineProperty(MdTabGroup.prototype, "selectChange", {
+        /** Event emitted when the tab selection has changed. */
         get: function () {
             return this._onSelectChange.asObservable();
         },
@@ -98,9 +103,11 @@ export var MdTabGroup = (function () {
      */
     MdTabGroup.prototype.ngAfterContentChecked = function () {
         var _this = this;
-        // Clamp the next selected index to the bounds of 0 and the tabs length.
+        // Clamp the next selected index to the bounds of 0 and the tabs length. Note the `|| 0`, which
+        // ensures that values like NaN can't get through and which would otherwise throw the
+        // component into an infinite loop (since Math.max(NaN, 0) === NaN).
         this._indexToSelect =
-            Math.min(this._tabs.length - 1, Math.max(this._indexToSelect, 0));
+            Math.min(this._tabs.length - 1, Math.max(this._indexToSelect || 0, 0));
         // If there is a change in selected index, emit a change event. Should not trigger if
         // the selected index has not yet been initialized.
         if (this._selectedIndex != this._indexToSelect && this._selectedIndex != null) {
@@ -119,7 +126,7 @@ export var MdTabGroup = (function () {
     };
     /**
      * Waits one frame for the view to update, then updates the ink bar
-     * Note: This must be run outside of the zone or it will create an infinite change detection loop
+     * Note: This must be run outside of the zone or it will create an infinite change detection loop.
      */
     MdTabGroup.prototype.ngAfterViewChecked = function () {
         this._isInitialized = true;
@@ -172,10 +179,13 @@ export var MdTabGroup = (function () {
         __metadata('design:type', ElementRef)
     ], MdTabGroup.prototype, "_tabBodyWrapper", void 0);
     __decorate([
-        Input('md-dynamic-height'), 
-        __metadata('design:type', Boolean), 
-        __metadata('design:paramtypes', [Boolean])
+        Input(), 
+        __metadata('design:type', Boolean)
     ], MdTabGroup.prototype, "dynamicHeight", null);
+    __decorate([
+        Input('md-dynamic-height'), 
+        __metadata('design:type', Boolean)
+    ], MdTabGroup.prototype, "_dynamicHeightDeprecated", null);
     __decorate([
         Input(), 
         __metadata('design:type', Number), 
@@ -195,8 +205,9 @@ export var MdTabGroup = (function () {
     ], MdTabGroup.prototype, "selectChange", null);
     MdTabGroup = __decorate([
         Component({selector: 'md-tab-group',
-            template: "<md-tab-header [selectedIndex]=\"selectedIndex\" #tabHeader (indexFocused)=\"_focusChanged($event)\" (selectFocusedIndex)=\"selectedIndex = $event\"> <div class=\"md-tab-label\" role=\"tab\" md-tab-label-wrapper md-ripple *ngFor=\"let tab of _tabs; let i = index\" [id]=\"_getTabLabelId(i)\" [tabIndex]=\"selectedIndex == i ? 0 : -1\" [attr.aria-controls]=\"_getTabContentId(i)\" [attr.aria-selected]=\"selectedIndex == i\" [class.md-tab-label-active]=\"selectedIndex == i\" [disabled]=\"tab.disabled\" (click)=\"tabHeader.focusIndex = selectedIndex = i\"> <!-- If there is a label template, use it. --> <template [ngIf]=\"tab.templateLabel\"> <template [portalHost]=\"tab.templateLabel\"></template> </template> <!-- If there is not a label template, fall back to the text label. --> <template [ngIf]=\"!tab.templateLabel\">{{tab.textLabel}}</template> </div> </md-tab-header> <div class=\"md-tab-body-wrapper\" #tabBodyWrapper> <md-tab-body role=\"tabpanel\" *ngFor=\"let tab of _tabs; let i = index\" [id]=\"_getTabContentId(i)\" [attr.aria-labelledby]=\"_getTabLabelId(i)\" [class.md-tab-body-active]=\"selectedIndex == i\" [content]=\"tab.content\" [position]=\"tab.position\" [origin]=\"tab.origin\" (onCentered)=\"_removeTabBodyWrapperHeight()\" (onCentering)=\"_setTabBodyWrapperHeight($event)\"> </md-tab-body> </div> ",
-            styles: [":host { display: flex; flex-direction: column; font-family: Roboto, \"Helvetica Neue\", sans-serif; } .md-tab-label { line-height: 48px; height: 48px; padding: 0 12px; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; cursor: pointer; box-sizing: border-box; color: currentColor; opacity: 0.6; min-width: 160px; text-align: center; position: relative; } .md-tab-label:focus { outline: none; opacity: 1; } @media (max-width: 600px) { .md-tab-label { min-width: 72px; } } :host[md-stretch-tabs] .md-tab-label { flex-basis: 0; flex-grow: 1; } .md-tab-body-wrapper { position: relative; overflow: hidden; display: flex; transition: height 500ms cubic-bezier(0.35, 0, 0.25, 1); } md-tab-body { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: block; overflow: hidden; } md-tab-body.md-tab-body-active { position: relative; overflow-x: hidden; overflow-y: auto; z-index: 1; flex-grow: 1; } :host[md-dynamic-height] md-tab-body.md-tab-body-active { overflow-y: hidden; } .md-tab-disabled { cursor: default; pointer-events: none; } /*# sourceMappingURL=tab-group.css.map */ "],
+            template: "<md-tab-header [selectedIndex]=\"selectedIndex\" #tabHeader (indexFocused)=\"_focusChanged($event)\" (selectFocusedIndex)=\"selectedIndex = $event\"><div class=\"md-tab-label\" role=\"tab\" md-tab-label-wrapper md-ripple *ngFor=\"let tab of _tabs; let i = index\" [id]=\"_getTabLabelId(i)\" [tabIndex]=\"selectedIndex == i ? 0 : -1\" [attr.aria-controls]=\"_getTabContentId(i)\" [attr.aria-selected]=\"selectedIndex == i\" [class.md-tab-label-active]=\"selectedIndex == i\" [disabled]=\"tab.disabled\" (click)=\"tabHeader.focusIndex = selectedIndex = i\"><template [ngIf]=\"tab.templateLabel\"><template [cdkPortalHost]=\"tab.templateLabel\"></template></template><template [ngIf]=\"!tab.templateLabel\">{{tab.textLabel}}</template></div></md-tab-header><div class=\"md-tab-body-wrapper\" #tabBodyWrapper><md-tab-body role=\"tabpanel\" *ngFor=\"let tab of _tabs; let i = index\" [id]=\"_getTabContentId(i)\" [attr.aria-labelledby]=\"_getTabLabelId(i)\" [class.md-tab-body-active]=\"selectedIndex == i\" [content]=\"tab.content\" [position]=\"tab.position\" [origin]=\"tab.origin\" (onCentered)=\"_removeTabBodyWrapperHeight()\" (onCentering)=\"_setTabBodyWrapperHeight($event)\"></md-tab-body></div>",
+            styles: [":host{display:flex;flex-direction:column;font-family:Roboto,\"Helvetica Neue\",sans-serif}.md-tab-label{line-height:48px;height:48px;padding:0 12px;font-size:14px;font-family:Roboto,\"Helvetica Neue\",sans-serif;font-weight:500;cursor:pointer;box-sizing:border-box;color:currentColor;opacity:.6;min-width:160px;text-align:center;position:relative}.md-tab-label:focus{outline:0;opacity:1}@media (max-width:600px){.md-tab-label{min-width:72px}}:host[md-stretch-tabs] .md-tab-label{flex-basis:0;flex-grow:1}.md-tab-body-wrapper{position:relative;overflow:hidden;display:flex;transition:height .5s cubic-bezier(.35,0,.25,1)}md-tab-body{position:absolute;top:0;left:0;right:0;bottom:0;display:block;overflow:hidden}md-tab-body.md-tab-body-active{position:relative;overflow-x:hidden;overflow-y:auto;z-index:1;flex-grow:1}:host.md-tab-group-dynamic-height md-tab-body.md-tab-body-active{overflow-y:hidden}.md-tab-disabled{cursor:default;pointer-events:none}"],
+            host: { '[class.md-tab-group-dynamic-height]': 'dynamicHeight' }
         }), 
         __metadata('design:paramtypes', [Renderer])
     ], MdTabGroup);
@@ -213,7 +224,7 @@ export var MdTabsModule = (function () {
     };
     MdTabsModule = __decorate([
         NgModule({
-            imports: [CommonModule, PortalModule, MdRippleModule],
+            imports: [CommonModule, PortalModule, MdRippleModule, ObserveContentModule],
             // Don't export all components because some are only to be used internally.
             exports: [MdTabGroup, MdTabLabel, MdTab, MdTabNavBar, MdTabLink, MdTabLinkRipple],
             declarations: [MdTabGroup, MdTabLabel, MdTab, MdInkBar, MdTabLabelWrapper,

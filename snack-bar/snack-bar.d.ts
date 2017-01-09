@@ -1,5 +1,5 @@
 import { ModuleWithProviders } from '@angular/core';
-import { ComponentType, Overlay, MdLiveAnnouncer } from '../core';
+import { ComponentType, Overlay, LiveAnnouncer } from '../core';
 import { MdSnackBarConfig } from './snack-bar-config';
 import { MdSnackBarRef } from './snack-bar-ref';
 import { SimpleSnackBar } from './simple-snack-bar';
@@ -11,10 +11,13 @@ export declare class MdSnackBar {
     private _live;
     /** A reference to the current snack bar in the view. */
     private _snackBarRef;
-    constructor(_overlay: Overlay, _live: MdLiveAnnouncer);
+    constructor(_overlay: Overlay, _live: LiveAnnouncer);
     /**
      * Creates and dispatches a snack bar with a custom component for the content, removing any
      * currently opened snack bars.
+     *
+     * @param component Component to be instantiated.
+     * @param config Extra configuration for the snack bar.
      */
     openFromComponent<T>(component: ComponentType<T>, config?: MdSnackBarConfig): MdSnackBarRef<T>;
     /**
@@ -22,7 +25,6 @@ export declare class MdSnackBar {
      * @param message The message to show in the snackbar.
      * @param action The label for the snackbar action.
      * @param config Additional configuration options for the snackbar.
-     * @returns {MdSnackBarRef<SimpleSnackBar>}
      */
     open(message: string, action?: string, config?: MdSnackBarConfig): MdSnackBarRef<SimpleSnackBar>;
     /**

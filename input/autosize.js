@@ -36,7 +36,7 @@ export var MdTextareaAutosize = (function () {
         this.resizeToFitContent();
     };
     /**
-     * Cache the hight of a single-row textarea.
+     * Cache the height of a single-row textarea.
      *
      * We need to know how large a single "row" of a textarea is in order to apply minRows and
      * maxRows. For the initial version, we will assume that the height of a single line in the
@@ -79,7 +79,8 @@ export var MdTextareaAutosize = (function () {
     ], MdTextareaAutosize.prototype, "maxRows", void 0);
     MdTextareaAutosize = __decorate([
         Directive({
-            selector: 'textarea[md-autosize], textarea[mat-autosize]',
+            selector: 'textarea[md-autosize], textarea[mat-autosize], textarea[mdTextareaAutosize]',
+            exportAs: 'mdTextareaAutosize',
             host: {
                 '(input)': 'resizeToFitContent()',
                 '[style.min-height]': '_minHeight',

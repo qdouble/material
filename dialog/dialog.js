@@ -7,17 +7,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { NgModule, Injector, Injectable } from '@angular/core';
-import { Overlay, OverlayModule, PortalModule, OverlayState, ComponentPortal, OVERLAY_PROVIDERS, A11yModule, InteractivityChecker, MdPlatform, DefaultStyleCompatibilityModeModule } from '../core';
+import { Injector, Injectable } from '@angular/core';
+import { Overlay, OverlayState, ComponentPortal } from '../core';
+import { extendObject } from '../core/util/object-extend';
+import { DialogInjector } from './dialog-injector';
 import { MdDialogConfig } from './dialog-config';
 import { MdDialogRef } from './dialog-ref';
-import { DialogInjector } from './dialog-injector';
 import { MdDialogContainer } from './dialog-container';
-import { extendObject } from '../core/util/object-extend';
-export { MdDialogConfig } from './dialog-config';
-export { MdDialogRef } from './dialog-ref';
 // TODO(jelbourn): add support for opening with a TemplateRef
-// TODO(jelbourn): dialog content directives (e.g., md-dialog-header)
 // TODO(jelbourn): animations
 /**
  * Service to open Material Design modal dialogs.
@@ -32,7 +29,8 @@ export var MdDialog = (function () {
     /**
      * Opens a modal dialog containing the given component.
      * @param component Type of the component to load into the load.
-     * @param config
+     * @param config Extra configuration options.
+     * @returns Reference to the newly-opened dialog.
      */
     MdDialog.prototype.open = function (component, config) {
         var _this = this;
@@ -133,6 +131,7 @@ export var MdDialog = (function () {
     };
     /**
      * Removes a dialog from the array of open dialogs.
+     * @param dialogRef Dialog to be removed.
      */
     MdDialog.prototype._removeOpenDialog = function (dialogRef) {
         var index = this._openDialogs.indexOf(dialogRef);
@@ -154,25 +153,5 @@ export var MdDialog = (function () {
 function _applyConfigDefaults(dialogConfig) {
     return extendObject(new MdDialogConfig(), dialogConfig);
 }
-export var MdDialogModule = (function () {
-    function MdDialogModule() {
-    }
-    MdDialogModule.forRoot = function () {
-        return {
-            ngModule: MdDialogModule,
-            providers: [MdDialog, OVERLAY_PROVIDERS, InteractivityChecker, MdPlatform],
-        };
-    };
-    MdDialogModule = __decorate([
-        NgModule({
-            imports: [OverlayModule, PortalModule, A11yModule, DefaultStyleCompatibilityModeModule],
-            exports: [MdDialogContainer, DefaultStyleCompatibilityModeModule],
-            declarations: [MdDialogContainer],
-            entryComponents: [MdDialogContainer],
-        }), 
-        __metadata('design:paramtypes', [])
-    ], MdDialogModule);
-    return MdDialogModule;
-}());
 
 //# sourceMappingURL=dialog.js.map

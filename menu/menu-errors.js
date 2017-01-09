@@ -11,7 +11,7 @@ import { MdError } from '../core';
 export var MdMenuMissingError = (function (_super) {
     __extends(MdMenuMissingError, _super);
     function MdMenuMissingError() {
-        _super.call(this, "md-menu-trigger: must pass in an md-menu instance.\n\n    Example:\n      <md-menu #menu=\"mdMenu\"></md-menu>\n      <button [md-menu-trigger-for]=\"menu\"></button>\n    ");
+        _super.call(this, "md-menu-trigger: must pass in an md-menu instance.\n\n    Example:\n      <md-menu #menu=\"mdMenu\"></md-menu>\n      <button [mdMenuTriggerFor]=\"menu\"></button>\n    ");
     }
     return MdMenuMissingError;
 }(MdError));
