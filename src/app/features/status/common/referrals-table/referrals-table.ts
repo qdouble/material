@@ -1,5 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component,
+  EventEmitter, Input, OnDestroy, Output
+} from '@angular/core';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
+import { Subject } from 'rxjs/Subject';
 
 import { ReferralDetailsDialog } from './referral-details';
 import { User } from '../../../../models/user';
@@ -11,8 +15,9 @@ import { User } from '../../../../models/user';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class ReferralsTable {
+export class ReferralsTable implements OnDestroy {
   dialogRef: MdDialogRef<ReferralDetailsDialog>;
+  destroyed$: Subject<any> = new Subject<any>();
   lastCloseResult: string;
   config: MdDialogConfig = {
     disableClose: false,
@@ -37,12 +42,17 @@ export class ReferralsTable {
     this.dialogRef = this.dialog.open(ReferralDetailsDialog, this.config);
     this.dialogRef.componentInstance.referral = referral;
 
-    this.dialogRef.afterClosed().subscribe(result => {
+    this.dialogRef.afterClosed()
+      .takeUntil(this.destroyed$)
+      .subscribe(result => {
       this.lastCloseResult = result;
       this.dialogRef = null;
     });
   }
   trackById(index: number, user: User) {
     return user.id;
+  }
+  ngOnDestroy() {
+    this.destroyed$.next();
   }
 }

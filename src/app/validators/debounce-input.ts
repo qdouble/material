@@ -1,7 +1,9 @@
 /* tslint:disable */
-import { Directive, Provider, forwardRef, Input, ElementRef, Renderer} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Directive, Provider, forwardRef, Input, ElementRef, Renderer, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+
 
 function isBlank(obj: any): boolean {
   return obj === undefined || obj === null;
@@ -14,17 +16,19 @@ function isBlank(obj: any): boolean {
   ],
 })
 export class DebounceInputControlValueAccessor implements ControlValueAccessor {
-  onChange = (_) => {};
-  onTouched = () => {};
+  onChange = (_) => { };
+  onTouched = () => { };
   @Input()
-  debounceTime:number;
+  debounceTime: number;
+  destroyed$: Subject<any> = new Subject<any>();
 
-  constructor(private _elementRef: ElementRef, private _renderer:Renderer) {
-    
+  constructor(private _elementRef: ElementRef, private _renderer: Renderer) {
+
   }
-  
+
   ngAfterViewInit() {
     Observable.fromEvent(this._elementRef.nativeElement, 'keyup')
+      .takeUntil(this.destroyed$)
       .debounceTime(this.debounceTime)
       .subscribe((event: any) => {
         this.onChange(event.target.value);
@@ -38,4 +42,7 @@ export class DebounceInputControlValueAccessor implements ControlValueAccessor {
 
   registerOnChange(fn: () => any): void { this.onChange = fn; }
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
+  ngOnDestroy() {
+    this.destroyed$.next();
+  }
 }
