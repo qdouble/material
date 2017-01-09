@@ -258,6 +258,12 @@ amdefine@>=0.0.4, amdefine@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.0.tgz#fd17474700cb5cc9c2b709f0be9d23ce3c198c33"
 
+angular-router-loader@~0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/angular-router-loader/-/angular-router-loader-0.5.0.tgz#b81b1480498320d2a9ac7afb24ed7a9e735a5692"
+  dependencies:
+    loader-utils "^0.2.15"
+
 angular2-express-engine@2.1.0-rc.1:
   version "2.1.0-rc.1"
   resolved "https://registry.yarnpkg.com/angular2-express-engine/-/angular2-express-engine-2.1.0-rc.1.tgz#79c8e481cde7ff1253b373cbf98de7c9fab4f215"
@@ -271,12 +277,6 @@ angular2-platform-node@~2.1.0-rc.1, angular2-platform-node@2.1.0-rc.1:
     css "^2.2.1"
     parse5 "^2.2.1"
     preboot "4.5.2"
-
-angular2-router-loader@~0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/angular2-router-loader/-/angular2-router-loader-0.3.2.tgz#9133331b44b681b161c74d034460e7f731e4e69b"
-  dependencies:
-    loader-utils "^0.2.15"
 
 angular2-template-loader@~0.6.0:
   version "0.6.0"
