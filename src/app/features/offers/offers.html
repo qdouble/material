@@ -5,15 +5,12 @@
         {{sortByLabels[i]}}
       </md-button-toggle>
     </md-button-toggle-group>
-    <md-button-toggle-group *ngIf="loggedIn$ | async" name="option" [(ngModel)]="selectedOption">
+    <md-button-toggle-group *ngIf="loggedIn$ | async" [(ngModel)]="selectedOption">
       <md-button-toggle *ngFor="let option of displayOptions" [value]="option">
         {{option}}
       </md-button-toggle>
     </md-button-toggle-group>
     <md-checkbox style="margin-left: 4px" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []" color="primary">Add Up Offers</md-checkbox>
-  </div>
-  <div class="os-offer-display-options">
-    
   </div>
   <div *ngIf="addUp" class="add-up-instruct">
     <p><b>&#8681; Check the Offers Below to Add Them Up &#8681;</b></p>
@@ -26,10 +23,26 @@
     <p>You Could Earn Up to <b>${{(offersSelectedCreditValue + (creditTotal$ | async) | floor) * 5 | number: '1.2-2'}} per referral</b></p>
     <p style="font-size: 10px;">*Checking the offers calculates the level you will reach if you complete them and your maximum earning potential per referral</p>
   </div>
+  <div *ngIf="selectedOption !== 'Completed'" class="paging">
+    <span style="margin-right: 4px;">Page</span>
+    <md-button-toggle-group  *ngIf="loggedIn$ | async" #page [(ngModel)]="selectedPage" (ngModelChange)="pageOffset$.next(selectedPage)">
+      <md-button-toggle style="padding: 0;" *ngFor="let page of pages" [value]="page">
+        {{page}}
+      </md-button-toggle>
+    </md-button-toggle-group>
+  </div>
   <os-offer-rows [addUp]="addUp" [creditTotal]="creditTotal$ | async" [loggedIn]="loggedIn$ | async" [showingAvailable]="selectedOption === 'Available'"
     [offers]="selectedOption === 'Available' ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
     (checkOffer)="checkOffer($event)">
   </os-offer-rows>
+  <div *ngIf="selectedOption !== 'Completed'" class="paging">
+    Page
+    <md-button-toggle-group  *ngIf="loggedIn$ | async" #page [(ngModel)]="selectedPage" (ngModelChange)="pageOffset$.next(selectedPage)">
+      <md-button-toggle style="padding: 0;" *ngFor="let page of pages" [value]="page">
+        {{page}}
+      </md-button-toggle>
+    </md-button-toggle-group>
+  </div>
   <md-card id="no-completed-card" class="os-message-card accent-background white" *ngIf="selectedOption === 'Completed' && (offersCompleted$ | async)?.length < 1">
     You Have No Completed Offers. Complete an offer on the Available tab to level up!
   </md-card>

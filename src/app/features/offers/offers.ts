@@ -1,6 +1,6 @@
 import {
   AfterViewInit, Component, ChangeDetectionStrategy,
-  ChangeDetectorRef
+  ChangeDetectorRef, OnDestroy
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -9,7 +9,6 @@ import { Subject } from 'rxjs/Subject';
 import { MdUniqueSelectionDispatcher } from '@angular/material';
 
 const firstBy = require('thenby');
-import { combineSort } from '../../helper/combine-sort';
 
 import { AppState } from '../../reducers';
 import { Credit } from '../../models/credit';
@@ -28,13 +27,14 @@ import { UserActions } from '../../actions/user';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class Offers implements AfterViewInit {
+export class Offers implements AfterViewInit, OnDestroy {
   addUp: boolean;
   checkedOffers: { id: string, creditValue: number, checked: boolean }[] = [];
   checkedOffers$: Subject<{ id: string, creditValue: number, checked: boolean }[]>
   = new Subject<{ id: string, creditValue: number, checked: boolean }[]>();
   credits$: Observable<Credit[]>;
   creditTotal$: Observable<number>;
+  destroyed$: Subject<any> = new Subject();
   lastCloseResult: string;
   loaded$: Observable<boolean>;
   loaded: boolean;
@@ -44,7 +44,8 @@ export class Offers implements AfterViewInit {
   loggedIn: boolean;
   mobile$: Observable<boolean>;
   offers$: Observable<Offer[]>;
-  offersUnSorted$: Observable<Offer[]>;
+  offersSorted$: Observable<Offer[]>;
+  offersUnsorted$: Observable<Offer[]>;
   offersCompleted$: Observable<Offer[]>;
   offersFeatured$: Observable<Offer[]>;
   offersNonFeatured$: Observable<Offer[]>;
@@ -57,6 +58,12 @@ export class Offers implements AfterViewInit {
   reverse = false;
   offersSelected = 0;
   offersSelectedCreditValue = 0;
+  // Paging
+  pages: number[] = [];
+  selectedPage = 1;
+  offersPerPage = 20;
+  pageOffset$: Subject<any> = new Subject();
+  //
   displayOptions = [
     'Available',
     'Completed'
@@ -82,12 +89,15 @@ export class Offers implements AfterViewInit {
     this.sideNavOpen$ = this.store.let(getUISideNavOpen());
     this.loaded$ = this.store.let(getOfferLoaded());
     this.loaded$
+      .takeUntil(this.destroyed$)
       .subscribe(l => this.loaded = l);
     this.loadedUserOffers$ = this.store.let(getOfferLoadedUserOffers());
     this.loadedUserOffers$
+      .takeUntil(this.destroyed$)
       .subscribe(l => this.loadedUserOffers = l);
     this.loggedIn$ = this.store.let(getUserLoggedIn());
     this.loggedIn$
+      .takeUntil(this.destroyed$)
       .subscribe(loggedIn => {
         if (!this.loaded) {
           if (loggedIn) {
@@ -101,36 +111,52 @@ export class Offers implements AfterViewInit {
         }
       });
 
-    this.offersUnSorted$ = this.store.let(getOfferCollection());
+    this.offersUnsorted$ = this.store.let(getOfferCollection());
+    this.offersUnsorted$
+          .takeUntil(this.destroyed$)
+          .subscribe(offers => {
+            this.pages = [];
+            for (let i = 0; i < offers.length / this.offersPerPage; i++) {
+              this.pages.push(i + 1);
+            }
+          });
     this.sortBy$
+      .takeUntil(this.destroyed$)
       .subscribe((sortBy: string) => {
         if (sortBy === 'feature') {
-          this.offers$ = this.offersUnSorted$.map(arr => arr.sort(
-            firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
-              .thenBy('order').thenBy('name')));
+          this.offersSorted$ = this.offersUnsorted$
+            .map(arr => arr.sort(
+              firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
+                .thenBy('order').thenBy('name')));
         } else {
-          this.offers$ = this.offersUnSorted$.map(arr => arr.sort(
-            firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
-              .thenBy('featured', -1).thenBy('order').thenBy('name')));
+          this.offersSorted$ = this.offersUnsorted$
+            .map(arr => arr.sort(
+              firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
+                .thenBy('featured', -1).thenBy('order').thenBy('name')));
         }
-        // this.offersAvailable$ = this.offers$;
-        // let available = (arr: Offer[], offerIds) => {
-        //   return arr.filter(offer => !offerIds.includes(offer.id));
-        // };
-        let completed = (arr: Offer[], offerIds) => {
-          return arr.filter(offer => offerIds.includes(offer.id));
-        };
-        this.credits$ = this.store.let(getCreditCollection());
-        this.credits$
-          .filter(credits => credits.length > 0)
-          .subscribe(credits => {
-            let creditedOfferIds: string[] = credits.map(credit => credit.offerId);
-            // this.offersAvailable$ = Observable.combineLatest(
-            //   this.offers$, Observable.of(creditedOfferIds), available);
-            this.offersCompleted$ = Observable.combineLatest(
-              this.offers$, Observable.of(creditedOfferIds), completed);
+        this.pageOffset$.next(this.selectedPage);
+
+        this.pageOffset$
+          .takeUntil(this.destroyed$)
+          .subscribe(offset => {
+            this.offers$ = this.offersSorted$
+              .map(arr => arr.slice((offset - 1) * this.offersPerPage,
+              this.offersPerPage * (offset)));
+            let completed = (arr: Offer[], offerIds) => {
+              return arr.filter(offer => offerIds.includes(offer.id));
+            };
+            this.credits$ = this.store.let(getCreditCollection());
+            this.credits$
+              .takeUntil(this.destroyed$)
+              .filter(credits => credits.length > 0)
+              .subscribe(credits => {
+                let creditedOfferIds: string[] = credits.map(credit => credit.offerId);
+                this.offersCompleted$ = Observable.combineLatest(
+                  this.offers$, Observable.of(creditedOfferIds), completed);
+              });
           });
       });
+
     this.creditTotal$ = store.let(getCreditTotal());
     this.checkedOffers$.subscribe(offers => {
       let values = offers.map(o => o.creditValue);
@@ -162,5 +188,9 @@ export class Offers implements AfterViewInit {
 
   changeSort(value: string | null) {
     this.sortBy$.next(value);
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
   }
 }
