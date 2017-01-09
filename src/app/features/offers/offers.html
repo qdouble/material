@@ -25,7 +25,7 @@
   </div>
   <div *ngIf="selectedOption !== 'Completed'" class="paging">
     <span style="margin-right: 4px;">Page</span>
-    <md-button-toggle-group  *ngIf="loggedIn$ | async" #page [(ngModel)]="selectedPage" (ngModelChange)="pageOffset$.next(selectedPage)">
+    <md-button-toggle-group  #page [(ngModel)]="selectedPage" (ngModelChange)="pageOffset$.next(selectedPage)">
       <md-button-toggle style="padding: 0;" *ngFor="let page of pages" [value]="page">
         {{page}}
       </md-button-toggle>
@@ -37,7 +37,7 @@
   </os-offer-rows>
   <div *ngIf="selectedOption !== 'Completed'" class="paging">
     Page
-    <md-button-toggle-group  *ngIf="loggedIn$ | async" #page [(ngModel)]="selectedPage" (ngModelChange)="pageOffset$.next(selectedPage)">
+    <md-button-toggle-group #page [(ngModel)]="selectedPage" (ngModelChange)="pageOffset$.next(selectedPage)">
       <md-button-toggle style="padding: 0;" *ngFor="let page of pages" [value]="page">
         {{page}}
       </md-button-toggle>
