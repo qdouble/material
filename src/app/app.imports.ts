@@ -28,6 +28,8 @@ import { UserEffects } from './effects/user';
 import { rootReducer } from './reducers';
 import { StoreDevToolsModule } from './features/store-devtools.module';
 
+import { CustomPipesModule } from './pipes';
+
 const STORE_DEV_TOOLS_IMPORTS = [];
 if (ENV === 'development' && !AOT &&
   ['monitor', 'both'].includes(STORE_DEV_TOOLS) // set in constants.js file in project root
@@ -41,6 +43,7 @@ if (ENV === 'development' && !AOT &&
 ]);
 
 export const APP_IMPORTS = [
+  CustomPipesModule,
   EffectsModule.run(CountryEffects),
   EffectsModule.run(CreditRequestEffects),
   EffectsModule.run(OfferEffects),

@@ -7,7 +7,6 @@ import { Login } from './login';
 import { Logout } from './logout';
 import { MessagesComponent } from './messages';
 import { NotificationsComponent } from './notifications';
-import { OfferDetailsComponent, Offers, OFFERS_COMMON } from './offers';
 import { OrderComponent, OrderFormComponent, OrderTableComponent } from './order';
 import { PasswordReset } from './password-reset';
 import { Profile } from './profile';
@@ -27,8 +26,6 @@ export {
   Logout,
   MessagesComponent,
   NotificationsComponent,
-  Offers,
-  OfferDetailsComponent,
   OrderComponent,
   PasswordReset,
   Profile,
@@ -44,10 +41,6 @@ export const FEATURE_MODULES = [
   FooterModule
 ];
 
-export const PAGES_COMMON = [
-  OFFERS_COMMON
-];
-
 export const PAGES_COMPONENTS = [
   AboutUs,
   ForgotPassword,
@@ -58,7 +51,6 @@ export const PAGES_COMPONENTS = [
   Logout,
   MessagesComponent,
   NotificationsComponent,
-  Offers,
   OrderComponent,
   OrderFormComponent,
   OrderTableComponent,

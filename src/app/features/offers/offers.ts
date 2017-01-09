@@ -113,13 +113,13 @@ export class Offers implements AfterViewInit, OnDestroy {
 
     this.offersUnsorted$ = this.store.let(getOfferCollection());
     this.offersUnsorted$
-          .takeUntil(this.destroyed$)
-          .subscribe(offers => {
-            this.pages = [];
-            for (let i = 0; i < offers.length / this.offersPerPage; i++) {
-              this.pages.push(i + 1);
-            }
-          });
+      .takeUntil(this.destroyed$)
+      .subscribe(offers => {
+        this.pages = [];
+        for (let i = 0; i < offers.length / this.offersPerPage; i++) {
+          this.pages.push(i + 1);
+        }
+      });
     this.sortBy$
       .takeUntil(this.destroyed$)
       .subscribe((sortBy: string) => {
@@ -139,9 +139,14 @@ export class Offers implements AfterViewInit, OnDestroy {
         this.pageOffset$
           .takeUntil(this.destroyed$)
           .subscribe(offset => {
-            this.offers$ = this.offersSorted$
-              .map(arr => arr.slice((offset - 1) * this.offersPerPage,
-              this.offersPerPage * (offset)));
+            if (offset !== 'all') {
+              this.offers$ = this.offersSorted$
+                .map(arr => arr.slice((offset - 1) * this.offersPerPage,
+                  this.offersPerPage * (offset)));
+            } else {
+              this.offers$ = this.offersSorted$;
+            }
+
             let completed = (arr: Offer[], offerIds) => {
               return arr.filter(offer => offerIds.includes(offer.id));
             };

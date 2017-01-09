@@ -7,7 +7,6 @@ import {
   LoggedInRedirectGuard
 } from './guards';
 
-import { OfferRedirect } from './features/offers';
 import { AdminLogin } from './admin-login';
 
 import {
@@ -17,8 +16,6 @@ import {
   HowItWorks,
   Login,
   Logout,
-  OfferDetailsComponent,
-  Offers,
   OrderComponent,
   PasswordReset,
   Profile,
@@ -76,20 +73,21 @@ export const routes: Routes = [
     path: 'logout',
     component: Logout
   },
-  {
-    path: 'offer-details',
-    component: OfferDetailsComponent,
-    canActivate: [AuthGuard]
-  },
+  // {
+  //   path: 'offer-details',
+  //   component: OfferDetailsComponent,
+  //   canActivate: [AuthGuard]
+  // },
   {
     path: 'offers',
-    component: Offers,
-    canActivate: [AuthGuard]
+    loadChildren: './features/offers/index#OffersModule'
+    // component: Offers,
+    // canActivate: [AuthGuard]
   },
-  {
-    path: 'offer-redirect',
-    component: OfferRedirect
-  },
+  // {
+  //   path: 'offer-redirect',
+  //   component: OfferRedirect
+  // },
   {
     path: 'order',
     component: OrderComponent,
@@ -141,10 +139,10 @@ export const routes: Routes = [
     path: 'terms-and-conditions',
     loadChildren: './features/terms-and-conditions/index#TermsAndConditionsModule'
   },
-  {
-    path: 'view-offers',
-    component: Offers,
-    canActivate: [LoggedInRedirectGuard]
-  },
+  // {
+  //   path: 'view-offers',
+  //   component: Offers,
+  //   canActivate: [LoggedInRedirectGuard]
+  // },
   { path: '**', component: NotFound404Component }
 ];

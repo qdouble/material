@@ -26,7 +26,7 @@ export const views: Object[] = [
   {
     name: 'Offers',
     icon: 'loyalty',
-    link: ['view-offers'],
+    link: ['offers/view-offers'],
     loggedIn: false
   },
   {

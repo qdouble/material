@@ -44,7 +44,7 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
   }
 
   continueToOffer(offerId) {
-    openInNewTab(`offer-redirect?id=${offerId}`);
+    openInNewTab(`offers/offer-redirect?id=${offerId}`);
   }
 
   ngOnDestroy() {
