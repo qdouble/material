@@ -21,6 +21,7 @@ button {
   max-width: 350px;
   margin: 0 auto;
   border-bottom: 5px solid $primary-color;
+  border-top: 5px solid $primary-color;
 }
 
 :host >>> .md-input-element { 
