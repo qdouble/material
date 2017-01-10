@@ -23,6 +23,10 @@ md-button-toggle-group {
   margin-bottom: 10px;
 }
 
+md-slide-toggle { 
+  margin: 4px 0;
+}
+
 .os-offer-page-header { 
   min-height: 140px; 
   margin: 0 auto;
@@ -122,11 +126,9 @@ md-button-toggle-group {
 
 .os-offer-header-col {
   height: 188px;
-  /*width: 33%*/
 }
 
 .paging {
-  margin-top: 15px;
   text-align: center;
 }
 
@@ -140,7 +142,7 @@ md-button-toggle-group {
 os-offer-rows {
   display: block;
   margin-top: 10px;
-  // margin-bottom: 290px;
+  margin-bottom: 16px;
 }
 
 .os-offer-page-footer {

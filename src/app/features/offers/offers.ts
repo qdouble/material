@@ -51,6 +51,7 @@ export class Offers implements AfterViewInit, OnDestroy {
   offersNonFeatured$: Observable<Offer[]>;
   offersAvailable$: Observable<Offer[]>;
   offersAvailableSortBy$: Observable<Offer[]>;
+  showCompleted: boolean;
   sideNavOpen$: Observable<boolean>;
   selectedOption = 'Available';
   sortBy = 'featured';

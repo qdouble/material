@@ -6,7 +6,6 @@ import {
 @Component({
   selector: 'os-pages',
   template: `
-  <span style="margin-right: 4px;" *ngIf="!hidePageText && selectedPage !== 'all'">Page</span>
   <md-button-toggle-group  #page [(ngModel)]="selectedPage" 
     (ngModelChange)="pageOffset.emit(selectedPage)">
     <ng-container *ngIf="selectedPage !== 'all' ">
@@ -25,7 +24,7 @@ import {
     
   </md-button-toggle-group>
   `,
-  styles: [`:host >>> .md-button-toggle-label-content {padding: 0 8px;}`]
+  styles: [`:host >>> .md-button-toggle-label-content {padding: 0 9px;}`]
 })
 
 export class PagesComponent implements OnChanges, OnInit {

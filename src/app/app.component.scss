@@ -24,11 +24,12 @@
 .os-toolbar-right {
   position: absolute;
   right: 15px;
-  top: 12px;
-  .os-toolbar-el-3 {
-    @media screen and (max-width: 360px) {
-      display: none;
-    }
+  top: 8px;
+  @media screen and (min-width: 465px) {
+    top: 3px;
+  }
+  @media screen and (min-width: 961px) {
+    top: 12px;
   }
 }
 
