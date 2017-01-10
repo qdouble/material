@@ -19,7 +19,7 @@ export class UIService extends RequestBase {
   }
 
   getVersion(): Observable<Response> {
-    return this.http.get(`/version.json`, this.optionsNoPre)
+    return this.http.get(`/version.json?nocache=${(new Date()).getTime()}`, this.optionsNoPre)
       .map(res => res.json());
   }
 
