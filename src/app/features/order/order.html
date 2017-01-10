@@ -6,14 +6,13 @@
         will be processed at the same time.</md-card>
     </ng-container>
     <ng-container *ngIf="(!user?.orderPending && !user?.hasQualifiedReferrals)">
-      <md-card class="os-message-card warn-background white">
+      <md-card class="os-message-card accent-background white">
         <ng-container *ngIf="user?.currentLevel < 1">
           <div style="text-align: left; padding: 4px;">
-          As you are currently on level 0, you are not qualified to place any orders. 
-          To qualify to place an order, you must complete
-          free or cheap offers on the offers tab to reach level 1 or higher and then refer 1 or more users who reach level
-          1 or higher as well. Payouts are calculated by multiplying $5 by the level reached by your referrals. The maximum
-          you can earn per referral is determined by your own level.
+          <p>As you are currently on level 0, you are not qualified to place an orders.</p><br>
+          <p>To qualify to start earning money, you must go to the <a [routerLink]="['/offers']">Offers</a> page and complete enough offers to reach level 1 or higher. The higher the level you reach, the more you can potentially earn. </p><br>
+          <p>Payouts are calculated by multiplying five dollars ($5) by the level reached by your referrals. The maximum you can earn per referral is determined by your own level.</p><br>
+          <p>For more details <a [routerLink]="['/faq']">read the FAQ page.</a></p>
           </div>
         </ng-container>
         <ng-container *ngIf="user?.currentLevel >= 1 && user?.hasReferralsBeyondLevel">
@@ -40,7 +39,7 @@
       </div>
     </ng-container>
 
-    <md-card class="os-message-card warn-background white" *ngIf="!user?.orderPending && user?.hasQualifiedReferrals && user?.hold">
+    <md-card class="os-message-card accent-background white" *ngIf="!user?.orderPending && user?.hasQualifiedReferrals && user?.hold">
           You are currently on hold and can not place any orders until your hold is removed.
   </md-card>
 
