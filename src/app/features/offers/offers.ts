@@ -158,7 +158,7 @@ export class Offers implements AfterViewInit, OnDestroy {
               .subscribe(credits => {
                 let creditedOfferIds: string[] = credits.map(credit => credit.offerId);
                 this.offersCompleted$ = Observable.combineLatest(
-                  this.offers$, Observable.of(creditedOfferIds), completed);
+                  this.offersSorted$, Observable.of(creditedOfferIds), completed);
               });
           });
       });
