@@ -9,9 +9,9 @@
       <md-card class="os-message-card accent-background white">
         <ng-container *ngIf="user?.currentLevel < 1">
           <div style="text-align: left; padding: 4px;">
-          <p>As you are currently on level 0, you are not qualified to place an orders.</p><br>
-          <p>To qualify to start earning money, you must go to the <a [routerLink]="['/offers']">Offers</a> page and complete enough offers to reach level 1 or higher. The higher the level you reach, the more you can potentially earn. </p><br>
-          <p>Payouts are calculated by multiplying five dollars ($5) by the level reached by your referrals. The maximum you can earn per referral is determined by your own level.</p><br>
+          <p>As you are currently on level 0, you are not qualified to place an order.</p><br>
+          <p>To qualify to start earning money, you must go to the <a [routerLink]="['/offers']">Offers</a> page and complete enough offers to reach level 1 or higher. The higher the level you reach, the more you can potentially earn. Every full 1.00 credit elevates you to the next level and partial credits are also added up. So if you complete an offer worth 1.25 credits you will be at level 1. If you complete another offer worth 0.75 credits, you will have 2.00 credits total and be at level 2.</p><br>
+          <p>Payouts are calculated by multiplying $5 by the level reached by your referrals. For example, if you are on level 10, you can earn up to $50 per referral. So if you have a referral that reaches level 10, you'll get paid $50. If you have another that reaches level 5, you'll earn $25. Any time your referral levels up, you can place an additonal order and get paid for that referral again. So if that user who went to level 5, then goes to level 7, you can place another order for additional $10. The maximum you can earn per referral is determined by your own level.</p><br>
           <p>For more details <a [routerLink]="['/faq']">read the FAQ page.</a></p>
           </div>
         </ng-container>
