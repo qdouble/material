@@ -1,10 +1,11 @@
+@import '../../variables';
+
 .form-group, .os-form-input { 
   margin-bottom: 6px; 
 }
 
-.os-profile-form-container {
-  display: block;
-  max-width: 500px;
+.os-form-container {
+  border-top: 5px solid $primary-color;
 }
 
 md-checkbox {
