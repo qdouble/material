@@ -13,6 +13,11 @@ export class UIService extends RequestBase {
     super(http);
   }
 
+  addUserIDToSocket(id: string): Observable<string> {
+    return this.http.get(`${API_USER_URL}/socket/addUserIDToSocket?id=${id}`, this.optionsNoPre)
+      .map(res => res.text());
+  }
+
   contactUs(contact: { email: string, subject: string, question: string }): Observable<Response> {
     return this.http.post(`${API_USER_URL}/contactUs`, contact, this.options)
       .map(res => res.json());

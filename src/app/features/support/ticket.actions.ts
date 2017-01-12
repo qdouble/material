@@ -80,30 +80,6 @@ export class TicketActions {
     };
   }
 
-  static EDIT_TICKET = '[Ticket] Edit Ticket';
-  editTicket(ticket: Ticket): Action {
-    return {
-      type: TicketActions.EDIT_TICKET,
-      payload: ticket
-    };
-  }
-
-  static EDIT_TICKET_FAIL = '[Ticket] Edit Ticket Fail';
-  editTicketFail(err: Error): Action {
-    return {
-      type: TicketActions.EDIT_TICKET_FAIL,
-      payload: err
-    };
-  }
-
-  static EDIT_TICKET_SUCCESS = '[Ticket] Edit Ticket Success';
-  editTicketSuccess(ticket: Ticket): Action {
-    return {
-      type: TicketActions.EDIT_TICKET_SUCCESS,
-      payload: ticket
-    };
-  }
-
   static GET_TICKET = '[Ticket] Get Ticket';
   getTicket(id: string): Action {
     return {
@@ -180,6 +156,14 @@ export class TicketActions {
     return {
       type: TicketActions.SORT_BY,
       payload: sort
+    };
+  }
+
+  static UPDATE_TICKET = '[Ticket] Update Ticket';
+  updateTicket(ticket: Ticket): Action {
+    return {
+      type: TicketActions.UPDATE_TICKET,
+      payload: ticket
     };
   }
 }

@@ -21,6 +21,20 @@ export class UIEffects {
     private uiService: UIService
   ) { }
 
+   @Effect() addUserIDToSocket$ = this.actions$
+    .ofType(UIActions.ADD_USER_ID_TO_SOCKET)
+    .map(action => <string>action.payload)
+    .switchMap((id) => this.uiService.addUserIDToSocket(id)
+      .mergeMap((res: any) => Observable.of(
+        this.uiActions.addUserIDToSocketSuccess(res),
+        this.notifyActions.addNotify(res)
+      ))
+      .catch((err) => Observable.of(
+        this.uiActions.addUserIDToSocketFail(err),
+        this.notifyActions.addNotify(err)
+      ))
+    );
+
   @Effect() contactUs$ = this.actions$
     .ofType(UIActions.CONTACT_US)
     .map(action => <{ email: string, subject: string, question: string }>action.payload)

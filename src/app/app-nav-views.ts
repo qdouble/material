@@ -71,10 +71,10 @@ export const views: Object[] = [
     link: ['support'],
     loggedIn: true
   },
-  {
-    name: 'Logout',
-    icon: 'close',
-    link: ['logout'],
-    loggedIn: true
-  }
+  // {
+  //   name: 'Logout',
+  //   icon: 'close',
+  //   link: ['logout'],
+  //   loggedIn: true
+  // }
 ];

@@ -3,11 +3,29 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
 
+import { Credit } from '../models/credit';
+import { Referral } from '../models/referral';
 import { User } from '../models/user';
 
 @Injectable()
 
 export class UserActions {
+  static ADD_CREDIT = '[User] Add Credit';
+  addCredit(credit: Credit): Action {
+    return {
+      type: UserActions.ADD_CREDIT,
+      payload: credit
+    };
+  }
+
+  static ADD_REFERRAL = '[User] Add Referral';
+  addReferral(referral: Referral): Action {
+    return {
+      type: UserActions.ADD_REFERRAL,
+      payload: referral
+    };
+  }
+
   static ADMIN_LOGIN = '[User] Admin Login';
   adminLogin(user: User): Action {
     return {
@@ -347,7 +365,7 @@ export class UserActions {
   }
 
   static RESET_PASSWORD = '[User] Reset Password';
-  resetPassword(reset: {email: string, code: string, password: string}): Action {
+  resetPassword(reset: { email: string, code: string, password: string }): Action {
     return {
       type: UserActions.RESET_PASSWORD,
       payload: reset
@@ -434,6 +452,14 @@ export class UserActions {
     };
   }
 
+  static UPDATE_CURRENT_LEVEL = '[User] Update Current Level';
+  updateCurrentLevel(current: { currentLevel: number, leveledUp: boolean }): Action {
+    return {
+      type: UserActions.UPDATE_CURRENT_LEVEL,
+      payload: current
+    };
+  }
+
   static UPDATE_PROFILE = '[User] Update Profile';
   updateProfile(user: User): Action {
     return {
@@ -455,6 +481,25 @@ export class UserActions {
     return {
       type: UserActions.UPDATE_PROFILE_FAIL,
       payload: user
+    };
+  }
+
+  static UPDATE_HAS_QUALIFIED_REFERRALS = '[User] Update Has Qualified Referrals';
+  updateHasQualifiedReferrals(user: {
+    hasQualifiedReferrals: boolean,
+    hasReferralsBeyondLevel: boolean
+  }): Action {
+    return {
+      type: UserActions.UPDATE_HAS_QUALIFIED_REFERRALS,
+      payload: user
+    };
+  }
+
+  static UPDATE_REFERRAL = '[User] Update Referral';
+  updateReferral(referral: Referral): Action {
+    return {
+      type: UserActions.UPDATE_HAS_QUALIFIED_REFERRALS,
+      payload: referral
     };
   }
 

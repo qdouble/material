@@ -201,6 +201,16 @@ export function ticketReducer(state = initialState, action: Action): TicketState
         sortBy: sortBy
       });
 
+      case TicketActions.UPDATE_TICKET: {
+        const ticket: Ticket = action.payload.ticket;
+        if (!ticket) return state;
+        return Object.assign({}, state, {
+          entities: Object.assign({}, state.entities, {
+            [ticket.id]: ticket
+          })
+        });
+      }
+
     default: {
       return state;
     }

@@ -13,6 +13,30 @@ export class UIActions {
     };
   }
 
+  static ADD_USER_ID_TO_SOCKET = '[UI] Add User ID to Socket';
+  addUserIDToSocket(id: string): Action {
+    return {
+      type: UIActions.ADD_USER_ID_TO_SOCKET,
+      payload: id
+    };
+  }
+
+  static ADD_USER_ID_TO_SOCKET_FAIL = '[UI] Add User ID to Socket Fail';
+  addUserIDToSocketFail(err: Error): Action {
+    return {
+      type: UIActions.ADD_USER_ID_TO_SOCKET_FAIL,
+      payload: err
+    };
+  }
+
+  static ADD_USER_ID_TO_SOCKET_SUCCESS = '[UI] Add User ID to Socket Success';
+  addUserIDToSocketSuccess(res: any): Action {
+    return {
+      type: UIActions.ADD_USER_ID_TO_SOCKET_SUCCESS,
+      payload: res
+    };
+  }
+
   static CONTACT_US_FAIL = '[UI] Contact Us Fail';
   contactUsFail(err: Error): Action {
     return {

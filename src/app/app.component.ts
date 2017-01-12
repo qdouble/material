@@ -21,7 +21,7 @@ import { getNotifyCollection } from './reducers/notify';
 import { validateUserName } from './validators';
 
 import { views } from './app-nav-views';
-import { MOBILE } from './services/constants';
+import { log, MOBILE } from './services/constants';
 
 @Component({
   selector: 'my-app',
@@ -42,6 +42,10 @@ export class AppComponent implements OnDestroy, OnInit {
   action: boolean = false;
   /////////////////////
   stopChecking$: Subject<any> = new Subject<any>();
+  webSocket$: Subject<any>;
+  /////
+  closeConnection$: Subject<any> = new Subject<any>();
+  ////
   destroyed$: Subject<any> = new Subject<any>();
   credits$: Observable<Credit[]>;
   onAdminLoginPage$: Observable<boolean>;
@@ -85,6 +89,7 @@ export class AppComponent implements OnDestroy, OnInit {
       .takeUntil(this.destroyed$)
       .subscribe(latestVersion => {
         if (latestVersion !== this.version) {
+          log(`${latestVersion} <-> ${this.version}`);
           window.location.reload();
         }
       });
@@ -94,7 +99,7 @@ export class AppComponent implements OnDestroy, OnInit {
       .subscribe(() => {
         this.store.dispatch(this.uiActions.getVersion());
         if (this.loggedIn) {
-          this.store.dispatch(this.userActions.checkIfUserUpdated());
+          // this.store.dispatch(this.userActions.checkIfUserUpdated());
         }
       });
 
@@ -167,50 +172,75 @@ export class AppComponent implements OnDestroy, OnInit {
     this.userLoggedIn$.subscribe(loggedIn => {
       if (loggedIn && !this.loaded) {
         this.store.dispatch(this.userActions.getProfile());
+        this.connect();
       }
     });
   }
 
   activateEvent(event) {
-    if (ENV === 'development') {
-      console.log('Activate Event:', event);
-    }
+    log('Activate Event:', event);
   }
 
   deactivateEvent(event) {
-    if (ENV === 'development') {
-      console.log('Deactivate Event', event);
-    }
+    log('Deactivate Event', event);
+  }
+  closeConnection() {
+    this.closeConnection$.next();
+  }
+  connect() {
+    this.webSocket$ = Observable.webSocket('ws://localhost:8089/user/socket/connect');
+    this.webSocket$
+      .retry()
+      .takeUntil(this.closeConnection$)
+      .subscribe(
+      (res: { event?: string, id?: string, type?: string, payload?: any }) => {
+        log(`connected: `, res);
+        if (res.event === 'CONNECTION') {
+          this.store.dispatch(this.uiActions.addUserIDToSocket(res.id));
+        }
+        if (res.type) {
+          this.store.dispatch({ type: res.type, payload: res.payload });
+        }
+      },
+      (err) => {
+        log(err);
+        this.connect();
+      },
+      () => {
+        log('complete');
+      }
+      );
   }
 
   logout() {
+    this.closeConnection();
     this.store.dispatch(this.userActions.logout());
   }
 
   setToggle(view: { link?: string, show?: boolean, toggle?: boolean }) {
-    if (this.previousView) this.previousView.show = false;
-    if (view !== this.previousView) {
-      if (!this.previousView && this.router.url.search(view.link) > - 1) {
-        view.show = false;
-        view.toggle = true;
-      } else {
-        view.show = true;
-        view.toggle = false;
-      }
-    } else {
-      if (view.show === false && !view.toggle) {
-        view.toggle = true;
-      } else {
-        if (!view.show) {
-          view.show = true;
-        } else {
-          view.show = false;
-        }
-        if (view.toggle) view.toggle = false;
-      }
-    }
-    this.previousView = view;
-    this.initView = false;
+    // if (this.previousView) this.previousView.show = false;
+    // if (view !== this.previousView) {
+    //   if (!this.previousView && this.router.url.search(view.link) > - 1) {
+    //     view.show = false;
+    //     view.toggle = true;
+    //   } else {
+    //     view.show = true;
+    //     view.toggle = false;
+    //   }
+    // } else {
+    //   if (view.show === false && !view.toggle) {
+    //     view.toggle = true;
+    //   } else {
+    //     if (!view.show) {
+    //       view.show = true;
+    //     } else {
+    //       view.show = false;
+    //     }
+    //     if (view.toggle) view.toggle = false;
+    //   }
+    // }
+    // this.previousView = view;
+    // this.initView = false;
   }
 
   toggleMobile() {

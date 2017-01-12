@@ -56,6 +56,26 @@ export const initialState: UserState = {
 export function userReducer(state = initialState, action: Action): UserState {
   switch (action.type) {
 
+    case UserActions.ADD_CREDIT:
+      let credit: Credit = action.payload.credit;
+      if (!credit) return state;
+      return Object.assign({}, state, {
+        creditIds: [...state.creditIds, credit.id],
+        credits: Object.assign({}, state.credits, {
+          [credit.id]: credit
+        })
+      });
+
+    case UserActions.ADD_REFERRAL:
+      let referral: Referral = action.payload.referral;
+      if (!referral) return state;
+      return Object.assign({}, state, {
+        referralIds: [...state.referralIds, referral.id],
+        referrals: Object.assign({}, state.referrals, {
+          [referral.id]: referral
+        })
+      });
+
     case UserActions.CHANGE_SELECTED_PRIZE:
       return Object.assign({}, state, { settingPrize: true });
 
@@ -261,6 +281,28 @@ export function userReducer(state = initialState, action: Action): UserState {
       });
     }
 
+    case UserActions.UPDATE_CURRENT_LEVEL: {
+      let user: User = action.payload;
+      if (user.currentLevel === undefined || user.leveledUp === undefined) return state;
+      return Object.assign({}, state, {
+        user: Object.assign({}, state.user, {
+          currentLevel: user.currentLevel,
+          leveledUp: user.leveledUp
+        })
+      });
+    }
+
+    case UserActions.UPDATE_HAS_QUALIFIED_REFERRALS: {
+      let user: User = action.payload;
+      if (user.hasQualifiedReferrals === undefined) return state;
+      return Object.assign({}, state, {
+        user: Object.assign({}, state.user, {
+          hasQualifiedReferrals: user.hasQualifiedReferrals,
+          hasReferralsBeyondLevel: user.hasReferralsBeyondLevel
+        })
+      });
+    }
+
     case UserActions.UPDATE_PROFILE:
       return Object.assign({}, state, {
         loading: true
@@ -282,6 +324,18 @@ export function userReducer(state = initialState, action: Action): UserState {
       return Object.assign({}, state, {
         loading: false,
         user: userUpdate
+      });
+    }
+
+    case UserActions.UPDATE_REFERRAL: {
+      let referral: Referral = action.payload.referral;
+      console.log(referral);
+      if (!referral) return state;
+      console.log('RETURNING NEW STATE');
+      return Object.assign({}, state, {
+        referrals: Object.assign({}, state.referrals, {
+          [referral.id]: referral
+        })
       });
     }
 
