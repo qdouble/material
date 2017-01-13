@@ -13,7 +13,10 @@ interface WebpackConfig {
   devServer?: {
     contentBase?: string;
     port?: number;
-    historyApiFallback?: {[key: string]: boolean} | boolean;
+    historyApiFallback?: { [key: string]: boolean } | boolean;
+    https?: boolean;
+    cert?: any;
+    key?: any;
     hot?: boolean;
     inline?: boolean;
     proxy?: any;

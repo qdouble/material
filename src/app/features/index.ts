@@ -7,14 +7,12 @@ import { Login } from './login';
 import { Logout } from './logout';
 import { MessagesComponent } from './messages';
 import { NotificationsComponent } from './notifications';
-import { OrderComponent, OrderFormComponent, OrderTableComponent } from './order';
 import { PasswordReset } from './password-reset';
 import { Profile } from './profile';
 import { Promotions } from './promotions';
 import { ProofPicGallery } from './proof-pic-gallery';
 import { IPMatchFoundDialog, Register } from './register';
 import { ReportSpam } from './report-spam';
-import { ReferralDetailsDialog, ReferralsTable, SelectedPrizeComponent, Status } from './status';
 
 export {
   AboutUs,
@@ -26,15 +24,12 @@ export {
   Logout,
   MessagesComponent,
   NotificationsComponent,
-  OrderComponent,
   PasswordReset,
   Profile,
   Promotions,
   ProofPicGallery,
-  ReferralDetailsDialog,
   Register,
-  ReportSpam,
-  Status
+  ReportSpam
 }
 
 export const FEATURE_MODULES = [
@@ -51,17 +46,10 @@ export const PAGES_COMPONENTS = [
   Logout,
   MessagesComponent,
   NotificationsComponent,
-  OrderComponent,
-  OrderFormComponent,
-  OrderTableComponent,
   PasswordReset,
   Profile,
   Promotions,
   ProofPicGallery,
-  ReferralDetailsDialog,
-  ReferralsTable,
   Register,
-  ReportSpam,
-  SelectedPrizeComponent,
-  Status
+  ReportSpam
 ];

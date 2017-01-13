@@ -1,6 +1,7 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
+import { PushNotification } from '../models/push-notification';
 
 @Injectable()
 
@@ -50,6 +51,14 @@ export class UIActions {
     return {
       type: UIActions.CONTACT_US_SUCCESS,
       payload: version
+    };
+  }
+
+  static CREATE_PUSH_NOTIFICATION = '[UI] Create Push Notification';
+  createPushNotification(push: PushNotification): Action {
+    return {
+      type: UIActions.CONTACT_US_SUCCESS,
+      payload: push
     };
   }
 

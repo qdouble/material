@@ -12,6 +12,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { useLogMonitor } from '@ngrx/store-log-monitor';
 
 import { FEATURE_MODULES } from './features';
+import { FormInputModule } from './components/input-fields/form-input';
 import { SelectInputModule } from './components/input-fields/select-input';
 import { TextareaInputModule } from './components/input-fields/textarea-input';
 
@@ -54,6 +55,7 @@ export const APP_IMPORTS = [
   EffectsModule.run(UserEffects),
   FEATURE_MODULES,
   FlexLayoutModule.forRoot(),
+  FormInputModule,
   FormsModule,
   MaterialModule.forRoot(),
   ReactiveFormsModule,

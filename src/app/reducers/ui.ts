@@ -5,10 +5,12 @@ import { Action } from '@ngrx/store';
 
 import { AppState } from './';
 import { UIActions } from '../actions/ui';
+import { PushNotification } from '../models/push-notification';
 
 export interface UIState {
   contactRequestSent: boolean;
   mobile: boolean;
+  pushNotification: PushNotification;
   sendingContact: boolean;
   sideNavOpen: boolean;
   latestVersion: string;
@@ -18,6 +20,7 @@ export interface UIState {
 export const initialState: UIState = {
   contactRequestSent: false,
   mobile: false,
+  pushNotification: null,
   sendingContact: false,
   sideNavOpen: false,
   latestVersion: null,
@@ -42,6 +45,12 @@ export function uiReducer(state = initialState, action: Action): UIState {
         contactRequestSent: true,
         sendingContact: false
       });
+
+    case UIActions.CREATE_PUSH_NOTIFICATION: {
+      return Object.assign({}, state, {
+        pushNotification: action.payload
+      });
+    }
 
     case UIActions.GET_VERSION_SUCCESS:
       let version = action.payload.version;

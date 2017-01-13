@@ -33,7 +33,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const WebpackMd5Hash = require('webpack-md5-hash');
 
 const { hasProcessFlag, includeClientPackages, root, testDll } = require('./helpers.js');
-
+const fs = require('fs');
 const EVENT = process.env.npm_lifecycle_event || '';
 const AOT = EVENT.includes('aot');
 const DEV_SERVER = EVENT.includes('webdev');
@@ -284,6 +284,9 @@ const clientConfig = function webpackConfig(): WebpackConfig {
   config.devServer = {
     contentBase: AOT ? './compiled' : './src',
     port: CONSTANTS.PORT,
+    // https: false,
+    // cert: fs.readFileSync('/mock-ssl/cert.pem'),
+    // key: fs.readFileSync('/mock-ssl/key.pem'),
     historyApiFallback: {
       disableDotRule: true,
     },

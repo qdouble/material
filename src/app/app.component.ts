@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 
 import { AppState } from './reducers';
 import { Credit } from './models/credit';
@@ -18,10 +19,13 @@ import {
 } from './reducers/user';
 import { getCreditCollection } from './reducers/user';
 import { getNotifyCollection } from './reducers/notify';
+
 import { validateUserName } from './validators';
 
 import { views } from './app-nav-views';
 import { log, MOBILE } from './services/constants';
+import { PushNotification } from './models/push-notification';
+import { PushNotificationService } from './services/push-notification';
 
 @Component({
   selector: 'my-app',
@@ -69,6 +73,7 @@ export class AppComponent implements OnDestroy, OnInit {
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
+    private pushNotificationService: PushNotificationService,
     private prizeActions: PrizeActions,
     public snackBar: MdSnackBar,
     private store: Store<AppState>,
@@ -168,7 +173,20 @@ export class AppComponent implements OnDestroy, OnInit {
     this.store.dispatch(this.uiActions.setMobile(MOBILE));
     this.userLoaded$.subscribe(loaded => {
       this.loaded = loaded;
+      if (loaded && this.pushNotificationService.isSupported()) {
+        this.pushNotificationService.requestPermission();
+      }
     });
+    let pushSub$ = this.store.select(s => s.ui.pushNotification);
+    pushSub$
+      .filter(push => push !== null)
+      .subscribe((push: PushNotification) => {
+        this.pushNotificationService.create(push)
+          .subscribe(
+          () => log('success'),
+          (err) => log(err)
+          );
+      });
     this.userLoggedIn$.subscribe(loggedIn => {
       if (loggedIn && !this.loaded) {
         this.store.dispatch(this.userActions.getProfile());
@@ -201,15 +219,14 @@ export class AppComponent implements OnDestroy, OnInit {
         if (res.type) {
           this.store.dispatch({ type: res.type, payload: res.payload });
         }
+        if (Array.isArray(res)) {
+          res.forEach((action: Action) => {
+            this.store.dispatch({ type: action.type, payload: action.payload });
+          });
+        }
       },
-      (err) => {
-        log(err);
-        this.connect();
-      },
-      () => {
-        log('complete');
-      }
-      );
+      (err) => { log(err); this.connect(); },
+      () => log('complete'));
   }
 
   logout() {

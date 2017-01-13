@@ -16,14 +16,12 @@ import {
   HowItWorks,
   Login,
   Logout,
-  OrderComponent,
   PasswordReset,
   Profile,
   Promotions,
   ProofPicGallery,
   Register,
-  ReportSpam,
-  Status
+  ReportSpam
 }  from './features';
 
 import {
@@ -90,7 +88,7 @@ export const routes: Routes = [
   // },
   {
     path: 'order',
-    component: OrderComponent,
+    loadChildren: './features/order/index#OrderModule',
     canActivate: [AuthGuard]
   },
   {
@@ -127,7 +125,7 @@ export const routes: Routes = [
   },
   {
     path: 'status',
-    component: Status,
+    loadChildren: './features/status/index#StatusModule',
     canActivate: [AuthGuard]
   },
   {
