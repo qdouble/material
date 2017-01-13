@@ -58,7 +58,7 @@ export function userReducer(state = initialState, action: Action): UserState {
 
     case UserActions.ADD_CREDIT:
       let credit: Credit = action.payload.credit;
-      if (!credit) return state;
+      if (!credit || state.creditIds.includes(credit.id)) return state;
       return Object.assign({}, state, {
         creditIds: [...state.creditIds, credit.id],
         credits: Object.assign({}, state.credits, {
@@ -68,7 +68,7 @@ export function userReducer(state = initialState, action: Action): UserState {
 
     case UserActions.ADD_REFERRAL:
       let referral: Referral = action.payload.referral;
-      if (!referral) return state;
+      if (!referral || state.referralIds.includes(referral.id)) return state;
       return Object.assign({}, state, {
         referralIds: [...state.referralIds, referral.id],
         referrals: Object.assign({}, state.referrals, {
@@ -329,9 +329,7 @@ export function userReducer(state = initialState, action: Action): UserState {
 
     case UserActions.UPDATE_REFERRAL: {
       let referral: Referral = action.payload.referral;
-      console.log(referral);
       if (!referral) return state;
-      console.log('RETURNING NEW STATE');
       return Object.assign({}, state, {
         referrals: Object.assign({}, state.referrals, {
           [referral.id]: referral
