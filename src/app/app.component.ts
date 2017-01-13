@@ -188,7 +188,7 @@ export class AppComponent implements OnDestroy, OnInit {
     this.closeConnection$.next();
   }
   connect() {
-    this.webSocket$ = Observable.webSocket('ws://localhost:8089/user/socket/connect');
+    this.webSocket$ = Observable.webSocket(`ws://${HOST}:8089/user/socket/connect`);
     this.webSocket$
       .retry()
       .takeUntil(this.closeConnection$)
