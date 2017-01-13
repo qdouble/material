@@ -67,7 +67,8 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
           this.creditRequest = creditRequest;
           this.f.patchValue({
             headers: creditRequest.headers,
-            body: creditRequest.body
+            body: creditRequest.body,
+            completedOn: creditRequest.completedOn
           });
         });
     }
