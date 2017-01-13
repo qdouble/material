@@ -164,6 +164,18 @@ export function creditRequestReducer(state = initialState, action: Action): Cred
       });
     }
 
+    case CreditRequestActions.UPDATE_CREDIT_REQUEST: {
+      const creditRequest: CreditRequest = action.payload.creditRequest;
+      if (!creditRequest) return state;
+      return Object.assign({}, state, {
+        entities: Object.assign({}, state.entities, {
+          [creditRequest.id]: Object.assign({}, state.entities[creditRequest.id], {
+            status: creditRequest.status,
+            userNotes: creditRequest.userNotes
+          })
+        })
+      });
+    }
 
     default: {
       return state;

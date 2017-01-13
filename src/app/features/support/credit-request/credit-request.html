@@ -7,9 +7,9 @@
         <p>Offer: {{creditRequest?.offerName}}</p>
         <p>Completed On: {{creditRequest?.completedOn | slice: 0:10}}</p>
         <p>Status: {{creditRequest?.status}}</p>
-        <p *ngIf="creditRequest?.userNotes && creditRequest?.status === 'More Information Needed'">
-          Message from Admin: <b>{{creditRequest?.userNotes}}</b>
-        </p>
+        <p *ngIf="creditRequest?.userNotes && creditRequest?.status === 'More Information Needed'">Message from Admin:</p> 
+        <pre>{{creditRequest?.userNotes}}</pre>
+        
         <div *ngIf="creditRequest?.status !== 'More Information Needed'">
           <p class="p2">&nbsp;</p>
           <p class="underline">Confirmation Email Headers</p> 

@@ -127,4 +127,12 @@ export class CreditRequestActions {
     };
   }
 
+  static UPDATE_CREDIT_REQUEST = '[CreditRequest] Update Credit Request';
+  updateCreditRequest(creditRequest: CreditRequest): Action {
+    return {
+      type: CreditRequestActions.UPDATE_CREDIT_REQUEST,
+      payload: creditRequest
+    };
+  }
+
 }
