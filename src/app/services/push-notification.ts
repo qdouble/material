@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { PushNotification, Permission } from '../models/push-notification';
 
 declare const Notification: any;
+declare var ServiceWorkerRegistration: any;
 
 @Injectable()
 export class PushNotificationService {
@@ -36,12 +37,18 @@ export class PushNotificationService {
         obs.complete();
       }
 
-      const n = new Notification(push.title, push.options);
+      let n;
+      try {
+        n = new Notification(push.title, push.options);
+        n.onshow = (e: any) => obs.next({ notification: n, event: e });
+        n.onclick = (e: any) => obs.next({ notification: n, event: e });
+        n.onerror = (e: any) => obs.error({ notification: n, event: e });
+        n.onclose = () => obs.complete();
 
-      n.onshow = (e: any) => obs.next({ notification: n, event: e });
-      n.onclick = (e: any) => obs.next({ notification: n, event: e });
-      n.onerror = (e: any) => obs.error({ notification: n, event: e });
-      n.onclose = () => obs.complete();
+
+      } catch (e) {
+        if (ENV === 'development') console.log(e);
+      }
     });
   }
 }
