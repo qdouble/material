@@ -1,6 +1,8 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
+
+import { Offer } from '../models/offer';
 import { PushNotification } from '../models/push-notification';
 
 @Injectable()
@@ -62,6 +64,14 @@ export class UIActions {
     };
   }
 
+  static DISPLAY_CREDITED_OFFER_DIALOG = '[UI] Display Credited Offer Dialog';
+  displayCreditedOfferDialog(offer: Offer): Action {
+    return {
+      type: UIActions.DISPLAY_CREDITED_OFFER_DIALOG,
+      payload: offer
+    };
+  }
+
   static GET_VERSION = '[UI] Get Version';
   getVersion(): Action {
     return {
@@ -82,6 +92,14 @@ export class UIActions {
     return {
       type: UIActions.GET_VERSION_SUCCESS,
       payload: version
+    };
+  }
+
+  static MARK_CREDITED_OFFER_AS_VIEWED = '[UI] Mark Credited Offer As Viewed';
+  markCreditedOfferAsViewed(id: string): Action {
+    return {
+      type: UIActions.MARK_CREDITED_OFFER_AS_VIEWED,
+      payload: id
     };
   }
 

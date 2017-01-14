@@ -11,6 +11,7 @@ export interface Offer {
   offerOrder?: number;
   description?: string;
   requirements?: string;
+  reminder?: string;
   adminNotes?: string;
   affiliate?: string;
   campaignID?: number;
@@ -20,4 +21,6 @@ export interface Offer {
   maxTimeToCreditType?: number;
   createdAt?: string;
   updatedAt?: string;
+  // Helper Properties //
+  viewed?: boolean;
 }

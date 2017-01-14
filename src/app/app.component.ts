@@ -1,5 +1,8 @@
 import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
-import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
+import {
+  MdDialog, MdDialogRef, MdDialogConfig,
+  MdSnackBar, MdSnackBarConfig
+} from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -12,7 +15,7 @@ import { Notify } from './models/notify';
 import { PrizeActions } from './actions/prize';
 import { UIActions } from './actions/ui';
 import { UserActions } from './actions/user';
-import { getUILatestVersion, getUIVersion } from './reducers/ui';
+import { getCreditedOfferCollection, getUILatestVersion, getUIVersion } from './reducers/ui';
 
 import {
   getUserOnAdminPage, getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy
@@ -26,6 +29,9 @@ import { views } from './app-nav-views';
 import { log, MOBILE } from './services/constants';
 import { PushNotification } from './models/push-notification';
 import { PushNotificationService } from './services/push-notification';
+
+import { CreditedOfferDialog } from './features/offers/credited-offer.dialog';
+import { Offer } from './models/offer';
 
 @Component({
   selector: 'my-app',
@@ -44,12 +50,23 @@ export class AppComponent implements OnDestroy, OnInit {
   /////////////////////
   actionButtonLabel: string = 'Close';
   action: boolean = false;
-  /////////////////////
-  stopChecking$: Subject<any> = new Subject<any>();
+  ///////// Web Sockets ////////////
   webSocket$: Subject<any>;
-  /////
   closeConnection$: Subject<any> = new Subject<any>();
-  ////
+  ///// Completed Offer Dialog //////
+  dialogRef: MdDialogRef<CreditedOfferDialog>;
+  config: MdDialogConfig = {
+    disableClose: false,
+    width: '',
+    height: '',
+    position: {
+      top: '',
+      bottom: '',
+      left: '',
+      right: ''
+    }
+  };
+  /////////////
   destroyed$: Subject<any> = new Subject<any>();
   credits$: Observable<Credit[]>;
   onAdminLoginPage$: Observable<boolean>;
@@ -71,6 +88,7 @@ export class AppComponent implements OnDestroy, OnInit {
   views = views;
   constructor(
     private cdr: ChangeDetectorRef,
+    public dialog: MdDialog,
     private route: ActivatedRoute,
     private router: Router,
     private pushNotificationService: PushNotificationService,
@@ -177,6 +195,12 @@ export class AppComponent implements OnDestroy, OnInit {
         this.pushNotificationService.requestPermission();
       }
     });
+    this.userLoggedIn$.subscribe(loggedIn => {
+      if (loggedIn && !this.loaded) {
+        this.store.dispatch(this.userActions.getProfile());
+        this.connect();
+      }
+    });
     let pushSub$ = this.store.select(s => s.ui.pushNotification);
     pushSub$
       .filter(push => push !== null)
@@ -187,12 +211,18 @@ export class AppComponent implements OnDestroy, OnInit {
           (err) => log(err)
           );
       });
-    this.userLoggedIn$.subscribe(loggedIn => {
-      if (loggedIn && !this.loaded) {
-        this.store.dispatch(this.userActions.getProfile());
-        this.connect();
-      }
-    });
+    let creditedOffer$ = this.store.let(getCreditedOfferCollection());
+    creditedOffer$
+      .filter(offers => offers.length > 0)
+      .filter(offers => offers.find(offer => offer.viewed === undefined) !== undefined)
+      .subscribe((offers) => {
+        offers.forEach(offer => {
+          if (!offer.viewed) {
+            this.openCreditedDialog(offer);
+            this.store.dispatch(this.uiActions.markCreditedOfferAsViewed(offer.id));
+          }
+        });
+      });
   }
 
   activateEvent(event) {
@@ -232,6 +262,17 @@ export class AppComponent implements OnDestroy, OnInit {
   logout() {
     this.closeConnection();
     this.store.dispatch(this.userActions.logout());
+  }
+
+  openCreditedDialog(offer: Offer) {
+    this.dialogRef = this.dialog.open(CreditedOfferDialog, this.config);
+    this.dialogRef.componentInstance.offer = offer;
+
+    this.dialogRef.afterClosed()
+      .takeUntil(this.destroyed$)
+      .subscribe(result => {
+        this.dialogRef = null;
+      });
   }
 
   setToggle(view: { link?: string, show?: boolean, toggle?: boolean }) {

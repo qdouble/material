@@ -18,7 +18,7 @@
       <span [style.visibility]="offer.featured ? 'visible': 'hidden'">*Featured</span>
     </div>
     <div class="offer-card-image-container" offer-card-image [routerLink]="['/offers/offer-details', { id: offer.id }]">
-      <img class="os-offer-card-image" [src]="publish ? 'https://levelrewards.com/images/offer-images/' + offer.filename : (offer.directImageURL?.length > 1 ? offer.directImageURL : offer.imageURL)" alt="Offer Image">
+      <img class="os-offer-card-image" [src]="publish ? 'https://levelrewards.com/images/offer-images/' + offer.filename : (offer.directImageURL?.length > 1 ? offer.directImageURL : offer.imageURL)" [alt]="offer.displayName">
     </div>
     <div [ngClass]="{'offer-card-name': true, 'shrink-name': (offer?.displayName?.length > 18), 'shrink-name-2': (offer?.displayName?.length > 24) }" offer-card-name>
       {{ offer.displayName }}

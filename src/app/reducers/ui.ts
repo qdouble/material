@@ -5,10 +5,13 @@ import { Action } from '@ngrx/store';
 
 import { AppState } from './';
 import { UIActions } from '../actions/ui';
+import { Offer } from '../models/offer';
 import { PushNotification } from '../models/push-notification';
 
 export interface UIState {
   contactRequestSent: boolean;
+  creditedOfferIds: string[];
+  creditedOffers: { [id: string]: Offer };
   mobile: boolean;
   pushNotification: PushNotification;
   sendingContact: boolean;
@@ -19,12 +22,14 @@ export interface UIState {
 
 export const initialState: UIState = {
   contactRequestSent: false,
+  creditedOfferIds: [],
+  creditedOffers: {},
   mobile: false,
   pushNotification: null,
   sendingContact: false,
   sideNavOpen: false,
   latestVersion: null,
-  version: '0.0.58'
+  version: '0.0.59'
 };
 
 export function uiReducer(state = initialState, action: Action): UIState {
@@ -52,12 +57,35 @@ export function uiReducer(state = initialState, action: Action): UIState {
       });
     }
 
+    case UIActions.DISPLAY_CREDITED_OFFER_DIALOG: {
+      const offer = action.payload.offer;
+      if (!offer || state.creditedOfferIds.includes(offer.id)) return state;
+      return Object.assign({}, state, {
+        creditedOfferIds: [...state.creditedOfferIds, offer.id],
+        creditedOffers: Object.assign({}, state.creditedOffers, {
+          [offer.id]: offer
+        })
+      });
+    }
+
     case UIActions.GET_VERSION_SUCCESS:
       let version = action.payload.version;
       if (!version || typeof version !== 'string') return state;
       return Object.assign({}, state, {
         latestVersion: action.payload.version
       });
+
+    case UIActions.MARK_CREDITED_OFFER_AS_VIEWED: {
+      const id: string = action.payload;
+      console.log(id);
+      if (!id || typeof id !== 'string') return state;
+      console.log('passed test!');
+      return Object.assign({}, state, {
+        creditedOffers: Object.assign({}, state.creditedOffers, {
+          [id]: Object.assign({}, state.creditedOffers[id], { viewed: true })
+        })
+      });
+    }
 
     case UIActions.SET_MOBILE:
       return Object.assign({}, state, {
@@ -74,6 +102,22 @@ export function uiReducer(state = initialState, action: Action): UIState {
       return state;
     }
   }
+}
+
+function _getCreditedOfferEntities() {
+  return (state$: Observable<UIState>) => state$
+    .select(s => s.creditedOffers);
+}
+
+function _getCreditedOffers(offerIds: string[]) {
+  return (state$: Observable<UIState>) => state$
+    .let(_getCreditedOfferEntities())
+    .map(entities => offerIds.map(id => entities[id]));
+}
+
+function _getCreditedOfferIds() {
+  return (state$: Observable<UIState>) => state$
+    .select(s => s.creditedOfferIds);
 }
 
 function _getLatestVersion() {
@@ -99,6 +143,24 @@ function _getUIState() {
 function _getVersion() {
   return (state$: Observable<UIState>) => state$
     .select(s => s.version);
+}
+
+export function getCreditedOffers(ids: string[]) {
+  return compose(_getCreditedOffers(ids), _getUIState());
+}
+
+export function getCreditedOfferIds() {
+  return compose(_getCreditedOfferIds(), _getUIState());
+}
+
+export function getCreditEntities() {
+  return compose(_getCreditedOfferEntities(), _getUIState());
+}
+
+export function getCreditedOfferCollection() {
+  return (state$: Observable<AppState>) => state$
+    .let(getCreditedOfferIds())
+    .switchMap(id => state$.let(getCreditedOffers(id)));
 }
 
 export function getUILatestVersion() {
