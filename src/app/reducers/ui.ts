@@ -29,7 +29,7 @@ export const initialState: UIState = {
   sendingContact: false,
   sideNavOpen: false,
   latestVersion: null,
-  version: '0.0.60'
+  version: '0.0.61'
 };
 
 export function uiReducer(state = initialState, action: Action): UIState {
@@ -77,9 +77,7 @@ export function uiReducer(state = initialState, action: Action): UIState {
 
     case UIActions.MARK_CREDITED_OFFER_AS_VIEWED: {
       const id: string = action.payload;
-      console.log(id);
       if (!id || typeof id !== 'string') return state;
-      console.log('passed test!');
       return Object.assign({}, state, {
         creditedOffers: Object.assign({}, state.creditedOffers, {
           [id]: Object.assign({}, state.creditedOffers[id], { viewed: true })
