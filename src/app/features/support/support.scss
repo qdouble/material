@@ -33,6 +33,7 @@ md-card-title {
   max-width: 615px;
   margin: 0 auto 15px;
   border-bottom: 5px solid $primary-color;
+  overflow: scroll;
 }
 
 .os-new-support-ticket {

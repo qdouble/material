@@ -26,7 +26,7 @@ import { getNotifyCollection } from './reducers/notify';
 import { validateUserName } from './validators';
 
 import { views } from './app-nav-views';
-import { log, MOBILE } from './services/constants';
+import { log, MOBILE, SERVICE_WORKER_PUSH_SUPPORT } from './services/constants';
 import { PushNotification } from './models/push-notification';
 import { PushNotificationService } from './services/push-notification';
 
@@ -201,6 +201,9 @@ export class AppComponent implements OnDestroy, OnInit {
         this.connect();
       }
     });
+    if (SERVICE_WORKER_PUSH_SUPPORT) {
+      this.pushNotificationService.registerServiceWorker();
+    }
     let pushSub$ = this.store.select(s => s.ui.pushNotification);
     pushSub$
       .filter(push => push !== null)
