@@ -9,6 +9,7 @@ export interface Offer {
   featured?: boolean;
   creditValue?: number;
   costToUser?: number;
+  noCardRequired?: boolean;
   offerOrder?: number;
   description?: string;
   requirements?: string;

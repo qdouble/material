@@ -31,13 +31,13 @@
     </span>
     <span class="offer-card-cost" offer-card-cost>
       <span *ngIf="offer.costToUser > 0 && offer.costToUser < 1000">
-        {{offer.costToUser | currency:'USD':true:'1.2-2'}}
+        {{offer.costToUser | currency:'USD':true:'1.2-2'}} <span *ngIf="offer.noCardRequired">(No Card Required)</span>
       </span>
       <span *ngIf="offer.costToUser === 0">
-        <b [ngClass]="{ 'dark-green': offer.costToUser === 0}">Free</b>
+        <b [ngClass]="{ 'dark-green': offer.costToUser === 0}">Free <span *ngIf="offer.noCardRequired">(No Card Required)</span></b>
       </span>
       <span *ngIf="offer.costToUser === 1000">
-        <b [ngClass]="{ 'dark-green': offer.costToUser === 0}">Varies</b>
+        <b [ngClass]="{ 'dark-green': offer.costToUser === 0}">Varies <span *ngIf="offer.noCardRequired">(No Card Required)</span></b>
       </span>
     </span>
     <span class="offer-card-credits" offer-card-credits>
