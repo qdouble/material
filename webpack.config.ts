@@ -210,7 +210,7 @@ const commonConfig = function webpackConfig(): WebpackConfig {
           maximumFileSizeToCacheInBytes: 4194304,
           navigateFallback: 'index.html',
           runtimeCaching: SW_RUNTIME_CACHING,
-          importScripts: ['sw-push.js']
+          // importScripts: ['sw-push.js']
         }
       ),
       ...MY_CLIENT_PRODUCTION_PLUGINS,
