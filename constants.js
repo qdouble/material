@@ -89,3 +89,24 @@ exports.MY_TEST_PLUGINS = [
 exports.MY_SERVER_INCLUDE_CLIENT_PACKAGES = [
   // include these client packages so we can transform their source with webpack loaders
 ]
+
+/**
+ * Caching for service worker. User cacheFirst for data that you want to use cache primarily and network
+ * request as fallback. Use network firs for data that you want to retrieve from network first and use
+ * cache as fallback. Must use https if not local.
+ * For more details on options, see: https://github.com/GoogleChrome/sw-precache#runtimecaching-arrayobject
+ */
+exports.SW_RUNTIME_CACHING = [
+  {
+    handler: 'cacheFirst',
+    urlPattern: /[.]mp3$/,
+  },
+  {
+    urlPattern: /^http:\/\/10.0.0.87:8089\/user/,
+    handler: 'networkFirst'
+  },
+  {
+    urlPattern: /^https:\/\/levelrewards.com:8443\/user/,
+    handler: 'networkFirst'
+  },
+]

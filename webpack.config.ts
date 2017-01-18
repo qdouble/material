@@ -10,7 +10,8 @@ import {
   USE_DEV_SERVER_PROXY, DEV_SERVER_PROXY_CONFIG, DEV_SERVER_WATCH_OPTIONS,
   DEV_SOURCE_MAPS, PROD_SOURCE_MAPS, STORE_DEV_TOOLS,
   MY_COPY_FOLDERS, MY_VENDOR_DLLS, MY_CLIENT_PLUGINS, MY_CLIENT_PRODUCTION_PLUGINS,
-  MY_CLIENT_RULES, MY_SERVER_RULES, MY_SERVER_INCLUDE_CLIENT_PACKAGES
+  MY_CLIENT_RULES, MY_SERVER_RULES, MY_SERVER_INCLUDE_CLIENT_PACKAGES,
+  SW_RUNTIME_CACHING
 } from './constants';
 
 const {
@@ -19,21 +20,22 @@ const {
   DllPlugin,
   DllReferencePlugin,
   ProgressPlugin,
-  NoErrorsPlugin
+  NoEmitOnErrorsPlugin
 } = require('webpack');
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const webpackMerge = require('webpack-merge');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const WebpackMd5Hash = require('webpack-md5-hash');
 
+
 const { hasProcessFlag, includeClientPackages, root, testDll } = require('./helpers.js');
-const fs = require('fs');
 const EVENT = process.env.npm_lifecycle_event || '';
 const AOT = EVENT.includes('aot');
 const DEV_SERVER = EVENT.includes('webdev');
@@ -104,7 +106,7 @@ const COPY_FOLDERS = [
   { from: 'src/assets', to: 'assets' },
   { from: 'node_modules/hammerjs/hammer.min.js' },
   { from: 'node_modules/hammerjs/hammer.min.js.map' },
-  { from: 'src/app/main.css'},
+  { from: 'src/app/main.css' },
   { from: 'src/app/styles.css', to: 'styles3.css' },
   ...MY_COPY_FOLDERS
 ];
@@ -172,6 +174,7 @@ const commonConfig = function webpackConfig(): WebpackConfig {
     );
   }
 
+
   if (DLL) {
     config.plugins.push(
       new DllPlugin({
@@ -188,7 +191,7 @@ const commonConfig = function webpackConfig(): WebpackConfig {
 
   if (PROD) {
     config.plugins.push(
-      new NoErrorsPlugin(),
+      new NoEmitOnErrorsPlugin(),
       new UglifyJsPlugin({
         beautify: false,
         comments: false
@@ -200,12 +203,22 @@ const commonConfig = function webpackConfig(): WebpackConfig {
         threshold: 10240,
         minRatio: 0.8
       }),
+      new SWPrecacheWebpackPlugin(
+        {
+          cacheId: 'my-project-cache',
+          filename: 'service-worker.js',
+          maximumFileSizeToCacheInBytes: 4194304,
+          navigateFallback: 'index.html',
+          runtimeCaching: SW_RUNTIME_CACHING,
+          importScripts: ['sw-push.js']
+        }
+      ),
       ...MY_CLIENT_PRODUCTION_PLUGINS,
     );
     if (!E2E && !UNIVERSAL && !WATCH && !PUBLISH) {
-      config.plugins.push(
-        new BundleAnalyzerPlugin({analyzerPort: 5000})
-      );
+      // config.plugins.push(
+      //   new BundleAnalyzerPlugin({ analyzerPort: 5000 })
+      // );
     }
   }
 

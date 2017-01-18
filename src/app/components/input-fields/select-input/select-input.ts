@@ -19,6 +19,7 @@ export class SelectInput implements OnInit {
   @Input() help: string;
   @Input() label: string;
   @Input() submit: string;
+  @Input() width: string;
   dynamicControl: AbstractControl;
 
   ngOnInit() {

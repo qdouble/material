@@ -26,9 +26,9 @@ import { getNotifyCollection } from './reducers/notify';
 import { validateUserName } from './validators';
 
 import { views } from './app-nav-views';
-import { log, MOBILE, SERVICE_WORKER_PUSH_SUPPORT } from './services/constants';
+import { log, MOBILE, SERVICE_WORKER_SUPPORT, PUSH_MANAGER_SUPPORT } from './services/constants';
 import { PushNotification } from './models/push-notification';
-import { PushNotificationService } from './services/push-notification';
+import { SWAndPushService } from './services/sw-and-push';
 
 import { CreditedOfferDialog } from './features/offers/credited-offer.dialog';
 import { Offer } from './models/offer';
@@ -91,7 +91,7 @@ export class AppComponent implements OnDestroy, OnInit {
     public dialog: MdDialog,
     private route: ActivatedRoute,
     private router: Router,
-    private pushNotificationService: PushNotificationService,
+    private swAndPushService: SWAndPushService,
     private prizeActions: PrizeActions,
     public snackBar: MdSnackBar,
     private store: Store<AppState>,
@@ -191,8 +191,8 @@ export class AppComponent implements OnDestroy, OnInit {
     this.store.dispatch(this.uiActions.setMobile(MOBILE));
     this.userLoaded$.subscribe(loaded => {
       this.loaded = loaded;
-      if (loaded && this.pushNotificationService.isSupported()) {
-        this.pushNotificationService.requestPermission();
+      if (loaded && SERVICE_WORKER_SUPPORT) {
+        this.swAndPushService.requestPermission();
       }
     });
     this.userLoggedIn$.subscribe(loggedIn => {
@@ -201,14 +201,14 @@ export class AppComponent implements OnDestroy, OnInit {
         this.connect();
       }
     });
-    if (SERVICE_WORKER_PUSH_SUPPORT) {
-      this.pushNotificationService.registerServiceWorker();
+    if (SERVICE_WORKER_SUPPORT && ENV !== 'development') {
+      this.swAndPushService.registerServiceWorker();
     }
     let pushSub$ = this.store.select(s => s.ui.pushNotification);
     pushSub$
       .filter(push => push !== null)
       .subscribe((push: PushNotification) => {
-        this.pushNotificationService.create(push)
+        this.swAndPushService.create(push)
           .subscribe(
           () => log('success'),
           (err) => log(err)
@@ -276,32 +276,6 @@ export class AppComponent implements OnDestroy, OnInit {
       .subscribe(result => {
         this.dialogRef = null;
       });
-  }
-
-  setToggle(view: { link?: string, show?: boolean, toggle?: boolean }) {
-    // if (this.previousView) this.previousView.show = false;
-    // if (view !== this.previousView) {
-    //   if (!this.previousView && this.router.url.search(view.link) > - 1) {
-    //     view.show = false;
-    //     view.toggle = true;
-    //   } else {
-    //     view.show = true;
-    //     view.toggle = false;
-    //   }
-    // } else {
-    //   if (view.show === false && !view.toggle) {
-    //     view.toggle = true;
-    //   } else {
-    //     if (!view.show) {
-    //       view.show = true;
-    //     } else {
-    //       view.show = false;
-    //     }
-    //     if (view.toggle) view.toggle = false;
-    //   }
-    // }
-    // this.previousView = view;
-    // this.initView = false;
   }
 
   toggleMobile() {

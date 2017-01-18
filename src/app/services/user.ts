@@ -76,6 +76,7 @@ export class UserService extends RequestBase {
 
   recordClick(offerId: string): Observable<string> {
     return this.http.post(`${API_USER_URL}/recordClick`, { 'id': offerId }, this.options)
+      .retry()
       .map(res => res.json());
   }
 

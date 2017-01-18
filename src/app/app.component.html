@@ -3,22 +3,11 @@
     <div class="os-sidenav-top"></div>
     <md-nav-list>
       <template ngFor let-view [ngForOf]="views" let-even="even" let-odd="odd" let-rowIndex="index">
-        <a *ngIf="!view.subViews && view.loggedIn === loggedIn" md-list-item style="color: #272b27" [routerLink]="view.link" preserveQueryParams routerLinkActive="active-link" (click)="mobile ? sidenav.close() : null">
-          <md-icon md-list-icon>{{view.icon}}</md-icon>
-          <span md-line>{{view.name}}</span>
-          <span md-line class="secondary">{{view.description}}</span>
-        </a> 
-        <a *ngIf="view.subViews" md-list-item (click)="setToggle(view)">
+        <a *ngIf="view.loggedIn === !!loggedIn" md-list-item style="color: #272b27" [routerLink]="view.link" preserveQueryParams routerLinkActive="active-link" (click)="mobile ? sidenav.close() : null">
           <md-icon md-list-icon>{{view.icon}}</md-icon>
           <span md-line>{{view.name}}</span>
           <span md-line class="secondary">{{view.description}}</span>
         </a>
-        <ng-container *ngIf="view.subViews && router.url.startsWith('/' + view.link) && initView || view.show">
-          <a *ngFor="let subView of view.subViews" md-list-item [routerLink]="subView.link" class="subview" (click)="mobile ? sidenav.close() : null ">
-            <md-icon md-list-icon>navigate_next</md-icon>
-            <span md-line>{{subView.name}}</span>
-          </a>
-        </ng-container>
       </template>
       <a *ngIf="loggedIn" md-list-item style="color: #272b27"  preserveQueryParams routerLinkActive="active-link" (click)="logout(); mobile ? sidenav.close() : null">
         <md-icon md-list-icon>close</md-icon>

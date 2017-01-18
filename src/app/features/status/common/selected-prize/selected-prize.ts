@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 
 import { Prize } from '../../../../models/prize';
 
 @Component({
   selector: 'os-selected-prize',
   templateUrl: './selected-prize.html',
-  styleUrls: ['./selected-prize.css']
+  styleUrls: ['./selected-prize.css'],
+  encapsulation: ViewEncapsulation.Emulated
 })
 
 export class SelectedPrizeComponent {
