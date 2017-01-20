@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'os-terms-and-conditons',
+  selector: 'os-terms-and-conditions',
   templateUrl: './terms-and-conditions.html',
-  styles: [`p { margin-left: 15px; } 
-  .container { max-width: 1000px; margin: 0 auto;}`]
+  styleUrls: ['./terms-and-conditions.css']
 })
 
 export class TermsAndConditions {
