@@ -2,8 +2,13 @@
   <md-card id="place-order" class="os-form-container">
     <md-card-title class="primary">Place Order</md-card-title>
     <ng-container *ngIf="user?.orderPending">
-      <md-card class="order-status accent-background white">You have an order that is currently pending. You can not place another order until order is resolved. All pending completions
-        will be processed at the same time.</md-card>
+      <md-card class="order-status accent-background white">
+        <p>You have an order that is currently pending. You can not place another order until order is resolved. All pending completions
+        will be processed at the same time.</p>
+        <br>
+        <p>REMINDER: Make sure to tell your referrals to fully test out and keep any offer that they complete for the majority of the trial period.</p>
+        <p>Low quality referrals will just lead to fewer good offers being available and it being harder for you to earn in the future, so make sure you do your part in providing high quality leads.</p>
+      </md-card>
     </ng-container>
     <ng-container *ngIf="(!user?.orderPending && !user?.hasQualifiedReferrals)">
       <md-card class="os-message-card accent-background white">
@@ -22,7 +27,7 @@
         <ng-container *ngIf="user?.currentLevel >= 1 && !user?.hasReferralsBeyondLevel">
           You have no referrals that you can currently place an order on.
         </ng-container>
-        
+
       </md-card>
     </ng-container>
     <ng-container *ngIf="!user?.orderPending && user?.hasQualifiedReferrals && !user?.hold">
@@ -44,7 +49,7 @@
   </md-card>
 
   </md-card>
-  
+
   <md-card *ngIf="(orders$| async)?.length > 0" class="os-form-container">
     <md-card-title class="primary">Orders</md-card-title>
     <os-orders-table [loaded]="ordersLoaded$ | async" [orders]="orders$ | async">
