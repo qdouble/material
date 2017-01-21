@@ -11,6 +11,7 @@ export interface Offer {
   costToUser?: number;
   noCardRequired?: boolean;
   offerOrder?: number;
+  hideToUnQualifiedUsers?: boolean;
   description?: string;
   requirements?: string;
   reminder?: string;
