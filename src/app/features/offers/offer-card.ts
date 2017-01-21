@@ -24,10 +24,13 @@ export class OfferCard implements OnInit {
   @Input() offerId: string;
   @Input() offer: Offer;
   @Input() creditTotal: number;
+  @Input() qualificationLevel: number;
   @Output() checkOffer = new EventEmitter();
   ngOnInit() {
     const dateNow = new Date();
-    const createdDate = new Date(this.offer.createdAt);
-    this.isNew = dateNow.getTime() - createdDate.getTime() < 604800000;
+    if (this.offer) {
+      const createdDate = new Date(this.offer.createdAt);
+      this.isNew = dateNow.getTime() - createdDate.getTime() < 604800000;
+    }
   }
 }
