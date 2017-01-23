@@ -9,8 +9,8 @@ self.addEventListener('push', function(event) {
   const title = 'Level Rewards';
   const options = {
     body: event.data.text(),
-    icon: 'assets/icon/lr-icon-v3.png',
-    badge: 'assets/icon/lr-icon-v3.png'
+    icon: 'assets/png/lr-icon-v3.png',
+    badge: 'assets/png/lr-icon-v3.png'
   };
 
   const notificationPromise = self.registration.showNotification(title, options);
