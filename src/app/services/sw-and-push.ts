@@ -40,7 +40,7 @@ export class SWAndPushService {
       }
 
       try {
-        if (SERVICE_WORKER_SUPPORT && PUSH_MANAGER_SUPPORT) {
+        if (SERVICE_WORKER_SUPPORT && PUSH_MANAGER_SUPPORT && this.swRegistration) {
           log('SENDING PUSH THROUGH SERVICE WORKER');
           return this.swRegistration.showNotification(push.title, push.options);
         } else {
