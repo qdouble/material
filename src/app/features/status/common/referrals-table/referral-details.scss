@@ -1,0 +1,26 @@
+
+
+button { 
+  margin-top: 5px; 
+  width: 100%; 
+}
+
+.name-col {
+  width: 70%;
+}
+
+.value-col {
+  width: 30%;
+}
+
+.referral-details { 
+  border-bottom: 1px solid #ffe1ad; 
+  border-top: 1px solid #ffe1ad;
+  color: #ffb436 
+} 
+
+.table {
+  margin: 5px 0 5px;
+  max-height: 95px;
+  overflow: scroll;
+}

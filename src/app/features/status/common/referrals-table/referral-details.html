@@ -1,0 +1,43 @@
+<ng-container>
+  <div class="referral-details">Referral Summary</div>
+  <div>Username: {{referral.username}}</div>
+  <div>Email: {{referral.email}}</div>
+  <ng-container *ngIf="referral.currentSponsor">
+    <div *ngIf="startedFrom">Start at Level: {{startedFrom}}</div>
+    <div>Current Level: {{referral.currentLevel}}</div>
+    <div>Previous Level: {{referral.payBeyondLevel}}</div>
+    <div>
+      Credits: {{creditTotal | number: '1.2-2'}}
+      <span *ngIf="referral.credits.length > 0" style="text-decoration: underline; cursor: pointer" (click)="creditsShown ? creditsShown = false : creditsShown = true">
+          {{creditsShown ? 'Hide' : 'Show'}}
+        </span>
+    </div>
+    <ng-container *ngIf="creditsShown">
+      <div class="table">
+        <ng-container *ngFor="let credit of referral.credits">
+          <div class="row">
+            <div class="cell name-col">
+              {{ credit.offerName | slice:0:18 }}
+            </div>
+            <div class="cell value-col" [ngClass]="{'warn': !credit.active}">
+              {{ credit.active ? (credit.creditValue | number:'1.2-2') : 'Revoked'}}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <div [ngClass]="{'primary': (referral.currentLevel - referral.payBeyondLevel) > 0 }">
+      <b>Unpaid Levels: {{referral.currentLevel - referral.payBeyondLevel}}</b>
+    </div>
+    <div>Eligible for new order: <b>{{referral.leveledUp ? 'true' : 'false'}}</b></div>
+    <div class="warn bold" *ngIf="referral.hold">
+      On Hold: {{referral.hold ? 'true' : 'false' }}<br> {{referral.holdReason}}
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!referral.currentSponsor">
+    <div>Level At Transfer: {{referral.currentLevel}}</div>
+    <b>Unpaid Levels: 0</b>
+    <div><b>User was transferred by user request.</b></div>
+  </ng-container>
+  <button type="button" md-button color="accent" (click)="dialogRef.close()">CLOSE</button>
+</ng-container>
