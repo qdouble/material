@@ -25,7 +25,6 @@
       <os-form-input class="os-form-input" type="text" controlName="firstName" placeholder="First Name" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" type="text" controlName="lastName" placeholder="Last Name" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" type="text" controlName="address" placeholder="Street Address (No PO Box Allowed)" [form]="f"></os-form-input>
-      <div class="household-text">Only One Account Per Household</div>
       <os-form-input class="os-form-input" type="text" controlName="city" placeholder="City" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" type="text" controlName="State" placeholder="State" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" type="text" controlName="zipCode" placeholder="Zip Code" [form]="f"></os-form-input>
@@ -48,6 +47,7 @@
       </os-form-input>
       <div class="os-agree-checkbox">
         <md-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the <a routerLink="../terms-and-conditions">Terms and Conditions</a></md-checkbox>
+        <md-checkbox color="primary" formControlName="agree2" type="checkbox">I am aware that only one account per household is allowed.</md-checkbox>
       </div>
       <button class="white" md-raised-button color="primary" type="submit" [disabled]="!f.valid">Register</button>
       <p id="referred-by" *ngIf="f.get('referredBy').value">

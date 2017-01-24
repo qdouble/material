@@ -1,5 +1,5 @@
 /* tslint:disable: variable-name */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { Store } from '@ngrx/store';
@@ -23,7 +23,8 @@ import { IPMatchFoundDialog } from './ip-match-found.dialog';
   selector: 'os-register',
   providers: [UsernameValidator],
   templateUrl: './register.html',
-  styleUrls: ['./register.css']
+  styleUrls: ['./register.css'],
+  encapsulation: ViewEncapsulation.Emulated
 })
 
 export class Register implements OnDestroy, OnInit {
@@ -105,6 +106,7 @@ export class Register implements OnDestroy, OnInit {
       paypal: new FormControl(PUBLISH ? '' : 'new@user.com',
         Validators.pattern(RegexValues.email)),
       agree: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
+      agree2: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
       hidden: new FormControl(true),
       selectedPrize: new FormControl(null),
     }, Validators.compose(

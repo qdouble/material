@@ -17,12 +17,8 @@ select-input {
   margin: 15px auto 15px;
 }
 
-.household-text {
-  font-size: 9px;
-  margin-top: -17px;
-  position: absolute;
-  right: 15px;
-  color: #618e2f;
+:host /deep/ .md-checkbox-layout .md-checkbox-label {
+  line-height: 14px;
 }
 
 .os-agree-checkbox {
