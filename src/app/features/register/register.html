@@ -47,7 +47,7 @@
       </os-form-input>
       <div class="os-agree-checkbox">
         <md-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the <a routerLink="../terms-and-conditions">Terms and Conditions</a></md-checkbox>
-        <md-checkbox color="primary" formControlName="agree2" type="checkbox">I am aware that only one account per household is allowed.</md-checkbox>
+        <md-checkbox color="primary" formControlName="agree2" type="checkbox">I am aware that only one account per household is allowed</md-checkbox>
       </div>
       <button class="white" md-raised-button color="primary" type="submit" [disabled]="!f.valid">Register</button>
       <p id="referred-by" *ngIf="f.get('referredBy').value">

@@ -17,8 +17,10 @@ select-input {
   margin: 15px auto 15px;
 }
 
-:host /deep/ .md-checkbox-layout .md-checkbox-label {
-  line-height: 14px;
+@media screen and (max-width: 465px) {
+  :host /deep/ .md-checkbox-layout .md-checkbox-label {
+    line-height: 14px;
+  }
 }
 
 .os-agree-checkbox {
