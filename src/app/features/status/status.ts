@@ -8,6 +8,7 @@ import { combineSort } from '../../helper/combine-sort';
 import { RegexValues } from '../../validators';
 
 import { AppState } from '../../reducers';
+import { Credit } from '../../models/credit';
 import { Prize } from '../../models/prize';
 import { Referral } from '../../models/referral';
 import { User } from '../../models/user';
@@ -17,7 +18,7 @@ import { NotifyActions } from '../../actions/notify';
 import { PrizeActions } from '../../actions/prize';
 import { UserActions } from '../../actions/user';
 import { getPrize, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
-import { getCreditTotal } from '../../reducers/user';
+import { getCreditCollection, getCreditTotal } from '../../reducers/user';
 import {
   getReferralCollection, getReferral, getUser, getUserLoaded, getUserLoading,
   getUserSettingPrize
@@ -31,6 +32,8 @@ import {
 
 export class Status implements OnDestroy {
   changePrize = false;
+  credits$: Observable<Credit[]>;
+  creditsShown: boolean;
   creditTotal$: Observable<number>;
   destroyed$: Subject<any> = new Subject<any>();
   loaded$: Observable<boolean>;
@@ -100,6 +103,7 @@ export class Status implements OnDestroy {
             }
           });
       });
+    this.credits$ = store.let(getCreditCollection());
     this.creditTotal$ = store.let(getCreditTotal());
 
     this.updatedAt$ = store.select(s => s.user.updatedAt);

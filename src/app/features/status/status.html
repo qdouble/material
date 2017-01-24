@@ -25,7 +25,26 @@
       <md-card-content *ngIf="loaded$ | async">
         <p>Welcome {{user?.firstName}}!</p>
         <p><b>You are currently on level:</b> {{user?.currentLevel}}</p>
-        <p><b>You have:</b> {{(creditTotal$ | async) | number:'1.2-2'}} credits</p>
+        <p>
+          <b>You have:</b> {{(creditTotal$ | async) | number:'1.2-2'}} credits
+          <span *ngIf="(credits$ | async).length > 0" style="text-decoration: underline; cursor: pointer" (click)="creditsShown ? creditsShown = false : creditsShown = true">
+          {{creditsShown ? 'Hide' : 'Show'}}
+          </span>
+        </p>
+        <ng-container *ngIf="creditsShown">
+          <div class="table">
+            <ng-container *ngFor="let credit of (credits$ | async)">
+              <div class="row">
+                <div class="cell name-col">
+                  {{ credit.offerName | slice:0:18 }}
+                </div>
+                <div class="cell value-col" [ngClass]="{'warn': !credit.active}">
+                  {{ credit.active ? (credit.creditValue | number:'1.2-2') : 'Revoked'}}
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
         <ng-container *ngIf="user?.currentSponsor">
           <p><b>Your Sponsor is:</b></p>
           <p>{{user?.currentSponsor}} &#60;{{user?.currentSponsorEmail}}&#62;</p>
@@ -35,7 +54,7 @@
           <p>If you do have sponsor and you know their username, enter it below to connect your accounts</p>
           <form [formGroup]="sponsorForm" (ngSubmit)="submitSponsor()">
             <os-form-input class="os-form-input" placeholder="Sponsor Username" controlName="sponsorUserName" [form]="sponsorForm"></os-form-input>
-            <button md-raised-button color="primary" class="white" [disabled]="sponsorForm.invalid">Connect My Account to Sponsor</button>
+            <button md-raised-button color="primary" class="white" style="max-width: 105%" [disabled]="sponsorForm.invalid">Connect My Account to Sponsor</button>
           </form>
         </ng-container>
       </md-card-content>
@@ -44,16 +63,10 @@
   <div class="os-status-page-section">
     <md-card id="selected-prize-section">
       <md-card-title class="primary">Your Selected Prize</md-card-title>
-      <os-selected-prize
-        [changePrize]="changePrize"
-        [form]="selectPrizeForm"
-        [prize]="prize$ | async"
-        [prizes]="prizes$ | async"
-        [selectedPrizeLabels]="selectedPrizeLabels$ | async"
-        [selectedPrizeValues]="selectedPrizeValues$ | async"
-        (cancelPrizeChange)="cancelPrizeChange()"
+      <os-selected-prize [changePrize]="changePrize" [form]="selectPrizeForm" [prize]="prize$ | async" [prizes]="prizes$ | async"
+        [selectedPrizeLabels]="selectedPrizeLabels$ | async" [selectedPrizeValues]="selectedPrizeValues$ | async" (cancelPrizeChange)="cancelPrizeChange()"
         (changeSelectedPrize)="changeSelectedPrize()">
-      </os-selected-prize>
+        </os-selected-prize>
     </md-card>
   </div>
   <div class="os-status-page-section">
@@ -71,12 +84,13 @@
   <div class="os-status-page-section">
     <md-card id="referrals-table-section">
       <md-card-title class="primary">Your Referrals</md-card-title>
-      <os-referrals-table *ngIf="(referrals$ | async)?.length > 0" [referrals]="referrals$ | async" (getReferral)="getReferral($event)" (sortBy)="sortBy($event)" >
-      </os-referrals-table>
-      <md-card-content *ngIf="(referrals$ | async)?.length <= 0">
-        You do not have any referrals. Be sure to share your referral link. Tell any missing referrals to enter in your username
-        on the 'Your Current Status' section of their Status page if they signed up and are not referred.
-      </md-card-content>
+      <os-referrals-table *ngIf="(referrals$ | async)?.length > 0" [referrals]="referrals$ | async" (getReferral)="getReferral($event)"
+        (sortBy)="sortBy($event)">
+        </os-referrals-table>
+        <md-card-content *ngIf="(referrals$ | async)?.length <= 0">
+          You do not have any referrals. Be sure to share your referral link. Tell any missing referrals to enter in your username
+          on the 'Your Current Status' section of their Status page if they signed up and are not referred.
+        </md-card-content>
     </md-card>
   </div>
   <os-footer></os-footer>
