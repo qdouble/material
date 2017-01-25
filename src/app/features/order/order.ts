@@ -108,6 +108,8 @@ export class OrderComponent implements OnDestroy {
       .filter(orders => Array.isArray(orders) && orders.length > 0)
       .takeUntil(this.destroyed$)
       .subscribe(orders => {
+        this.totalEarnings = 0;
+        this.thisYearEarnings = 0;
         orders.forEach(order => {
           if (typeof order.amountPaid === 'number') {
             this.totalEarnings += order.amountPaid;
