@@ -26,6 +26,7 @@ import { getUser, getUserLoaded, getUserSettingPrize } from '../../reducers/user
 
 export class OrderComponent implements OnDestroy {
   changePrize = false;
+  currentYear = new Date().getFullYear();
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
   loaded$: Observable<boolean>;
@@ -41,6 +42,8 @@ export class OrderComponent implements OnDestroy {
   selectedPrizeLabels$: Observable<string[]>;
   selectedPrizeValues$: Observable<string[]>;
   settingPrize$: Observable<boolean>;
+  thisYearEarnings = 0;
+  totalEarnings = 0;
   user: User;
   user$: Observable<User>;
   constructor(
@@ -98,9 +101,22 @@ export class OrderComponent implements OnDestroy {
             }
           });
       });
-      this.store.dispatch(this.orderAction.getOrders());
-      this.orders$ = this.store.let(getOrderCollection());
-      this.ordersLoaded$ = this.store.let(getOrderLoaded());
+    this.store.dispatch(this.orderAction.getOrders());
+    this.orders$ = this.store.let(getOrderCollection());
+    this.ordersLoaded$ = this.store.let(getOrderLoaded());
+    this.orders$
+      .filter(orders => Array.isArray(orders) && orders.length > 0)
+      .takeUntil(this.destroyed$)
+      .subscribe(orders => {
+        orders.forEach(order => {
+          if (typeof order.amountPaid === 'number') {
+            this.totalEarnings += order.amountPaid;
+            if (String(this.currentYear) === order.updatedAt.substring(0, 4)) {
+              this.thisYearEarnings += order.amountPaid;
+            }
+          }
+        });
+      });
   }
 
   cancelPrizeChange() {

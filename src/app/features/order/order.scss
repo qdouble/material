@@ -4,6 +4,21 @@ a {
   color: #456321;
 }
 
+.earnings {
+  margin-bottom: 10px;
+  .cell {
+    width: 50%;
+  }
+  @media screen and (max-width: 580px) {
+    .table {
+      display: table;
+    }
+  }
+  .row .cell {
+    font-size: 15px;
+  }
+}
+
 .order-status, #congrats-card, #please-be-sure-card {
   text-align: center;
   padding: 10px;

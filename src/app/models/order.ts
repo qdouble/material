@@ -10,7 +10,9 @@ export interface Order {
   paypal?: string;
   selectedPrizeId?: string;
   selectedPrizeName?: string;
-  amountPaid?: string;
-  totalCost?: string;
+  amountPaid?: number;
+  totalCost?: number;
   processStatus?: string;
+  updatedAt: string;
+  createdAt: string;
 }

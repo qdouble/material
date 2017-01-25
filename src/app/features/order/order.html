@@ -49,7 +49,21 @@
   </md-card>
 
   </md-card>
-
+  <md-card *ngIf="totalEarnings > 0" class="os-form-container earnings">
+    <md-card-title class="primary">Earnings</md-card-title>
+    <md-card-content>
+      <div class="table">
+        <div class="row header">
+          <div class="cell">Total Earnings</div>
+          <div class="cell">This Year</div>
+        </div>
+        <div class="row">
+          <div class="cell">${{ totalEarnings | number: '1.2-2' }}</div>
+          <div class="cell">${{ thisYearEarnings | number: '1.2-2' }}</div>
+        </div>
+      </div>
+    </md-card-content>
+  </md-card>
   <md-card *ngIf="(orders$| async)?.length > 0" class="os-form-container">
     <md-card-title class="primary">Orders</md-card-title>
     <os-orders-table [loaded]="ordersLoaded$ | async" [orders]="orders$ | async">
