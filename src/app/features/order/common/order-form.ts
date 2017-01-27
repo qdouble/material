@@ -12,6 +12,7 @@ import { User } from '../../../models/user';
 export class OrderFormComponent {
   @Input() form: FormGroup;
   @Input() loaded: boolean;
+  @Input() needPaypalEmail: boolean;
   @Input() placing: boolean;
   @Input() user: User;
   @Output() placeOrder = new EventEmitter();

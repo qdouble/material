@@ -1,4 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
+/* tslint:disable triple-equals */
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
@@ -24,7 +25,7 @@ import { getUser, getUserLoaded, getUserSettingPrize } from '../../reducers/user
   styleUrls: ['./order.css']
 })
 
-export class OrderComponent implements OnDestroy {
+export class OrderComponent implements OnDestroy, OnInit {
   changePrize = false;
   currentYear = new Date().getFullYear();
   destroyed$: Subject<any> = new Subject<any>();
@@ -32,12 +33,15 @@ export class OrderComponent implements OnDestroy {
   loaded$: Observable<boolean>;
   orders$: Observable<Order[]>;
   ordersLoaded$: Observable<boolean>;
+  paypalIds = ['1468679688287', '1468679688287'];
+  needPaypalEmail: boolean;
   placing$: Observable<boolean>;
   prize$: Observable<Prize>;
   prizeLabels: string[];
   prizeValues: string[];
   prizes$: Observable<Prize[]>;
   prizes: Prize[];
+  prizeIsPayPal: boolean;
   selectPrizeForm: FormGroup;
   selectedPrizeLabels$: Observable<string[]>;
   selectedPrizeValues$: Observable<string[]>;
@@ -61,7 +65,7 @@ export class OrderComponent implements OnDestroy {
       city: ['', [Validators.required, Validators.pattern(RegexValues.address)]],
       State: ['', [Validators.required, Validators.pattern(RegexValues.address)]],
       zipCode: ['', [Validators.required, Validators.pattern(RegexValues.zipCode)]],
-      paypal: ['', [Validators.pattern(RegexValues.email)]],
+      paypal: [''],
       selectedPrize: ['']
     });
     this.loaded$ = store.let(getUserLoaded());
@@ -118,6 +122,28 @@ export class OrderComponent implements OnDestroy {
             }
           }
         });
+      });
+  }
+
+  ngOnInit() {
+    if (this.paypalIds.includes(this.f.get('selectedPrize').value) &&
+      (this.f.get('paypal').value == undefined || this.f.get('paypal').value == ''
+        || this.f.get('paypal').value.paypal === ' ')) {
+      this.needPaypalEmail = true;
+    } else {
+      this.needPaypalEmail = false;
+    }
+    this.f.valueChanges
+      .takeUntil(this.destroyed$)
+      .subscribe((fValue) => {
+        console.log(this.paypalIds.includes(this.f.get('selectedPrize').value));
+        console.log((fValue.paypal == undefined || fValue.paypal == '' || fValue.paypal === ' '))
+        if (this.paypalIds.includes(this.f.get('selectedPrize').value) &&
+          (fValue.paypal == undefined || fValue.paypal == '' || fValue.paypal === ' ')) {
+          this.needPaypalEmail = true;
+        } else {
+          this.needPaypalEmail = false;
+        }
       });
   }
 
