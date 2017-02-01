@@ -5,6 +5,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
+import { CountryActions } from '../../actions/country';
+import { Country } from '../../models/country';
+import { getCountryCollection, getCountryLoaded } from '../../reducers/country';
 import { UserActions } from '../../actions/user';
 import { User } from '../../models/user';
 import { AppState } from '../../reducers';
@@ -18,6 +21,10 @@ import { CustomValidators, RegexValues } from '../../validators';
 })
 
 export class Profile implements OnDestroy, OnInit {
+  countries$: Observable<Country[]>;
+  countryIds$: Observable<(string | undefined)[]>;
+  countryNames$: Observable<(string | undefined)[]>;
+  countryLoaded$: Observable<boolean>;
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
   initialFormValue: User;
@@ -29,6 +36,7 @@ export class Profile implements OnDestroy, OnInit {
   viewPending: false;
 
   constructor(
+    private countryActions: CountryActions,
     private fb: FormBuilder,
     private store: Store<AppState>,
     private userActions: UserActions
@@ -45,6 +53,7 @@ export class Profile implements OnDestroy, OnInit {
       city: ['', [Validators.required, Validators.pattern(RegexValues.address)]],
       State: ['', [Validators.required, Validators.pattern(RegexValues.address)]],
       zipCode: ['', [Validators.required, Validators.pattern(RegexValues.zipCode)]],
+      country: ['', [Validators.required, Validators.pattern(RegexValues.address)]],
       phone: ['', [Validators.required, Validators.pattern(RegexValues.phone)]],
       paypal: ['', [Validators.pattern(RegexValues.email)]],
       birthday: ['', [Validators.required]],
@@ -60,6 +69,12 @@ export class Profile implements OnDestroy, OnInit {
           CustomValidators.compare('password', 'confirmPassword', 'comparePassword')
         ])
       });
+    this.countryLoaded$ = store.let(getCountryLoaded());
+    this.countryLoaded$
+      .takeUntil(this.destroyed$)
+      .subscribe(loaded => {
+        if (!loaded) this.store.dispatch(this.countryActions.getCountries());
+      });
     this.user$ = store.let(getUser());
     this.user$.take(1).subscribe(u => {
       if (u && u.profilePending) {
@@ -70,6 +85,15 @@ export class Profile implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    this.countries$ = this.store.let(getCountryCollection());
+    this.countryIds$ = this.countries$.map(countries => countries.map(country => country.id));
+    this.countryIds$
+      .filter(ids => ids.length > 0)
+      .take(1)
+      .takeUntil(this.destroyed$)
+      .subscribe(ids => this.f.get('country').setValue(ids[0]));
+    this.countryNames$ = this.countries$
+      .map(countries => countries.map(country => country.displayName));
     this.user$
       .filter(user => user !== undefined)
       .takeUntil(this.destroyed$)

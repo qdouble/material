@@ -47,6 +47,9 @@
       <os-form-input class="os-form-input" placeholder="City" controlName="city" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" placeholder="State" controlName="State" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" placeholder="Zip Code" controlName="zipCode" [form]="f"></os-form-input>
+      <select-input [label]="'Country'" [optionValues]="countryIds$ | async" [optionLabels]="countryNames$ | async" [controlName]="'country'"
+        [form]="f">
+      </select-input>
       <os-form-input class="os-form-input" placeholder="Phone Number" controlName="phone" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" placeholder="PayPal Email Address" controlName="paypal" [form]="f"></os-form-input>
       <md-checkbox #changePassword color="primary">Change Password</md-checkbox>
