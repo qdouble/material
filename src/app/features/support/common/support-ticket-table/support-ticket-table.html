@@ -21,8 +21,8 @@
           <span class="long-subject" md-tooltip="{{ticket.subject}}">{{ticket.subject | slice:0:18 }}</span>
         </div>
         <div class="cell nowrap last-cell center">
-          <button class="view-tickets-btn" md-button color="primary" type="button" [routerLink]="['view-ticket', { id: ticket.id } ]">VIEW({{ticket.entries}})</button>
-          <button class="close-ticket-btn" md-button [color]="ticket.closed ? 'primary' : 'accent'" type="button" (click)="ticket?.closed ? closeTicket.emit({id: ticket.id, close: false}) : closeTicket.emit({id: ticket.id, close: true})">
+          <button class="view-tickets-btn white" md-raised-button color="primary" type="button" [routerLink]="['view-ticket', { id: ticket.id } ]">VIEW({{ticket.entries}})</button>
+          <button class="close-ticket-btn white" md-raised-button [color]="ticket.closed ? 'primary' : 'accent'" type="button" (click)="ticket?.closed ? closeTicket.emit({id: ticket.id, close: false}) : closeTicket.emit({id: ticket.id, close: true})">
             {{ticket.closed ? 'REOPEN' : 'CLOSE'}}
             </button>
         </div>
