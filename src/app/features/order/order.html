@@ -54,8 +54,16 @@
     <md-card-content>
       <div class="table">
         <div class="row header">
-          <div class="cell">Total Earnings</div>
-          <div class="cell">This Year</div>
+          <div class="cell">Paid To</div>
+          <div class="cell">Email</div>
+        </div>
+        <div class="row">
+          <div class="cell">{{user?.firstName + ' ' + user?.lastName}}</div>
+          <div class="cell">{{user?.email}}</div>
+        </div>
+        <div class="row header">
+          <div class="cell nowrap">Total Earnings</div>
+          <div class="cell nowrap">This Year</div>
         </div>
         <div class="row">
           <div class="cell">${{ totalEarnings | number: '1.2-2' }}</div>
