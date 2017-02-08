@@ -136,8 +136,6 @@ export class OrderComponent implements OnDestroy, OnInit {
     this.f.valueChanges
       .takeUntil(this.destroyed$)
       .subscribe((fValue) => {
-        console.log(this.paypalIds.includes(this.f.get('selectedPrize').value));
-        console.log((fValue.paypal == undefined || fValue.paypal == '' || fValue.paypal === ' '))
         if (this.paypalIds.includes(this.f.get('selectedPrize').value) &&
           (fValue.paypal == undefined || fValue.paypal == '' || fValue.paypal === ' ')) {
           this.needPaypalEmail = true;
