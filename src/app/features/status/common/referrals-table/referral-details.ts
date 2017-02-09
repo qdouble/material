@@ -21,6 +21,7 @@ export class ReferralDetailsDialog implements OnInit {
         if (credit.active) {
           this.creditTotal += credit.creditValue;
         }
+        this.creditTotal = Math.ceil(this.creditTotal * 100) / 100;
       });
     }
     if (this.referral.levels[0][0] !== 0) {
