@@ -460,6 +460,14 @@ export class UserActions {
     };
   }
 
+  static UPDATE_ORDER_PENDING = '[User] Update Order Pending';
+  updateOrderPending(pending: boolean): Action {
+    return {
+      type: UserActions.UPDATE_ORDER_PENDING,
+      payload: pending
+    };
+  }
+
   static UPDATE_PROFILE = '[User] Update Profile';
   updateProfile(user: User): Action {
     return {

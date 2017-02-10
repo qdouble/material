@@ -56,7 +56,7 @@ export const initialState: UserState = {
 export function userReducer(state = initialState, action: Action): UserState {
   switch (action.type) {
 
-    case UserActions.ADD_CREDIT:
+    case UserActions.ADD_CREDIT: {
       let credit: Credit = action.payload.credit;
       if (!credit || state.creditIds.includes(credit.id)) return state;
       return Object.assign({}, state, {
@@ -65,8 +65,9 @@ export function userReducer(state = initialState, action: Action): UserState {
           [credit.id]: credit
         })
       });
+    }
 
-    case UserActions.ADD_REFERRAL:
+    case UserActions.ADD_REFERRAL: {
       let referral: Referral = action.payload.referral;
       if (!referral || state.referralIds.includes(referral.id)) return state;
       return Object.assign({}, state, {
@@ -75,6 +76,7 @@ export function userReducer(state = initialState, action: Action): UserState {
           [referral.id]: referral
         })
       });
+    }
 
     case UserActions.CHANGE_SELECTED_PRIZE:
       return Object.assign({}, state, { settingPrize: true });
@@ -82,13 +84,14 @@ export function userReducer(state = initialState, action: Action): UserState {
     case UserActions.CHANGE_SELECTED_PRIZE_FAIL:
       return Object.assign({}, state, { settingPrize: false });
 
-    case UserActions.CHANGE_SELECTED_PRIZE_SUCCESS:
+    case UserActions.CHANGE_SELECTED_PRIZE_SUCCESS: {
       let id = action.payload.id;
       if (!id) return Object.assign({}, state, { settingPrize: false });
       return Object.assign({}, state, {
         loading: false, user: Object.assign({}, state.user,
           { selectedPrize: id, settingPrize: false })
       });
+    }
 
     case UserActions.CHECK_EMAIL:
       return Object.assign({}, state, {
@@ -288,6 +291,14 @@ export function userReducer(state = initialState, action: Action): UserState {
         user: Object.assign({}, state.user, {
           currentLevel: user.currentLevel,
           leveledUp: user.leveledUp
+        })
+      });
+    }
+
+    case UserActions.UPDATE_ORDER_PENDING: {
+      return Object.assign({}, state, {
+        user: Object.assign({}, state.user, {
+          orderPending: action.payload
         })
       });
     }
