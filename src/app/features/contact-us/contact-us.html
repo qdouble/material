@@ -2,11 +2,17 @@
   <md-card class="os-form-container">
     <form *ngIf="!hideForm" [formGroup]="f" (ngSubmit)="submitForm()">
       <md-card-title class="primary">Contact Us</md-card-title>
-      <md-input id="email" formControlName="email" placeholder="Your Email Address"></md-input>
+      <md-input-container>
+        <input mdInput id="email" formControlName="email" placeholder="Your Email Address">
+      </md-input-container>
       <p class="warn" *ngIf="f.get('email').touched && f.get('email').hasError('required')">Email address is required</p>
       <p class="warn" *ngIf="f.get('email').touched && f.get('email').hasError('pattern')">Email address is invalid</p>
-      <md-input id="subject" maxlength="60" placeholder="Subject" formControlName="subject"></md-input>
-      <md-textarea rows="5" maxlength="30000" placeholder="Your Question" formControlName="question"></md-textarea>
+      <md-input-container>
+        <input mdInput id="subject" maxlength="60" placeholder="Subject" formControlName="subject">
+      </md-input-container>
+      <md-input-container>
+        <textarea mdInput rows="5" maxlength="30000" placeholder="Your Question" formControlName="question"></textarea>
+      </md-input-container>
       <button color="primary" class="white" md-raised-button [disabled]="f.invalid || (sending$ | async)">SEND</button>
     </form>
     <div class="contact-sent" *ngIf="hideForm">

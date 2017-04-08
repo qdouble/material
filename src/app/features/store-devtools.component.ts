@@ -5,7 +5,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   templateUrl: './store-devtools.component.html',
   encapsulation: ViewEncapsulation.None,
   styles: [`
-  md-sidenav-layout {
+  md-sidenav-container {
     width: 70% !important;
   }
   `]

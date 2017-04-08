@@ -30,8 +30,8 @@ export interface User {
     readonly receiveReferralMessages?: boolean;
     readonly currentSponsor?: string;
     readonly currentSponsorEmail?: string;
-    readonly referrals?: Object;
-    readonly referralIds?: string[];
+    referrals?: Object;
+    referralIds?: string[];
     readonly referralCount?: Number;
     readonly currentLevel?: Number;
     readonly payBeyondLevel?: Number;

@@ -37,7 +37,9 @@
   <md-card-content>
     <div id="reply"></div>
     <form [formGroup]="f">
-      <md-textarea placeholder="Response Message" rows="4" formControlName="message"></md-textarea>
+      <md-input-container>
+        <textarea mdInput placeholder="Response Message" rows="4" formControlName="message"></textarea>
+      </md-input-container>
     </form>
   </md-card-content>
   <md-card-actions>

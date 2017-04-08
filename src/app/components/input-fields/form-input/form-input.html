@@ -1,13 +1,13 @@
 <div class="form-group md-input-container">
   <label *ngIf="label">{{label}}</label>
-  <md-input (keyup.enter)="$event.target.blur()" 
+  <md-input-container [color]="dynamicControl.valid ? 'primary' : 'warn'" >
+    <input mdInput (keyup.enter)="$event.target.blur()" 
     [type]="type" 
-    [dividerColor]="dynamicControl.valid ? 'primary' : 'warn'" 
     [autocomplete]="autocomplete"
     [placeholder]=[placeholder] 
     [formControl]="dynamicControl">
     <md-hint *ngIf="dynamicControl.touched && dynamicControl.hasError('required')" class="warn" align="start">{{ name || placeholder }} is required</md-hint>
     <md-hint *ngIf="dynamicControl.touched && dynamicControl.invalid && !dynamicControl.hasError('required')" class="warn" align="start">{{ name || placeholder }} is invalid</md-hint>
-  </md-input>
+  </md-input-container>
   <button md-raised-button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
 </div>

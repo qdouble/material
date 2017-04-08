@@ -7,7 +7,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'os-form-input',
   templateUrl: './form-input.html',
-  styles: [` md-input { width: 100% } `],
+  styles: [` md-input-container { width: 100% } `],
   encapsulation: ViewEncapsulation.Emulated
 })
 

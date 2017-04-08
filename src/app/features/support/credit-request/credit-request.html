@@ -33,9 +33,15 @@
             [form]="f"></select-input>
           <label>Date Completed:</label> <input type="date" id="myDate" formControlName="completedOn">
         </ng-container>
-        <md-textarea [rows]="6" placeholder="Confirmation Email Headers" formControlName="headers"></md-textarea><br>
-        <md-textarea [rows]="6" placeholder="Confirmation Email Body" formControlName="body"></md-textarea><br>
-        <md-textarea [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></md-textarea><br>
+        <md-input-container>
+          <textarea mdInput [rows]="6" placeholder="Confirmation Email Headers" formControlName="headers"></textarea>
+        </md-input-container><br>
+        <md-input-container>
+          <textarea mdInput [rows]="6" placeholder="Confirmation Email Body" formControlName="body"></textarea>
+        </md-input-container><br>
+        <md-input-container>
+          <textarea mdInput [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></textarea>
+        </md-input-container><br>
         <button md-raised-button class="white" color="primary" [disabled]="f.invalid || disableButton">{{ view ? 'UPDATE CREDIT REQUEST' : 'SUBMIT CREDIT REQUEST' }}</button>
       </form>
     </md-card>

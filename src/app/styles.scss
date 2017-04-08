@@ -1,24 +1,24 @@
 /* styles.css will be extracted to main dist folder and is imported in index.html */
 /* This file is for importing 3rd party styles  */
 @import 'variables';
-@import '@angular/material/core/theming/all-theme';
+@import '@angular/material/theming';
 // Plus imports for other components in your app.
 
 // Include the base styles for Angular Material core. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
-@include md-core();
+@include mat-core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
-$primary: md-palette($md-light-green);
-$accent:  md-palette($md-amber, 700, A100, A700);
+$primary: mat-palette($mat-light-green);
+$accent:  mat-palette($mat-amber, 700, A100, A700);
 
 // The warn palette is optional (defaults to red).
-$warn:    md-palette($md-red);
+$warn:    mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$theme: md-light-theme($primary, $accent, $warn);
+$theme: mat-light-theme($primary, $accent, $warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -26,17 +26,17 @@ $theme: md-light-theme($primary, $accent, $warn);
 @include angular-material-theme($theme);
 
 @media only screen and (min-width: 800px) {
-  md-sidenav.md-sidenav-opened, md-sidenav.md-sidenav-opening {
+  md-sidenav.mat-sidenav-opened, md-sidenav.mat-sidenav-opening {
     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.08),0px 1px 1px 0px rgba(0, 0, 0, 0.07),0px 1px 3px 0px rgba(0, 0, 0, 0.14) !important;
   }
 }
 
 .accent {
-   color: md-color($accent);
+   color: mat-color($accent);
 }
 
 .accent-background {
-  background: md-color($accent);
+  background: mat-color($accent);
 }
 
 .accent-medium {
@@ -48,23 +48,23 @@ $theme: md-light-theme($primary, $accent, $warn);
 }
 
 .primary {
-   color: md-color($primary);
+   color: mat-color($primary);
 }
 
 .primary-background {
-  background: md-color($primary);
+  background: mat-color($primary);
 }
 
 .warn {
-   color: md-color($warn);
+   color: mat-color($warn);
 }
 
 .warn-background {
-  background: md-color($warn) !important;
+  background: mat-color($warn) !important;
 }
 
 .warn-text {
-  color: md-color($warn);
+  color: mat-color($warn);
   font-size: 75%;
 }
 
@@ -114,13 +114,13 @@ $theme: md-light-theme($primary, $accent, $warn);
 .row.header {
   font-weight: 900;
   color: #ffffff;
-  background: md-color($primary);
+  background: mat-color($primary);
 }
 .row.green {
-  background: md-color($primary);
+  background: mat-color($primary);
 }
 .row.red {
-  background: md-color($warn);
+  background: mat-color($warn);
 }
 
 .row.gray {

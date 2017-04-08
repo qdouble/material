@@ -1,15 +1,15 @@
-<md-sidenav-layout id="offer-site" fullscreen>
+<md-sidenav-container id="offer-site" fullscreen>
   <md-sidenav [opened]="!mobile && !(onAdminLoginPage$ | async)" #sidenav [mode]="sideNavMode">
     <div class="os-sidenav-top"></div>
     <md-nav-list>
-      <template ngFor let-view [ngForOf]="views" let-even="even" let-odd="odd" let-rowIndex="index">
-        <a *ngIf="view.loggedIn === !!loggedIn" md-list-item style="color: #272b27" [routerLink]="view.link" preserveQueryParams routerLinkActive="active-link" (click)="mobile ? sidenav.close() : null">
+      <ng-template ngFor let-view [ngForOf]="views" let-even="even" let-odd="odd" let-rowIndex="index">
+        <a *ngIf="view.loggedIn === !!loggedIn" md-list-item style="color: #272b27" [routerLink]="view.link" queryParamsHandling="preserve" routerLinkActive="active-link" (click)="mobile ? sidenav.close() : null">
           <md-icon md-list-icon>{{view.icon}}</md-icon>
           <span md-line>{{view.name}}</span>
           <span md-line class="secondary">{{view.description}}</span>
         </a>
-      </template>
-      <a *ngIf="loggedIn" md-list-item style="color: #272b27"  preserveQueryParams routerLinkActive="active-link" (click)="logout(); mobile ? sidenav.close() : null">
+      </ng-template>
+      <a *ngIf="loggedIn" md-list-item style="color: #272b27"  queryParamsHandling="preserve" routerLinkActive="active-link" (click)="logout(); mobile ? sidenav.close() : null">
         <md-icon md-list-icon>close</md-icon>
         <span md-line>Logout</span>
       </a>
@@ -33,5 +33,5 @@
   <md-card id="my-page-card">
     <router-outlet (activate)="activateEvent($event)" (deactivate)="deactivateEvent($event)"></router-outlet>
   </md-card>
-</md-sidenav-layout>
+</md-sidenav-container>
 <os-store-devtools *ngIf="showMonitor"></os-store-devtools>

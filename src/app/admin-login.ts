@@ -12,8 +12,13 @@ import { UserActions } from './actions/user';
     <md-card class="os-login-form-container">
       <md-card-title>Admin Login</md-card-title>
         <form [formGroup]="f" (ngSubmit)="submitForm()">
-        <md-input placeholder="Username" formControlName="username"></md-input><br>
-        <md-input placeholder="Password" formControlName="password" type="password"></md-input><br>
+        <md-input-container>
+          <input mdInput placeholder="Username" formControlName="username">
+        </md-input-container><br>
+        <md-input-container>
+          <input mdInput placeholder="Password" formControlName="password" type="password">
+        </md-input-container>
+        <br>
         <button md-raised-button class="white" color="primary" [disabled]="!f.valid" type="submit">
           LOGIN
         </button>

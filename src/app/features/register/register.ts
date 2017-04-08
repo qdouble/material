@@ -81,7 +81,7 @@ export class Register implements OnDestroy, OnInit {
         [Validators.required, Validators.pattern(RegexValues.email)]),
       username: new FormControl(PUBLISH ? '' : `myUserName${this.RANDOM_NUM}`,
         [Validators.required, Validators.pattern(RegexValues.username)],
-        userValidator.usernameTaken),
+        <any>userValidator.usernameTaken),
       password: new FormControl(PUBLISH ? '' : 'password',
         [Validators.required, Validators.pattern(RegexValues.password)]),
       confirmPassword: new FormControl(PUBLISH ? '' : 'password',

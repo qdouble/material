@@ -13,7 +13,7 @@ import { Ticket, TicketMessage } from '../../ticket.model';
   selector: 'os-support-ticket-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './support-ticket-form.html',
-  styles: [`md-textarea{ width: 100%; }`]
+  styles: [`md-input-container{ width: 100%; }`]
 })
 
 export class SupportTicketFormComponent implements OnDestroy, OnInit {

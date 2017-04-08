@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { MdUniqueSelectionDispatcher } from '@angular/material';
+import { UniqueSelectionDispatcher } from '@angular/material';
 
 const firstBy = require('thenby');
 
@@ -23,7 +23,7 @@ import { UserActions } from '../../actions/user';
   selector: 'os-offers',
   templateUrl: './offers.html',
   styleUrls: ['./offers.css'],
-  providers: [MdUniqueSelectionDispatcher],
+  providers: [UniqueSelectionDispatcher],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -127,7 +127,7 @@ export class Offers implements AfterViewInit, OnDestroy {
         if (sortBy === 'feature') {
           this.offersSorted$ = this.offersUnsorted$
             .map(arr => arr.sort(
-              firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
+              firstBy(sortBy, { direction: - 1 })
                 .thenBy('order').thenBy('name')));
         } else {
           this.offersSorted$ = this.offersUnsorted$

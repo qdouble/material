@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
     { provide: NG_VALUE_ACCESSOR, useExisting: TextareaInput, multi: true }
   ],
   templateUrl: './textarea-input.html',
-  styles: [`md-textarea { width: 100% }`]
+  styles: [`textarea { width: 100% }`]
 })
 
 export class TextareaInput implements ControlValueAccessor, OnDestroy, OnInit {
