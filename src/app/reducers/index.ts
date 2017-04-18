@@ -6,6 +6,7 @@ import { routerReducer, RouterState } from '@ngrx/router-store';
 
 import * as fromCountry from './country';
 import * as fromCreditRequest from './credit-request';
+import * as fromNotification from './notification';
 import * as fromNotify from './notify';
 import * as fromOffer from './offer';
 import * as fromOrder from './order';
@@ -17,6 +18,7 @@ import * as fromUser from './user';
 const modules = {
   'country': fromCountry,
   'creditRequest': fromCreditRequest,
+  'notification': fromNotification,
   'notify' : fromNotify,
   'offer': fromOffer,
   'order': fromOrder,
@@ -29,6 +31,7 @@ const modules = {
 export interface AppState {
   country: fromCountry.CountryState;
   creditRequest: fromCreditRequest.CreditRequestState;
+  notification: fromNotification.NotificationState;
   notify: fromNotify.NotifyState;
   offer: fromOffer.OfferState;
   order: fromOrder.OrderState;
@@ -42,6 +45,7 @@ export interface AppState {
 export const reducers = {
   country: fromCountry.countryReducer,
   creditRequest: fromCreditRequest.creditRequestReducer,
+  notification: fromNotification.notificationReducer,
   notify: fromNotify.notifyReducer,
   offer: fromOffer.offerReducer,
   order: fromOrder.orderReducer,

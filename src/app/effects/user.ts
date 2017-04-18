@@ -5,12 +5,15 @@ import { go } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { UserActions } from '../actions/user';
-import { User } from '../models/user';
 import { AppState } from '../reducers';
-import { UserService } from '../services/user';
+
+import { NotificationActions } from '../actions/notification';
 import { NotifyActions } from '../actions/notify';
 import { OfferActions } from '../actions/offer';
+import { User } from '../models/user';
+import { UserActions } from '../actions/user';
+import { UserService } from '../services/user';
+
 
 @Injectable()
 
@@ -18,6 +21,7 @@ export class UserEffects {
   constructor(
     public actions$: Actions,
     private injector: Injector,
+    private notificationActions: NotificationActions,
     private notifyActions: NotifyActions,
     private store: Store<AppState>,
     private offerActions: OfferActions,
@@ -127,7 +131,10 @@ export class UserEffects {
     .ofType(UserActions.GET_PROFILE)
     .map(action => <string>action.payload)
     .switchMap(() => this.userService.getProfile()
-      .map((res: any) => this.userActions.getProfileSuccess(res.user))
+      .mergeMap((res: any) => Observable.of(
+        this.notificationActions.setNotificationTotal(res),
+        this.userActions.getProfileSuccess(res))
+        )
       .catch((res) => Observable.of(
         this.userActions.getProfileFail(res)
       ))

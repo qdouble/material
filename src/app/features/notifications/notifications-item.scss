@@ -1,0 +1,75 @@
+@import '../../variables';
+
+.ntfy-clickable {
+  cursor: pointer;
+}
+
+.ntfy-close {
+  position: absolute;
+  top: 36px;
+  right: -1px;
+  font-size: 16px;
+  color: #a3b78d;
+  z-index: 99999;
+  cursor: pointer;
+}
+
+.ntfy-ico {
+  font-size: 55px;
+  color: $primary-color;
+}
+
+.ntfy-item:focus {
+	outline: none !important;
+}
+
+.ntfy-item {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 60px;
+  margin-bottom: 2px;
+  font-size: 13px;
+  overflow: hidden;
+  // cursor: pointer;
+}
+
+.ntfy-image {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  overflow: hidden;
+  // background: orange;
+}
+
+.ntfy-message {
+  // margin: 3px 0px 0px 59px;
+  position: absolute;
+  top: 0px;
+  left: 58px;
+  white-space: normal;
+  max-height: 36px;
+  overflow: hidden;
+  line-height: 1.4;
+  width: 310px;
+  @media screen and (max-width: 500px) {
+    width: 175px;
+  }
+}
+
+.ntfy-radio {
+  position: absolute;
+  top: 4px;
+  right: -1px;
+  font-size: 16px;
+  color: #a3b78d;
+  z-index: 99999;
+  cursor: pointer;
+}
+
+.ntfy-timestamp {
+  position: absolute;
+  top: 36px;
+  left: 58px;
+  font-size: 10px;
+}

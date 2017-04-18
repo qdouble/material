@@ -21,13 +21,31 @@
     </button>
     <img id="level-menu-logo" src="assets/svg/lr-logo-rev5.svg">
     <div *ngIf="!(onAdminLoginPage$ | async)" class="os-toolbar-right">
-      <span [ngSwitch]="loggedIn"></span>
-      <button md-tooltip="Not Yet Available" *ngIf="loggedIn" md-icon-button color="primary" (click)="null">
-        <md-icon style="color: #e8e8e8;" >notifications</md-icon>
-      </button>
-      <button md-tooltip="Not Yet Available" tooltip-position="before" *ngIf="loggedIn" md-icon-button color="primary" (click)="null">
+      <span class="notifications"  osClickOutside (clickOutside)="showNotifications = false">
+        <button *ngIf="loggedIn" md-icon-button color="primary" (click)="showNotifications = !showNotifications">
+          <md-icon style="color: #e8e8e8;" >notifications</md-icon>
+        </button>
+        <div class="ntfy-count-circle" *ngIf="(unreadNotificatonPendingTotal$ | async) || (unreadNotificationTotal$ | async)" (click)="showNotifications = !showNotifications">
+          <div class="ntfy-number">{{((unreadNotificatonPendingTotal$ | async) || (unreadNotificationTotal$ | async)) | showMax: 99}}</div>
+        </div>    
+      <div class="ntfy-nub" *ngIf="showNotifications"></div>
+      <div class="ntfy-drop" *ngIf="showNotifications">
+        <div class="ntfy-drop-top">
+          <div class="ntfy-label">Notifications</div>
+          <div class="ntfy-options" (click)="markAllNotificationsAsRead()">Mark all as read</div>
+        </div>
+        <os-notifications-dropdown></os-notifications-dropdown>
+        <div class="ntfy-drop-bottom">
+          <div class="ntfy-see-all" [routerLink]="['notifications']">See All</div>
+        </div>
+      </div>
+      </span>
+      <button *ngIf="loggedIn" md-icon-button color="primary" (click)="null">
         <md-icon style="color: #e8e8e8;" >mail</md-icon>
       </button>
+      <div class="ntfy-messages-circle" *ngIf="unreadMessageTotal$ | async">
+        <div class="ntfy-number">{{unreadMessageTotal | async}}</div>
+      </div>
     </div>
   </md-toolbar>
   <md-card id="my-page-card">

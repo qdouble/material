@@ -10,12 +10,12 @@ import { Notification } from '../../models/notification';
 import { combineSort } from '../../helper/combine-sort';
 
 @Component({
-  selector: 'os-notifications',
-  templateUrl: './notifications.html',
-  styleUrls: ['./notifications.css']
+  selector: 'os-notifications-dropdown',
+  templateUrl: './notifications-dropdown.html',
+  styleUrls: ['./notifications-dropdown.css']
 })
 
-export class NotificationsComponent implements OnInit {
+export class NotificationsDropDownComponent implements OnInit {
   notifications$: Observable<Notification[]>;
   sortedNotifications$: Observable<Notification[]>;
   constructor(
@@ -28,10 +28,7 @@ export class NotificationsComponent implements OnInit {
     );
   }
   ngOnInit() {
-    this.store.dispatch(this.notificationActions.getNotifications(''));
-  }
-  deleteAllNotifications() {
-    this.store.dispatch(this.notificationActions.deleteAllNotifications());
+    this.store.dispatch(this.notificationActions.getNotifications('limit=12'));
   }
   deleteNotifications(ids: string[]) {
     this.store.dispatch(this.notificationActions.deleteNotifications(ids));
@@ -39,7 +36,5 @@ export class NotificationsComponent implements OnInit {
   markNotificationsAsRead(mark: { ids: string[], read: boolean }) {
     this.store.dispatch(this.notificationActions.markNotificationsAsRead(mark));
   }
-  markAllAsRead() {
-    this.store.dispatch(this.notificationActions.markAllAsRead());
-  }
 }
+

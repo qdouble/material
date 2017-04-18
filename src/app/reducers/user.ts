@@ -164,7 +164,7 @@ export function userReducer(state = initialState, action: Action): UserState {
     }
 
     case UserActions.GET_PROFILE_SUCCESS: {
-      let user: User = action.payload;
+      let user: User = action.payload.user;
       if (!user) return Object.assign({}, state, { loading: false });
       let userOnly: any = Object.assign({}, user);
       delete userOnly['referrals'];

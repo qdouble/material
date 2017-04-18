@@ -1,0 +1,13 @@
+.ntfy-dropdown {
+  height: 320px;
+  overflow: scroll;
+  @media screen and (max-width: 500px) {
+    height: 220px;
+  }
+}
+
+.no-notifications {
+  text-align: center;
+  font-size: 14px;
+  margin: 8px 0;
+}

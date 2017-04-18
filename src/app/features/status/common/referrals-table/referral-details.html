@@ -29,7 +29,7 @@
     <div [ngClass]="{'primary': (referral.currentLevel - referral.payBeyondLevel) > 0 }">
       <b>Unpaid Levels: {{referral.currentLevel - referral.payBeyondLevel}}</b>
     </div>
-    <div>Eligible for new order: <b>{{referral.leveledUp ? 'true' : 'false'}}</b></div>
+    <div>Eligible for new order: <b>{{(referral.payBeyondLevel < referral.currentLevel && !referral.hold) ? 'true' : 'false'}}</b></div>
     <div class="warn bold" *ngIf="referral.hold">
       On Hold: {{referral.hold ? 'true' : 'false' }}<br> {{referral.holdReason}}
     </div>

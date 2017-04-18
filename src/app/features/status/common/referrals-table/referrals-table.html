@@ -8,7 +8,7 @@
     </div>
     <ng-container *ngFor="let referral of referrals">
       <ng-container *ngIf="referral.active">
-        <div *ngIf="referral" [ngClass]="{'green': referral.payBeyondLevel < referral.currentLevel, 'red': referral.hold, 'gray': !referral.currentSponsor, 'row': true }">
+        <div *ngIf="referral" [ngClass]="{'green': (referral.payBeyondLevel < referral.currentLevel && !referral.hold), 'red': referral.hold, 'gray': !referral.currentSponsor, 'row': true }">
           <div class="cell hide-1 nowrap">
             {{referral?.addedOn | date: medium }}
           </div>
@@ -31,11 +31,11 @@
             </ng-container>
           </div>
           <div class="cell last-cell">
-            <button md-icon-button [ngClass]="{'transparent': (!referral?.leveledUp || referral?.hold) , 'primary-background':  (referral?.leveledUp && !referral?.hold), 'warn-background': referral?.hold }"
+            <button md-icon-button [ngClass]="{'transparent': (!referral?.leveledUp || referral?.hold) , 'primary-background':  (referral.payBeyondLevel < referral.currentLevel && !referral.hold), 'warn-background': referral?.hold }"
               (click)="getReferral.emit(referral)">
               <md-icon>remove_red_eye</md-icon>
             </button>
-            <button md-icon-button md-tooltip="Send Message (Coming Soon)" tooltip-position="before" [ngClass]="{'hide-mail': true, 'transparent': (!referral?.leveledUp || referral?.hold) , 'primary-background':  (referral?.leveledUp && !referral?.hold), 'warn-background': referral.hold }">
+            <button md-icon-button md-tooltip="Send Message (Coming Soon)" tooltip-position="before" [ngClass]="{'hide-mail': true, 'transparent': (!referral?.leveledUp || referral?.hold) , 'primary-background':  (referral.payBeyondLevel < referral.currentLevel && !referral.hold), 'warn-background': referral.hold }">
               <md-icon>email</md-icon>
             </button>
           </div>

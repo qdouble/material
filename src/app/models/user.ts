@@ -32,9 +32,9 @@ export interface User {
     readonly currentSponsorEmail?: string;
     referrals?: Object;
     referralIds?: string[];
-    readonly referralCount?: Number;
-    readonly currentLevel?: Number;
-    readonly payBeyondLevel?: Number;
+    readonly referralCount?: number;
+    readonly currentLevel?: number;
+    readonly payBeyondLevel?: number;
     readonly leveledUp?: boolean;
     readonly hasQualifiedReferrals?: boolean;
     readonly hasReferralsBeyondLevel?: boolean;

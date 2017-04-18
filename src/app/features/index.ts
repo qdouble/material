@@ -6,7 +6,12 @@ import { HowItWorks } from './how-it-works';
 import { Login } from './login';
 import { Logout } from './logout';
 import { MessagesComponent } from './messages';
-import { NotificationsComponent } from './notifications';
+import {
+  NotificationsComponent,
+  NotificationsDropDownComponent,
+  NotificationsItemComponent,
+  NotificationsPageItemComponent
+} from './notifications';
 import { PasswordReset } from './password-reset';
 import { Profile } from './profile';
 import { Promotions } from './promotions';
@@ -24,6 +29,8 @@ export {
   Logout,
   MessagesComponent,
   NotificationsComponent,
+  NotificationsDropDownComponent,
+  NotificationsItemComponent,
   PasswordReset,
   Profile,
   Promotions,
@@ -46,6 +53,9 @@ export const PAGES_COMPONENTS = [
   Logout,
   MessagesComponent,
   NotificationsComponent,
+  NotificationsDropDownComponent,
+  NotificationsItemComponent,
+  NotificationsPageItemComponent,
   PasswordReset,
   Profile,
   Promotions,

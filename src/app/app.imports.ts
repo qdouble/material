@@ -21,6 +21,7 @@ import { TicketEffects } from './features/support/ticket.effects';
 
 import { routes } from './app.routing';
 import { CountryEffects } from './effects/country';
+import { NotificationEffects } from './effects/notification';
 import { OfferEffects } from './effects/offer';
 import { OrderEffects } from './effects/order';
 import { PrizeEffects } from './effects/prize';
@@ -48,6 +49,7 @@ export const APP_IMPORTS = [
   CustomPipesModule,
   EffectsModule.run(CountryEffects),
   EffectsModule.run(CreditRequestEffects),
+  EffectsModule.run(NotificationEffects),
   EffectsModule.run(OfferEffects),
   EffectsModule.run(OrderEffects),
   EffectsModule.run(PrizeEffects),

@@ -3,7 +3,7 @@ import {
   MdDialog, MdDialogRef, MdDialogConfig,
   MdSnackBar, MdSnackBarConfig
 } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
@@ -11,10 +11,17 @@ import { Action } from '@ngrx/store';
 
 import { AppState } from './reducers';
 import { Credit } from './models/credit';
+import { Notification } from './models/notification';
 import { Notify } from './models/notify';
+import { NotificationActions } from './actions/notification';
 import { PrizeActions } from './actions/prize';
 import { UIActions } from './actions/ui';
 import { UserActions } from './actions/user';
+import {
+  getNotificationCollection,
+  getNoficationPendingTotal,
+  getNotificationUnreadTotal
+} from './reducers/notification';
 import { getCreditedOfferCollection, getUILatestVersion, getUIVersion } from './reducers/ui';
 
 import {
@@ -26,7 +33,7 @@ import { getNotifyCollection } from './reducers/notify';
 import { validateUserName } from './validators';
 
 import { views } from './app-nav-views';
-import { log, MOBILE, SERVICE_WORKER_SUPPORT, PUSH_MANAGER_SUPPORT } from './services/constants';
+import { log, MOBILE, SERVICE_WORKER_SUPPORT } from './services/constants';
 import { PushNotification } from './models/push-notification';
 import { SWAndPushService } from './services/sw-and-push';
 
@@ -74,9 +81,14 @@ export class AppComponent implements OnDestroy, OnInit {
   latestVersion$: Observable<string>;
   loaded: boolean;
   loggedIn: boolean;
-  notifications$: Observable<Notify[]>;
+  notifications$: Observable<Notification[]>;
+  notifiy$: Observable<Notify[]>;
   referredBy: string;
+  showNotifications = false;
   snackRefs = [];
+  unreadMessageTotal$: Observable<number>;
+  unreadNotificatonPendingTotal$: Observable<number>;
+  unreadNotificationTotal$: Observable<number>;
   updatedAt: string;
   updatedAt$: Observable<string>;
   userLoading$: Observable<boolean>;
@@ -89,6 +101,7 @@ export class AppComponent implements OnDestroy, OnInit {
   constructor(
     private cdr: ChangeDetectorRef,
     public dialog: MdDialog,
+    private notificationActions: NotificationActions,
     private route: ActivatedRoute,
     private router: Router,
     private swAndPushService: SWAndPushService,
@@ -142,8 +155,8 @@ export class AppComponent implements OnDestroy, OnInit {
         }
       });
     this.onAdminLoginPage$ = store.let(getUserOnAdminPage());
-    this.notifications$ = store.let(getNotifyCollection());
-    this.notifications$
+    this.notifiy$ = store.let(getNotifyCollection());
+    this.notifiy$
       .takeUntil(this.destroyed$)
       .filter(notify => notify.length > 0)
       .subscribe(notify => {
@@ -188,7 +201,15 @@ export class AppComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    this.router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        this.showNotifications = false;
+      }
+    });
     this.store.dispatch(this.uiActions.setMobile(MOBILE));
+    this.notifications$ = this.store.let(getNotificationCollection());
+    this.unreadNotificatonPendingTotal$ = this.store.let(getNoficationPendingTotal());
+    this.unreadNotificationTotal$ = this.store.let(getNotificationUnreadTotal());
     this.userLoaded$.subscribe(loaded => {
       this.loaded = loaded;
       if (loaded && SERVICE_WORKER_SUPPORT) {
@@ -228,6 +249,10 @@ export class AppComponent implements OnDestroy, OnInit {
       });
   }
 
+  sayBlur() {
+    log('BLUR!');
+  }
+
   activateEvent(event) {
     log('Activate Event:', event);
   }
@@ -265,6 +290,10 @@ export class AppComponent implements OnDestroy, OnInit {
   logout() {
     this.closeConnection();
     this.store.dispatch(this.userActions.logout());
+  }
+
+  markAllNotificationsAsRead() {
+    this.store.dispatch(this.notificationActions.markAllAsRead());
   }
 
   openCreditedDialog(offer: Offer) {

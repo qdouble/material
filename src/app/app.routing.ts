@@ -16,6 +16,7 @@ import {
   HowItWorks,
   Login,
   Logout,
+  NotificationsComponent,
   PasswordReset,
   Profile,
   Promotions,
@@ -70,6 +71,10 @@ export const routes: Routes = [
   {
     path: 'logout',
     component: Logout
+  },
+   {
+    path: 'notifications',
+    component: NotificationsComponent
   },
   // {
   //   path: 'offer-details',
