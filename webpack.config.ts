@@ -10,8 +10,7 @@ import {
   USE_DEV_SERVER_PROXY, DEV_SERVER_PROXY_CONFIG, DEV_SERVER_WATCH_OPTIONS,
   DEV_SOURCE_MAPS, PROD_SOURCE_MAPS, STORE_DEV_TOOLS,
   MY_COPY_FOLDERS, MY_VENDOR_DLLS, MY_CLIENT_PLUGINS, MY_CLIENT_PRODUCTION_PLUGINS,
-  MY_CLIENT_RULES, MY_SERVER_RULES, MY_SERVER_INCLUDE_CLIENT_PACKAGES,
-  SW_RUNTIME_CACHING
+  MY_CLIENT_RULES, SHOW_WEBPACK_BUNDLE_ANALYZER, SW_RUNTIME_CACHING
 } from './constants';
 
 const {
@@ -30,6 +29,7 @@ const { CheckerPlugin } = require('awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const ScriptExtPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const webpackMerge = require('webpack-merge');
 const WebpackMd5Hash = require('webpack-md5-hash');
@@ -192,10 +192,6 @@ const commonConfig = function webpackConfig(): WebpackConfig {
   if (PROD) {
     config.plugins.push(
       new NoEmitOnErrorsPlugin(),
-      new UglifyJsPlugin({
-        beautify: false,
-        comments: false
-      }),
       new CompressionPlugin({
         asset: '[path].gz[query]',
         algorithm: 'gzip',
@@ -216,10 +212,10 @@ const commonConfig = function webpackConfig(): WebpackConfig {
       ),
       ...MY_CLIENT_PRODUCTION_PLUGINS,
     );
-    if (!E2E && !UNIVERSAL && !WATCH && !PUBLISH) {
-      // config.plugins.push(
-      //   new BundleAnalyzerPlugin({ analyzerPort: 5000 })
-      // );
+    if (!E2E && !WATCH && !UNIVERSAL && SHOW_WEBPACK_BUNDLE_ANALYZER) {
+      config.plugins.push(
+        new BundleAnalyzerPlugin({ analyzerPort: 5000 })
+      );
     }
   }
 
@@ -233,6 +229,24 @@ const clientConfig = function webpackConfig(): WebpackConfig {
 
   config.cache = true;
   PROD ? config.devtool = PUBLISH ? undefined : PROD_SOURCE_MAPS : config.devtool = DEV_SOURCE_MAPS;
+  config.plugins = [];
+
+  if (PROD) {
+    config.plugins.push(
+      new UglifyJsPlugin({
+        beautify: false,
+        comments: false
+      })
+    );
+  }
+
+  if (UNIVERSAL) {
+    config.plugins.push(
+      new ScriptExtPlugin({
+        defaultAttribute: 'defer'
+      })
+    );
+  }
 
   if (DLL) {
     config.entry = {
@@ -257,26 +271,14 @@ const clientConfig = function webpackConfig(): WebpackConfig {
       vendor: [...DLL_VENDORS]
     };
   } else {
-    if (!UNIVERSAL) {
-      if (AOT) {
-        config.entry = {
-          main: './src/main.browser.aot'
-        };
-      } else {
-        config.entry = {
-          main: './src/main.browser'
-        };
-      }
+    if (AOT) {
+      config.entry = {
+        main: './src/main.browser.aot'
+      };
     } else {
-      if (AOT) {
-        config.entry = {
-          main: './src/main.browser.universal.aot'
-        };
-      } else {
-        config.entry = {
-          main: './src/main.browser.universal'
-        };
-      }
+      config.entry = {
+        main: './src/main.browser'
+      };
     }
   }
 
@@ -337,46 +339,10 @@ const clientConfig = function webpackConfig(): WebpackConfig {
 
 const serverConfig: WebpackConfig = {
   target: 'node',
-  entry: './src/server',
+  entry: AOT ? './src/server.aot' : './src/server',
   output: {
-    filename: 'index.js',
-    path: root('dist/server'),
-    libraryTarget: 'commonjs2'
-  },
-  module: {
-    rules: [
-      { test: /angular2-material/, loader: 'imports-loader?window=>global' },
-      ...MY_SERVER_RULES
-    ],
-  },
-  externals: includeClientPackages([
-    // include these client packages so we can transform their source with webpack loaders
-    '@angular2-material/button',
-    '@angular2-material/card',
-    '@angular2-material/checkbox',
-    '@angular2-material/core',
-    '@angular2-material/grid',
-    '@angular2-material/icon',
-    '@angular2-material/input',
-    '@angular2-material/list',
-    '@angular2-material/menu',
-    '@angular2-material/progress',
-    '@angular2-material/progress',
-    '@angular2-material/radio',
-    '@angular2-material/sidenav',
-    '@angular2-material/slider',
-    '@angular2-material/slide',
-    '@angular2-material/tabs',
-    '@angular2-material/toolbar',
-    '@angular2-material/tooltip',
-    ...MY_SERVER_INCLUDE_CLIENT_PACKAGES
-  ]),
-  node: {
-    global: true,
-    __dirname: true,
-    __filename: true,
-    process: true,
-    Buffer: true
+    filename: 'server.js',
+    path: root('dist')
   }
 };
 

@@ -11,6 +11,8 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { useLogMonitor } from '@ngrx/store-log-monitor';
 
+import { TransferHttpModule } from '../modules/transfer-http/transfer-http.module';
+
 import { FEATURE_MODULES } from './features';
 import { FormInputModule } from './components/input-fields/form-input';
 import { SelectInputModule } from './components/input-fields/select-input';
@@ -45,7 +47,7 @@ if (ENV === 'development' && !AOT &&
 ]);
 
 export const APP_IMPORTS = [
-  BrowserAnimationsModule,
+  // BrowserAnimationsModule,
   CustomPipesModule,
   EffectsModule.run(CountryEffects),
   EffectsModule.run(CreditRequestEffects),
@@ -60,14 +62,15 @@ export const APP_IMPORTS = [
   FlexLayoutModule,
   FormInputModule,
   FormsModule,
+  IdlePreloadModule.forRoot(),
   MaterialModule.forRoot(),
   ReactiveFormsModule,
-  IdlePreloadModule.forRoot(), // forRoot ensures the providers are only created once
   RouterModule.forRoot(routes, { useHash: false, preloadingStrategy: IdlePreload }),
   RouterStoreModule.connectRouter(),
   SelectInputModule,
   StoreModule.provideStore(rootReducer),
   STORE_DEV_TOOLS_IMPORTS,
   StoreDevToolsModule,
-  TextareaInputModule
+  TextareaInputModule,
+  TransferHttpModule
 ];

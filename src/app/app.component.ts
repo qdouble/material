@@ -9,6 +9,8 @@ import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 import { Action } from '@ngrx/store';
 
+import { TransferState } from '../modules/transfer-state/transfer-state';
+
 import { AppState } from './reducers';
 import { Credit } from './models/credit';
 import { Notification } from './models/notification';
@@ -45,6 +47,7 @@ import { Offer } from './models/offer';
   styleUrls: ['./app.component.css'],
   templateUrl: './app.component.html'
 })
+
 export class AppComponent implements OnDestroy, OnInit {
   showMonitor = (ENV === 'development' && !AOT &&
     ['monitor', 'both'].includes(STORE_DEV_TOOLS)
@@ -99,6 +102,7 @@ export class AppComponent implements OnDestroy, OnInit {
   version$: Observable<string>;
   views = views;
   constructor(
+    private cache: TransferState,
     private cdr: ChangeDetectorRef,
     public dialog: MdDialog,
     private notificationActions: NotificationActions,
@@ -201,6 +205,7 @@ export class AppComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    this.cache.set('cached', true);
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
         this.showNotifications = false;
