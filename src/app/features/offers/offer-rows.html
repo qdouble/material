@@ -50,7 +50,7 @@
           {{offer?.minTimeToCredit}}
           <span *ngIf="offer?.maxTimeToCredit > 0 && 
             offer?.minTimeToCreditType !== offer?.maxTimeToCreditType">
-            {{' ' + offer?.minTimeToCreditType}}
+            {{' ' + offer?.minTimeToCreditType | singleSafe }}
           </span>
         </span>
         <span *ngIf="offer?.minTimeToCredit <= 0 && offer?.maxTimeToCredit > 0">
@@ -58,7 +58,7 @@
         </span>
         <span *ngIf="offer?.minTimeToCredit > 0 && offer?.maxTimeToCredit > 0"> - </span>
         <span *ngIf="offer?.maxTimeToCredit > 0">
-          {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType}}
+          {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType | singleSafe}}
         </span>
       </span>
     </span>

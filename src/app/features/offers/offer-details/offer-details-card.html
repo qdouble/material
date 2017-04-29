@@ -24,10 +24,10 @@
     quickly (within 6 hours).
   </span>
     <span *ngIf="offer?.minTimeToCredit === 0 && offer?.maxTimeToCredit !== 0">
-    within {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType }}.
+    within {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType | singleSafe }}.
   </span>
     <span *ngIf="offer?.minTimeToCredit !== 0 && offer?.maxTimeToCredit !== 0">
-    within {{offer?.minTimeToCredit }} - {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType }} .
+    within {{offer?.minTimeToCredit }} - {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType | singleSafe }} .
   </span> Until the sign up is reported to us, you will not see any indication on your account that you have
     completed the offer.
   </md-card-content>
