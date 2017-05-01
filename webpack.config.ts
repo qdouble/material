@@ -284,7 +284,7 @@ const clientConfig = function webpackConfig(): WebpackConfig {
 
   if (!DLL) {
     config.output = {
-      path: PUBLISH ? '/var/www/html' : root('dist/client'),
+      path: PUBLISH ? '/var/www/html' : root('dist'),
       filename: !PROD ? '[name].bundle.js' : '[name].[chunkhash].bundle.js',
       sourceMapFilename: !PROD ? '[name].bundle.map' : '[name].[chunkhash].bundle.map',
       chunkFilename: !PROD ? '[id].chunk.js' : '[id].[chunkhash].chunk.js'
