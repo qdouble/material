@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { AppState } from '../reducers';
+import { NotifyActions } from '../actions/notify';
 import { PrizeService } from '../services/prize';
 import { PrizeActions } from '../actions/prize';
 
@@ -13,6 +14,7 @@ import { PrizeActions } from '../actions/prize';
 export class PrizeEffects {
   constructor(
     public actions$: Actions,
+    private notifyActions: NotifyActions,
     private prizeActions: PrizeActions,
     private prizeService: PrizeService,
     private store: Store<AppState>
@@ -24,7 +26,8 @@ export class PrizeEffects {
     .switchMap(email => this.prizeService.getPrizes()
       .map((res: any) => this.prizeActions.getPrizesSuccess(res))
       .catch((err) => Observable.of(
-        this.prizeActions.getPrizesFail(err)
+        this.prizeActions.getPrizesFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 }

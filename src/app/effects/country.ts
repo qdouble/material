@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { AppState } from '../reducers';
 import { CountryService } from '../services/country';
 import { CountryActions } from '../actions/country';
+import { NotifyActions } from '../actions/notify';
 
 @Injectable()
 
@@ -15,6 +16,7 @@ export class CountryEffects {
     public actions$: Actions,
     private countryActions: CountryActions,
     private countryService: CountryService,
+    private notifyActions: NotifyActions,
     private store: Store<AppState>
   ) { }
 
@@ -24,7 +26,8 @@ export class CountryEffects {
     .switchMap(email => this.countryService.getCountries()
       .map((res: any) => this.countryActions.getCountriesSuccess(res))
       .catch((err) => Observable.of(
-        this.countryActions.getCountriesFail(err)
+        this.countryActions.getCountriesFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 }

@@ -39,8 +39,9 @@ export class UserEffects {
       ))
       .do((res: any) => res.payload.redirectTo ?
         window.location.href = res.payload.redirectTo : null)
-      .catch(() => Observable.of(
-        this.userActions.adminLoginFail(user)
+      .catch((err) => Observable.of(
+        this.userActions.adminLoginFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -53,7 +54,8 @@ export class UserEffects {
         // res['message_type'] !== 'success' ? this.notifyActions.addNotify(res) : null
       ))
       .catch((err) => Observable.of(
-        this.userActions.changeSelectedPrizeFail(err)
+        this.userActions.changeSelectedPrizeFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -75,8 +77,8 @@ export class UserEffects {
     .map(action => action.payload)
     .switchMap(() => this.userService.checkIfUserUpdated()
       .map((res) => this.userActions.checkIfUserUpdatedSuccess(res))
-      .catch((res) => Observable.of(
-        this.userActions.checkIfUserUpdatedFail(res)
+      .catch((err) => Observable.of(
+        this.userActions.checkIfUserUpdatedFail(err)
       ))
     );
 
@@ -85,8 +87,8 @@ export class UserEffects {
     .map(action => action.payload)
     .switchMap(() => this.userService.checkIPMatch()
       .map((res) => this.userActions.checkIPMatchSuccess(res))
-      .catch((res) => Observable.of(
-        this.userActions.checkIPMatchFail(res)
+      .catch((err) => Observable.of(
+        this.userActions.checkIPMatchFail(err)
       ))
     );
 
@@ -95,8 +97,9 @@ export class UserEffects {
     .map(action => <string>action.payload)
     .switchMap(() => this.userService.checkLoggedIn()
       .map((res: any) => this.userActions.checkLoggedInSuccess(res))
-      .catch((res) => Observable.of(
-        this.userActions.checkLoggedInFail(res)
+      .catch((err) => Observable.of(
+        this.userActions.checkLoggedInFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -105,8 +108,9 @@ export class UserEffects {
     .map(action => <any>action.payload)
     .switchMap(() => this.userService.dismissProfileChanges()
       .map((res: any) => this.userActions.dismissProfileChangesSuccess(res))
-      .catch((res) => Observable.of(
-        this.userActions.dismissProfileChangesFail(res)
+      .catch((err) => Observable.of(
+        this.userActions.dismissProfileChangesFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -121,9 +125,9 @@ export class UserEffects {
       .do((res: any) => res.payload.redirectTo ?
         this.store.dispatch(go([res.payload.redirectTo], undefined,
           { preserveQueryParams: true })) : null)
-      .catch((res) => Observable.of(
-        this.userActions.forgotPasswordFail(res),
-        this.notifyActions.addNotify(res)
+      .catch((err) => Observable.of(
+        this.userActions.forgotPasswordFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -135,8 +139,8 @@ export class UserEffects {
         this.notificationActions.setNotificationTotal(res),
         this.userActions.getProfileSuccess(res))
         )
-      .catch((res) => Observable.of(
-        this.userActions.getProfileFail(res)
+      .catch((err) => Observable.of(
+        this.userActions.getProfileFail(err)
       ))
     );
 
@@ -145,8 +149,9 @@ export class UserEffects {
     .map(action => <string>action.payload)
     .switchMap((id) => this.userService.getReferral(id)
       .map((res: any) => this.userActions.getReferralSuccess(res))
-      .catch((res) => Observable.of(
-        this.userActions.getReferralFail(res)
+      .catch((err) => Observable.of(
+        this.userActions.getReferralFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -168,7 +173,8 @@ export class UserEffects {
         }
       })
       .catch((err) => Observable.of(
-        this.userActions.loginFail(err)
+        this.userActions.loginFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -178,8 +184,9 @@ export class UserEffects {
     .switchMap(() => this.userService.logout()
       .map(() => this.userActions.logoutSuccess())
       .do(() => this.store.dispatch(go([''])))
-      .catch((res) => Observable.of(
-        this.userActions.logoutFail(res)
+      .catch((err) => Observable.of(
+        this.userActions.logoutFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -190,8 +197,9 @@ export class UserEffects {
       .map(res => this.userActions.recordClickSuccess(res))
       .do((res: any) => res.payload.redirectTo ?
         window.location.replace(res.payload.redirectTo) : null)
-      .catch((res) => Observable.of(
-        this.userActions.recordClickFail(res)
+      .catch((err) => Observable.of(
+        this.userActions.recordClickFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -208,8 +216,9 @@ export class UserEffects {
           this.store.dispatch(this.notifyActions.addNotify(res.payload));
         }
       })
-      .catch((res) => Observable.of(
-        this.userActions.registerFail(res)
+      .catch((err) => Observable.of(
+        this.userActions.registerFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -223,9 +232,9 @@ export class UserEffects {
       ))
       .do((res: any) => res.payload.redirectTo ?
         this.store.dispatch(go([res.payload.redirectTo])) : null)
-      .catch((res) => Observable.of(
-        this.userActions.resetPasswordFail(res),
-        this.notifyActions.addNotify(res)
+      .catch((err) => Observable.of(
+        this.userActions.resetPasswordFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -237,8 +246,9 @@ export class UserEffects {
         this.userActions.setSponsorSuccess(res),
         res['message'] ? this.notifyActions.addNotify(res) : null
       ))
-      .catch((res) => Observable.of(
-        this.userActions.setSponsorFail(res)
+      .catch((err) => Observable.of(
+        this.userActions.setSponsorFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
@@ -250,8 +260,9 @@ export class UserEffects {
         this.userActions.updateProfileSuccess(res),
         this.notifyActions.addNotify(res)
       ))
-      .catch((res) => Observable.of(
-        this.userActions.updateProfileFail(res)
+      .catch((err) => Observable.of(
+        this.userActions.updateProfileFail(err),
+        this.notifyActions.addNotify(err)
       ))
     );
 
