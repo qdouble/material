@@ -10,6 +10,7 @@ import { Offer } from '../../../models/offer';
 })
 
 export class OfferDetailsCard {
+  agree: boolean;
   @Input() offer: Offer;
   @Input() publish: boolean;
   @Output() continueToOffer = new EventEmitter();
