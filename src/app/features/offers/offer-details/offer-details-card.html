@@ -16,10 +16,8 @@
     </div>
   </md-card-content>
   <md-card-actions>
-    <ng-container *ngIf="!offer?.noCardRequired">
-    <div class="checkbox-row">Do you agree that you will <b><u>not use a prepaid/gift card</u></b> to complete offer and that if you complete the offer, you <b><u>will keep it at least 75-90% of trial period</u></b>?</div>
-    <md-checkbox #agree color="primary">I Agree</md-checkbox><br><br>
-    </ng-container>
+    <div *ngIf="!offer?.noCardRequired" class="checkbox-row">Do you agree that you will <b><u>not use a prepaid/gift card</u></b> to complete offer and that if you complete the offer, you <b><u>will keep it at least 75-90% of trial period</u></b>?</div>
+    <md-checkbox [hidden]="offer?.noCardRequired" #agree color="primary">I Agree</md-checkbox><br><br>
     <button md-raised-button color="primary" class="white" [disabled]="!agree?.checked && !offer?.noCardRequired" (click)="continueToOffer.emit(offer?.id)">CONTINUE WITH THIS OFFER</button>
   </md-card-actions>
   <md-card-content>
