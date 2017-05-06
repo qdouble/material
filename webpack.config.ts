@@ -69,6 +69,7 @@ if (DEV_SERVER) {
 
 const CONSTANTS = {
   AOT: AOT,
+  DEV_SERVER: DEV_SERVER,
   ENV: PROD ? JSON.stringify('production') : JSON.stringify('development'),
   HMR: HMR,
   HOST: PUBLISH ? JSON.stringify('levelrewards.com') : JSON.stringify(HOST),
