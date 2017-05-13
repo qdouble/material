@@ -61,7 +61,7 @@ export const APP_IMPORTS = [
   FormInputModule,
   FormsModule,
   IdlePreloadModule.forRoot(),
-  MaterialModule.forRoot(),
+  MaterialModule,
   ReactiveFormsModule,
   RouterModule.forRoot(routes, { useHash: false, preloadingStrategy: IdlePreload }),
   RouterStoreModule.connectRouter(),
