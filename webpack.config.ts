@@ -1,6 +1,6 @@
 /* tslint:disable: variable-name max-line-length */
 /**
- * Try to not make your own edits to this file, use the constants folder instead. 
+ * Try to not make your own edits to this file, use the constants folder instead.
  * If more constants should be added file an issue or create PR.
  */
 import 'ts-helpers';
