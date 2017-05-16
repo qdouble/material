@@ -7,9 +7,11 @@
  */
 
 import { ApplicationRef, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
+import { RouterModule, PreloadAllModules } from '@angular/router';
+import { IdlePreload } from '@angularclass/idle-preload';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
@@ -24,6 +26,8 @@ import { APP_ENTRY_COMPONENTS } from './app.entry-components';
 import { APP_IMPORTS } from './app.imports';
 import { APP_PROVIDERS } from './app.providers';
 
+import { routes } from './app.routing';
+
 import { AppComponent } from './app.component';
 
 import { AppState } from './reducers';
@@ -35,12 +39,14 @@ import { AppState } from './reducers';
   ],
   entryComponents: [APP_ENTRY_COMPONENTS],
   imports: [
-    APP_IMPORTS,
-    BrowserModule,
+    CommonModule,
     DEV_SERVER ? [BrowserAnimationsModule, BrowserTransferStateModule] : [],
     HttpModule,
+    APP_IMPORTS,
+    RouterModule.forRoot(routes, { useHash: false, preloadingStrategy: IdlePreload }),
   ],
   bootstrap: [AppComponent],
+  exports: [AppComponent],
   providers: [APP_PROVIDERS]
 })
 

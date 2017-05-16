@@ -21,10 +21,7 @@ export declare const MY_VENDOR_DLLS: any[];
 export declare const MY_CLIENT_PLUGINS: any[];
 export declare const MY_CLIENT_PRODUCTION_PLUGINS: any[];
 export declare const MY_CLIENT_RULES: any[];
-export declare const MY_SERVER_RULES: any[];
 export declare const MY_TEST_PLUGINS: any[];
 export declare const MY_TEST_RULES: any[];
-export declare const MY_SERVER_INCLUDE_CLIENT_PACKAGES: any[];
 export declare const SW_RUNTIME_CACHING: any[];
-
 export declare const EXCLUDE_SOURCE_MAPS: any[];

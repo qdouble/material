@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import {
   MdDialog, MdDialogRef, MdDialogConfig,
   MdSnackBar, MdSnackBarConfig
@@ -44,8 +44,9 @@ import { Offer } from './models/offer';
 
 @Component({
   selector: 'my-app',
-  styleUrls: ['./app.component.css'],
-  templateUrl: './app.component.html'
+  styleUrls: ['main.scss', './app.component.scss'],
+  templateUrl: './app.component.html',
+  encapsulation: ViewEncapsulation.None
 })
 
 export class AppComponent implements OnDestroy, OnInit {

@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
-import { IdlePreload, IdlePreloadModule } from '@angularclass/idle-preload';
+import { IdlePreloadModule } from '@angularclass/idle-preload';
 import { MaterialModule } from '@angular/material';
 
 import { EffectsModule } from '@ngrx/effects';
@@ -20,7 +20,6 @@ import { TextareaInputModule } from './components/input-fields/textarea-input';
 import { CreditRequestEffects } from './features/support/credit-request.effects';
 import { TicketEffects } from './features/support/ticket.effects';
 
-import { routes } from './app.routing';
 import { CountryEffects } from './effects/country';
 import { NotificationEffects } from './effects/notification';
 import { OfferEffects } from './effects/offer';
@@ -63,7 +62,6 @@ export const APP_IMPORTS = [
   IdlePreloadModule.forRoot(),
   MaterialModule,
   ReactiveFormsModule,
-  RouterModule.forRoot(routes, { useHash: false, preloadingStrategy: IdlePreload }),
   RouterStoreModule.connectRouter(),
   SelectInputModule,
   StoreModule.provideStore(rootReducer),

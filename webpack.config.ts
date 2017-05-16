@@ -14,7 +14,6 @@ import {
 } from './constants';
 
 const {
-  ContextReplacementPlugin,
   DefinePlugin,
   DllPlugin,
   DllReferencePlugin,
@@ -33,6 +32,7 @@ const ScriptExtPlugin = require('script-ext-html-webpack-plugin');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const webpackMerge = require('webpack-merge');
 const WebpackMd5Hash = require('webpack-md5-hash');
+const { getAotPlugin } = require('./webpack.aot');
 
 
 const { hasProcessFlag, includeClientPackages, root, testDll } = require('./helpers.js');
@@ -44,6 +44,7 @@ const E2E = EVENT.includes('e2e');
 const HMR = hasProcessFlag('hot');
 const PROD = EVENT.includes('prod');
 const PUBLISH = EVENT.includes('publish');
+const SERVER = EVENT.includes('server');
 const WATCH = hasProcessFlag('watch');
 const UNIVERSAL = EVENT.includes('universal');
 
@@ -76,7 +77,7 @@ const CONSTANTS = {
   PORT: PORT,
   PUBLISH: PUBLISH,
   STORE_DEV_TOOLS: JSON.stringify(STORE_DEV_TOOLS),
-  UNIVERSAL: UNIVERSAL
+  UNIVERSAL: UNIVERSAL || SERVER
 };
 
 const DLL_VENDORS = [
@@ -107,7 +108,6 @@ const COPY_FOLDERS = [
   { from: 'src/assets', to: 'assets' },
   { from: 'node_modules/hammerjs/hammer.min.js' },
   { from: 'node_modules/hammerjs/hammer.min.js.map' },
-  { from: 'src/app/main.css' },
   { from: 'src/app/styles.css', to: 'styles3.css' },
   ...MY_COPY_FOLDERS
 ];
@@ -132,24 +132,22 @@ const commonConfig = function webpackConfig(): WebpackConfig {
         test: /\.ts$/,
         loaders: [
           '@angularclass/hmr-loader',
-          'awesome-typescript-loader?{configFileName: "tsconfig.webpack.json"}',
-          'angular2-template-loader',
-          'angular-router-loader?loader=system&genDir=compiled&aot=' + AOT
+          '@ngtools/webpack'
         ],
         exclude: [/\.(spec|e2e|d)\.ts$/]
       },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.html/, loader: 'raw-loader', exclude: [root('src/index.html')] },
       { test: /\.css$/, loader: 'raw-loader' },
+        {
+        test: /\.scss$/,
+        loaders: ['to-string-loader', 'css-loader', 'sass-loader']
+      },
       ...MY_CLIENT_RULES
     ]
   };
 
   config.plugins = [
-    new ContextReplacementPlugin(
-      /angular(\\|\/)core(\\|\/)@angular/,
-      root('./src')
-    ),
     new ProgressPlugin(),
     new CheckerPlugin(),
     new DefinePlugin(CONSTANTS),
@@ -221,7 +219,7 @@ const commonConfig = function webpackConfig(): WebpackConfig {
   }
 
   return config;
-} ();
+}();
 
 // type definition for WebpackConfig at the bottom
 const clientConfig = function webpackConfig(): WebpackConfig {
@@ -229,8 +227,9 @@ const clientConfig = function webpackConfig(): WebpackConfig {
   let config: WebpackConfig = Object.assign({});
 
   config.cache = true;
+  config.target = 'web';
   PROD ? config.devtool = PUBLISH ? undefined : PROD_SOURCE_MAPS : config.devtool = DEV_SOURCE_MAPS;
-  config.plugins = [];
+  config.plugins = [getAotPlugin('client', AOT)];
 
   if (PROD) {
     config.plugins.push(
@@ -241,7 +240,7 @@ const clientConfig = function webpackConfig(): WebpackConfig {
     );
   }
 
-  if (UNIVERSAL) {
+  if (UNIVERSAL || SERVER) {
     config.plugins.push(
       new ScriptExtPlugin({
         defaultAttribute: 'defer'
@@ -272,15 +271,9 @@ const clientConfig = function webpackConfig(): WebpackConfig {
       vendor: [...DLL_VENDORS]
     };
   } else {
-    if (AOT) {
-      config.entry = {
-        main: './src/main.browser.aot'
-      };
-    } else {
-      config.entry = {
-        main: './src/main.browser'
-      };
-    }
+    config.entry = {
+      main: root('./src/main.browser.ts')
+    };
   }
 
   if (!DLL) {
@@ -301,9 +294,6 @@ const clientConfig = function webpackConfig(): WebpackConfig {
   config.devServer = {
     contentBase: AOT ? './compiled' : './src',
     port: CONSTANTS.PORT,
-    // https: false,
-    // cert: fs.readFileSync('/mock-ssl/cert.pem'),
-    // key: fs.readFileSync('/mock-ssl/key.pem'),
     historyApiFallback: {
       disableDotRule: true,
     },
@@ -340,11 +330,14 @@ const clientConfig = function webpackConfig(): WebpackConfig {
 
 const serverConfig: WebpackConfig = {
   target: 'node',
-  entry: AOT ? './src/server.aot' : './src/server',
+  entry: AOT ? './src/server.aot.ts' : root('./src/server.ts'),
   output: {
     filename: 'server.js',
     path: root('dist')
   },
+  plugins: [
+    getAotPlugin('server', AOT)
+  ],
   module: {
     rules: [
       {
@@ -368,9 +361,11 @@ const defaultConfig = {
   }
 };
 
-if (!UNIVERSAL) {
+if (!UNIVERSAL && !SERVER) {
   DLL ? console.log('BUILDING DLLs') : console.log('BUILDING APP');
   module.exports = webpackMerge({}, defaultConfig, commonConfig, clientConfig);
+} else if (SERVER) {
+  module.exports = webpackMerge({}, defaultConfig, commonConfig, serverConfig);
 } else {
   console.log('BUILDING UNIVERSAL');
   module.exports = [
