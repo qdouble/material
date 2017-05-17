@@ -23,7 +23,7 @@ import { IPMatchFoundDialog } from './ip-match-found.dialog';
   selector: 'os-register',
   providers: [UsernameValidator],
   templateUrl: './register.html',
-  styleUrls: ['./register.css'],
+  styleUrls: ['./register.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
 

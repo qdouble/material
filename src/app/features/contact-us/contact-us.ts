@@ -11,7 +11,7 @@ import { RegexValues } from '../../validators';
 @Component({
   selector: 'os-contact-us',
   templateUrl: './contact-us.html',
-  styleUrls: ['./contact-us.css']
+  styleUrls: ['./contact-us.scss']
 })
 
 export class ContactUs implements OnDestroy {

@@ -5,7 +5,7 @@ import { Offer } from '../../../models/offer';
 @Component({
   selector: 'os-offer-details-card',
   templateUrl: './offer-details-card.html',
-  styleUrls: ['./offer-details.css'],
+  styleUrls: ['./offer-details.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

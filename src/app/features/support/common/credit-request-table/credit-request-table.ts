@@ -5,7 +5,7 @@ import { CreditRequest } from '../../credit-request.model';
 @Component({
   selector: 'os-credit-request-table',
   templateUrl: './credit-request-table.html',
-  styleUrls: ['./credit-request-table.css'],
+  styleUrls: ['./credit-request-table.scss'],
 })
 
 export class CreditRequestTable {

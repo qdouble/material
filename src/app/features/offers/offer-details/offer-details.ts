@@ -14,7 +14,7 @@ import { OfferActions } from '../../../actions/offer';
 @Component({
   selector: 'os-offer-details',
   templateUrl: './offer-details.html',
-  styleUrls: ['./offer-details.css']
+  styleUrls: ['./offer-details.scss']
 })
 export class OfferDetailsComponent implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();

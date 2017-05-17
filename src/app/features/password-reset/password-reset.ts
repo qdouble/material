@@ -13,7 +13,7 @@ import { RegexValues } from '../../validators';
 @Component({
   selector: 'os-password-reset',
   templateUrl: './password-reset.html',
-  styleUrls: ['./password-reset.css']
+  styleUrls: ['./password-reset.scss']
 })
 
 export class PasswordReset implements OnInit {

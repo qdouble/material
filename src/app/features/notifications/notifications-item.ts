@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'os-notifications-item',
   templateUrl: './notifications-item.html',
-  styleUrls: ['./notifications-item.css']
+  styleUrls: ['./notifications-item.scss']
 })
 
 export class NotificationsItemComponent {

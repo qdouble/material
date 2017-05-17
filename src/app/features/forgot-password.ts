@@ -15,7 +15,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
     </md-card>
   </md-card>
     `,
-    styleUrls: ['./login/login.css']
+    styleUrls: ['./login/login.scss']
 })
 
 export class ForgotPassword {

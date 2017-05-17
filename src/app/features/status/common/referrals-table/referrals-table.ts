@@ -11,7 +11,7 @@ import { User } from '../../../../models/user';
 @Component({
   selector: 'os-referrals-table',
   templateUrl: './referrals-table.html',
-  styleUrls: ['./referrals-table.css'],
+  styleUrls: ['./referrals-table.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

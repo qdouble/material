@@ -22,7 +22,7 @@ import { getUser, getUserLoaded, getUserSettingPrize } from '../../reducers/user
 @Component({
   selector: 'os-order',
   templateUrl: './order.html',
-  styleUrls: ['./order.css']
+  styleUrls: ['./order.scss']
 })
 
 export class OrderComponent implements OnDestroy, OnInit {

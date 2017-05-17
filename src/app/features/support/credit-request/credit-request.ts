@@ -18,7 +18,7 @@ import { CreditRequest, OfferClick } from '../credit-request.model';
 @Component({
   selector: 'os-credit-request',
   templateUrl: './credit-request.html',
-  styleUrls: ['./credit-request.css']
+  styleUrls: ['./credit-request.scss']
 })
 
 export class CreditRequestComponent implements OnDestroy, OnInit {

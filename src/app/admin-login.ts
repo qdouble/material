@@ -26,7 +26,7 @@ import { UserActions } from './actions/user';
     </md-card>
   </md-card>
   `,
-  styleUrls: ['./admin-login.css']
+  styleUrls: ['./admin-login.scss']
 })
 
 export class AdminLogin implements OnDestroy, OnInit {

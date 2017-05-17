@@ -27,7 +27,7 @@ import {
 @Component({
   selector: 'os-status',
   templateUrl: './status.html',
-  styleUrls: ['./status.css']
+  styleUrls: ['./status.scss']
 })
 
 export class Status implements OnDestroy {

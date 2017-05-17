@@ -22,7 +22,7 @@ import { UserActions } from '../../actions/user';
 @Component({
   selector: 'os-offers',
   templateUrl: './offers.html',
-  styleUrls: ['./offers.css'],
+  styleUrls: ['./offers.scss'],
   providers: [UniqueSelectionDispatcher],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

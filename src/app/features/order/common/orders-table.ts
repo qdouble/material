@@ -5,7 +5,7 @@ import { Order } from '../../../models/order';
 @Component({
   selector: 'os-orders-table',
   templateUrl: './orders-table.html',
-  styleUrls: ['./orders-table.css']
+  styleUrls: ['./orders-table.scss']
 })
 
 export class OrderTableComponent {

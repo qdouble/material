@@ -17,7 +17,7 @@ import { CustomValidators, RegexValues } from '../../validators';
 @Component({
   selector: 'os-profile',
   templateUrl: './profile.html',
-  styleUrls: ['./profile.css']
+  styleUrls: ['./profile.scss']
 })
 
 export class Profile implements OnDestroy, OnInit {

@@ -16,7 +16,7 @@ import { getTicketCollection } from '../../reducers/ticket';
 @Component({
   selector: 'os-support',
   templateUrl: './support.html',
-  styleUrls: ['./support.css']
+  styleUrls: ['./support.scss']
 })
 
 export class Support {

@@ -12,7 +12,7 @@ import { combineSort } from '../../helper/combine-sort';
 @Component({
   selector: 'os-notifications-dropdown',
   templateUrl: './notifications-dropdown.html',
-  styleUrls: ['./notifications-dropdown.css']
+  styleUrls: ['./notifications-dropdown.scss']
 })
 
 export class NotificationsDropDownComponent implements OnInit {

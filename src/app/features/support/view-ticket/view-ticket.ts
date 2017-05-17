@@ -12,7 +12,7 @@ import { Ticket, TicketMessage } from '../ticket.model';
 @Component({
   selector: 'os-view-ticket',
   templateUrl: './view-ticket.html',
-  styleUrls: ['./view-ticket.css']
+  styleUrls: ['./view-ticket.scss']
 })
 
 export class ViewTicket {

@@ -5,7 +5,7 @@ import { Prize } from '../../../../models/prize';
 @Component({
   selector: 'os-selected-prize',
   templateUrl: './selected-prize.html',
-  styleUrls: ['./selected-prize.css'],
+  styleUrls: ['./selected-prize.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
 

@@ -13,7 +13,7 @@ import { RegexValues } from '../../validators';
 @Component({
   selector: 'os-login',
   templateUrl: './login.html',
-  styleUrls: ['./login.css'],
+  styleUrls: ['./login.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
 

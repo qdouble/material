@@ -6,7 +6,7 @@ import { Referral } from '../../../../models/referral';
 @Component({
   selector: 'os-referral-dialog',
   templateUrl: './referral-details.html',
-  styleUrls: ['./referral-details.css']
+  styleUrls: ['./referral-details.scss']
 })
 export class ReferralDetailsDialog implements OnInit {
   creditTotal = 0;

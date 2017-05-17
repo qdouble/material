@@ -6,7 +6,7 @@ import { User } from '../../../models/user';
 @Component({
   selector: 'os-order-form',
   templateUrl: './order-form.html',
-  styleUrls: ['./order-form.css']
+  styleUrls: ['./order-form.scss']
 })
 
 export class OrderFormComponent {
