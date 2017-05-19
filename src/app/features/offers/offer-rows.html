@@ -28,7 +28,9 @@
       {{ offer?.subTitle?.length > 1 ? offer?.subTitle : '&#8239;' }}
     </div>
     <span class="offer-card-value" offer-card-value>
-      {{ offer?.creditValue | number: '1.2-2' }}
+      <ng-container *ngIf="!offer?.varies || (offer?.varies && offer?.versions?.length && !offer.versions[0].bonus)">{{ offer?.creditValue | number: '1.2-2' }}</ng-container>
+      <ng-container *ngIf="offer?.varies && offer?.versions?.length  && offer.versions[0].bonus "><b>({{offer.creditValue + offer.versions[0].creditValue | number: '1.2-2'}})*</b> 
+      <div><i>* {{offer.creditValue | number: '1.2-2' }} Free Trial + {{offer.versions[0].creditValue | number: '1.2-2' }} Paid Sub Bonus</i></div> </ng-container>
     </span>
     <span class="offer-card-cost" offer-card-cost>
       <span *ngIf="offer?.costToUser > 0 && offer?.costToUser < 1000">

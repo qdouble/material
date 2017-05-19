@@ -12,6 +12,8 @@ export interface Offer {
   noCardRequired?: boolean;
   offerOrder?: number;
   hideToUnQualifiedUsers?: boolean;
+  varies?: boolean;
+  versions?: OfferVersion[];
   description?: string;
   requirements?: string;
   reminder?: string;
@@ -26,4 +28,12 @@ export interface Offer {
   updatedAt?: string;
   // Helper Properties //
   viewed?: boolean;
+}
+
+export interface OfferVersion {
+  label: string;
+  costToUser: number;
+  commission: number;
+  creditValue: number;
+  bonus?: boolean;
 }
