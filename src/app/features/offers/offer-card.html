@@ -12,7 +12,7 @@
   <div [ngClass]="{'offer-card-image': sideNavOpen, 'offer-card-image-s-closed': !sideNavOpen }">
     <ng-content select="[offer-card-image]" md-card-image></ng-content>
   </div>
-  <md-card-content>
+  <md-card-content style="height: 60px;">
     <div>Credit Value: <ng-content select="[offer-card-value]"></ng-content></div>
     <div>Cost: <ng-content select="[offer-card-cost]"></ng-content></div>
     <div>Credits: <ng-content select="[offer-card-credits]"></ng-content></div>
