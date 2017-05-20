@@ -14,6 +14,8 @@ export interface Offer {
   hideToUnQualifiedUsers?: boolean;
   varies?: boolean;
   versions?: OfferVersion[];
+  tempUnavailable?: boolean;
+  tempUnavailableMessage?: string;
   description?: string;
   requirements?: string;
   reminder?: string;
