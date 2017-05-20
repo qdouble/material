@@ -16,9 +16,15 @@
     </div>
   </md-card-content>
   <md-card-actions>
-    <div *ngIf="!offer?.noCardRequired" class="checkbox-row">Do you agree that you will <b><u>not use a prepaid/gift card</u></b> to complete offer and that if you complete the offer, you <b><u>will keep it at least 75-90% of trial period</u></b>?</div>
-    <md-checkbox [hidden]="offer?.noCardRequired" #agree color="primary">I Agree</md-checkbox><br><br>
-    <button md-raised-button color="primary" class="white" [disabled]="!agree?.checked && !offer?.noCardRequired" (click)="continueToOffer.emit(offer?.id)">CONTINUE WITH THIS OFFER</button>
+    <ng-container *ngIf="!offer?.tempUnavailable">
+      <div *ngIf="!offer?.noCardRequired" class="checkbox-row">Do you agree that you will <b><u>not use a prepaid/gift card</u></b> to complete offer and that if you complete the offer, you <b><u>will keep it at least 75-90% of trial period</u></b>?</div>
+      <md-checkbox [hidden]="offer?.noCardRequired" #agree color="primary">I Agree</md-checkbox><br><br>
+      <button md-raised-button color="primary" class="white" [disabled]="!agree?.checked && !offer?.noCardRequired" (click)="continueToOffer.emit(offer?.id)">CONTINUE WITH THIS OFFER</button>
+    </ng-container>
+    <ng-container *ngIf="offer?.tempUnavailable">
+      <button md-button class="white warn-background">TEMPORARILY UNAVAILABLE</button>
+      <div class="warn">{{offer?.tempUnavailableMessage}}</div>
+    </ng-container>
   </md-card-actions>
   <md-card-content>
     Once you have completed the requirements listed above, credit is usually applied to your account
