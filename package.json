@@ -1,6 +1,6 @@
 {
   "name": "offersystem-frontend",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Angular and Webpack 2 build of LevelUp Rewards",
   "author": "Qdouble <qdouble@gmail.com>",
   "main": "index.js",
@@ -159,7 +159,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-mocha-reporter": "~2.2.3",
     "karma-phantomjs-launcher": "~1.0.4",
-    "karma-remap-coverage": "0.1.5",
+    "karma-remap-coverage": "0.1.6",
     "karma-sourcemap-loader": "~0.3.7",
     "karma-webpack": "2.0.3",
     "node-sass": "~4.5.2",
