@@ -9,6 +9,12 @@
           <span md-line class="secondary">{{view.description}}</span>
         </a>
       </ng-template>
+      <a md-list-item style="color: #272b27" href="https://www.facebook.com/groups/irproofpics/" target="_blank">
+        <span md-line>
+          <img style="margin-left: 5px;" width="20px" height="20px" id="fb-logo" src="assets/svg/fb-logo.svg">
+            <span style="margin-left: 17px; position: relative; top: -4px;">Proof Pic Group</span>
+        </span>
+      </a>
       <a *ngIf="loggedIn" md-list-item style="color: #272b27"  queryParamsHandling="preserve" routerLinkActive="active-link" (click)="logout(); mobile ? sidenav.close() : null">
         <md-icon md-list-icon>close</md-icon>
         <span md-line>Logout</span>
