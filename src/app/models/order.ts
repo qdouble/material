@@ -15,4 +15,6 @@ export interface Order {
   processStatus?: string;
   updatedAt: string;
   createdAt: string;
+  // Helper properties //
+  viewed?: boolean;
 }

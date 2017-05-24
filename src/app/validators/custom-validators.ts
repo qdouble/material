@@ -51,7 +51,6 @@ export function requiredIfGroup(mainControl: string,
 
 export function requiredIfCondition(condition: boolean,
   otherControls: string[], errMessage: string): ValidatorFn {
-    console.log('evaluating');
   return (group: FormGroup): { [key: string]: any; } => {
     let requiredErr: boolean = false;
     for (let control of otherControls) {

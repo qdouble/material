@@ -24,7 +24,12 @@ import {
   getNoficationPendingTotal,
   getNotificationUnreadTotal
 } from './reducers/notification';
-import { getCreditedOfferCollection, getUILatestVersion, getUIVersion } from './reducers/ui';
+import {
+  getCompletedOrderCollection,
+  getCreditedOfferCollection,
+  getUILatestVersion,
+  getUIVersion
+} from './reducers/ui';
 
 import {
   getUserOnAdminPage, getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy
@@ -39,8 +44,10 @@ import { log, MOBILE, SERVICE_WORKER_SUPPORT } from './services/constants';
 import { PushNotification } from './models/push-notification';
 import { SWAndPushService } from './services/sw-and-push';
 
+import { CompletedOrderDialog } from './features/order/completed-order-dialog';
 import { CreditedOfferDialog } from './features/offers/credited-offer.dialog';
 import { Offer } from './models/offer';
+import { Order } from './models/order';
 
 @Component({
   selector: 'my-app',
@@ -65,8 +72,12 @@ export class AppComponent implements OnDestroy, OnInit {
   webSocket$: Subject<any>;
   closeConnection$: Subject<any> = new Subject<any>();
   ///// Completed Offer Dialog //////
-  dialogRef: MdDialogRef<CreditedOfferDialog>;
-  config: MdDialogConfig = {
+  completedOrderDialogRef: MdDialogRef<CompletedOrderDialog>;
+  completedOrderDialogConfig: MdDialogConfig = {
+    disableClose: false
+  };
+  creditDialogRef: MdDialogRef<CreditedOfferDialog>;
+  creditDialogConfig: MdDialogConfig = {
     disableClose: false,
     width: '',
     height: '',
@@ -241,6 +252,19 @@ export class AppComponent implements OnDestroy, OnInit {
           (err) => log(err)
           );
       });
+
+    let completedOrders$ = this.store.let(getCompletedOrderCollection());
+    completedOrders$
+      // .filter(orders => orders.length > 0)
+      // .filter(orders => orders.find(order => order.viewed === undefined) !== undefined)
+      .subscribe(orders => {
+        orders.forEach(order => {
+          if (!order.viewed) {
+            this.openCompletedOrderDialog(order);
+            this.store.dispatch(this.uiActions.markCompletedOrderAsViewed(order.id));
+          }
+        });
+      });
     let creditedOffer$ = this.store.let(getCreditedOfferCollection());
     creditedOffer$
       .filter(offers => offers.length > 0)
@@ -302,14 +326,25 @@ export class AppComponent implements OnDestroy, OnInit {
     this.store.dispatch(this.notificationActions.markAllAsRead());
   }
 
-  openCreditedDialog(offer: Offer) {
-    this.dialogRef = this.dialog.open(CreditedOfferDialog, this.config);
-    this.dialogRef.componentInstance.offer = offer;
+  openCompletedOrderDialog(order: Order) {
+    this.completedOrderDialogRef = this.dialog.open(CompletedOrderDialog,
+      this.completedOrderDialogRef);
+    this.completedOrderDialogRef.componentInstance.order = order;
 
-    this.dialogRef.afterClosed()
+    this.completedOrderDialogRef.afterClosed()
       .takeUntil(this.destroyed$)
       .subscribe(result => {
-        this.dialogRef = null;
+        this.completedOrderDialogRef = null;
+      });
+  }
+  openCreditedDialog(offer: Offer) {
+    this.creditDialogRef = this.dialog.open(CreditedOfferDialog, this.creditDialogConfig);
+    this.creditDialogRef.componentInstance.offer = offer;
+
+    this.creditDialogRef.afterClosed()
+      .takeUntil(this.destroyed$)
+      .subscribe(result => {
+        this.creditDialogRef = null;
       });
   }
 

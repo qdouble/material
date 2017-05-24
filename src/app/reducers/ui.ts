@@ -6,10 +6,13 @@ import { Action } from '@ngrx/store';
 import { AppState } from './';
 import { UIActions } from '../actions/ui';
 import { Offer } from '../models/offer';
+import { Order } from '../models/order';
 import { PushNotification } from '../models/push-notification';
 
 export interface UIState {
   contactRequestSent: boolean;
+  completedOrderIds: string[];
+  completedOrders: { [id: string]: Order };
   creditedOfferIds: string[];
   creditedOffers: { [id: string]: Offer };
   mobile: boolean;
@@ -18,10 +21,12 @@ export interface UIState {
   sideNavOpen: boolean;
   latestVersion: string;
   version: string;
-};
+}
 
 export const initialState: UIState = {
   contactRequestSent: false,
+  completedOrderIds: [],
+  completedOrders: {},
   creditedOfferIds: [],
   creditedOffers: {},
   mobile: false,
@@ -57,6 +62,17 @@ export function uiReducer(state = initialState, action: Action): UIState {
       });
     }
 
+    case UIActions.DISPLAY_COMPLETED_ORDER_DIALOG: {
+      const order = action.payload.order;
+      if (!order || state.completedOrderIds.includes(order.id)) return state;
+      return Object.assign({}, state, {
+        completedOrderIds: [...state.completedOrderIds, order.id],
+        completedOrders: Object.assign({}, state.completedOrders, {
+          [order.id]: order
+        })
+      });
+    }
+
     case UIActions.DISPLAY_CREDITED_OFFER_DIALOG: {
       const offer = action.payload.offer;
       if (!offer || state.creditedOfferIds.includes(offer.id)) return state;
@@ -74,6 +90,16 @@ export function uiReducer(state = initialState, action: Action): UIState {
       return Object.assign({}, state, {
         latestVersion: action.payload.version
       });
+
+    case UIActions.MARK_COMPLETED_ORDER_AS_VIEWED: {
+      const id: string = action.payload;
+      if (!id || typeof id !== 'string') return state;
+      return Object.assign({}, state, {
+        creditedOffers: Object.assign({}, state.completedOrders, {
+          [id]: Object.assign({}, state.completedOrderIds[id], { viewed: true })
+        })
+      });
+    }
 
     case UIActions.MARK_CREDITED_OFFER_AS_VIEWED: {
       const id: string = action.payload;
@@ -100,6 +126,22 @@ export function uiReducer(state = initialState, action: Action): UIState {
       return state;
     }
   }
+}
+
+function _getCompletedOrderEntities() {
+  return (state$: Observable<UIState>) => state$
+    .select(s => s.completedOrders);
+}
+
+function _getCompletedOrders(orderIds: string[]) {
+  return (state$: Observable<UIState>) => state$
+    .let(_getCompletedOrderEntities())
+    .map(entities => orderIds.map(id => entities[id]));
+}
+
+function _getCompletedOrderIds() {
+  return (state$: Observable<UIState>) => state$
+    .select(s => s.completedOrderIds);
 }
 
 function _getCreditedOfferEntities() {
@@ -143,6 +185,18 @@ function _getVersion() {
     .select(s => s.version);
 }
 
+export function getCompletedOrders(ids: string[]) {
+  return compose(_getCompletedOrders(ids), _getUIState());
+}
+
+export function getCompletedOrderIds() {
+  return compose(_getCompletedOrderIds(), _getUIState());
+}
+
+export function getOrderEntities() {
+  return compose(_getCompletedOrderEntities(), _getUIState());
+}
+
 export function getCreditedOffers(ids: string[]) {
   return compose(_getCreditedOffers(ids), _getUIState());
 }
@@ -154,7 +208,11 @@ export function getCreditedOfferIds() {
 export function getCreditEntities() {
   return compose(_getCreditedOfferEntities(), _getUIState());
 }
-
+export function getCompletedOrderCollection() {
+  return (state$: Observable<AppState>) => state$
+    .let(getCompletedOrderIds())
+    .switchMap(id => state$.let(getCompletedOrders(id)));
+}
 export function getCreditedOfferCollection() {
   return (state$: Observable<AppState>) => state$
     .let(getCreditedOfferIds())

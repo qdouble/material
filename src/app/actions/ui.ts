@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 
 import { Offer } from '../models/offer';
+import { Order } from '../models/order';
 import { PushNotification } from '../models/push-notification';
 
 @Injectable()
@@ -64,6 +65,14 @@ export class UIActions {
     };
   }
 
+  static DISPLAY_COMPLETED_ORDER_DIALOG = '[UI] Display Completed Order Dialog';
+  displayCompletedOrderDialog(order: Order): Action {
+    return {
+      type: UIActions.DISPLAY_COMPLETED_ORDER_DIALOG,
+      payload: order
+    };
+  }
+
   static DISPLAY_CREDITED_OFFER_DIALOG = '[UI] Display Credited Offer Dialog';
   displayCreditedOfferDialog(offer: Offer): Action {
     return {
@@ -92,6 +101,14 @@ export class UIActions {
     return {
       type: UIActions.GET_VERSION_SUCCESS,
       payload: version
+    };
+  }
+
+  static MARK_COMPLETED_ORDER_AS_VIEWED = '[UI] Mark Complete Order As Viewed';
+  markCompletedOrderAsViewed(id: string): Action {
+    return {
+      type: UIActions.MARK_COMPLETED_ORDER_AS_VIEWED,
+      payload: id
     };
   }
 
