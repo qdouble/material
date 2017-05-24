@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -19,7 +20,7 @@ import { getTicketCollection } from '../../reducers/ticket';
   styleUrls: ['./support.scss']
 })
 
-export class Support {
+export class Support implements OnInit {
   added$: Observable<boolean>;
   closedTickets$: Observable<Ticket[]>;
   creditRequests$: Observable<CreditRequest[]>;
@@ -30,9 +31,11 @@ export class Support {
   sortByVar$: Observable<{ sortBy: string, reverse: boolean }>;
   sortByVarToArray$: Observable<(string | boolean)[]>;
   tickets$: Observable<Ticket[]>;
+  ticketSubject: string;
   unsortedTickets$: Observable<Ticket[]>;
   constructor(
     private creditRequestActions: CreditRequestActions,
+    private route: ActivatedRoute,
     private store: Store<AppState>,
     private ticketActions: TicketActions
   ) {
@@ -57,6 +60,13 @@ export class Support {
     this.closedTickets$ = Observable
       .combineLatest(this.tickets$, Observable.of(true), showClosed);
 
+  }
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      if (params['report']) {
+        this.ticketSubject = `I'd like to report the person who referred me`;
+      }
+    });
   }
   closeTicket(ticket: { id: string, close: boolean }) {
     this.store.dispatch(this.ticketActions.closeTicket(ticket));

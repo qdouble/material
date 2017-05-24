@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -27,17 +27,22 @@ import { TicketActions } from '../../ticket.actions';
   styles: [`md-input-container { width: 99%; }`]
 })
 
-export class SupportTicket implements OnDestroy {
+export class SupportTicket implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
   f = new FormGroup({
     subject: new FormControl('', Validators.required),
     question: new FormControl('', Validators.required)
   });
   @Input() addedObs: Observable<boolean>;
+  @Input() ticketSubject: string;
   constructor(
     private store: Store<AppState>,
     private ticketActions: TicketActions
   ) { }
+
+  ngOnInit() {
+    this.f.get('subject').setValue(this.ticketSubject);
+  }
 
   submitForm() {
     this.store.dispatch(this.ticketActions.addTicket(this.f.value));
