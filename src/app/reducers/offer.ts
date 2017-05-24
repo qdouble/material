@@ -55,7 +55,9 @@ export function offerReducer(state = initialState, action: Action): OfferState {
       return Object.assign({}, state, {
         ids: newOfferIds,
         entities: Object.assign({}, state.entities, {
-          [offer.id]: offer
+          [offer.id]: Object.assign({}, offer, {
+            costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser
+          })
         }),
         loading: false
       });
