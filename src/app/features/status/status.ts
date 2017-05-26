@@ -46,6 +46,7 @@ export class Status implements OnDestroy {
   selectedPrizeLabels$: Observable<string[]>;
   selectedPrizeValues$: Observable<string[]>;
   settingPrize$: Observable<boolean>;
+  showAnnouncements: boolean;
   sortingBy: { sortBy: string, reverse: boolean };
   sponsorForm: FormGroup;
   updatedAt: string;

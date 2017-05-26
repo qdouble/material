@@ -46,7 +46,7 @@
         </div>
       </div>
       </span>
-      <button *ngIf="loggedIn" md-icon-button color="primary" (click)="null">
+      <button *ngIf="loggedIn && false" md-icon-button color="primary" (click)="null">
         <md-icon style="color: #e8e8e8;" >mail</md-icon>
       </button>
       <div class="ntfy-messages-circle" *ngIf="unreadMessageTotal$ | async">
