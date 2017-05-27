@@ -10,6 +10,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { useLogMonitor } from '@ngrx/store-log-monitor';
 
+// import { MATERIAL_MODULES } from './material.modules';
 import { TransferHttpModule } from '../modules/transfer-http/transfer-http.module';
 
 import { FEATURE_MODULES } from './features';
@@ -61,6 +62,7 @@ export const APP_IMPORTS = [
   FormsModule,
   IdlePreloadModule.forRoot(),
   MaterialModule,
+  // MATERIAL_MODULES,
   ReactiveFormsModule,
   RouterStoreModule.connectRouter(),
   SelectInputModule,
