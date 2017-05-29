@@ -31,7 +31,7 @@
             </ng-container>
           </div>
           <div class="cell last-cell">
-            <button md-icon-button [ngClass]="{'transparent': (!referral?.leveledUp || referral?.hold) , 'primary-background':  (referral.payBeyondLevel < referral.currentLevel && !referral.hold), 'warn-background': referral?.hold }"
+            <button md-icon-button [ngClass]="{'transparent': (!referral?.leveledUp || referral?.hold) , 'primary-background':  (referral.payBeyondLevel < referral.currentLevel && !referral.hold && referral.currentSponsor), 'warn-background': referral?.hold, 'gray': !referral.currentSponsor }"
               (click)="getReferral.emit(referral)">
               <md-icon>remove_red_eye</md-icon>
             </button>
