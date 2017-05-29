@@ -25,7 +25,7 @@
         <div>Level <ng-content select="[offer-card-level]"></ng-content></div>
         <div>Earn up to $<ng-content select="[offer-card-earn]"></ng-content> per referral&#42;</div>
       </div>
-      <div *ngIf="!hideLevel && (!creditedOfferIds || creditedOfferIds && creditedOfferIds.includes(offerId))" class="os-md-card-level">
+      <div *ngIf="!hideLevel &&creditedOfferIds &&creditedOfferIds.length > 0 && (creditedOfferIds.includes(offerId))" class="os-md-card-level">
         <div class="completed">Completed</div>
       </div>
       <div *ngIf="hideLevel" class="os-md-card-level">
