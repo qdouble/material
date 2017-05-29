@@ -26,7 +26,7 @@
         referral</p>
     </div>
 
-  <os-offer-rows [addUp]="addUp" [creditTotal]="creditTotal$ | async" [loggedIn]="loggedIn$ | async" [showingAvailable]="!showCompleted"
+  <os-offer-rows [addUp]="addUp" [creditedOfferIds]="creditedOfferIds" [creditTotal]="creditTotal$ | async" [loggedIn]="loggedIn$ | async" [showingAvailable]="!showCompleted"
     [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
     (checkOffer)="checkOffer($event)">
     </os-offer-rows>

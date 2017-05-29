@@ -5,6 +5,7 @@
     'os-offer-card-s-closed': !sideNavOpen }"
     [addUp]="addUp"
     [creditTotal]="creditTotal"
+    [creditedOfferIds]="creditedOfferIds"
     [hideLevel]="((creditTotal + offer?.creditValue) | floor) === (creditTotal | floor)"
     [loggedIn]="loggedIn"
     [offerId]="offer?.id"

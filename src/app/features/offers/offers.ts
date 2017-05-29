@@ -34,6 +34,7 @@ export class Offers implements AfterViewInit, OnDestroy {
   = new Subject<{ id: string, creditValue: number, checked: boolean }[]>();
   credits$: Observable<Credit[]>;
   creditTotal$: Observable<number>;
+  creditedOfferIds: string[];
   destroyed$: Subject<any> = new Subject();
   lastCloseResult: string;
   loaded$: Observable<boolean>;
@@ -156,9 +157,9 @@ export class Offers implements AfterViewInit, OnDestroy {
               .takeUntil(this.destroyed$)
               .filter(credits => credits.length > 0)
               .subscribe(credits => {
-                let creditedOfferIds: string[] = credits.map(credit => credit.offerId);
+                this.creditedOfferIds = credits.map(credit => credit.offerId);
                 this.offersCompleted$ = Observable.combineLatest(
-                  this.offersSorted$, Observable.of(creditedOfferIds), completed);
+                  this.offersSorted$, Observable.of(this.creditedOfferIds), completed);
               });
           });
       });

@@ -15,6 +15,7 @@ import { Offer } from '../../models/offer';
 export class OfferCard implements OnInit {
   isNew: boolean;
   @Input() addUp: boolean;
+  @Input() creditedOfferIds: string[];
   @Input() creditValue: number;
   @Input() hideLevel: boolean;
   @Input() loggedIn: boolean;

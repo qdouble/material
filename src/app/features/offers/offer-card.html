@@ -20,10 +20,13 @@
   <md-card-actions>
     <button md-button color="primary" [routerLink]="['/offers/offer-details', {id: offerId}]">VIEW OFFER</button>
     <ng-container *ngIf="showingAvailable">
-      <div *ngIf="!hideLevel" class="os-md-card-level">
+      <div *ngIf="!hideLevel && (!creditedOfferIds || creditedOfferIds && !creditedOfferIds.includes(offerId))" class="os-md-card-level">
         <div>Complete and reach</div>
         <div>Level <ng-content select="[offer-card-level]"></ng-content></div>
         <div>Earn up to $<ng-content select="[offer-card-earn]"></ng-content> per referral&#42;</div>
+      </div>
+      <div *ngIf="!hideLevel && (!creditedOfferIds || creditedOfferIds && creditedOfferIds.includes(offerId))" class="os-md-card-level">
+        <div class="completed">Completed</div>
       </div>
       <div *ngIf="hideLevel" class="os-md-card-level">
         <div>Complete and earn</div>

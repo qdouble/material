@@ -13,6 +13,7 @@ export class OfferRows {
   publish = PUBLISH;
   offer: Offer;
   @Input() addUp: boolean;
+  @Input() creditedOfferIds: string[];
   @Input() loggedIn: boolean;
   @Input() mobile: boolean;
   @Input() offers: Offer[];
