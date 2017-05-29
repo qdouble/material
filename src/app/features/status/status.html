@@ -34,7 +34,7 @@
           </span>
         </p>
         <p><b>You can currently earn up to <em>${{user?.currentLevel * 5 | number:'1.2-2'}}</em> per referral</b></p>
-        <p><b>Get {{(user?.currentLevel + 1) - (creditTotal$ | async) | number:'1.2-2' }}  more credits and reach level {{user?.currentLevel + 1}} and earn up to ${{(user?.currentLevel + 1) * 5}} per referral.  </b></p>
+        <p><b>Get {{(user?.currentLevel + 1) - (creditTotal$ | async) | number:'1.2-2' }}  more credit(s) and reach level {{user?.currentLevel + 1}} and earn up to ${{(user?.currentLevel + 1) * 5}} per referral.  </b></p>
         <ng-container *ngIf="creditsShown">
           <div class="table">
             <ng-container *ngFor="let credit of (credits$ | async)">
