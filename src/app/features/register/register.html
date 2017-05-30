@@ -6,7 +6,7 @@
       account being placed on hold. Provided information is used for account purposes only. We do not send spam emails nor will we ever sell your information to third parties.
     </md-card>
     <form [formGroup]="f" (ngSubmit)="submitForm()">
-      <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" [autofocus]="true" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" type="email" controlName="confirmEmail" placeholder="Confirm Email Address" [form]="f"></os-form-input>
       <div [hidden]="!f.hasError('compareEmail') || 
           !f.get('confirmEmail').valid" class="warn-text">

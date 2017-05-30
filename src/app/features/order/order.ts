@@ -1,12 +1,15 @@
 /* tslint:disable triple-equals */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { RegexValues } from '../../validators';
+
+import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 
 import { PrizeActions } from '../../actions/prize';
 import { OrderActions } from '../../actions/order';
@@ -27,6 +30,11 @@ import { getUser, getUserLoaded, getUserSettingPrize } from '../../reducers/user
 
 export class OrderComponent implements OnDestroy, OnInit {
   changePrize = false;
+
+  confirmDialogRef: MdDialogRef<ConfirmDialog>;
+  confirmDialogConfig: MdDialogConfig = {
+    disableClose: false
+  };
   currentYear = new Date().getFullYear();
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
@@ -51,6 +59,7 @@ export class OrderComponent implements OnDestroy, OnInit {
   user: User;
   user$: Observable<User>;
   constructor(
+    public dialog: MdDialog,
     private fb: FormBuilder,
     private store: Store<AppState>,
     private orderAction: OrderActions,
@@ -165,6 +174,28 @@ export class OrderComponent implements OnDestroy, OnInit {
     }
   }
 
+  openConfirmDialog(formValue) {
+    this.confirmDialogRef = this.dialog.open(ConfirmDialog,
+      this.confirmDialogRef);
+    this.confirmDialogRef.componentInstance.confirmText =
+      `Are you sure <br><b>${formValue.paypal}</b><br> is your PayPal email address?`;
+    this.confirmDialogRef.componentInstance.confirmColor = '#73a03d';
+    this.confirmDialogRef.componentInstance.subtext =
+      `If your paypal email address is incorrect,
+      it may take you a long time to resolve the issue and get paid.
+      You cannot switch payment methods after payment is sent.`;
+    this.confirmDialogRef.componentInstance.subtextColor = '#F44336';
+
+    this.confirmDialogRef.afterClosed()
+      .takeUntil(this.destroyed$)
+      .subscribe(result => {
+        if (result) {
+          this.store.dispatch(this.orderAction.placeOrder(formValue));
+        }
+        this.confirmDialogRef = null;
+      });
+  }
+
   placeOrder() {
     let f = this.f.value;
     f = Object.assign({}, f, {
@@ -172,7 +203,11 @@ export class OrderComponent implements OnDestroy, OnInit {
       selectedPrizeId: f['selectedPrize']
     });
     delete f['selectedPrize'];
-    this.store.dispatch(this.orderAction.placeOrder(f));
+    if (f.selectedPrizeName === 'PayPal') {
+      this.openConfirmDialog(f);
+    } else {
+      this.store.dispatch(this.orderAction.placeOrder(f));
+    }
   }
 
   ngOnDestroy() {

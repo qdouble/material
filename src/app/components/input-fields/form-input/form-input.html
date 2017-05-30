@@ -5,7 +5,9 @@
     [type]="type" 
     [autocomplete]="autocomplete"
     [placeholder]=[placeholder] 
-    [formControl]="dynamicControl">
+    [formControl]="dynamicControl"
+    [autofocus]="autofocus ? true : null"
+    >
     <md-hint *ngIf="dynamicControl.touched && dynamicControl.hasError('required')" class="warn" align="start">{{ name || placeholder }} is required</md-hint>
     <md-hint *ngIf="dynamicControl.touched && dynamicControl.invalid && !dynamicControl.hasError('required')" class="warn" align="start">{{ name || placeholder }} is invalid</md-hint>
   </md-input-container>

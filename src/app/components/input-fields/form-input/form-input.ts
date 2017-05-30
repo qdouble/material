@@ -12,6 +12,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 })
 
 export class FormInput implements OnInit {
+  @Input() autofocus: boolean;
   @Input() autocomplete: 'off' | null = null;
   @Input() form: FormGroup;
   @Input() controlName: string;
