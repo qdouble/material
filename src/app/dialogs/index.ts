@@ -4,4 +4,5 @@ import { CreditedOfferDialog } from './credited-offer.dialog';
 export const DIALOGS = [
   CompletedOrderDialog,
   ConfirmDialog,
+  CreditedOfferDialog
 ];
