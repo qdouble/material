@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
-import { Offer } from '../../models/offer';
+import { Offer } from '../models/offer';
 
 @Component({
   selector: 'os-credited-offer-dialog',

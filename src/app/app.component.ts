@@ -44,8 +44,8 @@ import { log, MOBILE, SERVICE_WORKER_SUPPORT } from './services/constants';
 import { PushNotification } from './models/push-notification';
 import { SWAndPushService } from './services/sw-and-push';
 
-import { CompletedOrderDialog } from './features/order/completed-order-dialog';
-import { CreditedOfferDialog } from './features/offers/credited-offer.dialog';
+import { CompletedOrderDialog } from './dialogs/completed-order.dialog';
+import { CreditedOfferDialog } from './dialogs/credited-offer.dialog';
 import { Offer } from './models/offer';
 import { Order } from './models/order';
 

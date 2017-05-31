@@ -1,7 +1,5 @@
 import { AdminLogin } from './admin-login';
 import { DIALOGS } from './dialogs';
-import { CompletedOrderDialog } from './features/order/completed-order-dialog';
-import { CreditedOfferDialog } from './features/offers/credited-offer.dialog';
 import { DebounceInputControlValueAccessor } from './validators';
 import { NotFound404Component } from './not-found404.component';
 import { PAGES_COMPONENTS } from './features';
@@ -11,8 +9,6 @@ import { ReferralDetailsDialog } from './features/status/common/referrals-table/
 
 export const APP_DECLARATIONS = [
   AdminLogin,
-  CompletedOrderDialog,
-  CreditedOfferDialog,
   DebounceInputControlValueAccessor,
   DIALOGS,
   NotFound404Component,
