@@ -1,4 +1,4 @@
-/* tslint:disable triple-equals */
+/* tslint:disable triple-equals max-line-length */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
@@ -196,6 +196,24 @@ export class OrderComponent implements OnDestroy, OnInit {
       });
   }
 
+  openConfirmDialogInvalidPayPal() {
+    this.confirmDialogRef = this.dialog.open(ConfirmDialog,
+      this.confirmDialogRef);
+    this.confirmDialogRef.componentInstance.confirmText =
+      `Your paypal email address is invalid.`;
+    this.confirmDialogRef.componentInstance.confirmColor = '#F44336';
+    this.confirmDialogRef.componentInstance.subtext =
+      `Please enter in a valid paypal email address`;
+    this.confirmDialogRef.componentInstance.subtextColor = '#73a03d';
+    this.confirmDialogRef.componentInstance.okayOnly = true;
+
+    this.confirmDialogRef.afterClosed()
+      .takeUntil(this.destroyed$)
+      .subscribe(result => {
+        this.confirmDialogRef = null;
+      });
+  }
+
   placeOrder() {
     let f = this.f.value;
     f = Object.assign({}, f, {
@@ -203,7 +221,10 @@ export class OrderComponent implements OnDestroy, OnInit {
       selectedPrizeId: f['selectedPrize']
     });
     delete f['selectedPrize'];
-    if (f.selectedPrizeName === 'PayPal') {
+    let re = /^.+\@.+\..+$/;
+    if (f.selectedPrizeName === 'PayPal' && !re.test(String(f.paypal))) {
+      this.openConfirmDialogInvalidPayPal();
+    } else if (f.selectedPrizeName === 'PayPal') {
       this.openConfirmDialog(f);
     } else {
       this.store.dispatch(this.orderAction.placeOrder(f));
