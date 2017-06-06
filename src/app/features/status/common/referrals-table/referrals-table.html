@@ -7,7 +7,7 @@
       <div class="cell"></div>
     </div>
     <ng-container *ngFor="let referral of referrals">
-      <ng-container *ngIf="referral.active && (!referral.hidden || showHidden) && !referral.removed">
+      <ng-container *ngIf="referral && referral.active && (!referral.hidden || showHidden) && !referral.removed">
         <div *ngIf="referral" [ngClass]="{'green': (referral.payBeyondLevel < referral.currentLevel && !referral.hold), 'red': referral.hold, 'gray': !referral.currentSponsor, 'row': true, 'stripe-2': referral.hidden }">
           <div class="cell hide-1 nowrap">
             {{referral?.addedOn | date: medium }}
