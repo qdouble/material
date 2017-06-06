@@ -1,9 +1,11 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
+import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { combineSort } from '../../helper/combine-sort';
 import { RegexValues } from '../../validators';
 
@@ -20,7 +22,12 @@ import { UserActions } from '../../actions/user';
 import { getPrize, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
 import { getCreditCollection, getCreditTotal } from '../../reducers/user';
 import {
-  getReferralCollection, getReferral, getUser, getUserLoaded, getUserLoading,
+  getReferralCollection,
+  getReferral,
+  getSelectedReferralIds,
+  getUser,
+  getUserLoaded,
+  getUserLoading,
   getUserSettingPrize
 } from '../../reducers/user';
 
@@ -30,8 +37,12 @@ import {
   styleUrls: ['./status.scss']
 })
 
-export class Status implements OnDestroy {
+export class Status implements OnDestroy, OnInit {
   changePrize = false;
+  confirmDialogRef: MdDialogRef<ConfirmDialog>;
+  confirmDialogConfig: MdDialogConfig = {
+    disableClose: false
+  };
   credits$: Observable<Credit[]>;
   creditsShown: boolean;
   creditTotal$: Observable<number>;
@@ -40,13 +51,17 @@ export class Status implements OnDestroy {
   loading$: Observable<boolean>;
   prize$: Observable<Prize>;
   prizes$: Observable<Prize[]>;
+  referralSelect = new FormControl(' ');
   referrals$: Observable<Referral[]>;
   reverse = false;
   selectPrizeForm: FormGroup;
   selectedPrizeLabels$: Observable<string[]>;
   selectedPrizeValues$: Observable<string[]>;
+  selectedReferralIds: string[];
+  selectedReferralIds$: Observable<string[]>;
   settingPrize$: Observable<boolean>;
   showAnnouncements: boolean;
+  showHidden = new FormControl();
   sortingBy: { sortBy: string, reverse: boolean };
   sponsorForm: FormGroup;
   updatedAt: string;
@@ -55,6 +70,7 @@ export class Status implements OnDestroy {
   user: User;
   @ViewChild(ReferralsTable) referralTable: ReferralsTable;
   constructor(
+    public dialog: MdDialog,
     private fb: FormBuilder,
     private store: Store<AppState>,
     private notifyActions: NotifyActions,
@@ -127,6 +143,28 @@ export class Status implements OnDestroy {
       });
   }
 
+  ngOnInit() {
+    this.selectedReferralIds$ = this.store.let(getSelectedReferralIds());
+    this.selectedReferralIds$
+      .takeUntil(this.destroyed$)
+      .subscribe(ids => this.selectedReferralIds = ids);
+  }
+
+  applyToChecked() {
+    switch (this.referralSelect.value) {
+      case 'hide':
+        this.hideReferrals(true);
+        break;
+      case 'show':
+        this.hideReferrals(false);
+        break;
+      case 'remove':
+        this.removeReferrals();
+        break;
+      default:
+    }
+  }
+
   cancelPrizeChange() {
     if (this.user.selectedPrize) {
       this.selectPrizeForm.get('selectedPrize').setValue(this.user.selectedPrize);
@@ -147,6 +185,14 @@ export class Status implements OnDestroy {
     }
   }
 
+  deselectAllReferrals() {
+    this.store.dispatch(this.userActions.deSelectAllReferrals());
+  }
+
+  deselectReferrals(ids: string[]) {
+    this.store.dispatch(this.userActions.deSelectReferrals(ids));
+  }
+
   getReferral(referral: User) {
     this.store.dispatch(this.userActions.getReferral(referral.id));
     this.loading$
@@ -158,6 +204,45 @@ export class Status implements OnDestroy {
           this.referralTable.open(ref);
         });
       });
+  }
+
+  hideReferrals(hide: boolean) {
+    this.store.dispatch(this.userActions.hideReferrals({
+      ids: this.selectedReferralIds, hide: hide
+    }));
+  }
+
+  removeReferrals() {
+    this.confirmDialogRef = this.dialog.open(ConfirmDialog,
+      this.confirmDialogRef);
+    this.confirmDialogRef.componentInstance.confirmText =
+      `Are you sure you sure you want to remove the
+      ${this.selectedReferralIds.length} selected referral(s)?`;
+    this.confirmDialogRef.componentInstance.confirmColor = '#FFA000';
+    this.confirmDialogRef.componentInstance.subtext =
+      `Removing your referrals means they will no longer be under you. This cannot be undone.`;
+    this.confirmDialogRef.componentInstance.subtextColor = '#F44336';
+
+    this.confirmDialogRef.afterClosed()
+      .takeUntil(this.destroyed$)
+      .subscribe(result => {
+        if (result) {
+          this.store.dispatch(this.userActions.removeReferrals(this.selectedReferralIds));
+        }
+        this.confirmDialogRef = null;
+      });
+  }
+
+  selectReferral(select: { id: string, checked: boolean }) {
+    if (select.checked) {
+      this.selectReferrals([select.id]);
+    } else {
+      this.deselectReferrals([select.id]);
+    }
+  }
+
+  selectReferrals(ids: string[]) {
+    this.store.dispatch(this.userActions.selectReferrals(ids));
   }
 
   sortBy(sortBy: string) {
@@ -176,5 +261,6 @@ export class Status implements OnDestroy {
 
   ngOnDestroy() {
     this.destroyed$.next();
+    this.deselectAllReferrals();
   }
 }

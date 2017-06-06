@@ -25,11 +25,12 @@ export interface UserState {
   referralIds: string[];
   referrals: { [id: string]: Referral };
   resetEmailSent: boolean;
+  selectedReferralIds: string[];
   settingPrize: boolean;
   sortReferralBy: { sortBy: string, reverse: boolean };
   updatedAt: string;
   user: User;
-};
+}
 
 export const initialState: UserState = {
   creditIds: [],
@@ -47,6 +48,7 @@ export const initialState: UserState = {
   referralIds: [],
   referrals: {},
   resetEmailSent: false,
+  selectedReferralIds: [],
   settingPrize: false,
   sortReferralBy: { sortBy: 'addedOn', reverse: false },
   updatedAt: null,
@@ -140,6 +142,20 @@ export function userReducer(state = initialState, action: Action): UserState {
       });
     }
 
+    case UserActions.DESELECT_ALL_REFERRALS: {
+      return { ...state, selectedReferralIds: [] };
+    }
+
+    case UserActions.DESELECT_REFERRALS: {
+      const ids: string[] = action.payload;
+      if (!ids || !ids.length) return state;
+      let filteredIds: string[] = [...state.selectedReferralIds];
+      ids.forEach(id => {
+        filteredIds = [...filteredIds.filter(i => i !== id)];
+      });
+      return { ...state, selectedReferralIds: filteredIds };
+    }
+
     case UserActions.DISMISS_PROFILE_CHANGES_SUCCESS: {
       return Object.assign({}, state, {
         user: Object.assign({}, state.user, { profilePending: false })
@@ -154,6 +170,18 @@ export function userReducer(state = initialState, action: Action): UserState {
 
     case UserActions.FORGOT_PASSWORD_SUCCESS:
       return Object.assign({}, state, { loading: false, resetEmailSent: true });
+
+    case UserActions.HIDE_REFERRALS_SUCCESS: {
+      const ids: string[] = action.payload.ids;
+      const hide: boolean = action.payload.hide;
+      if (!ids || !ids.length || hide === undefined) return state;
+      let refsMod = { ...state.referrals };
+      ids.forEach(id => {
+        refsMod = { ...refsMod, [id]: { ...refsMod[id], hidden: hide } };
+      });
+
+      return { ...state, referrals: refsMod, selectedReferralIds: [] };
+    }
 
     case UserActions.GET_PROFILE: {
       return Object.assign({}, state, { loading: true });
@@ -244,6 +272,36 @@ export function userReducer(state = initialState, action: Action): UserState {
         loading: false,
         loggedIn: action.payload.success || false
       });
+
+    case UserActions.REMOVE_REFERRALS_SUCCESS: {
+      const ids: string[] = action.payload.ids;
+      if (!ids || !ids.length) return state;
+      let refsMod = { ...state.referrals };
+      ids.forEach(id => {
+        refsMod = { ...refsMod, [id]: { ...refsMod[id], removed: true } };
+      });
+
+      return { ...state, referrals: refsMod, selectedReferralIds: [] };
+      // const ids: string[] = action.payload;
+      // let idsMod = [...state.referralIds];
+      // let refsMod = { ...state.referrals };
+      // ids.forEach(id => {
+      //   idsMod = [...idsMod.filter(i => i !== id)];
+      //   refsMod = { ...refsMod, [id]: undefined };
+      // });
+      // return { ...state, referralIds: idsMod, referrals: refsMod };
+    }
+
+    case UserActions.SELECT_REFERRALS: {
+      const ids: string[] = action.payload;
+      let newIds: string[] = [...state.selectedReferralIds];
+      ids.forEach(id => {
+        if (!newIds.includes(id)) {
+          newIds = [...newIds, id];
+        }
+      });
+      return { ...state, selectedReferralIds: newIds };
+    }
 
     case UserActions.SET_ADMIN_LOGIN_PAGE:
       return Object.assign({}, state, {
@@ -431,6 +489,11 @@ function _getReferralIds() {
     .select(s => s.referralIds);
 }
 
+function _getSelectedReferralIds() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.selectedReferralIds);
+}
+
 function _getSettingPrize() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.settingPrize);
@@ -492,6 +555,10 @@ export function getReferralCollection() {
   return (state$: Observable<AppState>) => state$
     .let(getReferralIds())
     .switchMap(id => state$.let(getReferrals(id)));
+}
+
+export function getSelectedReferralIds() {
+  return compose(_getSelectedReferralIds(), _getUserState());
 }
 
 export function getUser() {

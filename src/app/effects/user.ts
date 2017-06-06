@@ -131,6 +131,18 @@ export class UserEffects {
       ))
     );
 
+  @Effect() hideReferrals$ = this.actions$
+    .ofType(UserActions.HIDE_REFERRALS)
+    .map(action => <{ ids: string[], hide: boolean }>action.payload)
+    .switchMap((hideRefs) => this.userService.hideReferrals(hideRefs)
+      .mergeMap((res) => Observable.of(
+        this.userActions.hideReferralsSuccess(res))
+      )
+      .catch((err) => Observable.of(
+        this.userActions.hideReferralsFail(err)
+      ))
+    );
+
   @Effect() getProfile$ = this.actions$
     .ofType(UserActions.GET_PROFILE)
     .map(action => <string>action.payload)
@@ -219,6 +231,18 @@ export class UserEffects {
       .catch((err) => Observable.of(
         this.userActions.registerFail(err),
         this.notifyActions.addNotify(err)
+      ))
+    );
+
+  @Effect() removeReferrals$ = this.actions$
+    .ofType(UserActions.REMOVE_REFERRALS)
+    .map(action => <string[]>action.payload)
+    .switchMap((ids) => this.userService.removeReferrals(ids)
+      .mergeMap((res) => Observable.of(
+        this.userActions.removeReferralsSuccess(res))
+      )
+      .catch((err) => Observable.of(
+        this.userActions.hideReferralsFail(err)
       ))
     );
 

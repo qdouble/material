@@ -21,10 +21,19 @@ md-card {
   margin-bottom: 5px;
 }
 
+md-slide-toggle {
+  display:  table;
+  margin: 10px auto;
+}
+
 .os-status-page-section {
   width: 90%;
   max-width: 615px;
   margin: 0 auto;
+}
+
+.ref-select-row {
+  text-align: center;
 }
 
 #referral-link-section {

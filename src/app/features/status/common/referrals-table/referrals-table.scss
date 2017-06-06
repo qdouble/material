@@ -40,6 +40,22 @@
   width: 100%;
 }
 
+.stripe-2 {
+  color: black;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    #ccc 10px,
+    #ccc 20px
+  ),
+  linear-gradient(
+    to bottom,
+    #eee,
+    #999
+  )
+}
+
 @media screen and (max-width: 390px) {
   .hide-mail {
     display: none

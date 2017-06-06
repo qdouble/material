@@ -32,9 +32,11 @@ export class ReferralsTable implements OnDestroy {
   };
   @Input() loading: boolean;
   @Input() referrals: User[];
-  @Output() reload = new EventEmitter();
-  @Output() sortBy = new EventEmitter();
+  @Input() showHidden: boolean;
   @Output() getReferral = new EventEmitter();
+  @Output() reload = new EventEmitter();
+  @Output() selectReferral = new EventEmitter();
+  @Output() sortBy = new EventEmitter();
   @Output() viewReferral = new EventEmitter();
   constructor(public dialog: MdDialog) { }
 
@@ -49,6 +51,7 @@ export class ReferralsTable implements OnDestroy {
       this.dialogRef = null;
     });
   }
+
   trackById(index: number, user: User) {
     return user.id;
   }

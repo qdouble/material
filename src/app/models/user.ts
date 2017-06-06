@@ -30,7 +30,7 @@ export interface User {
     readonly receiveReferralMessages?: boolean;
     readonly currentSponsor?: string;
     readonly currentSponsorEmail?: string;
-    referrals?: Object;
+    referrals?: { [id: string]: Referral };
     referralIds?: string[];
     readonly referralCount?: number;
     readonly currentLevel?: number;
@@ -44,4 +44,22 @@ export interface User {
     // Helpers //
     credits?: Credit[];
     requiresApproval?: true;
+}
+
+export interface Referral {
+    id: string;
+    username: string;
+    email: string;
+    currentLevel: number;
+    payBeyondLevel: number;
+    leveledUp: boolean;
+    levels: number[][];
+    addedOn: Date;
+    transferredOn: string;
+    currentSponsor: boolean;
+    active: boolean;
+    hidden: boolean | undefined;
+    hold: boolean | undefined;
+    holdReason: string | undefined;
+    removed: boolean | undefined;
 }

@@ -170,6 +170,22 @@ export class UserActions {
     };
   }
 
+
+  static DESELECT_ALL_REFERRALS = '[User] Deselect All Referrals';
+  deSelectAllReferrals(): Action {
+    return {
+      type: UserActions.DESELECT_ALL_REFERRALS
+    };
+  }
+
+  static DESELECT_REFERRALS = '[User] Deselect Referrals';
+  deSelectReferrals(ids: string[]): Action {
+    return {
+      type: UserActions.DESELECT_REFERRALS,
+      payload: ids
+    };
+  }
+
   static DISMISS_PROFILE_CHANGES = '[User] Dismiss Profile Changes';
   dismissProfileChanges(): Action {
     return {
@@ -260,6 +276,30 @@ export class UserActions {
     return {
       type: UserActions.GET_REFERRAL_SUCCESS,
       payload: user
+    };
+  }
+
+  static HIDE_REFERRALS = '[User] Hide Referrals';
+  hideReferrals(hideRefs: { ids: string[], hide: boolean }): Action {
+    return {
+      type: UserActions.HIDE_REFERRALS,
+      payload: hideRefs
+    };
+  }
+
+  static HIDE_REFERRALS_FAIL = '[User] Hide Referrals Fail';
+  hideReferralsFail(err: Error): Action {
+    return {
+      type: UserActions.HIDE_REFERRALS_FAIL,
+      payload: err
+    };
+  }
+
+  static HIDE_REFERRALS_SUCCESS = '[User] Hide Referrals Success';
+  hideReferralsSuccess(res: { ids: string[], hide: boolean }): Action {
+    return {
+      type: UserActions.HIDE_REFERRALS_SUCCESS,
+      payload: res
     };
   }
 
@@ -364,6 +404,30 @@ export class UserActions {
     };
   }
 
+  static REMOVE_REFERRALS = '[User] Remove Referrals';
+  removeReferrals(ids: string[]): Action {
+    return {
+      type: UserActions.REMOVE_REFERRALS,
+      payload: ids
+    };
+  }
+
+  static REMOVE_REFERRALS_FAIL = '[User] Remove Referrals Fail';
+  removeReferralsFail(err: Error): Action {
+    return {
+      type: UserActions.REMOVE_REFERRALS_FAIL,
+      payload: err
+    };
+  }
+
+  static REMOVE_REFERRALS_SUCCESS = '[User] Remove Referrals Success';
+  removeReferralsSuccess(res: { ids: string[] }): Action {
+    return {
+      type: UserActions.REMOVE_REFERRALS_SUCCESS,
+      payload: res
+    };
+  }
+
   static RESET_PASSWORD = '[User] Reset Password';
   resetPassword(reset: { email: string, code: string, password: string }): Action {
     return {
@@ -385,6 +449,14 @@ export class UserActions {
     return {
       type: UserActions.RESET_PASSWORD_FAIL,
       payload: err
+    };
+  }
+
+  static SELECT_REFERRALS = '[User] Select Referrals';
+  selectReferrals(ids: string[]): Action {
+    return {
+      type: UserActions.SELECT_REFERRALS,
+      payload: ids
     };
   }
 
