@@ -37,7 +37,7 @@ export class Register implements OnDestroy, OnInit {
     position: {
       top: '',
       bottom: '',
-      left: '',
+      left: '35px',
       right: ''
     }
   };

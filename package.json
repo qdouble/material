@@ -1,6 +1,6 @@
 {
   "name": "offersystem-frontend",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Angular and Webpack 2 build of LevelUp Rewards",
   "author": "Qdouble <qdouble@gmail.com>",
   "main": "index.js",
