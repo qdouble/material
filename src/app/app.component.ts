@@ -145,7 +145,7 @@ export class AppComponent implements OnDestroy, OnInit {
           window.location.reload();
         }
       });
-    let checkServer$ = Observable.interval(60000);
+    let checkServer$ = Observable.interval(120000);
     checkServer$
       .takeUntil(this.destroyed$)
       .subscribe(() => {
