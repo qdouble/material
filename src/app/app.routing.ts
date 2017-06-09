@@ -97,7 +97,7 @@ export const routes: Routes = [
     component: ReferrerBlockedComponent
   },
   {
-    path: 'order',
+    path: 'payments',
     loadChildren: './features/order/index#OrderModule',
     canActivate: [AuthGuard]
   },

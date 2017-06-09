@@ -1,10 +1,10 @@
 <md-card class="os-page-container">
   <md-card id="place-order" class="os-form-container">
-    <md-card-title class="primary">Place Order</md-card-title>
+    <md-card-title class="primary">Payments</md-card-title>
     <ng-container *ngIf="user?.orderPending">
       <md-card class="order-status accent-background white">
-        <p>You have an order that is currently pending. You can not place another order until order is resolved. All pending completions
-        will be processed at the same time.</p>
+        <p>You have an payment request that is currently pending. You can not place another request until payment request is resolved. All pending level ups before request is processed will be
+        will be paid out at the same time.</p>
         <br>
         <p>REMINDER: Make sure to tell your referrals to fully test out and keep any offer that they complete for the majority of the trial period.</p>
         <p>Low quality referrals will just lead to fewer good offers being available and it being harder for you to earn in the future, so make sure you do your part in providing high quality leads.</p>
@@ -14,38 +14,38 @@
       <md-card class="os-message-card accent-background white">
         <ng-container *ngIf="user?.currentLevel < 1">
           <div style="text-align: left; padding: 4px;">
-          <p>As you are currently on level 0, you are not qualified to place an order.</p><br>
+          <p>As you are currently on level 0, you are not qualified to request payment.</p><br>
           <p>To qualify to start earning money, you must go to the <a [routerLink]="['/offers']">Offers</a> page and complete enough offers to reach level 1 or higher. The higher the level you reach, the more you can potentially earn. Every full 1.00 credit elevates you to the next level and partial credits are also added up. So if you complete an offer worth 1.25 credits you will be at level 1. If you complete another offer worth 0.75 credits, you will have 2.00 credits total and be at level 2.</p><br>
           <p>Payouts are calculated by multiplying $5 by the level reached by your referrals. For example, if you are on level 10, you can earn up to $50 per referral. So if you have a referral that reaches level 10, you'll get paid $50. If you have another that reaches level 5, you'll earn $25. Any time your referral levels up, you can place an additonal order and get paid for that referral again. So if that referral who previously went to level 5, then goes to level 7, you can place another order for additional $10. The maximum you can earn per referral is determined by your own level.</p><br>
           <p>For more details <a [routerLink]="['/faq']">read the FAQ page.</a></p>
           </div>
         </ng-container>
         <ng-container *ngIf="user?.currentLevel >= 1 && user?.hasReferralsBeyondLevel">
-          You do not have any users on your level or below that you can place an order on.
-          However, you do have referrals that have unpaid levels that are beyond your level that you can place an order for if you increase your level.
+          You do not have any users on your level or below that you can request payment for.
+          However, you do have referrals that have unpaid levels that are beyond your level that you can request payment for if you increase your level.
         </ng-container>
         <ng-container *ngIf="user?.currentLevel >= 1 && !user?.hasReferralsBeyondLevel">
-          You have no referrals that you can currently place an order on.
+          You have no referrals that you can currently request payment for.
         </ng-container>
 
       </md-card>
     </ng-container>
     <ng-container *ngIf="!user?.orderPending && user?.hasQualifiedReferrals && !user?.hold">
-      <md-card class="order-status primary-background white">Congratulations! You have met all requirements! Place your order!</md-card>
-      <md-card-subtitle>After approval, your order will be paid through:</md-card-subtitle>
+      <md-card class="order-status primary-background white">Congratulations! You have met all requirements! Request your payment!</md-card>
+      <md-card-subtitle>After approval, you will be paid through:</md-card-subtitle>
       <os-selected-prize [changePrize]="changePrize" [form]="selectPrizeForm" [prize]="prize$ | async" [prizes]="prizes$ | async"
         [selectedPrizeLabels]="selectedPrizeLabels$ | async" [selectedPrizeValues]="selectedPrizeValues$ | async" (cancelPrizeChange)="cancelPrizeChange()"
         (changeSelectedPrize)="changeSelectedPrize()">
       </os-selected-prize>
       <div id="order-form">
-        <md-card id="please-be-sure-card" class="accent-background white">Please ensure that all information is absolutely correct before placing order!</md-card>
+        <md-card id="please-be-sure-card" class="accent-background white">Please ensure that all information is absolutely correct before requesting payment!</md-card>
         <os-order-form [form]="f" [loaded]="loaded$ | async" [needPaypalEmail]="needPaypalEmail" [placing]="placing$ | async" [user]="user$ | async" (placeOrder)="placeOrder()">
         </os-order-form>
       </div>
     </ng-container>
 
     <md-card class="os-message-card accent-background white" *ngIf="!user?.orderPending && user?.hasQualifiedReferrals && user?.hold">
-          You are currently on hold and can not place any orders until your hold is removed.
+          You are currently on hold and can not request any payments until your hold is removed.
   </md-card>
 
   </md-card>
@@ -73,7 +73,7 @@
     </md-card-content>
   </md-card>
   <md-card *ngIf="(orders$| async)?.length > 0" class="os-form-container">
-    <md-card-title class="primary">Orders</md-card-title>
+    <md-card-title class="primary">Payment History</md-card-title>
     <os-orders-table [loaded]="ordersLoaded$ | async" [orders]="orders$ | async">
     </os-orders-table>
   </md-card>

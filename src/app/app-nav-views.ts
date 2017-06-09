@@ -48,9 +48,9 @@ export const views: Object[] = [
     loggedIn: true
   },
   {
-    name: 'Order',
-    icon: 'add_shopping_cart',
-    link: ['order'],
+    name: 'Payments',
+    icon: 'attach_money',
+    link: ['payments'],
     loggedIn: true
   },
   {

@@ -8,5 +8,5 @@
   <os-form-input class="os-form-input" placeholder="Email Address" controlName="email" [form]="form"></os-form-input>
   <os-form-input class="os-form-input" placeholder="PayPal Email Address" controlName="paypal" [form]="form"></os-form-input>
   <div class="warn warn-message" *ngIf="needPaypalEmail">PayPal Account Email Needed</div>
-  <button md-raised-button type="submit" color="primary" class="white" [disabled]="form.invalid || placing || needPaypalEmail">PLACE ORDER</button>
+  <button md-raised-button type="submit" color="primary" class="white" [disabled]="form.invalid || placing || needPaypalEmail">REQUEST PAYMENT</button>
 </form>
