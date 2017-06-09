@@ -60,7 +60,7 @@ export class Status implements OnDestroy, OnInit {
   selectedReferralIds: string[];
   selectedReferralIds$: Observable<string[]>;
   settingPrize$: Observable<boolean>;
-  showAnnouncements: boolean;
+  showAnnouncements: boolean = true;
   showHidden = new FormControl();
   sortingBy: { sortBy: string, reverse: boolean };
   sponsorForm: FormGroup;
