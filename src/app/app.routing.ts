@@ -2,6 +2,7 @@
 import { Routes } from '@angular/router';
 
 import { NotFound404Component } from './not-found404.component';
+import { ReferrerBlockedComponent } from './referrer-blocked';
 import {
   AuthGuard,
   LoggedInRedirectGuard
@@ -91,6 +92,10 @@ export const routes: Routes = [
   //   path: 'offer-redirect',
   //   component: OfferRedirect
   // },
+    {
+    path: 'referrer-blocked',
+    component: ReferrerBlockedComponent
+  },
   {
     path: 'order',
     loadChildren: './features/order/index#OrderModule',

@@ -21,6 +21,7 @@ export interface UserState {
   loggedIn: boolean | null;
   matches: boolean | undefined;
   onAdminPage: boolean;
+  referrerBlocked: boolean;
   referredBy: string | null;
   referralIds: string[];
   referrals: { [id: string]: Referral };
@@ -44,6 +45,7 @@ export const initialState: UserState = {
   loggedIn: null,
   matches: undefined,
   onAdminPage: false,
+  referrerBlocked: false,
   referredBy: null,
   referralIds: [],
   referrals: {},
@@ -111,6 +113,13 @@ export function userReducer(state = initialState, action: Action): UserState {
       return Object.assign({}, state, {
         loading: false
       });
+    }
+
+    case UserActions.CHECK_REFERRER_USERNAME_SUCCESS : {
+      if (action.payload.blocked) {
+        return { ...state, referrerBlocked: true };
+      }
+      return state;
     }
 
     case UserActions.CHECK_IF_USER_UPDATED_SUCCESS: {
@@ -463,6 +472,11 @@ function _getOnAdminLoginPage() {
     .select(s => s.onAdminPage);
 }
 
+function _getReferrerBlocked() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.referrerBlocked);
+}
+
 function _getReferredBy() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.referredBy);
@@ -549,6 +563,10 @@ export function getReferralIds() {
 
 export function getReferralEntities() {
   return compose(_getReferralEntities(), _getUserState());
+}
+
+export function getReferrerBlocked() {
+  return compose(_getReferrerBlocked(), _getUserState());
 }
 
 export function getReferralCollection() {

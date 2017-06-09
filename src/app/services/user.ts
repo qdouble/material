@@ -39,6 +39,11 @@ export class UserService extends RequestBase {
       .map(res => res.text());
   }
 
+  checkReferrerUsername(username: string): Observable<any> {
+    return this.http.get(`${API_USER_URL}/checkReferrerUsername?username=${username}`, this.optionsNoPre)
+      .map(res => res.json());
+  }
+
   dismissProfileChanges(): Observable<any> {
     return this.http.get(`${API_USER_URL}/dismissProfileChanges`, this.optionsNoPre)
       .map(res => res.text());

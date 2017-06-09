@@ -32,6 +32,7 @@ import {
 } from './reducers/ui';
 
 import {
+  getReferrerBlocked,
   getUserOnAdminPage, getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy
 } from './reducers/user';
 import { getCreditCollection } from './reducers/user';
@@ -197,6 +198,7 @@ export class AppComponent implements OnDestroy, OnInit {
         this.referredBy = param['ref'];
         if (validateUserName(this.referredBy)) {
           this.store.dispatch(this.userActions.setReferredBy(this.referredBy));
+          this.store.dispatch(this.userActions.checkReferrerUsername(this.referredBy));
         }
       });
     this.credits$ = store.let(getCreditCollection());
@@ -217,6 +219,13 @@ export class AppComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    let checkIfReferrerBlocked$ = this.store.let(getReferrerBlocked())
+      .subscribe(blocked => {
+        if (blocked) {
+          this.router.navigate(['referrer-blocked']);
+          this.mobile = true;
+        }
+      });
     this.cache.set('cached', true);
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {

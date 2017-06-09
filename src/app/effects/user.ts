@@ -103,6 +103,16 @@ export class UserEffects {
       ))
     );
 
+  @Effect() checkReferrerUsername$ = this.actions$
+    .ofType(UserActions.CHECK_REFERRER_USERNAME)
+    .map(action => <string>action.payload)
+    .switchMap(username => this.userService.checkReferrerUsername(username)
+      .map((res: any) => this.userActions.checkReferrerUsernameSuccess(res))
+      .catch((err) => Observable.of(
+        this.userActions.checkReferrerUsernameFail(err)
+      ))
+    );
+
   @Effect() dismissProfileChanges$ = this.actions$
     .ofType(UserActions.DISMISS_PROFILE_CHANGES)
     .map(action => <any>action.payload)
@@ -150,7 +160,7 @@ export class UserEffects {
       .mergeMap((res: any) => Observable.of(
         this.notificationActions.setNotificationTotal(res),
         this.userActions.getProfileSuccess(res))
-        )
+      )
       .catch((err) => Observable.of(
         this.userActions.getProfileFail(err)
       ))

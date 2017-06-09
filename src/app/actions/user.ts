@@ -171,6 +171,32 @@ export class UserActions {
   }
 
 
+  static CHECK_REFERRER_USERNAME = '[User] Check Referrer Username';
+  checkReferrerUsername(username: string): Action {
+    return {
+      type: UserActions.CHECK_REFERRER_USERNAME,
+      payload: username
+    };
+  }
+
+  static CHECK_REFERRER_USERNAME_FAIL = '[User] Check Referrer Username Fail';
+  checkReferrerUsernameFail(err: Error): Action {
+    return {
+      type: UserActions.CHECK_REFERRER_USERNAME_FAIL,
+      payload: err
+    };
+  }
+
+
+  static CHECK_REFERRER_USERNAME_SUCCESS = '[User] Check Referrer Username Success';
+  checkReferrerUsernameSuccess(res: Response): Action {
+    return {
+      type: UserActions.CHECK_REFERRER_USERNAME_SUCCESS,
+      payload: res
+    };
+  }
+
+
   static DESELECT_ALL_REFERRALS = '[User] Deselect All Referrals';
   deSelectAllReferrals(): Action {
     return {
