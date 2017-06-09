@@ -5,6 +5,7 @@ import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Router } from '@angular/router';
 
 import { CountryActions } from '../../actions/country';
 import { PrizeActions } from '../../actions/prize';
@@ -14,7 +15,7 @@ import { Prize } from '../../models/prize';
 import { AppState } from '../../reducers';
 import { getCountryCollection, getCountryLoaded } from '../../reducers/country';
 import { getPrizeSelected, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
-import { getUserEntryEmail, getUserReferredBy } from '../../reducers/user';
+import { getReferrerBlocked, getUserEntryEmail, getUserReferredBy } from '../../reducers/user';
 import { CustomValidators, RegexValues, UsernameValidator } from '../../validators';
 
 import { IPMatchFoundDialog } from './ip-match-found.dialog';
@@ -28,6 +29,7 @@ import { IPMatchFoundDialog } from './ip-match-found.dialog';
 })
 
 export class Register implements OnDestroy, OnInit {
+  blocked: true;
   destroyed$: Subject<any> = new Subject<any>();
   dialogRef: MdDialogRef<IPMatchFoundDialog>;
   config: MdDialogConfig = {
@@ -63,6 +65,7 @@ export class Register implements OnDestroy, OnInit {
     private countryActions: CountryActions,
     public dialog: MdDialog,
     private prizeActions: PrizeActions,
+    private router: Router,
     private store: Store<AppState>,
     private userActions: UserActions,
     private userValidator: UsernameValidator
@@ -133,6 +136,12 @@ export class Register implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    this.store.let(getReferrerBlocked()).takeUntil(this.destroyed$)
+      .subscribe(blocked => {
+        if (blocked) {
+          this.blocked = true;
+        }
+    });
     this.countries$ = this.store.let(getCountryCollection());
     this.countryIds$ = this.countries$.map(countries => countries.map(country => country.id));
     this.countryIds$

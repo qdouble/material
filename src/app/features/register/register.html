@@ -1,4 +1,5 @@
-<md-card class="register-page-container">
+<h5 *ngIf="blocked" style="text-align: center">This referer has been blocked due to inappropriate advertising.</h5>
+<md-card *ngIf="!blocked" class="register-page-container">
   <md-card class="os-form-container">
     <md-card-title>Register</md-card-title>
     <md-card id="registration-text" class="primary-background white">
