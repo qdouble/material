@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'os-forgot-password',
@@ -20,7 +20,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 export class ForgotPassword {
   f: FormGroup;
-  constructor(private fb: FormBuilder) { }
+  constructor() { }
   submitForm() {
 
   }

@@ -17,4 +17,4 @@ export interface PushOptions {
   dir?: 'auto' | 'ltr' | 'rtl';
   lang?: string;
   vibrate?: number[];
-};
+}

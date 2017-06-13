@@ -13,7 +13,7 @@ export interface OrderState {
   loading: boolean;
   loaded: boolean;
   placing: boolean;
-};
+}
 
 export const initialState: OrderState = {
   ids: [],

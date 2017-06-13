@@ -16,7 +16,6 @@ import { Referral } from '../../models/referral';
 import { User } from '../../models/user';
 
 import { ReferralsTable } from './common/referrals-table';
-import { NotifyActions } from '../../actions/notify';
 import { PrizeActions } from '../../actions/prize';
 import { UserActions } from '../../actions/user';
 import { getPrize, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
@@ -73,12 +72,11 @@ export class Status implements OnDestroy, OnInit {
     public dialog: MdDialog,
     private fb: FormBuilder,
     private store: Store<AppState>,
-    private notifyActions: NotifyActions,
     private prizeActions: PrizeActions,
     private userActions: UserActions
   ) {
-    this.selectPrizeForm = fb.group({ 'selectedPrize': null });
-    this.sponsorForm = fb.group(
+    this.selectPrizeForm = this.fb.group({ 'selectedPrize': null });
+    this.sponsorForm = this.fb.group(
       {
         'sponsorUserName': ['', [Validators.required, Validators.pattern(RegexValues.username)]]
       });

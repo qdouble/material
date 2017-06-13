@@ -5,7 +5,6 @@ import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Router } from '@angular/router';
 
 import { CountryActions } from '../../actions/country';
 import { PrizeActions } from '../../actions/prize';
@@ -65,7 +64,6 @@ export class Register implements OnDestroy, OnInit {
     private countryActions: CountryActions,
     public dialog: MdDialog,
     private prizeActions: PrizeActions,
-    private router: Router,
     private store: Store<AppState>,
     private userActions: UserActions,
     private userValidator: UsernameValidator
@@ -84,7 +82,7 @@ export class Register implements OnDestroy, OnInit {
         [Validators.required, Validators.pattern(RegexValues.email)]),
       username: new FormControl(PUBLISH ? '' : `myUserName${this.RANDOM_NUM}`,
         [Validators.required, Validators.pattern(RegexValues.username)],
-        <any>userValidator.usernameTaken),
+        <any>this.userValidator.usernameTaken),
       password: new FormControl(PUBLISH ? '' : 'password',
         [Validators.required, Validators.pattern(RegexValues.password)]),
       confirmPassword: new FormControl(PUBLISH ? '' : 'password',

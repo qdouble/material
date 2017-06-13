@@ -14,7 +14,7 @@ export interface OfferState {
   loaded: boolean;
   loadedUserOffers: boolean;
   selectedOffer: string | null;
-};
+}
 
 export const initialState: OfferState = {
   ids: [],

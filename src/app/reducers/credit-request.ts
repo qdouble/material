@@ -19,7 +19,7 @@ export interface CreditRequestState {
   loadedClicks: boolean;
   offerIds: string[];
   offerEntitites: { [id: string]: OfferClick };
-};
+}
 
 export const initialState: CreditRequestState = {
   ids: [],

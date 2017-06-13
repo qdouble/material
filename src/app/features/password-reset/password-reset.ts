@@ -7,7 +7,6 @@ import { CustomValidators } from '../../validators';
 
 import { AppState } from '../../reducers';
 import { UserActions } from '../../actions/user';
-import { getUserEntryEmail } from '../../reducers/user';
 import { RegexValues } from '../../validators';
 
 @Component({

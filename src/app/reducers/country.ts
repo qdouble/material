@@ -15,7 +15,7 @@ export interface CountryState {
   loading: boolean;
   loaded: boolean;
   selectedCountry: string | null;
-};
+}
 
 export const initialState: CountryState = {
   ids: [],

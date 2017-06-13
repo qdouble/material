@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { PushNotification, Permission } from '../models/push-notification';
 
 declare const Notification: any;
-declare var ServiceWorkerRegistration: any;
+// declare var ServiceWorkerRegistration: any;
 import { log, PUSH_MANAGER_SUPPORT, SERVICE_WORKER_SUPPORT } from './constants';
 
 @Injectable()

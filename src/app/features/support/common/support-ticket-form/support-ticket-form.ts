@@ -2,11 +2,9 @@ import {
   ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, OnDestroy, Output
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
-import { AppState } from '../../../../reducers';
 import { Ticket, TicketMessage } from '../../ticket.model';
 
 @Component({
@@ -31,10 +29,9 @@ export class SupportTicketFormComponent implements OnDestroy, OnInit {
   @Output() markTicketAsRead = new EventEmitter();
   @Output() sortBy = new EventEmitter();
   constructor(
-    private fb: FormBuilder,
-    private store: Store<AppState>
+    private fb: FormBuilder
   ) {
-    this.f = fb.group({
+    this.f = this.fb.group({
       message: ''
     });
   }

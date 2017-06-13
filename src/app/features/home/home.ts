@@ -1,6 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -31,8 +30,6 @@ export class Homepage implements OnDestroy {
 
   constructor(
     private prizeActions: PrizeActions,
-    private route: ActivatedRoute,
-    private router: Router,
     private store: Store<AppState>,
     private userActions: UserActions
   ) {

@@ -40,10 +40,10 @@ const sortString = function (a, b, sortBy, reverse) {
   return 0;
 };
 
-export function combineSort <T>(sortBy: string | number, obj) {
+export function combineSort (sortBy: string | number, obj) {
   return obj.sort(function (a, b) {
     if (!a || !b) return obj;
     if (typeof a[sortBy[0]] === 'string') return sortString(a, b, sortBy[0], sortBy[1]);
     return sortOther(a, b, sortBy[0], sortBy[1]);
   });
-};
+}

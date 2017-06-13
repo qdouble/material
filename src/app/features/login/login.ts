@@ -1,6 +1,5 @@
 import { Component, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -31,7 +30,6 @@ export class Login implements OnDestroy {
   });
 
   constructor(
-    private route: ActivatedRoute,
     private store: Store<AppState>,
     private userActions: UserActions
   ) {

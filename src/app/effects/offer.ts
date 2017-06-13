@@ -2,9 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 
-import { AppState } from '../reducers';
 import { NotifyActions } from '../actions/notify';
 import { OfferActions } from '../actions/offer';
 import { OfferService } from '../services/offer';
@@ -16,8 +14,7 @@ export class OfferEffects {
     public actions$: Actions,
     private notifyActions: NotifyActions,
     private offerActions: OfferActions,
-    private offerService: OfferService,
-    private store: Store<AppState>
+    private offerService: OfferService
   ) { }
 
   @Effect() getOffer$ = this.actions$

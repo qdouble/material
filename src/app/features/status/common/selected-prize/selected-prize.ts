@@ -18,4 +18,4 @@ export class SelectedPrizeComponent {
   @Input() selectedPrizeValues: string[] = [];
   @Output() cancelPrizeChange = new EventEmitter();
   @Output() changeSelectedPrize = new EventEmitter();
-};
+}

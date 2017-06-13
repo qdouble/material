@@ -13,7 +13,7 @@ import { AdminLogin } from './admin-login';
 import {
   AboutUs,
   ForgotPassword,
-  Homepage,
+  // Homepage,
   HowItWorks,
   Login,
   Logout,

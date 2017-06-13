@@ -41,7 +41,7 @@ export class Profile implements OnDestroy, OnInit {
     private store: Store<AppState>,
     private userActions: UserActions
   ) {
-    this.f = fb.group({
+    this.f = this.fb.group({
       firstName: ['', [Validators.required, Validators.pattern(RegexValues.nameValue)]],
       lastName: ['', [Validators.required, Validators.pattern(RegexValues.nameValue)]],
       username: ['', [Validators.required, Validators.pattern(RegexValues.username)]],

@@ -41,7 +41,7 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
     private route: ActivatedRoute,
     private store: Store<AppState>
   ) {
-    route.params.forEach(param => {
+    this.route.params.forEach(param => {
       let id = param['id'];
       if (id) {
         this.view = true;
@@ -51,7 +51,7 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
         store.dispatch(creditRequestActions.getOfferClicks());
       }
     });
-    this.f = fb.group({
+    this.f = this.fb.group({
       offerId: ['', Validators.minLength(2)],
       offerName: '',
       completedOn: ['', Validators.required],

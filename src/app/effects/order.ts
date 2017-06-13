@@ -53,7 +53,7 @@ export class OrderEffects {
       .do(((res) => {
         if (res.payload.message_type !== 'success') {
           this.store.dispatch(this.notifyActions.addNotify(res.payload));
-        };
+        }
         if (res.payload.order) {
           this.store.dispatch(this.userActions.setOrderPending(true));
         }

@@ -37,7 +37,7 @@ export {
   ProofPicGallery,
   Register,
   ReportSpam
-}
+};
 
 export const FEATURE_MODULES = [
   FooterModule

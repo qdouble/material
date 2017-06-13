@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
@@ -27,7 +27,6 @@ export class OfferRedirect implements OnInit, OnDestroy {
   routerSub: Subscription;
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private store: Store<AppState>,
     private userActions: UserActions
   ) {

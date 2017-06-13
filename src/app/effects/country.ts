@@ -1,10 +1,8 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { AppState } from '../reducers';
 import { CountryService } from '../services/country';
 import { CountryActions } from '../actions/country';
 import { NotifyActions } from '../actions/notify';
@@ -16,8 +14,7 @@ export class CountryEffects {
     public actions$: Actions,
     private countryActions: CountryActions,
     private countryService: CountryService,
-    private notifyActions: NotifyActions,
-    private store: Store<AppState>
+    private notifyActions: NotifyActions
   ) { }
 
   @Effect() getCountries$ = this.actions$

@@ -1,10 +1,8 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { AppState } from '../reducers';
 import { NotificationService } from '../services/notification';
 import { NotificationActions } from '../actions/notification';
 
@@ -15,7 +13,6 @@ export class NotificationEffects {
     public actions$: Actions,
     private notificationActions: NotificationActions,
     private notificationService: NotificationService,
-    private store: Store<AppState>
   ) { }
 
   @Effect() deleteAllNotifications$ = this.actions$

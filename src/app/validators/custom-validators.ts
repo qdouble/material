@@ -42,12 +42,12 @@ export function requiredIfGroup(mainControl: string,
           break;
         }
       }
-    };
+    }
     return (requiredErr) ?
       { [errMessage]: true } :
       <any>null;
   };
-};
+}
 
 export function requiredIfCondition(condition: boolean,
   otherControls: string[], errMessage: string): ValidatorFn {
@@ -61,9 +61,9 @@ export function requiredIfCondition(condition: boolean,
           break;
         }
       }
-    };
+    }
     return (requiredErr) ?
       { [errMessage]: true } :
       <any>null;
   };
-};
+}

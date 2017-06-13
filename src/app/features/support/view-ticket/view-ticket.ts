@@ -25,7 +25,7 @@ export class ViewTicket {
     private store: Store<AppState>,
     private ticketActions: TicketActions
   ) {
-    route.params.forEach(param => {
+    this.route.params.forEach(param => {
       store.dispatch(ticketActions.getTicket(param['id']));
       this.ticket$ = store.let(getTicket(param['id']));
       this.addedTicketMessage$ = this.store.let(getTicketAddedMessage());

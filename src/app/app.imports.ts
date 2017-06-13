@@ -1,6 +1,5 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { RouterModule } from '@angular/router';
 import { IdlePreloadModule } from '@angularclass/idle-preload';
 import { MaterialModule } from '@angular/material';
 

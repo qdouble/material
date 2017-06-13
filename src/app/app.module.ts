@@ -10,7 +10,7 @@ import { ApplicationRef, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
-import { RouterModule, PreloadAllModules } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { IdlePreload } from '@angularclass/idle-preload';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';

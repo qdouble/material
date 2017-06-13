@@ -6,7 +6,7 @@ import {
 @Component({
   selector: 'os-pages',
   template: `
-  <md-button-toggle-group  #page [(ngModel)]="selectedPage" 
+  <md-button-toggle-group  #page [(ngModel)]="selectedPage"
     (ngModelChange)="pageOffset.emit(selectedPage)">
     <ng-container *ngIf="selectedPage !== 'all' ">
       <md-button-toggle *ngFor="let page of pages" [value]="page">
@@ -20,8 +20,7 @@ import {
       <md-button-toggle *ngIf="selectedPage === 'all'" value="1">
         Show Pages
       </md-button-toggle>
-    </ng-container>  
-    
+    </ng-container>
   </md-button-toggle-group>
   `,
   styles: [`:host >>> .md-button-toggle-label-content {padding: 0 9px;}`]

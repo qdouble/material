@@ -14,4 +14,4 @@ import { PrivacyPolicy } from './privacy-policy';
   declarations: [PrivacyPolicy]
 })
 
-export class PrivacyPolicyModule {}
+export class PrivacyPolicyModule { }

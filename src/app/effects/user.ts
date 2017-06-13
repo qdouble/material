@@ -1,5 +1,5 @@
 /* tslint:disable: member-ordering */
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { go } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
@@ -14,13 +14,11 @@ import { User } from '../models/user';
 import { UserActions } from '../actions/user';
 import { UserService } from '../services/user';
 
-
 @Injectable()
 
 export class UserEffects {
   constructor(
     public actions$: Actions,
-    private injector: Injector,
     private notificationActions: NotificationActions,
     private notifyActions: NotifyActions,
     private store: Store<AppState>,

@@ -1,10 +1,8 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { AppState } from '../reducers';
 import { NotifyActions } from '../actions/notify';
 import { PrizeService } from '../services/prize';
 import { PrizeActions } from '../actions/prize';
@@ -16,8 +14,7 @@ export class PrizeEffects {
     public actions$: Actions,
     private notifyActions: NotifyActions,
     private prizeActions: PrizeActions,
-    private prizeService: PrizeService,
-    private store: Store<AppState>
+    private prizeService: PrizeService
   ) { }
 
   @Effect() getPrizes$ = this.actions$

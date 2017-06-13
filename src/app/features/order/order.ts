@@ -66,7 +66,7 @@ export class OrderComponent implements OnDestroy, OnInit {
     private prizeActions: PrizeActions,
     private userActions: UserActions
   ) {
-    this.f = fb.group({
+    this.f = this.fb.group({
       firstName: ['', [Validators.required, Validators.pattern(RegexValues.nameValue)]],
       lastName: ['', [Validators.required, Validators.pattern(RegexValues.nameValue)]],
       email: ['', [Validators.required, Validators.pattern(RegexValues.email)]],

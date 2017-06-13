@@ -15,7 +15,7 @@ export interface PrizeState {
   loading: boolean;
   loaded: boolean;
   selectedPrize: string | null;
-};
+}
 
 export const initialState: PrizeState = {
   ids: [],

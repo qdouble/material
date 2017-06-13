@@ -19,7 +19,7 @@ export interface TicketState {
   loaded: boolean;
   loadingTicket: boolean;
   sortBy: { sortBy: string, reverse: boolean };
-};
+}
 
 export const initialState: TicketState = {
   ids: [],

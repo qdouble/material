@@ -1,10 +1,8 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { AppState } from '../../reducers';
 import { NotifyActions } from '../../actions/notify';
 import { Ticket, TicketMessage } from './ticket.model';
 import { TicketActions } from './ticket.actions';
@@ -17,8 +15,7 @@ export class TicketEffects {
     public actions$: Actions,
     private notifyActions: NotifyActions,
     private ticketActions: TicketActions,
-    private ticketService: TicketService,
-    private store: Store<AppState>
+    private ticketService: TicketService
   ) { }
 
   @Effect() addTicketMessage$ = this.actions$

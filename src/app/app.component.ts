@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import {
   MdDialog, MdDialogRef, MdDialogConfig,
   MdSnackBar, MdSnackBarConfig
@@ -116,7 +116,6 @@ export class AppComponent implements OnDestroy, OnInit {
   views = views;
   constructor(
     private cache: TransferState,
-    private cdr: ChangeDetectorRef,
     public dialog: MdDialog,
     private notificationActions: NotificationActions,
     private route: ActivatedRoute,
@@ -219,7 +218,7 @@ export class AppComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    let checkIfReferrerBlocked$ = this.store.let(getReferrerBlocked())
+    this.store.let(getReferrerBlocked())
       .subscribe(blocked => {
         if (blocked) {
           this.router.navigate(['referrer-blocked']);

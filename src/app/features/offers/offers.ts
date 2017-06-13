@@ -1,6 +1,6 @@
 import {
   AfterViewInit, Component, ChangeDetectionStrategy,
-  ChangeDetectorRef, OnDestroy
+  OnDestroy
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -17,7 +17,6 @@ import { getOfferCollection, getOfferLoaded, getOfferLoadedUserOffers } from '..
 import { getUIMobile, getUISideNavOpen } from '../../reducers/ui';
 import { getCreditCollection, getUserLoggedIn, getCreditTotal } from '../../reducers/user';
 import { OfferActions } from '../../actions/offer';
-import { UserActions } from '../../actions/user';
 
 @Component({
   selector: 'os-offers',
@@ -81,11 +80,9 @@ export class Offers implements AfterViewInit, OnDestroy {
     'creditValue'
   ];
   constructor(
-    private cdr: ChangeDetectorRef,
     private offerActions: OfferActions,
     private route: ActivatedRoute,
-    private store: Store<AppState>,
-    private userActions: UserActions
+    private store: Store<AppState>
   ) {
     this.mobile$ = this.store.let(getUIMobile());
     this.sideNavOpen$ = this.store.let(getUISideNavOpen());

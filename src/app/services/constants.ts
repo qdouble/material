@@ -1,5 +1,4 @@
 /* tslint:disable max-line-length */
-declare const LOCAL_IP;
 export const MOBILE = (typeof window !== 'undefined') ? (window.screen.availWidth < 800) : true;
 export const SERVICE_WORKER_SUPPORT = (typeof navigator !== 'undefined') ? 'serviceWorker' in navigator : false;
 export const PUSH_MANAGER_SUPPORT = (typeof window !== 'undefined') ? 'PushManager' in window : false;
