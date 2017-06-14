@@ -17,7 +17,7 @@
   </md-card-content>
   <md-card-actions>
     <ng-container *ngIf="!offer?.tempUnavailable">
-      <div *ngIf="!offer?.noCardRequired" class="checkbox-row">Do you agree that you will <b><u>not use a prepaid/gift card</u></b> to complete offer and that if you complete the offer, you <b><u>will keep it at least 75-90% of trial period</u></b>?
+      <div *ngIf="!offer?.noCardRequired" class="checkbox-row">Do you agree that you will <b><u>not use a prepaid/gift card</u></b> to complete offer and that if you complete the offer, you <b><u>will keep it at least 75-90% of trial period or beyond</u></b>?
       <div class="warn" style="font-size: 12px; line-height: 10px; margin-top: 4px;">*Please <a [routerLink]="['/support', {report: true}]">report</a> if the person who referred you advised you to violate the above rules.</div></div>
       <md-checkbox [hidden]="offer?.noCardRequired" #agree color="primary">I Agree</md-checkbox><br><br>
       <button md-raised-button color="primary" class="white" [disabled]="!agree?.checked && !offer?.noCardRequired" (click)="continueToOffer.emit(offer?.id)">CONTINUE WITH THIS OFFER</button>
