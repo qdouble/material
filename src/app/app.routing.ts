@@ -127,7 +127,7 @@ export const routes: Routes = [
   {
     path: 'register',
     component: Register,
-    canActivate: [LoggedInRedirectGuard]
+    // canActivate: [LoggedInRedirectGuard]
   },
   {
     path: 'report-spam',
