@@ -173,7 +173,7 @@
     "sass-loader": "^6.0.5",
     "source-map-loader": "~0.2.1",
     "string-replace-loader": "~1.2.0",
-    "sw-precache-webpack-plugin": "^0.9.2",
+    "sw-precache-webpack-plugin": "^0.11.3",
     "to-string-loader": "~1.1.5",
     "ts-helpers": "~1.1.2",
     "ts-node": "~3.0.2",
