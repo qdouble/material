@@ -52,6 +52,7 @@ export interface Referral {
     email: string;
     currentLevel: number;
     payBeyondLevel: number;
+    unpaidLevels?: number;
     leveledUp: boolean;
     levels: number[][];
     addedOn: Date;

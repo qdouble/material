@@ -36,7 +36,7 @@
   </ng-container>
   <ng-container *ngIf="!referral.currentSponsor">
     <div>Level At Transfer: {{referral.currentLevel}}</div>
-    <b>Unpaid Levels: 0</b>
+    <b>Unpaid Levels: {{referral.unpaidLevels ? referral.unpaidLevels : 0}}</b>
     <div><b>User was transferred by user request.</b></div>
   </ng-container>
   <button type="button" md-button color="accent" (click)="dialogRef.close()">CLOSE</button>
