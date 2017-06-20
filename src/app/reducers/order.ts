@@ -36,10 +36,8 @@ export function orderReducer(state = initialState, action: Action): OrderState {
     case OrderActions.GET_ORDERS_SUCCESS: {
       const orders: Order[] = action.payload.orders;
       if (!orders) return Object.assign({}, state, { loading: false });
-      if (state.loaded) {
-        const newOrders: Order[] = orders.filter(order => !state.entities[order.id!]);
-        const newOrderIds: string[] = newOrders.map(order => order.id!);
-        const newOrderEntities = newOrders.reduce(
+        const newOrderIds: string[] = orders.map(order => order.id!);
+        const newOrderEntities = orders.reduce(
           (entities: { [id: string]: Order }, order: Order) => {
             if (order.id)
               return Object.assign(entities, {
@@ -48,29 +46,11 @@ export function orderReducer(state = initialState, action: Action): OrderState {
           }, {});
 
         return Object.assign({}, state, {
-          ids: [...state.ids, ...newOrderIds],
-          entities: Object.assign({}, state.entities, newOrderEntities),
+          ids: newOrderIds,
+          entities: newOrderEntities,
           loading: false,
           loaded: true
         });
-      }
-
-      const newOrders: Order[] = orders;
-      const orderIds: string[] = newOrders.map(order => order.id!);
-      const orderEntities = newOrders.reduce(
-        (entities: { [id: string]: Order }, order: Order) => {
-          if (order.id)
-            return Object.assign(entities, {
-              [order.id]: order
-            });
-        }, {});
-
-      return Object.assign({}, state, {
-        ids: [...orderIds],
-        entities: orderEntities,
-        loading: false,
-        loaded: true
-      });
     }
 
     case OrderActions.PLACE_ORDER:
