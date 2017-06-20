@@ -12,11 +12,6 @@ export class OrderService extends RequestBase {
     super(http);
   }
 
-  getOrder(id: string): Observable<Order[]> {
-    return this.http.get(`${API_USER_URL}/getOrder?id=${id}`, this.optionsNoPre)
-      .map(res => res.json());
-  }
-
   getOrders(): Observable<Order[]> {
     return this.http.get(`${API_USER_URL}/getOrders`, this.optionsNoPre)
       .map(res => res.json());

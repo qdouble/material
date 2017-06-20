@@ -23,17 +23,6 @@ export class OrderEffects {
     private userActions: UserActions
   ) { }
 
-  @Effect() getOrder$ = this.actions$
-    .ofType(OrderActions.GET_ORDER)
-    .map(action => <string>action.payload)
-    .switchMap(id => this.orderService.getOrder(id)
-      .map((res: any) => this.orderActions.getOrderSuccess(res))
-      .catch((err) => Observable.of(
-        this.orderActions.getOrderFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
-
   @Effect() getOrders$ = this.actions$
     .ofType(OrderActions.GET_ORDERS)
     .map(action => <string>action.payload)

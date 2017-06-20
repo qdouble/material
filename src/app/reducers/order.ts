@@ -26,31 +26,11 @@ export const initialState: OrderState = {
 export function orderReducer(state = initialState, action: Action): OrderState {
   switch (action.type) {
 
-    case OrderActions.GET_ORDER:
     case OrderActions.GET_ORDERS:
       return Object.assign({}, state, { loading: true });
 
-    case OrderActions.GET_ORDER_FAIL:
     case OrderActions.GET_ORDERS_FAIL: {
       return Object.assign({}, state, { loading: false });
-    }
-
-    case OrderActions.PLACE_ORDER_SUCCESS:
-    case OrderActions.GET_ORDER_SUCCESS: {
-      const order: Order = action.payload.order;
-      if (!order) return Object.assign({}, state, { loading: false, placing: false });
-      const newOrderIds = [...state.ids];
-      if (!state.ids.includes(order.id)) {
-        newOrderIds.unshift(order.id);
-      }
-      return Object.assign({}, state, {
-        ids: newOrderIds,
-        entities: Object.assign({}, state.entities, {
-          [order.id]: order
-        }),
-        loading: false,
-        placing: false
-      });
     }
 
     case OrderActions.GET_ORDERS_SUCCESS: {
@@ -97,6 +77,23 @@ export function orderReducer(state = initialState, action: Action): OrderState {
       return Object.assign({}, state, { placing: true });
     case OrderActions.PLACE_ORDER_FAIL:
       return Object.assign({}, state, { placing: false });
+
+    case OrderActions.PLACE_ORDER_SUCCESS: {
+      const order: Order = action.payload.order;
+      if (!order) return Object.assign({}, state, { loading: false, placing: false });
+      const newOrderIds = [...state.ids];
+      if (!state.ids.includes(order.id)) {
+        newOrderIds.unshift(order.id);
+      }
+      return Object.assign({}, state, {
+        ids: newOrderIds,
+        entities: Object.assign({}, state.entities, {
+          [order.id]: order
+        }),
+        loading: false,
+        placing: false
+      });
+    }
 
     default: {
       return state;

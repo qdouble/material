@@ -8,28 +8,6 @@ import { Order } from '../models/order';
 @Injectable()
 
 export class OrderActions {
-  static GET_ORDER = '[Order] Get Order';
-  getOrder(id: string): Action {
-    return {
-      type: OrderActions.GET_ORDER,
-      payload: id
-    };
-  }
-
-  static GET_ORDER_FAIL = '[Order] Get Order Fail';
-  getOrderFail(res: Response): Action {
-    return {
-      type: OrderActions.GET_ORDER_FAIL
-    };
-  }
-
-  static GET_ORDER_SUCCESS = '[Order] Get Order Success';
-  getOrderSuccess(order: Order): Action {
-    return {
-      type: OrderActions.GET_ORDER_SUCCESS,
-      payload: order
-    };
-  }
 
   static GET_ORDERS = '[Order] Get Orders';
   getOrders(): Action {
