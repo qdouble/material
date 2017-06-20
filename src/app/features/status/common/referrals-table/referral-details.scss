@@ -21,6 +21,9 @@ button {
 
 .table {
   margin: 5px 0 5px;
-  max-height: 95px;
+}
+
+.table-container {
+  max-height: 150px;
   overflow: scroll;
 }

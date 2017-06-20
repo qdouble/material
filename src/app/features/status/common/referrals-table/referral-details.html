@@ -13,17 +13,19 @@
         </span>
     </div>
     <ng-container *ngIf="creditsShown">
-      <div class="table">
-        <ng-container *ngFor="let credit of referral.credits">
-          <div class="row">
-            <div class="cell name-col">
-              {{ credit.offerName | slice:0:18 }}
+      <div class="table-container">
+        <div class="table">
+          <ng-container *ngFor="let credit of referral.credits">
+            <div class="row">
+              <div class="cell name-col">
+                {{ credit.offerName | slice:0:18 }}
+              </div>
+              <div class="cell value-col" [ngClass]="{'warn': !credit.active}">
+                {{ credit.active ? (credit.creditValue | number:'1.2-2') : 'Revoked'}}
+              </div>
             </div>
-            <div class="cell value-col" [ngClass]="{'warn': !credit.active}">
-              {{ credit.active ? (credit.creditValue | number:'1.2-2') : 'Revoked'}}
-            </div>
-          </div>
-        </ng-container>
+          </ng-container>
+        </div>
       </div>
     </ng-container>
     <div [ngClass]="{'primary': (referral.currentLevel - referral.payBeyondLevel) > 0 }">
@@ -35,6 +37,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="!referral.currentSponsor">
+    <div>Previous Level: {{referral.payBeyondLevel}}</div>
     <div>Level At Transfer: {{referral.currentLevel}}</div>
     <b>Unpaid Levels: {{referral.unpaidLevels ? referral.unpaidLevels : 0}}</b>
     <div><b>User was transferred by user request.</b></div>
