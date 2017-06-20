@@ -115,7 +115,7 @@ export function userReducer(state = initialState, action: Action): UserState {
       });
     }
 
-    case UserActions.CHECK_REFERRER_USERNAME_SUCCESS : {
+    case UserActions.CHECK_REFERRER_USERNAME_SUCCESS: {
       if (action.payload.blocked) {
         return { ...state, referrerBlocked: true };
       }
@@ -321,6 +321,14 @@ export function userReducer(state = initialState, action: Action): UserState {
       return Object.assign({}, state, {
         creditTotal: action.payload
       });
+
+    case UserActions.SET_HAS_QUALFIED_REFERRALS:
+      return Object.assign({}, state, {
+        user: Object.assign({}, state.user, {
+          hasQualifiedReferrals: action.payload
+        })
+      });
+
 
     case UserActions.SET_ORDER_PENDING:
       return Object.assign({}, state, {

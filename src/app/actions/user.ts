@@ -502,6 +502,14 @@ export class UserActions {
     };
   }
 
+  static SET_HAS_QUALFIED_REFERRALS = '[User] Set Has Qaulified Referrals';
+  setHasQualifiedReferrals(hasQualifiedReferrals: boolean): Action {
+    return {
+      type: UserActions.SET_HAS_QUALFIED_REFERRALS,
+      payload: hasQualifiedReferrals
+    };
+  }
+
   static SET_ORDER_PENDING = '[User] Set Order Pending';
   setOrderPending(pending: boolean): Action {
     return {

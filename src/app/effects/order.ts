@@ -39,6 +39,15 @@ export class OrderEffects {
     .map(action => <string>action.payload)
     .switchMap(() => this.orderService.getOrders()
       .map((res: any) => this.orderActions.getOrdersSuccess(res))
+      .do(((res) => {
+        if (res.payload.hasQualifiedReferrals !== undefined) {
+          this.store.dispatch(
+            this.userActions.setHasQualifiedReferrals(res.payload.hasQualifiedReferrals));
+          if (res.payload.orderPending !== undefined) {
+            this.store.dispatch(this.userActions.setOrderPending(res.payload.orderPending));
+          }
+        }
+      }))
       .catch((err) => Observable.of(
         this.orderActions.getOrdersFail(err),
         this.notifyActions.addNotify(err)
