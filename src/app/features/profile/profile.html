@@ -25,7 +25,7 @@
         <p>Birthday: {{ pendingProfile?.birthday }}</p>
       </md-card-content>
     </md-card>
-    <form *ngIf="(loaded$ | async) && !(user$ | async).profilePending" [formGroup]="f" (ngSubmit)="submitForm()">
+    <form *ngIf="(loaded$ | async) && !(user$ | async).profilePending" [formGroup]="f" (ngSubmit)="submitForm()" autocomplete="off">
       <os-form-input class="os-form-input" placeholder="First Name" controlName="firstName" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" placeholder="Last Name" controlName="lastName" [form]="f"></os-form-input>
       <ng-container *ngIf="(f.get('firstName').value !== initialFormValue.firstName || f.get('lastName').value !== initialFormValue.lastName)">
@@ -54,7 +54,7 @@
       <os-form-input class="os-form-input" placeholder="PayPal Email Address" controlName="paypal" [form]="f"></os-form-input>
       <md-checkbox #changePassword color="primary">Change Password</md-checkbox>
       <ng-container *ngIf="changePassword.checked">
-        <os-form-input class="os-form-input" placeholder="Change Password" controlName="password" type="password" autocomplete="off" [form]="f"></os-form-input>
+        <os-form-input class="os-form-input" placeholder="Change Password" controlName="password2" type="password" autocomplete="off" [form]="f"></os-form-input>
         <os-form-input class="os-form-input" placeholder="Confirm New Password" controlName="confirmPassword" type="password" autocomplete="off" [form]="f"></os-form-input>
         <div [hidden]="!f.hasError('comparePassword')" class="warn-text">
           Passwords do not match.

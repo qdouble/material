@@ -47,7 +47,7 @@ export class Profile implements OnDestroy, OnInit {
       username: ['', [Validators.required, Validators.pattern(RegexValues.username)]],
       email: ['', [Validators.required, Validators.pattern(RegexValues.email)]],
       confirmEmail: ['', [Validators.pattern(RegexValues.email)]],
-      password: ['', [Validators.pattern(RegexValues.changePassword)]],
+      password2: ['', [Validators.pattern(RegexValues.changePassword)]],
       confirmPassword: ['', [Validators.pattern(RegexValues.changePassword)]],
       address: ['', [Validators.required, Validators.pattern(RegexValues.address)]],
       city: ['', [Validators.required, Validators.pattern(RegexValues.address)]],
@@ -66,7 +66,7 @@ export class Profile implements OnDestroy, OnInit {
     }, {
         validator: Validators.compose([
           CustomValidators.compare('email', 'confirmEmail', 'compareEmail'),
-          CustomValidators.compare('password', 'confirmPassword', 'comparePassword')
+          CustomValidators.compare('password2', 'confirmPassword', 'comparePassword')
         ])
       });
     this.countryLoaded$ = store.let(getCountryLoaded());
@@ -137,8 +137,11 @@ export class Profile implements OnDestroy, OnInit {
       || f.email !== i.email) {
       requiresApproval = true;
     }
-    this.store.dispatch(this.userActions.updateProfile(Object.assign({}, this.f.value,
-      { requiresApproval: requiresApproval })));
+    this.store.dispatch(this.userActions.updateProfile({
+      ...this.f.value,
+      requiresApproval: requiresApproval,
+      password: this.f.value.password2
+    }));
   }
 
   ngOnDestroy() {
