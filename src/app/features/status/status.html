@@ -45,17 +45,18 @@
           </div>
         </ng-container>
         <ng-container *ngIf="user?.currentSponsor">
-          <p><b>Your Sponsor is:</b></p>
-          <p>{{user?.currentSponsor}} &#60;{{user?.currentSponsorEmail}}&#62;</p>
+          <p><b>Your Sponsor is <u class="switch-sponsor" (click)="switchSponsor = !switchSponsor">(Switch Sponsor?)</u>: </b></p>
+          <p *ngIf="!switchSponsor">{{user?.currentSponsor}} &#60;{{user?.currentSponsorEmail}}&#62;</p>
         </ng-container>
         <ng-container *ngIf="!user?.currentSponsor">
           <p><b>You have no sponsor</b></p>
           <p>If you do have sponsor and you know their username, enter it below to connect your accounts</p>
-          <form [formGroup]="sponsorForm" (ngSubmit)="submitSponsor()">
-            <os-form-input class="os-form-input" placeholder="Sponsor Username" controlName="sponsorUserName" [form]="sponsorForm"></os-form-input>
-            <button md-raised-button color="primary" class="white" style="max-width: 105%" [disabled]="sponsorForm.invalid">Connect My Account to Sponsor</button>
-          </form>
         </ng-container>
+        <form *ngIf="!user?.currentSponsor || switchSponsor" [formGroup]="sponsorForm" (ngSubmit)="submitSponsor(); switchSponsor = false">
+          <os-form-input class="os-form-input" placeholder="Sponsor username or email" controlName="sponsorUserName" [form]="sponsorForm"></os-form-input>
+          <button md-raised-button color="primary" class="white" style="max-width: 105%" [disabled]="sponsorForm.invalid">Connect My Account to Sponsor</button>
+          <button *ngIf="switchSponsor" type="button" md-raised-button color="warn" class="white" style="max-width: 105%" (click)="switchSponsor = false">Cancel</button>
+        </form>
       </md-card-content>
     </md-card>
   </div>

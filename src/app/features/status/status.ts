@@ -63,6 +63,7 @@ export class Status implements OnDestroy, OnInit {
   showHidden = new FormControl();
   sortingBy: { sortBy: string, reverse: boolean };
   sponsorForm: FormGroup;
+  switchSponsor: boolean;
   updatedAt: string;
   updatedAt$: Observable<string>;
   user$: Observable<User>;
@@ -78,7 +79,7 @@ export class Status implements OnDestroy, OnInit {
     this.selectPrizeForm = this.fb.group({ 'selectedPrize': null });
     this.sponsorForm = this.fb.group(
       {
-        'sponsorUserName': ['', [Validators.required, Validators.pattern(RegexValues.username)]]
+        'sponsorUserName': ['', [Validators.required, Validators.minLength(3)]]
       });
     this.loaded$ = store.let(getUserLoaded());
     this.loading$ = store.let(getUserLoading());
