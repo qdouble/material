@@ -30,6 +30,11 @@ export interface User {
     readonly receiveReferralMessages?: boolean;
     readonly currentSponsor?: string;
     readonly currentSponsorEmail?: string;
+    readonly bankName?: string;
+    readonly routingNumber?: string;
+    readonly accountType?: string;
+    readonly accountNumber?: string;
+    readonly savedAccountNum?: string;
     referrals?: { [id: string]: Referral };
     referralIds?: string[];
     readonly referralCount?: number;

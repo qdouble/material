@@ -39,7 +39,7 @@
       </os-selected-prize>
       <div id="order-form">
         <md-card id="please-be-sure-card" class="accent-background white">Please ensure that all information is absolutely correct before requesting payment!</md-card>
-        <os-order-form [form]="f" [loaded]="loaded$ | async" [needPaypalEmail]="needPaypalEmail" [placing]="placing$ | async" [user]="user$ | async" (placeOrder)="placeOrder()">
+        <os-order-form [form]="f" [loaded]="loaded$ | async" [needBankInfo]="needBankInfo" [needPaypalEmail]="needPaypalEmail" [placing]="placing$ | async" [user]="user$ | async" (placeOrder)="placeOrder()">
         </os-order-form>
       </div>
     </ng-container>

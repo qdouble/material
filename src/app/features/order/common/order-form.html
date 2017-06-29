@@ -6,7 +6,18 @@
   <os-form-input class="os-form-input" placeholder="State" controlName="State" [form]="form"></os-form-input>
   <os-form-input class="os-form-input" placeholder="Zip Code" controlName="zipCode" [form]="form"></os-form-input>
   <os-form-input class="os-form-input" placeholder="Email Address" controlName="email" [form]="form"></os-form-input>
-  <os-form-input class="os-form-input" placeholder="PayPal Email Address" controlName="paypal" [form]="form"></os-form-input>
+  <ng-container *ngIf="needBankInfo">
+    <md-checkbox *ngIf="user.savedAccountNum" formControlName="useSavedBank" color="primary">Use Saved Bank Info (Account ending with {{user.savedAccountNum}})</md-checkbox>
+    <ng-container *ngIf="!form.get('useSavedBank').value">
+      <os-form-input class="os-form-input" placeholder="Bank Name" controlName="bankName" [form]="form"></os-form-input>
+      <select-input [label]="'Account Type'" [optionValues]="accountTypes" [optionLabels]="accountTypes" [controlName]="'accountType'"
+        [form]="form">
+      </select-input>
+      <os-form-input class="os-form-input" placeholder="Routing Number" controlName="routingNumber" [form]="form"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="Account Number" controlName="accountNumber" [form]="form"></os-form-input>
+    </ng-container>
+  </ng-container>
+  <os-form-input *ngIf="!needBankInfo" class="os-form-input" placeholder="PayPal Email Address" controlName="paypal" [form]="form"></os-form-input>
   <div class="warn warn-message" *ngIf="needPaypalEmail">PayPal Account Email Needed</div>
   <button md-raised-button type="submit" color="primary" class="white" [disabled]="form.invalid || placing || needPaypalEmail">REQUEST PAYMENT</button>
 </form>

@@ -10,8 +10,10 @@ import { User } from '../../../models/user';
 })
 
 export class OrderFormComponent {
+  accountTypes = ['Checking', 'Savings'];
   @Input() form: FormGroup;
   @Input() loaded: boolean;
+  @Input() needBankInfo: boolean;
   @Input() needPaypalEmail: boolean;
   @Input() placing: boolean;
   @Input() user: User;

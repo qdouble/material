@@ -41,6 +41,8 @@ export class OrderComponent implements OnDestroy, OnInit {
   loaded$: Observable<boolean>;
   orders$: Observable<Order[]>;
   ordersLoaded$: Observable<boolean>;
+  bankTransferIds = ['1468623229999'];
+  needBankInfo: boolean;
   paypalIds = ['1468679688287', '1468679688287'];
   needPaypalEmail: boolean;
   placing$: Observable<boolean>;
@@ -75,7 +77,12 @@ export class OrderComponent implements OnDestroy, OnInit {
       State: ['', [Validators.required, Validators.pattern(RegexValues.address)]],
       zipCode: ['', [Validators.required, Validators.pattern(RegexValues.zipCode)]],
       paypal: [''],
-      selectedPrize: ['']
+      selectedPrize: [''],
+      useSavedBank: false,
+      bankName: [{ value: '', disabled: true }, [Validators.pattern(RegexValues.nameValue), Validators.required]],
+      accountType: [{ value: 'Checking', disabled: true }],
+      routingNumber: [{ value: '', disabled: true }, [Validators.pattern(RegexValues.bankNumbers), Validators.required]],
+      accountNumber: [{ value: '', disabled: true }, [Validators.pattern(RegexValues.bankNumbers), Validators.required]]
     });
     this.loaded$ = store.let(getUserLoaded());
     this.placing$ = store.let(getOrderPlacing());
@@ -93,6 +100,9 @@ export class OrderComponent implements OnDestroy, OnInit {
       .subscribe(user => {
         this.user = user;
         this.f.patchValue(user);
+        if (this.user.savedAccountNum) {
+          this.f.get('useSavedBank').setValue(true);
+        }
         this.prize$ = this.store.let(getPrize(user.selectedPrize));
         this.prizes$ = this.store.let(getPrizeCollection());
         this.selectedPrizeLabels$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
@@ -109,6 +119,13 @@ export class OrderComponent implements OnDestroy, OnInit {
           .subscribe(prizes => {
             let selectedPrize = this.selectPrizeForm.get('selectedPrize');
             if (!selectedPrize.value && this.user.selectedPrize !== undefined) {
+              if (this.user.selectedPrize !== undefined && prizes.includes(this.user.selectedPrize)) {
+                selectedPrize.setValue(user.selectedPrize);
+              } else if (this.user.selectedPrize !== undefined) {
+                this.store.dispatch(this.userActions.changeSelectedPrize(this.bankTransferIds[0]));
+              } else {
+                selectedPrize.setValue(prizes[0].id);
+              }
               this.user.selectedPrize !== undefined ? selectedPrize.setValue(user.selectedPrize) :
                 selectedPrize.setValue(prizes[0].id);
             }
@@ -150,6 +167,29 @@ export class OrderComponent implements OnDestroy, OnInit {
           this.needPaypalEmail = true;
         } else {
           this.needPaypalEmail = false;
+        }
+        if (fValue['selectedPrize'] && this.prizeLabels[this.prizeValues.indexOf(fValue['selectedPrize'])] === 'Bank Transfer') {
+          this.needBankInfo = true;
+          if (!this.f.get('useSavedBank').value && this.f.get('bankName').disabled) {
+            this.f.get('bankName').enable();
+            this.f.get('accountType').enable();
+            this.f.get('routingNumber').enable();
+            this.f.get('accountNumber').enable();
+          }
+          if (this.f.get('useSavedBank').value && (this.f.get('bankName').enabled)) {
+            this.f.get('bankName').disable();
+            this.f.get('accountType').disable();
+            this.f.get('routingNumber').disable();
+            this.f.get('accountNumber').disable();
+          }
+        } else {
+          this.needBankInfo = false;
+          if (this.f.get('bankName').enabled) {
+            this.f.get('bankName').disable();
+            this.f.get('accountType').disable();
+            this.f.get('routingNumber').disable();
+            this.f.get('accountNumber').disable();
+          }
         }
       });
   }
