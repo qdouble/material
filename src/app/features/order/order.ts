@@ -42,7 +42,7 @@ export class OrderComponent implements OnDestroy, OnInit {
   orders$: Observable<Order[]>;
   ordersLoaded$: Observable<boolean>;
   bankCheckId= '1468623188180';
-  bankTransferIds = ['1468623229999'];
+  bankTransferId = '1468623229999';
   needBankInfo: boolean;
   paypalIds = ['1468679688287', '1468679688287'];
   needPaypalEmail: boolean;
@@ -123,7 +123,7 @@ export class OrderComponent implements OnDestroy, OnInit {
               if (this.user.selectedPrize !== undefined && prizes.includes(this.user.selectedPrize)) {
                 selectedPrize.setValue(user.selectedPrize);
               } else if (this.user.selectedPrize === this.bankCheckId) {
-                this.store.dispatch(this.userActions.changeSelectedPrize(this.bankTransferIds[0]));
+                this.store.dispatch(this.userActions.changeSelectedPrize(this.bankTransferId));
               } else {
                 selectedPrize.setValue(prizes[0].id);
               }
