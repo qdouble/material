@@ -61,6 +61,28 @@ export class OfferActions {
     };
   }
 
+  static GET_OFFERS_UPDATED_AT = '[Offer] Get Offers Updated At';
+  getOffersUpdatedAt(): Action {
+    return {
+      type: OfferActions.GET_OFFERS_UPDATED_AT
+    };
+  }
+
+  static GET_OFFERS_UPDATED_AT_FAIL = '[Offer] Get Offers Updated At Fail';
+  getOffersUpdatedAtFail(res: Response): Action {
+    return {
+      type: OfferActions.GET_OFFERS_UPDATED_AT_FAIL
+    };
+  }
+
+  static GET_OFFERS_UPDATED_AT_SUCCESS = '[Offer] Get Offers Updated At Success';
+  getOffersUpdatedAtSuccess(offers: Offer[]): Action {
+    return {
+      type: OfferActions.GET_OFFERS_UPDATED_AT_SUCCESS,
+      payload: offers
+    };
+  } 
+
   static GET_VIEW_OFFERS = '[Offer] Get View Offers';
   getViewOffers(): Action {
     return {

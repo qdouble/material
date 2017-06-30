@@ -1,6 +1,6 @@
 import {
   AfterViewInit, Component, ChangeDetectionStrategy,
-  OnDestroy
+  OnDestroy, OnInit
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -26,7 +26,7 @@ import { OfferActions } from '../../actions/offer';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class Offers implements AfterViewInit, OnDestroy {
+export class Offers implements AfterViewInit, OnDestroy, OnInit {
   addUp: boolean;
   checkedOffers: { id: string, creditValue: number, checked: boolean }[] = [];
   checkedOffers$: Subject<{ id: string, creditValue: number, checked: boolean }[]>
@@ -98,6 +98,7 @@ export class Offers implements AfterViewInit, OnDestroy {
     this.loggedIn$
       .takeUntil(this.destroyed$)
       .subscribe(loggedIn => {
+        this.loggedIn = loggedIn;
         if (!this.loaded) {
           if (loggedIn) {
             this.store.dispatch(this.offerActions.getOffers());
@@ -173,6 +174,30 @@ export class Offers implements AfterViewInit, OnDestroy {
       this.offersSelected = selected;
       this.offersSelectedCreditValue = creditValue;
     });
+  }
+
+  ngOnInit() {
+    let lastUpdate$ = this.store.select(s => s.offer.lastUpdatedAt);
+    let lastUpdate;
+    lastUpdate$
+      .takeUntil(this.destroyed$)
+      .subscribe(l => {
+        console.log('l value: ', l);
+        console.log('ARE WE LOGGED IN?', this.loggedIn);
+        if (!lastUpdate) {
+          lastUpdate = l;
+          console.log('SHOULD BE SETTING LAST UPDATE', lastUpdate);
+        } else if (lastUpdate && lastUpdate !== l) {
+          console.log('SHOULD BE DISPATCHING', l);
+          if (this.loggedIn) {
+            this.store.dispatch(this.offerActions.getOffers());
+          } else {
+            this.store.dispatch(this.offerActions.getViewOffers());
+          }
+        }
+      });
+    this.store.dispatch(this.offerActions.getOffersUpdatedAt());
+
   }
 
   ngAfterViewInit() {

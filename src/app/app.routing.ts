@@ -51,6 +51,10 @@ export const routes: Routes = [
     loadChildren: './features/contact-us/index#ContactUsModule'
   },
   {
+    path: 'crediting-guidelines',
+    loadChildren: './features/crediting-guidelines/index#CreditingGuidelinesModule'
+  },
+  {
     path: 'faq',
     loadChildren: './features/faq/index#FAQModule'
   },

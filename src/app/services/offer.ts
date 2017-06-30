@@ -22,6 +22,11 @@ export class OfferService extends RequestBase {
       .map(res => res.json());
   }
 
+  getOffersUpdatedAt(): Observable<{lastUpdatedAt: string}> {
+    return this.http.get(`${API_USER_URL}/getOffersUpdatedAt`, this.optionsNoPre)
+      .map(res => res.json());
+  } 
+
   getViewOffers(): Observable<Offer[]> {
     return this.http.get(`${API_USER_URL}/getViewOffers`, this.optionsNoPre)
       .map(res => res.json());

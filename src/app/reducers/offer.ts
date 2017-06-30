@@ -10,6 +10,7 @@ import { Offer } from '../models/offer';
 export interface OfferState {
   ids: string[];
   entities: { [id: string]: Offer };
+  lastUpdatedAt: string;
   loading: boolean;
   loaded: boolean;
   loadedUserOffers: boolean;
@@ -19,6 +20,7 @@ export interface OfferState {
 export const initialState: OfferState = {
   ids: [],
   entities: {},
+  lastUpdatedAt: null,
   loading: false,
   loaded: false,
   loadedUserOffers: false,
@@ -66,25 +68,27 @@ export function offerReducer(state = initialState, action: Action): OfferState {
     case OfferActions.GET_OFFERS_SUCCESS: {
       const offers: Offer[] = action.payload.offers;
       if (!offers) return Object.assign({}, state, { loading: false });
-      if (state.loaded) {
-        const newOffers: Offer[] = offers.filter(offer => !state.entities[offer.id!]);
-        const newOfferIds: string[] = newOffers.map(offer => offer.id!);
-        const newOfferEntities = newOffers.reduce(
-          (entities: { [id: string]: Offer }, offer: Offer) => {
-            if (offer.id)
-              return Object.assign(entities, {
-                [offer.id]: offer
-              });
-          }, {});
+      // if (state.loaded) {
+      //   const newOffers: Offer[] = offers.filter(offer => !state.entities[offer.id!]);
+      //   const newOfferIds: string[] = newOffers.map(offer => offer.id!);
+      //   const newOfferEntities = newOffers.reduce(
+      //     (entities: { [id: string]: Offer }, offer: Offer) => {
+      //       if (offer.id)
+      //         return Object.assign(entities, {
+      //           [offer.id]: Object.assign({}, offer, {
+      //             costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser
+      //           })
+      //         });
+      //     }, {});
 
-        return Object.assign({}, state, {
-          ids: [...state.ids, ...newOfferIds],
-          entities: Object.assign({}, state.entities, newOfferEntities),
-          loading: false,
-          loadedUserOffers: action.payload.loadedUserOffers || false,
-          loaded: true
-        });
-      }
+      //   return Object.assign({}, state, {
+      //     ids: [...state.ids, ...newOfferIds],
+      //     entities: Object.assign({}, state.entities, newOfferEntities),
+      //     loading: false,
+      //     loadedUserOffers: action.payload.loadedUserOffers || false,
+      //     loaded: true
+      //   });
+      // }
 
       const newOffers: Offer[] = offers;
       const offerIds: string[] = newOffers.map(offer => offer.id!);
@@ -107,6 +111,15 @@ export function offerReducer(state = initialState, action: Action): OfferState {
       });
 
 
+    }
+
+    case OfferActions.GET_OFFERS_UPDATED_AT_SUCCESS: {
+      const lastUpdatedAt = action.payload.lastUpdatedAt;
+      if (!lastUpdatedAt || lastUpdatedAt === state.lastUpdatedAt) return state;
+      return {
+        ...state,
+        lastUpdatedAt: lastUpdatedAt
+      };
     }
 
     case OfferActions.SELECT_OFFER:

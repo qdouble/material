@@ -39,6 +39,16 @@ export class OfferEffects {
       ))
     );
 
+    @Effect() getOffersUpdatedAt$ = this.actions$
+    .ofType(OfferActions.GET_OFFERS_UPDATED_AT)
+    .map(action => <string>action.payload)
+    .switchMap(() => this.offerService.getOffersUpdatedAt()
+      .map((res: any) => this.offerActions.getOffersUpdatedAtSuccess(res))
+      .catch((err) => Observable.of(
+        this.offerActions.getOffersUpdatedAtFail(err)
+      ))
+    );
+
   @Effect() getViewOffers$ = this.actions$
     .ofType(OfferActions.GET_VIEW_OFFERS)
     .map(action => <string>action.payload)
