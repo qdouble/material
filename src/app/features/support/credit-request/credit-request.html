@@ -3,47 +3,62 @@
     <md-card class="os-new-support-ticket">
       <button md-button class="back-button" [routerLink]="['..']"><md-icon>navigate_before</md-icon>BACK TO SUPPORT PAGE</button>
       <md-card-title class="primary">{{ view ? 'Credit Request' : 'New Credit Request' }}</md-card-title>
-      <div class="credit-request-details" *ngIf="view">
-        <p>Offer: {{creditRequest?.offerName}}</p>
-        <p>Completed On: {{creditRequest?.completedOn | slice: 0:10}}</p>
-        <p>Status: {{creditRequest?.status}}</p>
-        <p *ngIf="creditRequest?.userNotes && creditRequest?.status === 'More Information Needed'">Message from Admin:</p> 
-        <pre>{{creditRequest?.userNotes}}</pre>
-        
-        <div *ngIf="creditRequest?.status !== 'More Information Needed'">
-          <p class="p2">&nbsp;</p>
-          <p class="underline">Confirmation Email Headers</p> 
-          <p>{{creditRequest?.headers}}</p>
-          <p class="p2">&nbsp;</p>
-          <p class="underline">Confirmation Email Body</p>
-          <p>{{creditRequest?.body}}</p>
-          <p class="p2">&nbsp;</p>
-          <p class="underline">Additional Details</p> 
-          <p>{{creditRequest?.additionalDetails}}</p>
+      
+        <div class="credit-request-details" *ngIf="view">
+          <p>Offer: {{creditRequest?.offerName}}</p>
+          <p>Completed On: {{creditRequest?.completedOn | slice: 0:10}}</p>
+          <p>Status: {{creditRequest?.status}}</p>
+          <p *ngIf="creditRequest?.userNotes && creditRequest?.status === 'More Information Needed'">Message from Admin:</p>
+          <pre>{{creditRequest?.userNotes}}</pre>
+
+          <div *ngIf="creditRequest?.status !== 'More Information Needed'">
+            <p class="p2">&nbsp;</p>
+            <p class="underline">Confirmation Email Headers</p>
+            <p>{{creditRequest?.headers}}</p>
+            <p class="p2">&nbsp;</p>
+            <p class="underline">Confirmation Email Body</p>
+            <p>{{creditRequest?.body}}</p>
+            <p class="p2">&nbsp;</p>
+            <p class="underline">Additional Details</p>
+            <p>{{creditRequest?.additionalDetails}}</p>
+          </div>
         </div>
-      </div>
-      <md-card *ngIf="!view" class="os-message-card" id="request-card-instructions">
-        Please include all header information from your confirmation e-mail. E-mail headers typically include information such as
-        <b>Return-Path, Received, Date, Message-Id, To, From, Subject, etc.</b> If you're using a web based e-mail
-        client you may need to change your configuration in order to see the full header information.
-      </md-card>
-      <form *ngIf="!view || creditRequest?.status === 'More Information Needed'" [formGroup]="f" (ngSubmit)="submitRequest(f.value)">
-        <ng-container *ngIf="!view">
-          <select-input controlName="offerId" label="Completed Offer: " [fullWidth]="true" [optionValues]="offerIds$ | async" [optionLabels]="offerNames$ | async"
-            [form]="f"></select-input>
-          <label>Date Completed:</label> <input type="date" id="myDate" formControlName="completedOn">
+        <md-card *ngIf="!view" class="os-message-card" id="request-card-instructions">
+          Please include all header information from your confirmation e-mail. E-mail headers typically include information such as
+          <b>Return-Path, Received, Date, Message-Id, To, From, Subject, etc.</b> If you're using a web based e-mail client
+          you may need to change your configuration in order to see the full header information.
+        </md-card>
+        
+        <form *ngIf="!view || creditRequest?.status === 'More Information Needed'" [formGroup]="f" (ngSubmit)="submitRequest(f.value)">
+          <ng-container *ngIf="!view">
+            <select-input controlName="offerId" label="Completed Offer: " [fullWidth]="true" [optionValues]="offerIds$ | async" [optionLabels]="offerNames$ | async"
+              [form]="f"></select-input>   
+          </ng-container>
+          <ng-container *ngIf="!(offer$ | async) || (offer$ | async).allowCreditRequests">
+            <label>Date Completed:</label> <input type="date" id="myDate" formControlName="completedOn">
+            <md-input-container>
+              <textarea mdInput [rows]="6" placeholder="Confirmation Email Headers" formControlName="headers"></textarea>
+            </md-input-container><br>
+            <md-input-container>
+              <textarea mdInput [rows]="6" placeholder="Confirmation Email Body" formControlName="body"></textarea>
+            </md-input-container><br>
+            <md-input-container>
+              <textarea mdInput [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></textarea>
+            </md-input-container><br>
+            <button md-raised-button class="white" color="primary" [disabled]="f.invalid || disableButton">{{ view ? 'UPDATE CREDIT REQUEST' : 'SUBMIT CREDIT REQUEST' }}</button>
         </ng-container>
-        <md-input-container>
-          <textarea mdInput [rows]="6" placeholder="Confirmation Email Headers" formControlName="headers"></textarea>
-        </md-input-container><br>
-        <md-input-container>
-          <textarea mdInput [rows]="6" placeholder="Confirmation Email Body" formControlName="body"></textarea>
-        </md-input-container><br>
-        <md-input-container>
-          <textarea mdInput [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></textarea>
-        </md-input-container><br>
-        <button md-raised-button class="white" color="primary" [disabled]="f.invalid || disableButton">{{ view ? 'UPDATE CREDIT REQUEST' : 'SUBMIT CREDIT REQUEST' }}</button>
-      </form>
+        </form>
+      
+      <ng-container *ngIf="(offer$ | async) && !(offer$ | async).allowCreditRequests">
+        <h6>As stated on the checkbox users check before clicking "CONTINUE WITH THIS OFFER", <b>missing credit request are not accepted/allowed for <u>{{(offer$ | async).displayName}}</u>.</b></h6>
+        <ul>
+          <li>Check the crediting time of the offer on the offers page. Even if it says quickly, still allow up to six hours before it credits.</li>
+          <li>Make sure that you have fully completed the offer requirements including creating your profile with the offer and fully trying the service. Also check if their are any confirmation emails with links or anything else that you need to confirm.</li>
+          <li>If you have done all those things and the offer has still not credited, then the best thing to do is to cancel the offer if you don't want to keep it and try something else.</li>
+          <li>We do not get paid when a user does not receive credit and do not want our users to experience crediting issues, but as the offers are done on the advertiser's website and users have to be deemed valid leads, we have no control over it and can not know the exact reason why it did not credit.</li>
+          <li>Advertisers only credit what they deem to be a valid lead, so unless there is a tracking issue the offer should credit if you followed the terms and conditons and our crediting guidelines: <a [routerLink]="['/crediting-guidelines']">https://levelrewards/crediting-guidelines</a></li>
+        </ul>
+      </ng-container>
     </md-card>
   </div>
 </md-card>

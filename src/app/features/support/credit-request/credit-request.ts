@@ -14,6 +14,9 @@ import {
   getCreditRequest, getOfferClickCollection, getOfferClicksLoaded
 } from '../../../reducers/credit-request';
 import { CreditRequest, OfferClick } from '../credit-request.model';
+import { OfferActions } from '../../../actions/offer';
+import { Offer } from '../../../models/offer';
+import { getOffer } from '../../../reducers/offer';
 
 @Component({
   selector: 'os-credit-request',
@@ -34,10 +37,12 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
   offerNames: string[];
   offerNames$: Observable<string[]>;
   todaysDate = todaysDate;
+  offer$: Observable<Offer>;
   view: boolean;
   constructor(
     private creditRequestActions: CreditRequestActions,
     private fb: FormBuilder,
+    private offerActions: OfferActions,
     private route: ActivatedRoute,
     private store: Store<AppState>
   ) {
@@ -91,10 +96,16 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
         if (this.view && f.headers === this.creditRequest.headers &&
           f.body === this.creditRequest.body &&
           f.additionalDetails === this.creditRequest.additionalDetails) {
-            this.disableButton = true;
+          this.disableButton = true;
         } else if (this.view) {
           this.disableButton = false;
         }
+      });
+    this.f.get('offerId').valueChanges
+      .takeUntil(this.destroyed$)
+      .subscribe(id => {
+        this.store.dispatch(this.offerActions.getOffer(id));
+        this.offer$ = this.store.let(getOffer(id));
       });
   }
   addRequest(request: CreditRequest) {
