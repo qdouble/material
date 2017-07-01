@@ -193,7 +193,9 @@ export class Status implements OnDestroy, OnInit {
   }
 
   getReferral(referral: User) {
-    this.store.dispatch(this.userActions.getReferral(referral.id));
+    if (referral.currentSponsor) {
+      this.store.dispatch(this.userActions.getReferral(referral.id));
+    }
     this.loading$
       .filter(l => l === false)
       .take(1)
