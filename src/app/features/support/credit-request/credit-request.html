@@ -50,7 +50,7 @@
         </form>
       
       <ng-container *ngIf="(offer$ | async) && !(offer$ | async).allowCreditRequests">
-        <h6>As stated on the checkbox users check before clicking "CONTINUE WITH THIS OFFER", <b>missing credit request are not accepted/allowed for <u>{{(offer$ | async).displayName}}</u>.</b></h6>
+        <h6>As stated on the checkbox users check before clicking "CONTINUE WITH THIS OFFER", <b>missing credit requests are not accepted/allowed for <u>{{(offer$ | async).displayName}}.</u></b></h6>
         <ul>
           <li>Check the crediting time of the offer on the offers page. Even if it says quickly, still allow up to six hours before it credits.</li>
           <li>Make sure that you have fully read and completed the offer according to the offer's requirements including, but not limited to, creating your profile with the offer and fully trying the service. Also check if there are any confirmation emails with links or anything else that you need to confirm.</li>
