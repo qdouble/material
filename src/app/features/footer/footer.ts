@@ -5,7 +5,8 @@ import { Component } from '@angular/core';
   template: `
   <md-card-footer>
     <a [routerLink]="['/terms-and-conditions']">Terms and Conditions</a> |
-    <a [routerLink]="['/privacy-policy']">Privacy Policy</a>
+    <a [routerLink]="['/privacy-policy']">Privacy Policy</a> |
+    <a [routerLink]="['/crediting-guidelines']">Crediting Guidelines</a>
   </md-card-footer>
   `,
   styles: [`md-card-footer {text-align: center}
