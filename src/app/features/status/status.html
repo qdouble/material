@@ -45,7 +45,7 @@
           </div>
         </ng-container>
         <ng-container *ngIf="user?.currentSponsor">
-          <p><b>Your Sponsor is <u class="switch-sponsor" (click)="switchSponsor = !switchSponsor">(Switch Sponsor?)</u>: </b></p>
+          <p><b>Your Sponsor is <u class="switch-sponsor" *ngIf="!user?.hold" (click)="switchSponsor = !switchSponsor">(Switch Sponsor?)</u>: </b></p>
           <p *ngIf="!switchSponsor">{{user?.currentSponsor}} &#60;{{user?.currentSponsorEmail}}&#62;</p>
         </ng-container>
         <ng-container *ngIf="!user?.currentSponsor">
