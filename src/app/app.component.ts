@@ -176,6 +176,10 @@ export class AppComponent implements OnDestroy, OnInit {
       .takeUntil(this.destroyed$)
       .filter(notify => notify.length > 0)
       .subscribe(notify => {
+        if (notify && notify[0] &&
+          notify[0].message === 'Unexpected token U in JSON at position 0') {
+          return;
+        }
         let config = new MdSnackBarConfig();
         let index = notify.length - 1;
         this.snackRefs[index] = this.snackBar.open(notify[index].message,
@@ -263,8 +267,6 @@ export class AppComponent implements OnDestroy, OnInit {
 
     let completedOrders$ = this.store.let(getCompletedOrderCollection());
     completedOrders$
-      // .filter(orders => orders.length > 0)
-      // .filter(orders => orders.find(order => order.viewed === undefined) !== undefined)
       .subscribe(orders => {
         orders.forEach(order => {
           if (!order.viewed) {
@@ -285,10 +287,6 @@ export class AppComponent implements OnDestroy, OnInit {
           }
         });
       });
-  }
-
-  sayBlur() {
-    log('BLUR!');
   }
 
   activateEvent(event) {

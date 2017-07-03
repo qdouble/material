@@ -9,9 +9,10 @@
 import { ApplicationRef, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpModule } from '@angular/http';
+import { Http, HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { IdlePreload } from '@angularclass/idle-preload';
+import { ExtendedHttpService } from './services/extended-http-service';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
@@ -47,7 +48,10 @@ import { AppState } from './reducers';
   ],
   bootstrap: [AppComponent],
   exports: [AppComponent],
-  providers: [APP_PROVIDERS]
+  providers: [
+    APP_PROVIDERS,
+    { provide: Http, useClass: ExtendedHttpService }
+  ]
 })
 
 export class AppModule {
