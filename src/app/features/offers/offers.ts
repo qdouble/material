@@ -182,13 +182,9 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     lastUpdate$
       .takeUntil(this.destroyed$)
       .subscribe(l => {
-        console.log('l value: ', l);
-        console.log('ARE WE LOGGED IN?', this.loggedIn);
         if (!lastUpdate) {
           lastUpdate = l;
-          console.log('SHOULD BE SETTING LAST UPDATE', lastUpdate);
         } else if (lastUpdate && lastUpdate !== l) {
-          console.log('SHOULD BE DISPATCHING', l);
           if (this.loggedIn) {
             this.store.dispatch(this.offerActions.getOffers());
           } else {
