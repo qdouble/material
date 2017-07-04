@@ -1,9 +1,5 @@
 p { margin-left: 15px; }
 
-.container { max-width: 1000px; margin: 0 auto;}
-
-
-
 .missing-credit {
   list-style: none;
   margin: -6px 0 0 20px;
@@ -11,4 +7,8 @@ p { margin-left: 15px; }
     content: '✔';
     margin-left: -1em; margin-right: .100em;
   }
+}
+
+.os-cg-container {
+  padding: 24px;
 }
