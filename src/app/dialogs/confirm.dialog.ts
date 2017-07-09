@@ -23,7 +23,6 @@ import { MdDialogRef } from '@angular/material';
   ]
 })
 export class ConfirmDialog {
-  confirm: boolean;
   confirmColor = 'black';
   confirmText: string;
   okayOnly: boolean;

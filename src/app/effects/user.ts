@@ -214,9 +214,19 @@ export class UserEffects {
     .ofType(UserActions.RECORD_CLICK)
     .map(action => <string>action.payload)
     .switchMap(offer => this.userService.recordClick(offer)
-      .map(res => this.userActions.recordClickSuccess(res))
-      .do((res: any) => res.payload.redirectTo ?
-        window.location.replace(res.payload.redirectTo) : null)
+      .mergeMap(res => Observable.of(
+        this.userActions.recordClickSuccess(res),
+        this.notifyActions.addNotify(res)
+      ))
+      .do((res: any) => {
+        let redirectTo = res.payload.redirectTo;
+        if (redirectTo === '/crediting-guidelines') {
+          this.store.dispatch(go([redirectTo], { match: true }));
+        } else if (redirectTo) {
+          window.location.replace(redirectTo);
+        }
+        this.notifyActions.addNotify(res);
+      })
       .catch((err) => Observable.of(
         this.userActions.recordClickFail(err),
         this.notifyActions.addNotify(err)
