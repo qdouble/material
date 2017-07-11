@@ -11,7 +11,7 @@ import { AppState } from '../../reducers';
   template: `
   <md-card class="os-page-container">
   <div class="progress-container">
-    <h5>Redirecting to offer</h5>
+    <h5>Redirecting to advertiser's website...</h5>
     <md-progress-bar mode="query" class="demo-progress-bar-margins"></md-progress-bar>
   </div>
   </md-card>
