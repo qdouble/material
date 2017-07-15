@@ -81,6 +81,7 @@ const CONSTANTS = {
 };
 
 const DLL_VENDORS = [
+  '@angular/cdk',
   '@angular/common',
   '@angular/compiler',
   '@angular/core',
