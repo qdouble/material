@@ -1,5 +1,5 @@
 /* tslint:disable max-line-length */
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
 import { Offer } from '../models/offer';
@@ -24,9 +24,16 @@ import { Offer } from '../models/offer';
     <button type="button" md-button color="primary" (click)="dialogRef.close()">CONTINUE</button>
   </div>`,
   styles: [`.credited-offer-dialog{ text-align: center; }
-  img { max-height: 100px; max-width: 200px; } h5, h6 { margin: 0 } h5 { color: #638b35 }
+  .os-offer-card-image { max-height: 100px; max-width: 200px; } h5, h6 { margin: 0 } h5 { color: #638b35 }
   .main-text{ font-weight: bold; font-size: 15px }
-  button { margin-top: 5px; width: 100%; }`]
+  .credited-offer-dialog button { margin-top: 5px; width: 100%; }
+  .mat-dialog-container {
+    background: #fff !important;
+    padding: 24px !important;
+    max-width: 80vw !important;
+  }
+  `],
+  encapsulation: ViewEncapsulation.None
 })
 export class CreditedOfferDialog {
   offer: Offer;

@@ -1,7 +1,11 @@
 import {
   AfterViewInit, Component, ChangeDetectionStrategy,
-  OnDestroy, OnInit
+  OnDestroy, OnInit, ViewEncapsulation
 } from '@angular/core';
+import {
+  MdDialog, MdDialogRef, MdDialogConfig,
+  MdSnackBar, MdSnackBarConfig
+} from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -18,12 +22,15 @@ import { getUIMobile, getUISideNavOpen } from '../../reducers/ui';
 import { getCreditCollection, getUserLoggedIn, getCreditTotal } from '../../reducers/user';
 import { OfferActions } from '../../actions/offer';
 
+import { GettingStartedDialog } from '../../dialogs/getting-started.dialog';
+
 @Component({
   selector: 'os-offers',
   templateUrl: './offers.html',
   styleUrls: ['./offers.scss'],
   providers: [UniqueSelectionDispatcher],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.Emulated
 })
 
 export class Offers implements AfterViewInit, OnDestroy, OnInit {
@@ -35,6 +42,18 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   creditTotal$: Observable<number>;
   creditedOfferIds: string[];
   destroyed$: Subject<any> = new Subject();
+  gettingStartedRef: MdDialogRef<GettingStartedDialog>;
+  gettingStartedDialogConfig: MdDialogConfig = {
+    disableClose: true,
+    width: '',
+    height: '',
+    position: {
+      top: '',
+      bottom: '',
+      left: '',
+      right: ''
+    }
+  };
   lastCloseResult: string;
   loaded$: Observable<boolean>;
   loaded: boolean;
@@ -80,6 +99,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     'creditValue'
   ];
   constructor(
+    public dialog: MdDialog,
     private offerActions: OfferActions,
     private route: ActivatedRoute,
     private store: Store<AppState>
@@ -193,12 +213,15 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
         }
       });
     this.store.dispatch(this.offerActions.getOffersUpdatedAt());
-
+    // setTimeout(() => {
+    //   this.openGettingStartedDialog();
+    // }, 1000);
   }
 
   ngAfterViewInit() {
     if (this.route.snapshot.params['new']) {
       (typeof document !== 'undefined') ? (document.getElementById('offers-page').scrollIntoView()) : {};  // tslint:disable-line
+      this.openGettingStartedDialog();
     }
   }
 
@@ -213,6 +236,17 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
 
   changeSort(value: string | null) {
     this.sortBy$.next(value);
+  }
+
+  openGettingStartedDialog() {
+    this.gettingStartedRef = this.dialog.open(GettingStartedDialog,
+      this.gettingStartedDialogConfig);
+
+    this.gettingStartedRef.afterClosed()
+      .takeUntil(this.destroyed$)
+      .subscribe(result => {
+        this.gettingStartedRef = null;
+      });
   }
 
   ngOnDestroy() {

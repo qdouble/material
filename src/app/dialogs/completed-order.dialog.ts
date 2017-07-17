@@ -1,5 +1,5 @@
 /* tslint:disable max-line-length */
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
 import { Order } from '../models/order';
@@ -16,10 +16,17 @@ import { Order } from '../models/order';
       <button md-button color="warn" (click)="dialogRef.close()">Close</button>
   </div>`,
   styles: [`.completed-order-dialog{ text-align: center; max-width: 500px; }
-  img { max-height: 100px; max-width: 200px; } h5, h6 { margin: 0 }
-  h5 { color: #638b35; margin-bottom: 10px; } h6 { font-weight: bold; }
+  .completed-order-dialog img { max-height: 100px; max-width: 200px; } h5, h6 { margin: 0 }
+  .completed-order-dialog h5 { color: #638b35; margin-bottom: 10px; } h6 { font-weight: bold; }
   .main-text{ font-weight: bold; font-size: 15px }
-  button { margin-top: 5px; width: 100%; }`]
+  .completed-order-dialog button { margin-top: 5px; width: 100%; }
+  .mat-dialog-container {
+    background: #fff !important;
+    padding: 24px !important;
+    max-width: 80vw !important;
+  }
+  `],
+  encapsulation: ViewEncapsulation.None
 })
 export class CompletedOrderDialog {
   order: Order;
