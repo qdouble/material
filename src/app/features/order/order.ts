@@ -119,8 +119,9 @@ export class OrderComponent implements OnDestroy, OnInit {
           .takeUntil(this.destroyed$)
           .subscribe(prizes => {
             let selectedPrize = this.selectPrizeForm.get('selectedPrize');
+            let prizeIds = prizes.map(p => p.id);
             if (!selectedPrize.value && this.user.selectedPrize !== undefined) {
-              if (this.user.selectedPrize !== undefined && prizes.includes(this.user.selectedPrize)) {
+              if (this.user.selectedPrize !== undefined && prizeIds.includes(this.user.selectedPrize)) {
                 selectedPrize.setValue(user.selectedPrize);
               } else if (this.user.selectedPrize === this.bankCheckId) {
                 this.store.dispatch(this.userActions.changeSelectedPrize(this.bankTransferId));

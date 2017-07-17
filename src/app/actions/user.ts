@@ -399,10 +399,10 @@ export class UserActions {
   }
 
   static RECORD_CLICK_SUCCESS = '[User] Record Click Success';
-  recordClickSuccess(redirect: string): Action {
+  recordClickSuccess(res: { redirectTo: string, message: string }): Action {
     return {
       type: UserActions.RECORD_CLICK_SUCCESS,
-      payload: redirect
+      payload: res
     };
   }
 

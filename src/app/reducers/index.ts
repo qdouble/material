@@ -101,7 +101,7 @@ if (['logger', 'both'].includes(STORE_DEV_TOOLS)) { // set in constants.js file 
 }
 
 
-const developmentReducer = compose(...DEV_REDUCERS, resetOnLogout);
+const developmentReducer: (i: Function) => any = compose(...DEV_REDUCERS, resetOnLogout);
 const productionReducer = compose(resetOnLogout);
 
 export function rootReducer(state: any, action: any, asyncReducer) {

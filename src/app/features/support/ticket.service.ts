@@ -14,7 +14,7 @@ export class TicketService extends RequestBase {
     super(http);
   }
 
-  addMessage(message: TicketMessage): Observable<Response> {
+  addMessage(message: TicketMessage): Observable<TicketMessage> {
     return this.http.post(`${API_USER_URL}/addTicketMessage`, message, this.options)
       .map(res => res.json());
   }

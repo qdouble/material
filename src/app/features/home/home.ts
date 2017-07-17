@@ -18,7 +18,7 @@ import { RegexValues } from '../../validators';
 })
 
 export class Homepage implements OnDestroy {
-  prizes$: Observable<Prize>;
+  prizes$: Observable<Prize[]>;
   prizesLoading$: Observable<boolean>;
   prizesLoaded$: Observable<boolean>;
   prizesLoadedSub: Subscription;

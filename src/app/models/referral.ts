@@ -15,4 +15,6 @@ export interface Referral {
   readonly hold: boolean;
   readonly holdReason: string;
   readonly credits: Credit[];
+  readonly removed?: boolean;
+  readonly hidden?: boolean;
 }

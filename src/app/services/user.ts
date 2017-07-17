@@ -79,12 +79,12 @@ export class UserService extends RequestBase {
       .map(res => res.json());
   }
 
-  logout(): Observable<User> {
+  logout(): Observable<string> {
     return this.http.get(`${API_USER_URL}/logout`, this.optionsNoPre)
       .map(res => res.text());
   }
 
-  recordClick(offerId: string): Observable<string> {
+  recordClick(offerId: string): Observable<{ redirectTo: string, message: string }> {
     return this.http.post(`${API_USER_URL}/recordClick`, { 'id': offerId }, this.options)
       .retry()
       .map(res => res.json());
