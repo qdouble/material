@@ -184,11 +184,14 @@ export class UserEffects {
         this.notifyActions.addNotify(res)
       ))
       .do((res: any) => {
+        if (res.payload.redirectTo === 'offers') {
+          this.store.dispatch(this.offerActions.clearOffers());
+          return this.store.dispatch(go([res.payload.redirectTo, { new: true }]));
+        }
         if (res.payload.redirectTo) {
           this.store.dispatch(go([res.payload.redirectTo]));
         }
         if (res.payload.redirectTo === 'status') {
-          this.store.dispatch(go([res.payload.redirectTo]));
           this.store.dispatch(this.offerActions.clearOffers());
         }
       })
