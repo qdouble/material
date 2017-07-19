@@ -1,5 +1,6 @@
 <ng-container>
   <div class="referral-details">Referral Summary</div>
+  <div *ngIf="referral.firstName && referral.lastName">Name: {{referral.firstName + ' ' + referral.lastName}}</div>
   <div>Username: {{referral.username}}</div>
   <div>Email: {{referral.email}}</div>
   <ng-container *ngIf="referral.currentSponsor">

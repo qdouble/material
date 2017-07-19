@@ -2,6 +2,8 @@ import { Credit } from './credit';
 
 export interface Referral {
   readonly id: string;
+  readonly firstName: string;
+  readonly lastName: string;
   readonly username: string;
   readonly email: string;
   readonly currentLevel: number;
