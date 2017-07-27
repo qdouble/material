@@ -44,7 +44,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject();
   gettingStartedRef: MdDialogRef<GettingStartedDialog>;
   gettingStartedDialogConfig: MdDialogConfig = {
-    disableClose: true,
+    disableClose: false,
     width: '',
     height: '',
     position: {
