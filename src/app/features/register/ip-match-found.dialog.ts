@@ -6,7 +6,7 @@ import { MdDialogRef } from '@angular/material';
   template: `
   <ng-container>
     <md-card class="os-message-card warn-background white">
-      <h5>You have an IP match with another user!</h5>
+      <h5>Your IP address {{ip}} <span *ngIf="ISP">({{ISP}})</span> matches with another user!</h5>
     </md-card>
     <p>You have an internet connection match with a user
     that is already registered on our site. Continuing to register with this connection might result
@@ -23,7 +23,8 @@ import { MdDialogRef } from '@angular/material';
   h5 {text-align: center; font-size: 18px;}`]
 })
 export class IPMatchFoundDialog {
-
+  ip: string;
+  ISP: string;
   constructor(public dialogRef: MdDialogRef<IPMatchFoundDialog>) { }
 
 }

@@ -6,6 +6,7 @@ import { Action } from '@ngrx/store';
 import { AppState } from './';
 import { UserActions } from '../actions/user';
 import { Credit } from '../models/credit';
+import { IP } from '../models/ip';
 import { Referral } from '../models/referral';
 import { User } from '../models/user';
 
@@ -14,6 +15,8 @@ export interface UserState {
   credits: { [id: string]: Credit };
   creditTotal: number;
   entryEmail: string | null;
+  ip: string;
+  ipJson: IP;
   lastUpdate: string;
   loading: boolean;
   loaded: boolean;
@@ -38,6 +41,8 @@ export const initialState: UserState = {
   credits: {},
   creditTotal: 0,
   entryEmail: null,
+  ip: null,
+  ipJson: null,
   lastUpdate: null,
   loading: false,
   loaded: false,
@@ -137,9 +142,13 @@ export function userReducer(state = initialState, action: Action): UserState {
       });
 
     case UserActions.CHECK_IP_MATCH_SUCCESS: {
+      let ip: string = action.payload.ip;
+      let ipJson = action.payload.ipJson;
       let matches: boolean = action.payload.matches;
       if (matches === undefined) return state;
       return Object.assign({}, state, {
+        ip: ip,
+        ipJson: ipJson,
         matches: matches
       });
     }

@@ -10,6 +10,7 @@ import { CountryActions } from '../../actions/country';
 import { PrizeActions } from '../../actions/prize';
 import { UserActions } from '../../actions/user';
 import { Country } from '../../models/country';
+import { IP } from '../../models/ip';
 import { Prize } from '../../models/prize';
 import { AppState } from '../../reducers';
 import { getCountryCollection, getCountryLoaded } from '../../reducers/country';
@@ -33,12 +34,12 @@ export class Register implements OnDestroy, OnInit {
   dialogRef: MdDialogRef<IPMatchFoundDialog>;
   config: MdDialogConfig = {
     disableClose: false,
-    width: '90%',
+    // width: '90%',
     height: '',
     position: {
       top: '',
       bottom: '',
-      left: '35px',
+      // left: '35px',
       right: ''
     }
   };
@@ -48,7 +49,8 @@ export class Register implements OnDestroy, OnInit {
   countryLoaded$: Observable<boolean>;
   f: FormGroup;
   entryEmail$: Observable<string | null>;
-  matches$: Observable<boolean>;
+  ip$: Observable<string>;
+  ipJson$: Observable<IP>;
   prizes$: Observable<Prize[]>;
   prizeIds$: Observable<(string | undefined)[]>;
   prizeNames$: Observable<(string | undefined)[]>;
@@ -68,12 +70,7 @@ export class Register implements OnDestroy, OnInit {
     private userActions: UserActions,
     private userValidator: UsernameValidator
   ) {
-    this.countryLoaded$ = store.let(getCountryLoaded());
-    this.countryLoaded$
-      .takeUntil(this.destroyed$)
-      .subscribe(loaded => {
-        if (!loaded) this.store.dispatch(this.countryActions.getCountries());
-      });
+
     this.f = new FormGroup({
       referredBy: new FormControl(),
       email: new FormControl(PUBLISH ? '' : `${this.RANDOM_EMAIL}`,
@@ -113,8 +110,16 @@ export class Register implements OnDestroy, OnInit {
     }, Validators.compose(
       [CustomValidators.compare('email', 'confirmEmail', 'compareEmail'),
       CustomValidators.compare('password', 'confirmPassword', 'comparePassword')]));
+  }
 
-    this.prizeLoaded$ = store.let(getPrizeLoaded());
+  ngOnInit() {
+    this.countryLoaded$ = this.store.let(getCountryLoaded());
+    this.countryLoaded$
+      .takeUntil(this.destroyed$)
+      .subscribe(loaded => {
+        if (!loaded) this.store.dispatch(this.countryActions.getCountries());
+      });
+    this.prizeLoaded$ = this.store.let(getPrizeLoaded());
     this.prizeLoaded$
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
@@ -122,8 +127,7 @@ export class Register implements OnDestroy, OnInit {
           this.store.dispatch(this.prizeActions.getPrizes());
         }
       });
-
-    this.countryLoaded$ = store.let(getCountryLoaded());
+    this.countryLoaded$ = this.store.let(getCountryLoaded());
     this.countryLoaded$
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
@@ -131,15 +135,12 @@ export class Register implements OnDestroy, OnInit {
           this.store.dispatch(this.countryActions.getCountries());
         }
       });
-  }
-
-  ngOnInit() {
     this.store.let(getReferrerBlocked()).takeUntil(this.destroyed$)
       .subscribe(blocked => {
         if (blocked) {
           this.blocked = true;
         }
-    });
+      });
     this.countries$ = this.store.let(getCountryCollection());
     this.countryIds$ = this.countries$.map(countries => countries.map(country => country.id));
     this.countryIds$
@@ -156,6 +157,9 @@ export class Register implements OnDestroy, OnInit {
       .subscribe(email => {
         if (email) this.f.get('email').setValue(email);
       });
+
+    this.ip$ = this.store.select(s => s.user.ip);
+    this.ipJson$ = this.store.select(s => s.user.ipJson);
     this.referredBy$ = this.store.let(getUserReferredBy());
     this.referredBy$
       .takeUntil(this.destroyed$)
@@ -190,7 +194,14 @@ export class Register implements OnDestroy, OnInit {
 
   open() {
     this.dialogRef = this.dialog.open(IPMatchFoundDialog, this.config);
-
+    this.ip$.take(1).subscribe(ip => {
+      this.dialogRef.componentInstance.ip = ip;
+    });
+    this.ipJson$.take(1).subscribe(ip => {
+      if (ip) {
+        this.dialogRef.componentInstance.ISP = ip.org;
+      }
+    });
     this.dialogRef.afterClosed().subscribe(proceed => {
       if (proceed) {
         this.store.dispatch(this.userActions.register(this.f.value));
@@ -212,7 +223,7 @@ export class Register implements OnDestroy, OnInit {
           this.store.dispatch(this.userActions.register(this.f.value));
         }
       });
-      this.store.dispatch(this.userActions.checkIPMatch());
+    this.store.dispatch(this.userActions.checkIPMatch());
   }
 
   ngOnDestroy() {
