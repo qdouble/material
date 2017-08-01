@@ -221,7 +221,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   ngAfterViewInit() {
     if (this.route.snapshot.params['new']) {
       (typeof document !== 'undefined') ? (document.getElementById('offers-page').scrollIntoView()) : {};  // tslint:disable-line
-      this.openGettingStartedDialog();
+      // this.openGettingStartedDialog();
     }
   }
 
