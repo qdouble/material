@@ -22,12 +22,12 @@ import { MdDialogRef } from '@angular/material';
   encapsulation: ViewEncapsulation.None
 })
 export class GettingStartedDialog {
-  count = 2;
-  imgSrc = '/assets/svg/getting-started-dialog/image2.svg';
+  count = 1;
+  imgSrc = `/assets/svg/getting-started-dialog/image${this.count}.svg`;
   constructor(public dialogRef: MdDialogRef<GettingStartedDialog>) { }
   next() {
     this.count ++;
-    if (this.count < 6) {
+    if (this.count <= 6) {
       this.imgSrc = `/assets/svg/getting-started-dialog/image${this.count}.svg`;
     } else {
       this.dialogRef.close();

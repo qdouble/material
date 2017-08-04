@@ -13,6 +13,7 @@
       <md-slide-toggle style="margin-right: 10px;" *ngIf="(credits$ | async)?.length" [(ngModel)]="showCompleted" color="primary">Show Completed</md-slide-toggle>
       <md-slide-toggle *ngIf="!showCompleted" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []" color="primary">Add Up Offers</md-slide-toggle>
     </div>
+    <div style="margin-top: 10px; margin-bottom: -10px" class="os-offer-display-options"><button md-raised-button (click)="openGettingStartedDialog()"><md-icon>important_devices</md-icon> Getting Started</button></div>
     <div *ngIf="addUp && !showCompleted" class="add-up-instruct">
       <p><b>&#8681; Check Offers Below to Calculate &#8681;</b></p>
       <p>Offers Checked: {{offersSelected}}</p>
