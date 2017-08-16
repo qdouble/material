@@ -40,6 +40,9 @@
                 <div class="cell value-col" [ngClass]="{'warn': !credit.active}">
                   {{ credit.active ? (credit.creditValue | number:'1.2-2') : 'Revoked'}}
                 </div>
+                <div class="cell credited-col">
+                  {{ credit.createdAt | date:'shortDate'}}
+                </div>
               </div>
             </ng-container>
           </div>
