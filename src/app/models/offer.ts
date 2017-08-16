@@ -26,6 +26,8 @@ export interface Offer {
   minTimeToCreditType?: string;
   maxTimeToCredit?: number;
   maxTimeToCreditType?: number;
+  displayYoutube?: boolean;
+  youtubeID?: string;
   createdAt?: string;
   updatedAt?: string;
   // Helper Properties //

@@ -9,6 +9,9 @@
         <div class="dr-title"><b>Description</b></div>
         <div class="dr-text" [innerHTML]="offer?.description"></div>
       </div>
+      <div *ngIf="offer?.displayYoutube && offer?.youtubeID" class="video-container">
+          <iframe width="560" height="315" [src]="('https://www.youtube.com/embed/' + offer?.youtubeID + '?rel=0') | safeUrl" frameborder="0" allowfullscreen></iframe>  
+      </div>
       <div class="dr-row">
         <div class="dr-title"><b>Requirements</b></div>
           <div class="dr-text" [innerHTML]="offer?.requirements"></div>
@@ -20,7 +23,7 @@
       <div *ngIf="!offer?.noCardRequired" class="checkbox-row">Do you agree that you will <b><u>not use a prepaid/gift card</u></b> to complete offer and that if you complete the offer, you <b><u>will keep it at least 75-90% of trial period or beyond?</u></b>
         <div class="warn" style="font-size: 12px; line-height: 10px; margin-top: 4px;">*Please <a [routerLink]="['/support', {report: true}]">report</a> if the person who referred you advised you to violate the above rules.</div></div>
       <md-checkbox *ngIf="!offer?.noCardRequired" [(ngModel)]="agree" color="primary">I Agree</md-checkbox><br *ngIf="!offer?.noCardRequired">
-      <div *ngIf="!offer?.allowCreditRequests"><b>Do you accept that missing credit requests are not allowed for this offer and that you should <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a> for best crediting? Also, do you accept that Level Rewards will not manually credit the offer if it is not credited through the affiliate network that is providing the offer?</b></div>
+      <div class="checkbox-row" *ngIf="!offer?.allowCreditRequests">Do you accept that missing credit requests are not allowed or accepted for this offer and that you should <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a> in order to expect credit?</div>
       <md-checkbox *ngIf="!offer?.allowCreditRequests" [(ngModel)]="accept" color="primary">I Accept</md-checkbox><br *ngIf="!offer?.allowCreditRequests">
      <br> 
       <button md-raised-button color="primary" class="white" [disabled]="(!agree && !offer?.noCardRequired) || (!accept && !offer?.allowCreditRequests)" (click)="continueToOffer.emit(offer?.id)">CONTINUE WITH THIS OFFER</button>
@@ -33,7 +36,7 @@
   <md-card-content>
     Once you have completed the requirements listed above, credit is usually applied to your account
     <span *ngIf="offer?.minTimeToCredit === 0 && offer?.maxTimeToCredit === 0">
-    quickly (within 6 hours).
+    quickly <b>(within 6 hours)</b>.
   </span>
     <span *ngIf="offer?.minTimeToCredit === 0 && offer?.maxTimeToCredit !== 0">
     within {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType | singleSafe }}.

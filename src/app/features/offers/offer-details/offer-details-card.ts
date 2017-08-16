@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-
+import {
+  ChangeDetectionStrategy, Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { Offer } from '../../../models/offer';
 import { FormControl } from '@angular/forms';
 
