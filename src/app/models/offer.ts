@@ -28,6 +28,13 @@ export interface Offer {
   maxTimeToCreditType?: number;
   displayYoutube?: boolean;
   youtubeID?: string;
+  restrictDevices?: boolean;
+  android?: boolean;
+  IOS?: boolean;
+  mobile?: boolean;
+  desktop?: boolean;
+  windows?: boolean;
+  mac?: boolean;
   createdAt?: string;
   updatedAt?: string;
   // Helper Properties //

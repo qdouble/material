@@ -1,8 +1,9 @@
 import {
   ChangeDetectionStrategy, Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { Offer } from '../../../models/offer';
 import { FormControl } from '@angular/forms';
+import { Offer } from '../../../models/offer';
+import { UserAgent } from '../../../models/user-agent';
 
 @Component({
   selector: 'os-offer-details-card',
@@ -15,6 +16,7 @@ export class OfferDetailsCard {
   accept: boolean;
   agree: boolean;
   @Input() offer: Offer;
+  @Input() userAgent: UserAgent;
   @Input() publish: boolean;
   @Output() continueToOffer = new EventEmitter();
 }

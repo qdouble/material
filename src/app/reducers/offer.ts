@@ -6,6 +6,7 @@ import { compose } from '@ngrx/core/compose';
 import { AppState } from '../reducers';
 import { OfferActions } from '../actions/offer';
 import { Offer } from '../models/offer';
+import { UserAgent } from '../models/user-agent';
 
 export interface OfferState {
   ids: string[];
@@ -15,6 +16,7 @@ export interface OfferState {
   loaded: boolean;
   loadedUserOffers: boolean;
   selectedOffer: string | null;
+  userAgent: UserAgent;
 }
 
 export const initialState: OfferState = {
@@ -24,7 +26,8 @@ export const initialState: OfferState = {
   loading: false,
   loaded: false,
   loadedUserOffers: false,
-  selectedOffer: null
+  selectedOffer: null,
+  userAgent: null
 };
 
 export function offerReducer(state = initialState, action: Action): OfferState {
@@ -49,6 +52,7 @@ export function offerReducer(state = initialState, action: Action): OfferState {
 
     case OfferActions.GET_OFFER_SUCCESS: {
       const offer: Offer = action.payload.offer;
+      const userAgent = action.payload.userAgent;
       if (!offer) return Object.assign({}, state, { loading: false });
       const newOfferIds = [...state.ids];
       if (!state.ids.includes(offer.id)) {
@@ -61,6 +65,7 @@ export function offerReducer(state = initialState, action: Action): OfferState {
             costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser
           })
         }),
+        userAgent: userAgent,
         loading: false
       });
     }
