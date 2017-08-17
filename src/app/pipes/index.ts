@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CostToUserPipe } from './cost-to-user';
 import { EarnPerReferralPipe } from './earn-per-referral';
 import { FloorPipe } from './floor';
+import { LinkifyPipe } from './linkify';
 import { SafeUrlPipe } from './safe-url';
 import { SingleSafePipe } from './single-safe';
 import { ShowMaxPipe } from './show-max';
@@ -17,6 +18,7 @@ import { TimeAgoPipe } from './time-ago';
     CostToUserPipe,
     EarnPerReferralPipe,
     FloorPipe,
+    LinkifyPipe,
     SafeUrlPipe,
     SingleSafePipe,
     ShowMaxPipe,
@@ -26,6 +28,7 @@ import { TimeAgoPipe } from './time-ago';
     CostToUserPipe,
     EarnPerReferralPipe,
     FloorPipe,
+    LinkifyPipe,
     SafeUrlPipe,
     SingleSafePipe,
     ShowMaxPipe,

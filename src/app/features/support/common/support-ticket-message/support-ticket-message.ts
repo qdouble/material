@@ -12,7 +12,7 @@ import { TicketMessage } from '../../ticket.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
   <form [formGroup]="f">
-    <pre><span *ngIf="!editing">{{f.get('message').value}}</span></pre>
+    <pre><span *ngIf="!editing" [innerHTML]="f.get('message').value | linkify"></span></pre>
     <textarea-input *ngIf="editing" placeholder="Some placeholder" formControlName="message">
     </textarea-input>
   </form>

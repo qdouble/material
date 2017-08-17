@@ -5,6 +5,8 @@ import { MaterialModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 // import { EffectsModule } from '@ngrx/effects';
 
+import { CustomPipesModule } from '../../pipes';
+
 import { FooterModule } from '../footer';
 import { SelectInputModule } from '../../components/input-fields/select-input';
 import { TextareaInputModule } from '../../components/input-fields/textarea-input';
@@ -30,6 +32,7 @@ import { routes } from './support.routing';
 @NgModule({
   imports: [
     CommonModule,
+    CustomPipesModule,
     FooterModule,
     ReactiveFormsModule,
     // EffectsModule.run(CreditRequestEffects),
