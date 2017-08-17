@@ -124,9 +124,10 @@ export class UserActions {
   }
 
   static CHECK_IP_MATCH = '[User] Check IP Match';
-  checkIPMatch(): Action {
+  checkIPMatch(sponsor: string): Action {
     return {
-      type: UserActions.CHECK_IP_MATCH
+      type: UserActions.CHECK_IP_MATCH,
+      payload: sponsor
     };
   }
 

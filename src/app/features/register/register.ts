@@ -192,7 +192,7 @@ export class Register implements OnDestroy, OnInit {
       .subscribe(id => this.f.patchValue({ selectedPrize: id }));
   }
 
-  open() {
+  openIPMatchDialog() {
     this.dialogRef = this.dialog.open(IPMatchFoundDialog, this.config);
     this.ip$.take(1).subscribe(ip => {
       this.dialogRef.componentInstance.ip = ip;
@@ -218,12 +218,12 @@ export class Register implements OnDestroy, OnInit {
       .takeUntil(this.destroyed$)
       .subscribe(match => {
         if (match) {
-          this.open();
+          this.openIPMatchDialog();
         } else {
           this.store.dispatch(this.userActions.register(this.f.value));
         }
       });
-    this.store.dispatch(this.userActions.checkIPMatch());
+    this.store.dispatch(this.userActions.checkIPMatch(this.f.get('referredBy').value));
   }
 
   ngOnDestroy() {

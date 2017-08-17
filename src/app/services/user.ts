@@ -29,8 +29,8 @@ export class UserService extends RequestBase {
       .map(res => res.json());
   }
 
-  checkIPMatch(): Observable<string> {
-    return this.http.get(`${API_USER_URL}/checkIPMatch`, this.optionsNoPre)
+  checkIPMatch(sponsor: string): Observable<string> {
+    return this.http.get(`${API_USER_URL}/checkIPMatch?referredBy=${sponsor}`, this.optionsNoPre)
       .map(res => res.json());
   }
 

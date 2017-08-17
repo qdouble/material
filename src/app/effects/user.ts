@@ -83,7 +83,7 @@ export class UserEffects {
   @Effect() checkIPMatch$ = this.actions$
     .ofType(UserActions.CHECK_IP_MATCH)
     .map(action => action.payload)
-    .switchMap(() => this.userService.checkIPMatch()
+    .switchMap((sponsor) => this.userService.checkIPMatch(sponsor)
       .map((res) => this.userActions.checkIPMatchSuccess(res))
       .catch((err) => Observable.of(
         this.userActions.checkIPMatchFail(err)
