@@ -62,13 +62,37 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
   continueToOffer(offerId) {
     if (this.userAgent && this.offer.restrictDevices && this.offer.IOS && !this.userAgent.isIOS) {
       return this.openConfirmDialog(
-        'This offer is restricted to IOS Devices <br> (iPhone, iPad or iPod).'
+        'This offer is restricted to IOS devices <br> (iPhone, iPad or iPod).'
       );
     }
     if (this.userAgent && this.offer.restrictDevices
       && this.offer.android && !this.userAgent.isAndroid) {
       return this.openConfirmDialog(
         'This offer is restricted to Android devices.'
+      );
+    }
+    if (this.userAgent && this.offer.restrictDevices
+      && this.offer.mobile && !this.userAgent.isMobile) {
+      return this.openConfirmDialog(
+        'This offer is restricted to mobile devices.'
+      );
+    }
+    if (this.userAgent && this.offer.restrictDevices
+      && this.offer.desktop && !this.userAgent.isDesktop) {
+      return this.openConfirmDialog(
+        'This offer is restricted to desktop and laptop devices.'
+      );
+    }
+    if (this.userAgent && this.offer.restrictDevices
+      && this.offer.windows && !this.userAgent.isWindows) {
+      return this.openConfirmDialog(
+        'This offer is restricted to devices that are running Windows.'
+      );
+    }
+    if (this.userAgent && this.offer.restrictDevices
+      && this.offer.mac && !this.userAgent.isMac) {
+      return this.openConfirmDialog(
+        'This offer is restricted to Mac computers.'
       );
     }
     openInNewTab(`offers/offer-redirect?id=${offerId}`);
