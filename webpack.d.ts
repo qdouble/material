@@ -25,6 +25,7 @@ interface WebpackConfig {
     quiet?: boolean;
     noInfo?: boolean;
     watchOptions?: any;
+    disableHostCheck?: boolean
   };
   performance?: {
     hints?: boolean;
