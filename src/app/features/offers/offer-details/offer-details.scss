@@ -8,13 +8,23 @@ img {
 }
 
 .checkbox-row {
-  margin: 5px;
-  font-size: 17px;
+  margin: 5px auto 5px;
+  font-size: 14px;
+  max-width: 101%;
+}
+
+.complete {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .details-container {
   max-width: 800px;
   margin: 0 auto;
+}
+
+.fine-print {
+  margin-top: 30px;
 }
 
 #important-review {
