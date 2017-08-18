@@ -1,6 +1,6 @@
 <md-card id="offers-page" class="os-page-container">
   <md-card class="accent-background" *ngIf="(creditTotal$ | async) < 1" id="step1">
-    <md-card-subtitle class="white"><b>Step 1:</b> You are currently at Level 0. In order to be eligible to start earning money, you need to Level Up to Level 1 or higher. Choose any offer to complete to earn credits. For every 1.00 credit you earn, you will go up 1 level and all partial credits are added up. Every level you reach will allow you to earn an additional $5 per referral. Payments are based on the level your referrals reach. The maximum amount of money you can earn per referral is based on your own level. For further details, read the <a routerLink='/faq'>FAQ</a>.</md-card-subtitle>
+    <md-card-subtitle class="white"><b>Step 1:</b> You are currently at Level 0 and have {{(creditTotal$ | async) | number:'1.2-2'}} credits. In order to be eligible to start earning money, you need to Level Up to Level 1 or higher. Choose any offer to complete to earn credits. For every 1.00 credit you earn, you will go up 1 level and all partial credits are added up. Every level you reach will allow you to earn an additional $5 per referral. Payments are based on the level your referrals reach. The maximum amount of money you can earn per referral is based on your own level. <p>For further details, read the <a routerLink='/faq'>FAQ</a>.</p></md-card-subtitle>
   </md-card>
   <div class="os-offer-display-options">
     <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
