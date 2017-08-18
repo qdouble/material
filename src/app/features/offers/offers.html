@@ -6,7 +6,7 @@
       <p>For every 1.00 credit you earn, you will go up 1 level (all partial credits are added up). Every level you reach will allow you to earn an additional $5 per referral. Payments are based on the level your referrals reach. The maximum amount of money you can earn per referral is based on your own level. For further details, read the <a routerLink='/faq'>FAQ</a>.</p>
       </md-card-subtitle>
   </md-card>
-  <div class="os-offer-display-options">
+  <div class="os-offer-display-options" [style.display]="((creditTotal$ | async) < 1) ? 'none' : 'flex'" >
     <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
       <md-button-toggle *ngFor="let option of sortByValues; let i = index" [value]="option">
         {{sortByLabels[i]}}
@@ -18,7 +18,7 @@
     </div>
     <div style="margin-top: 10px; margin-bottom: -10px" class="os-offer-display-options">
       <md-slide-toggle style="margin-right: 10px;" *ngIf="(credits$ | async)?.length" [(ngModel)]="showCompleted" color="primary">Show Completed</md-slide-toggle>
-      <md-slide-toggle *ngIf="!showCompleted" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []" color="primary">Add Up Offers</md-slide-toggle>
+      <md-slide-toggle *ngIf="!showCompleted && (creditTotal$ | async) > 1" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []" color="primary">Add Up Offers</md-slide-toggle>
     </div>
     <div *ngIf="(creditTotal$ | async) > 1" style="margin-top: 10px; margin-bottom: -10px" class="os-offer-display-options"><button md-raised-button (click)="openGettingStartedDialog()"><md-icon>important_devices</md-icon> Getting Started</button></div>
     <div *ngIf="addUp && !showCompleted" class="add-up-instruct">
