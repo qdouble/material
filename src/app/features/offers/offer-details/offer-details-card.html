@@ -23,7 +23,7 @@
       <div *ngIf="!offer?.noCardRequired" class="checkbox-row">Do you agree that you will <b><u>not use a prepaid/gift card</u></b> to complete offer and that if you complete the offer, you <b><u>will keep it at least 75-90% of trial period or beyond?</u></b>
         <div class="warn" style="font-size: 12px; line-height: 10px; margin-top: 4px;">*Please <a [routerLink]="['/support', {report: true}]">report</a> if the person who referred you advised you to violate the above rules.</div></div>
       <md-checkbox *ngIf="!offer?.noCardRequired" [(ngModel)]="agree" color="primary">I Agree</md-checkbox><br *ngIf="!offer?.noCardRequired">
-      <div class="checkbox-row" *ngIf="!offer?.allowCreditRequests">Do you accept that missing credit requests are not allowed or accepted for this offer and that you should <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a> in order to expect credit?</div>
+      <div class="checkbox-row" *ngIf="!offer?.allowCreditRequests">Do you accept that missing credit requests are not allowed or accepted for this offer and that you should <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a>?</div>
       <md-checkbox *ngIf="!offer?.allowCreditRequests" [(ngModel)]="accept" color="primary">I Accept</md-checkbox><br *ngIf="!offer?.allowCreditRequests">
      <br> 
       <button md-raised-button color="primary" class="white" [disabled]="(!agree && !offer?.noCardRequired) || (!accept && !offer?.allowCreditRequests)" (click)="continueToOffer.emit(offer?.id)">CONTINUE WITH THIS OFFER</button>
