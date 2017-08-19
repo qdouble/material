@@ -3,8 +3,7 @@
   <md-card class="os-form-container">
     <md-card-title>Register</md-card-title>
     <md-card id="registration-text" class="primary-background white">
-      All of the information that you provide is used for verifying the legitimacy of your account and paying out your rewards. Invalid information will lead to this
-      account being placed on hold. Provided information is used for account purposes only. We do not send spam emails nor will we ever sell your information to third parties.
+      Registration info is verified before processing payments. Be sure to use fully accurate information or your account will be placed on hold.
     </md-card>
     <form [formGroup]="f" (ngSubmit)="submitForm()">
       <os-form-input class="os-form-input" [autofocus]="true" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
