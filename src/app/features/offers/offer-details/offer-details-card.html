@@ -21,7 +21,7 @@
   <md-card-actions>
     <ng-container *ngIf="!offer?.tempUnavailable">
       <div *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" class="checkbox-row">
-        <span *ngIf="!offer?.noCardRequired">Do you agree that you will <b><u>not use a prepaid/gift card</u></b> to complete offer and that if you complete the offer, you <b><u>will keep it at least 75-90% of trial period or beyond?</u></b></span>
+        <span *ngIf="!offer?.noCardRequired">Do you agree that you <b><u>will not use a prepaid card or a gift card</u></b> to complete offer and that if you complete the offer, you <b><u>will keep it at least 75-90% of trial period or beyond?</u></b></span>
         <span *ngIf="!offer?.allowCreditRequests">Do you accept that missing credit requests are not allowed or accepted for this offer and that you should <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a>?</span>
       </div>
       <md-checkbox *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" [(ngModel)]="agree" color="primary">I Agree</md-checkbox><br *ngIf="!offer?.noCardRequired">
