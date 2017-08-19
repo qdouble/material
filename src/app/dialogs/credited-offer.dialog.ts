@@ -15,7 +15,7 @@ import { Offer } from '../models/offer';
     <div><img class="os-offer-card-image" [src]="publish ? 'https://levelrewards.com/images/offer-images/' + offer.filename : (offer.directImageURL?.length > 1 ? offer.directImageURL : offer.imageURL)" [alt]="offer.displayName"></div>
     <div class="offer.reminder">
         <span>
-          <p class="main-text" *ngIf="!offer.reminder">Be sure to fully try out offer for at least 75-90% of the trial period.</p>
+          <p class="main-text" *ngIf="!offer.reminder">Be sure to fully try out offer for at least 90% of the trial period.</p>
           <pre class="main-text" *ngIf="offer.reminder">{{offer.reminder}}</pre>
         </span>
         <p>Our advertisers expect our users to fully try out their offers.</p>
