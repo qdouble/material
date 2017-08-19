@@ -1,6 +1,7 @@
 <md-card class="os-page-container">
-  <div class="details-container">
-    <md-card id="important-review" class="accent-background">
+  <div id="details" class="details-container">
+    <md-card *ngIf="(creditTotal$ | async) < 1" id="complete-offer" class="os-title-card primary-background">Step 3: Read and complete</md-card>
+    <md-card *ngIf="(creditTotal$ | async) > 1" id="important-review" class="accent-background">
       <md-card-subtitle class="white">Important: Please review the following information before continuing with the offer!</md-card-subtitle>
     </md-card>
     <os-offer-details-card [offer]="offer$ | async" [publish]="publish" [userAgent]="userAgent$ | async" (continueToOffer)="continueToOffer($event)"></os-offer-details-card>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnChanges, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
 import {
   MdDialog, MdDialogRef, MdDialogConfig,
   MdSnackBar, MdSnackBarConfig
@@ -16,6 +16,8 @@ import { getOffer } from '../../../reducers/offer';
 import { OfferActions } from '../../../actions/offer';
 import { UserAgent } from '../../../models/user-agent';
 
+import { getCreditTotal } from '../../../reducers/user';
+
 import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
 
 @Component({
@@ -23,11 +25,12 @@ import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
   templateUrl: './offer-details.html',
   styleUrls: ['./offer-details.scss']
 })
-export class OfferDetailsComponent implements OnDestroy, OnInit {
+export class OfferDetailsComponent implements OnChanges, OnDestroy, OnInit {
   confirmDialogRef: MdDialogRef<ConfirmDialog>;
   confirmDialogConfig: MdDialogConfig = {
     disableClose: false
   };
+  creditTotal$: Observable<number>;
   destroyed$: Subject<any> = new Subject<any>();
   id: string;
   userAgent: UserAgent;
@@ -44,7 +47,7 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
   ) { }
 
   ngOnInit() {
-    (typeof document !== 'undefined') ? (document.getElementById('important-review').scrollIntoView()) : {};  // tslint:disable-line
+    (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.route.params.forEach(param => {
       let id = param['id'];
       this.store.dispatch(this.offerActions.getOffer(id));
@@ -57,6 +60,7 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
           this.offer = o;
         });
     });
+    // this.creditTotal$ = this.store.let(getCreditTotal());
   }
 
   continueToOffer(offerId) {
@@ -110,6 +114,10 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
       .subscribe(result => {
         this.confirmDialogRef = null;
       });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('Changes:', changes);
   }
 
   ngOnDestroy() {

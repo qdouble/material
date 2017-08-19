@@ -1,7 +1,8 @@
 <md-card id="offers-page" class="os-page-container">
-  <md-card class="accent-background" *ngIf="((creditTotal$ | async) < 1) && loggedIn$ | async" id="step1">
+  <md-card class="os-title-card primary-background">Step 2: Select an offer</md-card>
+  <md-card class="primary-background" *ngIf="(loggedIn$ | async) && ((creditTotal$ | async) < 1)" id="step1">
     <md-card-subtitle class="white">
-      <p style="font-size: 15px"><b>Step 1:</b> You are at Level 0 and have {{(creditTotal$ | async) | number:'1.2-2'}} credits. In order to be eligible to start earning money, you need to get to Level 1 or higher. Complete any of the offers below to earn credits so you can Level Up!</p>
+      <p style="font-size: 15px">You are at Level 0 and have {{(creditTotal$ | async) | number:'1.2-2'}} credits. In order to be eligible to start earning money, you need to get to Level 1 or higher. Complete any of the offers below to earn credits so you can Level Up!</p>
       <br>
       <p>For every 1.00 credit you earn, you will go up 1 level (all partial credits are added up). Every level you reach will allow you to earn an additional $5 per referral. Payments are based on the level your referrals reach. The maximum amount of money you can earn per referral is based on your own level. For further details, read the <a routerLink='/faq'>FAQ</a>.</p>
       </md-card-subtitle>
@@ -20,7 +21,7 @@
       <md-slide-toggle style="margin-right: 10px;" *ngIf="(credits$ | async)?.length" [(ngModel)]="showCompleted" color="primary">Show Completed</md-slide-toggle>
       <md-slide-toggle *ngIf="!showCompleted && (creditTotal$ | async) > 1" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []" color="primary">Add Up Offers</md-slide-toggle>
     </div>
-    <div *ngIf="(creditTotal$ | async) > 1" style="margin-top: 10px; margin-bottom: -10px" class="os-offer-display-options"><button md-raised-button (click)="openGettingStartedDialog()"><md-icon>important_devices</md-icon> Getting Started</button></div>
+    <!-- <div *ngIf="(creditTotal$ | async) > 1" style="margin-top: 10px; margin-bottom: -10px" class="os-offer-display-options"><button md-raised-button (click)="openGettingStartedDialog()"><md-icon>important_devices</md-icon> Getting Started</button></div> -->
     <div *ngIf="addUp && !showCompleted" class="add-up-instruct">
       <p><b>&#8681; Check Offers Below to Calculate &#8681;</b></p>
       <p>Offers Checked: {{offersSelected}}</p>

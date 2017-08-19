@@ -55,7 +55,7 @@ export class Register implements OnDestroy, OnInit {
   prizeIds$: Observable<(string | undefined)[]>;
   prizeNames$: Observable<(string | undefined)[]>;
   prizeLoaded$: Observable<boolean>;
-  RANDOM_NUM = Math.floor((Math.random() * 100000) + 1);
+  RANDOM_NUM = Math.floor((Math.random() * 1000000) + 1);
   RANDOM_EMAIL = `new${this.RANDOM_NUM}@user.com`;
   referredBy$: Observable<string | null>;
   selectedPrize$: Observable<string | null>;
