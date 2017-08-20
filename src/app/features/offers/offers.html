@@ -1,5 +1,5 @@
 <md-card id="offers-page" class="os-page-container">
-  <md-card class="os-title-card primary-background">Step 2: Select an offer</md-card>
+  <md-card class="os-title-card primary-background" *ngIf="(loggedIn$ | async)">Step 2: Select an offer</md-card>
   <md-card class="primary-background" *ngIf="(loggedIn$ | async) && ((creditTotal$ | async) < 1)" id="step1">
     <md-card-subtitle class="white">
       <p style="font-size: 15px">You are at Level 0 and have {{(creditTotal$ | async) | number:'1.2-2'}} credits. In order to be eligible to start earning money, you need to get to Level 1 or higher. Complete any of the offers below to earn credits so you can Level Up!</p>
