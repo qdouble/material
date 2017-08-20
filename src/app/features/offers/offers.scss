@@ -160,6 +160,9 @@ os-offer-rows {
 #title-card-container {
   max-width: 954px;
   margin: 0 auto;
+  a:link, a:visited, a:hover, a:active {
+    color: white;
+  }
 }
 
 md-progress-circle {
