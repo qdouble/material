@@ -1,6 +1,6 @@
 {
   "name": "offersystem-frontend",
-  "version": "0.2.45",
+  "version": "0.2.46",
   "description": "LevelUp Rewards user UI",
   "author": "Qdouble <qdouble@gmail.com>",
   "main": "index.js",
