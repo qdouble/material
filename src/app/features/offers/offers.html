@@ -1,6 +1,6 @@
 <md-card id="offers-page" class="os-page-container">
   <div id="title-card-container">
-    <md-card class="os-title-card primary-background" *ngIf="(loggedIn$ | async)"><b>Step 2 :</b> Select an offer</md-card>
+    <md-card id="step-title" class="os-title-card primary-background" *ngIf="(loggedIn$ | async)"><b>Step 2 :</b> Select an offer</md-card>
     <md-card class="accent-background" *ngIf="(loggedIn$ | async) && ((creditTotal$ | async) < 1)" id="step1">
       <md-card-subtitle class="white">
         <p style="font-size: 15px">You are at level 0 and have {{(creditTotal$ | async) | number:'1.2-2'}} credits. In order to be eligible to start
@@ -45,7 +45,7 @@
     (checkOffer)="checkOffer($event)">
   </os-offer-rows>
   <div *ngIf="!showCompleted" class="paging">
-    <os-pages [itemsPerPage]="20" [selectedPage]="pageOffset$ | async" [totalItems]="(offersSorted$ | async)?.length" (pageOffset)="pageOffset$.next($event)"></os-pages>
+    <os-pages [itemsPerPage]="20" [selectedPage]="pageOffset$ | async" [totalItems]="(offersSorted$ | async)?.length" (pageOffset)="pageOffset$.next($event)" (click)="scrollToStep()"></os-pages>
   </div>
   <md-card id="no-completed-card" class="os-message-card accent-background white" *ngIf="selectedOption === 'Completed' && (offersCompleted$ | async)?.length < 1">
     You Have No Completed Offers. Complete an offer on the Available tab to level up!

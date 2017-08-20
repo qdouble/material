@@ -1,12 +1,13 @@
 <md-card class="os-page-container">
+  <md-card class="step-title os-title-card primary-background"><b>Step 5 :</b> Request Payment</md-card>
   <md-card id="place-order" class="os-form-container">
-    <md-card-title class="primary">Payments</md-card-title>
     <ng-container *ngIf="user?.orderPending">
       <md-card class="order-status accent-background white">
+        <h6 class="center">Payment pending approval</h6>
         <p>You have a payment request that is currently pending. You can not place another request until payment request is resolved. All pending level ups before request is processed will be
         will be paid out at the same time.</p>
         <br>
-        <p>REMINDER: Make sure to tell your referrals to fully test out and keep any offer that they complete for the majority of the trial period.</p>
+        <p>REMINDER: Make sure to tell your referrals to fully test out and keep any offer that they complete for the majority of the trial period.</p><br>
         <p>Low quality referrals will just lead to fewer good offers being available and it being harder for you to earn in the future, so make sure you do your part in providing high quality leads.</p>
       </md-card>
     </ng-container>

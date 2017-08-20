@@ -249,6 +249,12 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
       });
   }
 
+  scrollToStep() {
+    setTimeout(() => {
+      (typeof document !== 'undefined') ? (document.getElementById('step-title').scrollIntoView()) : {};  // tslint:disable-line
+    }, 100);
+  }
+
   ngOnDestroy() {
     this.destroyed$.next();
   }

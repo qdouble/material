@@ -54,6 +54,12 @@ export const views: Object[] = [
     loggedIn: true
   },
   {
+    name: 'Support',
+    icon: 'help',
+    link: ['support'],
+    loggedIn: true
+  },
+  {
     name: 'Profile',
     icon: 'perm_identity',
     link: ['profile'],
@@ -63,12 +69,6 @@ export const views: Object[] = [
     name: 'FAQ',
     icon: 'beenhere',
     link: ['faq'],
-    loggedIn: true
-  },
-  {
-    name: 'Support',
-    icon: 'help',
-    link: ['support'],
     loggedIn: true
   },
   // {

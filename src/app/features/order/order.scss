@@ -25,6 +25,12 @@ a {
   margin-bottom: 10px;
 }
 
+.order-status, .os-message-card {
+  p {
+    text-align: left;
+  }
+}
+
 md-card-subtitle {
   margin-top: 15px;
   text-align: center;
@@ -37,4 +43,8 @@ md-card-subtitle {
 
 #place-order {
   margin-bottom: 10px;
+}
+
+.step-title {
+  max-width: 552px;
 }

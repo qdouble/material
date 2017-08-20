@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
 import {
   MdDialog, MdDialogRef, MdDialogConfig,
   MdSnackBar, MdSnackBarConfig
@@ -25,7 +25,7 @@ import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
   templateUrl: './offer-details.html',
   styleUrls: ['./offer-details.scss']
 })
-export class OfferDetailsComponent implements OnChanges, OnDestroy, OnInit {
+export class OfferDetailsComponent implements OnDestroy, OnInit {
   confirmDialogRef: MdDialogRef<ConfirmDialog>;
   confirmDialogConfig: MdDialogConfig = {
     disableClose: false
@@ -114,10 +114,6 @@ export class OfferDetailsComponent implements OnChanges, OnDestroy, OnInit {
       .subscribe(result => {
         this.confirmDialogRef = null;
       });
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log('Changes:', changes);
   }
 
   ngOnDestroy() {
