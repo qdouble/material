@@ -6,6 +6,25 @@
       <pre>{{user.holdMessage}}</pre>
     </md-card>
   </div>
+  <md-card class="os-title-card primary-background"><b>Step 4 :</b> Promote your link</md-card>
+  <div class="os-status-page-section">
+    <md-card id="referral-link-section">
+      <md-card-title class="primary">Your Referral Link</md-card-title>
+      <md-card-content>
+        <p><a [href]="'https://levelrewards.com/register?ref=' + user?.username" target="_blank">https://levelrewards.com/register?ref={{user?.username}}</a></p>
+        <ul class="link-rule">
+          <li class="warn" style="text-align: left"><b>Do Not Spam Your Link</b></li>
+          <li class="warn" style="text-align: left"><b>Do Not Sign up Anyone In Your Household</b></li>
+          <li class="warn" style="text-align: left"><b>Do Not Share Internet Connection With Your Signups</b></li>
+          <li class="warn" style="text-align: left"><b>Do Not Create Multiple Accounts</b></li>
+        </ul>
+        <p>
+          Users must sign up immediately after clicking your link for them to be under you. Once they sign up, their account
+          will be linked to yours unless user requests a transfer.
+        </p>
+      </md-card-content>
+    </md-card>
+  </div>
   <div class="os-status-page-section">
     <md-card id="announcements-section" *ngIf="showAnnouncements">
       <md-card-title class="primary">Announcements</md-card-title>
@@ -70,24 +89,6 @@
         [selectedPrizeLabels]="selectedPrizeLabels$ | async" [selectedPrizeValues]="selectedPrizeValues$ | async" (cancelPrizeChange)="cancelPrizeChange()"
         (changeSelectedPrize)="changeSelectedPrize()">
         </os-selected-prize>
-    </md-card>
-  </div>
-  <div class="os-status-page-section">
-    <md-card id="referral-link-section">
-      <md-card-title class="primary">Your Referral Link</md-card-title>
-      <md-card-content>
-        <p><a [href]="'https://levelrewards.com/register?ref=' + user?.username" target="_blank">https://levelrewards.com/register?ref={{user?.username}}</a></p>
-        <ul class="link-rule">
-          <li class="warn" style="text-align: left"><b>Do Not Spam Your Link</b></li>
-          <li class="warn" style="text-align: left"><b>Do Not Sign up Anyone In Your Household</b></li>
-          <li class="warn" style="text-align: left"><b>Do Not Share Internet Connection With Your Signups</b></li>
-          <li class="warn" style="text-align: left"><b>Do Not Create Multiple Accounts</b></li>
-        </ul>
-        <p>
-          Users must sign up immediately after clicking your link for them to be under you. Once they sign up, their account
-          will be linked to yours unless user requests a transfer.
-        </p>
-      </md-card-content>
     </md-card>
   </div>
   <div class="os-status-page-section">
