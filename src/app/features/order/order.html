@@ -2,7 +2,7 @@
   <md-card class="step-title os-title-card primary-background"><b>Step 5 :</b> Request Payment</md-card>
   <md-card id="place-order" class="os-form-container">
     <ng-container *ngIf="user?.orderPending">
-      <md-card class="order-status accent-background white">
+      <md-card class="order-status primary-background white">
         <h6 class="center">Payment pending approval</h6>
         <p>You have a payment request that is currently pending. You can not place another request until payment request is resolved. All pending level ups before request is processed will be
         will be paid out at the same time.</p>
@@ -12,7 +12,7 @@
       </md-card>
     </ng-container>
     <ng-container *ngIf="(!user?.orderPending && !user?.hasQualifiedReferrals)">
-      <md-card class="os-message-card accent-background white">
+      <md-card class="os-message-card primary-background white">
         <ng-container *ngIf="user?.currentLevel < 1">
           <div style="text-align: left; padding: 4px;">
           <p>As you are currently on level 0, you are not qualified to request payment.</p><br>
