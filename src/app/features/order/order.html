@@ -22,7 +22,7 @@
           </div>
         </ng-container>
         <ng-container *ngIf="user?.currentLevel >= 1 && user?.hasReferralsBeyondLevel">
-          You do not have any users on your level or below that you can request payment for.
+          You do not have any members on your level or below that you can request payment for.
           However, you do have referrals that have unpaid levels that are beyond your level that you can request payment for if you increase your level.
         </ng-container>
         <ng-container *ngIf="user?.currentLevel >= 1 && !user?.hasReferralsBeyondLevel">

@@ -18,7 +18,7 @@ import { Offer } from '../models/offer';
           <p class="main-text" *ngIf="!offer.reminder">Be sure to fully try out offer for at least 90% of the trial period.</p>
           <pre class="main-text" *ngIf="offer.reminder">{{offer.reminder}}</pre>
         </span>
-        <p>Our advertisers expect our users to fully try out their offers.</p>
+        <p>Our advertisers expect our members to fully try out their offers.</p>
         <p>Quick cancellation or failure to try offer may result in your credit being revoked and your account being placed on hold.</p>
     </div>
     <button type="button" md-button color="primary" (click)="dialogRef.close()">CONTINUE</button>
