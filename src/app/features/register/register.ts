@@ -2,6 +2,7 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -66,6 +67,7 @@ export class Register implements OnDestroy, OnInit {
     private countryActions: CountryActions,
     public dialog: MdDialog,
     private prizeActions: PrizeActions,
+    private route: ActivatedRoute,
     private store: Store<AppState>,
     private userActions: UserActions,
     private userValidator: UsernameValidator
@@ -171,6 +173,21 @@ export class Register implements OnDestroy, OnInit {
     this.prizes$ = this.store.let(getPrizeCollection());
     this.prizeIds$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
     this.prizeNames$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
+    this.route.queryParams.forEach(param => {
+      if (param.email) {
+        this.f.get('email').patchValue(param.email);
+        this.f.get('confirmEmail').patchValue(param.email);
+      }
+      if (param.firstName) {
+        this.f.get('firstName').patchValue(param.firstName);
+      }
+      if (param.lastName) {
+        this.f.get('lastName').patchValue(param.lastName);
+      }
+      if (param.phone) {
+        this.f.get('phone').patchValue(param.phone);
+      }
+    });
     this.selectedPrize$ = this.store.let(getPrizeSelected());
     this.selectedPrize$
       .takeUntil(this.destroyed$)
