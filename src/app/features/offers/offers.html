@@ -17,7 +17,7 @@
       </md-button-toggle>
     </md-button-toggle-group>
   </div>
-  <div *ngIf="!showCompleted && ((creditTotal$ | async) > 1)" class="paging">
+  <div *ngIf="!showCompleted" class="paging">
     <os-pages [itemsPerPage]="20" [selectedPage]="pageOffset$ | async" [totalItems]="(offersSorted$ | async)?.length" (pageOffset)="pageOffset$.next($event)"></os-pages>
   </div>
   <div style="margin-top: 10px; margin-bottom: -10px" class="os-offer-display-options">
