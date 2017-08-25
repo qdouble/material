@@ -49,17 +49,20 @@ export class SupportTicketFormComponent implements OnDestroy, OnInit {
   }
 
   fSubmit() {
-    this.addMessage.emit(<TicketMessage>{
-      message: this.f.get('message').value,
-      ticketId: this.ticket.id
-    });
-    this.addedTicketMessageObs
-      .filter(v => v === true)
-      .take(1)
-      .takeUntil(this.destroyed$)
-      .subscribe(v => {
-        this.f.get('message').setValue('');
+    let message = this.f.get('message').value;
+    if (message && String(message).length > 1) {
+      this.addMessage.emit(<TicketMessage>{
+        message: this.f.get('message').value,
+        ticketId: this.ticket.id
       });
+      this.addedTicketMessageObs
+        .filter(v => v === true)
+        .take(1)
+        .takeUntil(this.destroyed$)
+        .subscribe(v => {
+          this.f.get('message').setValue('');
+        });
+    }
   }
 
   trackById(index: number, entry) {
