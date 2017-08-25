@@ -9,7 +9,6 @@
       </md-card-subtitle>
     </md-card>
   </div>
-
   <div class="os-offer-display-options" [style.display]="((creditTotal$ | async) < 1) ? 'none' : 'flex'">
     <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
       <md-button-toggle *ngFor="let option of sortByValues; let i = index" [value]="option">

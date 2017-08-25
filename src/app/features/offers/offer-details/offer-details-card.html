@@ -25,8 +25,8 @@
         <span *ngIf="!offer?.allowCreditRequests">Do you accept that missing credit requests are not allowed or accepted for this offer and that you should <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a>?</span>
       </div>
       <md-checkbox *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" [(ngModel)]="agree" color="primary">I Agree</md-checkbox><br *ngIf="!offer?.noCardRequired">
-     <br>
-     <p class="complete center primary">Complete now and earn {{offer?.creditValue | number: '1.2-2'}} credits!</p>
+      <br>
+      <p class="complete center primary">Complete now and earn {{offer?.creditValue | number: '1.2-2'}} credits!</p>
       <button md-raised-button color="primary" class="white" [disabled]="!agree && (!offer?.noCardRequired || !offer?.allowCreditRequests)" (click)="continueToOffer.emit(offer?.id)">CONTINUE WITH THIS OFFER</button>
     </ng-container>
     <ng-container *ngIf="offer?.tempUnavailable">

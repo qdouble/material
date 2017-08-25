@@ -1,5 +1,6 @@
 <md-card class="os-page-container">
   <div id="details" class="details-container">
+    <button md-raised-button routerLink="/offers" color="accent" class="back-button white"><md-icon>keyboard_arrow_left</md-icon>Back to Offers Page</button>
     <md-card *ngIf="(creditTotal$ | async) < 1" id="complete-offer" class="os-title-card primary-background"><b>Step 3 :</b> Read and complete</md-card>
     <md-card *ngIf="(creditTotal$ | async) > 1" id="important-review" class="accent-background">
       <md-card-subtitle class="white">Important: Please review the following information before continuing with the offer!</md-card-subtitle>
