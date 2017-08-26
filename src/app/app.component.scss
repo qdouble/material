@@ -142,3 +142,23 @@
   }
 }
 
+#status-bar {
+  background: #7CB342;
+  height: 24px;
+  width: 100%;
+  ul {
+    margin: 0 20px;
+    list-style-type: none;
+    float: right;
+    color: white;
+    font-weight: 100;
+    white-space: nowrap;
+    font-size: 12.7px;
+  }
+  ul li {
+    display: inline;
+  }
+  b {
+    font-weight: 700;
+  }
+}

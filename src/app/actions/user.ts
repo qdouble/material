@@ -495,6 +495,14 @@ export class UserActions {
     };
   }
 
+  static SET_AMOUNT_PAID = '[User] Set Amount Paid';
+  setAmountPaid(amount: number): Action {
+    return {
+      type: UserActions.SET_AMOUNT_PAID,
+      payload: amount
+    };
+  }
+
   static SET_CREDIT_TOTAL = '[User] Set Credit Total';
   setCreditTotal(total: number): Action {
     return {

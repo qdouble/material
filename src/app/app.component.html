@@ -55,6 +55,13 @@
     </div>
   </md-toolbar>
   <md-card id="my-page-card">
+      <div *ngIf="loggedIn" id="status-bar">
+        <ul>
+          <li>Level: <b>{{(creditTotal$ | async) | floor }}</b></li> |
+          <li>Credits: <b>{{(creditTotal$ | async) | number: '1.2-2' }}</b></li> |
+          <li>Earnings: <b>${{amountPaid$ | async}}</b></li>
+        </ul>
+      </div>
     <router-outlet (activate)="activateEvent($event)" (deactivate)="deactivateEvent($event)"></router-outlet>
   </md-card>
 </md-sidenav-container>

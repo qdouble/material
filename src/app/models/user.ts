@@ -35,8 +35,9 @@ export interface User {
     readonly accountType?: string;
     readonly accountNumber?: string;
     readonly savedAccountNum?: string;
-    referrals?: { [id: string]: Referral };
-    referralIds?: string[];
+    readonly amountPaid?: number;
+    readonly referrals?: { [id: string]: Referral };
+    readonly referralIds?: string[];
     readonly referralCount?: number;
     readonly currentLevel?: number;
     readonly payBeyondLevel?: number;

@@ -11,6 +11,7 @@ import { Referral } from '../models/referral';
 import { User } from '../models/user';
 
 export interface UserState {
+  amountPaid: number;
   creditIds: string[];
   credits: { [id: string]: Credit };
   creditTotal: number;
@@ -37,6 +38,7 @@ export interface UserState {
 }
 
 export const initialState: UserState = {
+  amountPaid: 0,
   creditIds: [],
   credits: {},
   creditTotal: 0,
@@ -226,6 +228,7 @@ export function userReducer(state = initialState, action: Action): UserState {
             });
         }, {});
       return Object.assign({}, state, {
+        amountPaid: user.amountPaid,
         creditIds: creditIds,
         credits: creditEntities,
         lastUpdate: user.updatedAt,
@@ -325,6 +328,9 @@ export function userReducer(state = initialState, action: Action): UserState {
       return Object.assign({}, state, {
         onAdminPage: action.payload
       });
+
+    case UserActions.SET_AMOUNT_PAID:
+      return { ...state, amountPaid: action.payload };
 
     case UserActions.SET_CREDIT_TOTAL:
       return Object.assign({}, state, {
@@ -530,6 +536,11 @@ function _getSettingPrize() {
     .select(s => s.settingPrize);
 }
 
+function _getAmountPaid() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.amountPaid);
+}
+
 function _getUser() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.user);
@@ -594,6 +605,10 @@ export function getReferralCollection() {
 
 export function getSelectedReferralIds() {
   return compose(_getSelectedReferralIds(), _getUserState());
+}
+
+export function getAmountPaid() {
+  return compose(_getAmountPaid(), _getUserState());
 }
 
 export function getUser() {

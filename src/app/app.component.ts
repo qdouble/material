@@ -16,6 +16,7 @@ import { Credit } from './models/credit';
 import { Notification } from './models/notification';
 import { Notify } from './models/notify';
 import { NotificationActions } from './actions/notification';
+import { OrderActions } from './actions/order';
 import { PrizeActions } from './actions/prize';
 import { UIActions } from './actions/ui';
 import { UserActions } from './actions/user';
@@ -32,7 +33,7 @@ import {
 } from './reducers/ui';
 
 import {
-  getReferrerBlocked,
+  getAmountPaid, getCreditTotal, getReferrerBlocked,
   getUserOnAdminPage, getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy
 } from './reducers/user';
 import { getCreditCollection } from './reducers/user';
@@ -90,8 +91,10 @@ export class AppComponent implements OnDestroy, OnInit {
     }
   };
   /////////////
+  amountPaid$: Observable<number>;
   destroyed$: Subject<any> = new Subject<any>();
   credits$: Observable<Credit[]>;
+  creditTotal$: Observable<number>;
   onAdminLoginPage$: Observable<boolean>;
   HMR = HMR;
   latestVersion$: Observable<string>;
@@ -229,7 +232,9 @@ export class AppComponent implements OnDestroy, OnInit {
           this.mobile = true;
         }
       });
+    this.amountPaid$ = this.store.let(getAmountPaid());
     this.cache.set('cached', true);
+    this.creditTotal$ = this.store.let(getCreditTotal());
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
         this.showNotifications = false;
