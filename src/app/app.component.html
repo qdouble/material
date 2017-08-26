@@ -1,6 +1,6 @@
 <md-sidenav-container id="offer-site" fullscreen>
   <md-sidenav [opened]="!mobile && !(onAdminLoginPage$ | async)" #sidenav [mode]="sideNavMode">
-    <div class="os-sidenav-top"></div>
+    <div [ngClass]="{'os-sidenav-top': !loggedIn, 'os-sidenav-top-l': loggedIn}"></div>
     <md-nav-list>
       <ng-template ngFor let-view [ngForOf]="views" let-even="even" let-odd="odd" let-rowIndex="index">
         <a *ngIf="view.loggedIn === !!loggedIn" md-list-item style="color: #272b27" [routerLink]="view.link" queryParamsHandling="preserve" routerLinkActive="active-link" (click)="mobile ? sidenav.close() : null">
