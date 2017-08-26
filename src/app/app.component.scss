@@ -127,7 +127,10 @@
 .os-sidenav-top {
   background: $primary-color;
   height: 64px;
-  width: 100%
+  width: 100%;
+  border-bottom: #7cb342;
+  border-width: 0 0 24px;
+  border-style: solid;
 }
 
 .os-toolbar-right {

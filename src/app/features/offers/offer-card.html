@@ -4,7 +4,7 @@
     <md-checkbox *ngIf="addUp" color="primary" (change)="checkOffer.emit({id: offerId, creditValue: creditValue, checked: $event.checked})"></md-checkbox>
   </md-card-subtitle>
   <span class="new" *ngIf="isNew && showingAvailable">New Offer!</span>
-  <span class="unlocked" *ngIf="offer.hideToUnQualifiedUsers && qualificationLevel > 0">Available for Members on Level {{qualificationLevel}}+</span>
+  <span class="unlocked" *ngIf="offer.hideToUnQualifiedUsers && qualificationLevel > 0">Only Available for Members on Level {{qualificationLevel}}+</span>
   <span class="popularity-rank primary" *ngIf="offer.popularityRank">Popularity Rank: <b>{{offer.popularityRank}}</b></span>
   <md-card-title>
     <ng-content select="[offer-card-name]"></ng-content>
