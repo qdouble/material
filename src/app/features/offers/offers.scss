@@ -13,6 +13,11 @@
   z-index: 1000;
 }
 
+.level-0-require {
+  font-size: 14px;
+  text-align: center;
+}
+
 #no-completed-card {
   max-width: 600px;
   margin-top: 10px;
@@ -183,4 +188,5 @@ md-progress-circle {
 #step1 {
   max-width: 90%;
   margin: 10px auto;
+  padding: 10px 24px;
 }

@@ -2,8 +2,10 @@
   <div id="title-card-container">
     <md-card id="step-title" class="os-title-card primary-background" *ngIf="(loggedIn$ | async)"><b>Step 2 :</b> Select an offer</md-card>
     <md-card class="accent-background" *ngIf="(loggedIn$ | async) && ((creditTotal$ | async) < 1)" id="step1">
-      <md-card-subtitle class="white">
-        <p style="font-size: 15px"> In order to be eligible to earn, you need to get to level 1 (1.00 credits) or higher. Complete any of the offers below to earn credits so you can level up. <br>For further details, read the <a routerLink='/faq'>FAQ</a>.</p>
+      <md-card-subtitle class="white level-0-require" style="font-size: 15px">
+        <p> In order to be eligible to earn, you need to get to level 1 (1.00 credits) or higher.</p>
+        <p>Complete any of the offers below to earn credits so you can level up.</p> 
+        <p>For further details, read the <a routerLink='/faq'>FAQ</a>.</p>
       </md-card-subtitle>
     </md-card>
   </div>
