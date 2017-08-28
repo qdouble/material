@@ -57,7 +57,7 @@
   <md-card id="my-page-card">
       <div *ngIf="loggedIn" id="status-bar">
         <ul>
-          <li>Level: <b>{{(creditTotal$ | async) | floor }}</b></li> |
+          <li>Level: <b>{{(creditTotal$ | async) | floor }} - <span style="font-size: 11px;">${{((creditTotal$ | async) | floor) * 5}} max/referral</span></b></li> |
           <li>Credits: <b>{{(creditTotal$ | async) | number: '1.2-2' }}</b></li> |
           <li>Earnings: <b>${{amountPaid$ | async}}</b></li>
         </ul>
