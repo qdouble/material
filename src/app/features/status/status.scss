@@ -21,6 +21,13 @@ a:link {
   }
 }
 
+#fb-post-btn {
+  text-align: center;
+  background: #3B5998;
+  color: white !important;
+  font-weight: 700;
+}
+
 .link-rules ul li.warn {
   text-align: left !important;
 }
@@ -61,6 +68,11 @@ md-slide-toggle {
 
 #referrals-table-section {
   overflow: scroll;
+}
+
+.share-buttons {
+  text-align: center !important;
+  margin: 5px;
 }
 
 .switch-sponsor {

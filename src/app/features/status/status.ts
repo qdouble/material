@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { Store } from '@ngrx/store';
+import { FacebookService, UIResponse, UIParams } from 'ngx-facebook';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
@@ -71,11 +72,16 @@ export class Status implements OnDestroy, OnInit {
   @ViewChild(ReferralsTable) referralTable: ReferralsTable;
   constructor(
     public dialog: MdDialog,
+    private facebook: FacebookService,
     private fb: FormBuilder,
     private store: Store<AppState>,
     private prizeActions: PrizeActions,
     private userActions: UserActions
   ) {
+    facebook.init({
+      appId: '1784209348260534',
+      version: 'v2.10'
+    });
     this.selectPrizeForm = this.fb.group({ 'selectedPrize': null });
     this.sponsorForm = this.fb.group(
       {
@@ -192,6 +198,21 @@ export class Status implements OnDestroy, OnInit {
     this.store.dispatch(this.userActions.deSelectReferrals(ids));
   }
 
+  fbShare() {
+
+    const options: UIParams = {
+      method: 'share',
+      href: 'https://levelrewards.com/register?ref=' + this.user.id
+    };
+
+    this.facebook.ui(options)
+      .then((res: UIResponse) => {
+        console.log('Got the users profile', res);
+      })
+      .catch(this.handleError);
+
+  }
+
   getReferral(referral: User) {
     if (referral.currentSponsor) {
       this.store.dispatch(this.userActions.getReferral(referral.id));
@@ -263,5 +284,9 @@ export class Status implements OnDestroy, OnInit {
   ngOnDestroy() {
     this.destroyed$.next();
     this.deselectAllReferrals();
+  }
+
+  private handleError(error) {
+    console.error('Error processing action', error);
   }
 }

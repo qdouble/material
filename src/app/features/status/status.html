@@ -12,6 +12,11 @@
       <!-- <md-card-title class="primary">Your Referral Link</md-card-title> -->
       <md-card-content>
         <p><a [href]="'https://levelrewards.com/register?ref=' + user?.username" target="_blank">https://levelrewards.com/register?ref={{user?.username}}</a></p>
+        <div class="share-buttons">
+          <button id="fb-post-btn" md-raised-button class="white" color="primary"  (click)="fbShare()" class="btn btn-lg btn-primary btn-block">
+              <img src="/assets/svg/facebook-box.svg"> Share
+          </button>
+        </div>
         <ul class="link-rule">
           <li class="warn" style="text-align: left"><b>Do Not Spam Your Link</b></li>
           <li class="warn" style="text-align: left"><b>Do Not Sign up Anyone In Your Household</b></li>

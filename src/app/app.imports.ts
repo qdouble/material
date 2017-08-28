@@ -8,6 +8,7 @@ import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { useLogMonitor } from '@ngrx/store-log-monitor';
+import { FacebookModule } from 'ngx-facebook';
 
 // import { MATERIAL_MODULES } from './material.modules';
 import { TransferHttpModule } from '../modules/transfer-http/transfer-http.module';
@@ -55,6 +56,7 @@ export const APP_IMPORTS = [
   EffectsModule.run(TicketEffects),
   EffectsModule.run(UIEffects),
   EffectsModule.run(UserEffects),
+  FacebookModule.forRoot(),
   FEATURE_MODULES,
   FlexLayoutModule,
   FormInputModule,
