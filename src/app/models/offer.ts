@@ -12,6 +12,7 @@ export interface Offer {
   noCardRequired?: boolean;
   offerOrder?: number;
   hideToUnQualifiedUsers?: boolean;
+  qualificationLevel?: number;
   varies?: boolean;
   versions?: OfferVersion[];
   tempUnavailable?: boolean;

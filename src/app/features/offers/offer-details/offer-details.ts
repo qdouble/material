@@ -35,6 +35,7 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
   id: string;
   userAgent: UserAgent;
   userAgent$: Observable<UserAgent>;
+  userLevel: number;
   publish = PUBLISH;
   offer$: Observable<Offer>;
   offer: Offer;
@@ -60,7 +61,10 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
           this.offer = o;
         });
     });
-    // this.creditTotal$ = this.store.let(getCreditTotal());
+    this.creditTotal$ = this.store.let(getCreditTotal());
+    this.creditTotal$.subscribe(total => {
+      this.userLevel = Math.floor(total);
+    });
   }
 
   continueToOffer(offerId) {
@@ -97,6 +101,11 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
       && this.offer.mac && !this.userAgent.isMac) {
       return this.openConfirmDialog(
         'This offer is restricted to Mac computers.'
+      );
+    }
+    if (this.offer.hideToUnQualifiedUsers && this.offer.qualificationLevel > this.userLevel) {
+      return this.openConfirmDialog(
+        `You must reach level ${this.offer.qualificationLevel} in order to complete this offer.`
       );
     }
     openInNewTab(`offers/offer-redirect?id=${offerId}`);

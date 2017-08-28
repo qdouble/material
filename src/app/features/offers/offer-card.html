@@ -19,7 +19,7 @@
     <div>Credits: <ng-content select="[offer-card-credits]"></ng-content></div>
   </md-card-content>
   <md-card-actions>
-    <button md-button color="primary" [routerLink]="['/offers/offer-details', {id: offerId}]">VIEW OFFER</button>
+    <button class="view-offer-btn" md-button color="primary" [routerLink]="['/offers/offer-details', {id: offerId}]">VIEW OFFER</button>
     <ng-container *ngIf="showingAvailable">
       <div *ngIf="!hideLevel && (!creditedOfferIds || creditedOfferIds && !creditedOfferIds.includes(offerId))" class="os-md-card-level">
         <div>Complete and reach</div>
