@@ -202,12 +202,14 @@ export class Status implements OnDestroy, OnInit {
 
     const options: UIParams = {
       method: 'share',
-      href: 'https://levelrewards.com/register?ref=' + this.user.id
+      href: 'https://levelrewards.com/register?ref=' + this.user.username
     };
 
     this.facebook.ui(options)
       .then((res: UIResponse) => {
-        console.log('Got the users profile', res);
+        if (ENV === 'development') {
+          console.log('Got the users profile', res);
+        }
       })
       .catch(this.handleError);
 
