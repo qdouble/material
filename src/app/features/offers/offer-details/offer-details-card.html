@@ -27,7 +27,7 @@
       <md-checkbox *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" [(ngModel)]="agree" color="primary">I Agree</md-checkbox><br *ngIf="!offer?.noCardRequired">
       <br>
       <p class="complete center primary">Complete now and earn {{offer?.creditValue | number: '1.2-2'}} credits!</p>
-      <button md-raised-button color="primary" class="white" [disabled]="!agree && (!offer?.noCardRequired || !offer?.allowCreditRequests)" (click)="continueToOffer.emit(offer?.id)">CONTINUE WITH THIS OFFER</button>
+      <button md-raised-button color="primary" class="white" [disabled]="!agree && (!offer?.noCardRequired || !offer?.allowCreditRequests)" (click)="continueToOffer.emit(offer?.id)">COMPLETE THIS OFFER</button>
     </ng-container>
     <ng-container *ngIf="offer?.tempUnavailable">
       <button md-button class="white warn-background">TEMPORARILY UNAVAILABLE</button>
