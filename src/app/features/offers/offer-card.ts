@@ -31,7 +31,7 @@ export class OfferCard implements OnInit {
     const dateNow = new Date();
     if (this.offer) {
       const createdDate = new Date(this.offer.createdAt);
-      this.isNew = dateNow.getTime() - createdDate.getTime() < 604800000;
+      this.isNew = dateNow.getTime() - createdDate.getTime() < (604800000 * 2);
     }
   }
 }
