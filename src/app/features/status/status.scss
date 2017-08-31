@@ -28,6 +28,22 @@ a:link {
   font-weight: 700;
 }
 
+.landing-disclaimer p {
+  font-size: 11px;
+  text-align: justify !important;
+}
+
+.landing-disclaimer a {
+  text-align: center;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.l-links {
+  white-space: nowrap;
+  overflow: scroll;
+}
+
 .link-rules ul li.warn {
   text-align: left !important;
 }
@@ -82,4 +98,9 @@ md-slide-toggle {
 
 .table {
   margin: 5px 0 10px 0;
+}
+
+.third-party {
+  text-align: center;
+  padding: 6px !important;
 }
