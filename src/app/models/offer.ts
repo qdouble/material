@@ -10,6 +10,7 @@ export interface Offer {
   creditValue?: number;
   costToUser?: number;
   noCardRequired?: boolean;
+  notATrial?: boolean;
   offerOrder?: number;
   hideToUnQualifiedUsers?: boolean;
   qualificationLevel?: number;

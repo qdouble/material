@@ -23,6 +23,17 @@ img {
   font-weight: bold;
 }
 
+.credit-card-qa {
+  text-align: left;
+  margin: 0 32px;
+  p {
+    font-weight: bold;
+    img {
+      width: 14px;
+    }
+  }
+}
+
 .details-container {
   max-width: 800px;
   margin: 0 auto;
@@ -71,6 +82,12 @@ img {
 
 .os-title-card {
   font-size: 20px;
+}
+
+.qa-chip {
+  width: 14px;
+  position: absolute;
+  left: 24px;
 }
 
 .video-container {
