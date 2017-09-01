@@ -1,3 +1,7 @@
+a:link {
+  color: #5a822b;
+}
+
 md-card {
   margin-bottom: 6px;
 }
@@ -25,7 +29,7 @@ img {
 
 .credit-card-qa {
   text-align: left;
-  margin: 0 32px;
+  margin: 0 32px 10px 32px;
   p {
     font-weight: bold;
     img {
@@ -37,6 +41,10 @@ img {
 .details-container {
   max-width: 800px;
   margin: 0 auto;
+}
+
+.desc-req {
+  margin-bottom: 0;
 }
 
 .fine-print {
