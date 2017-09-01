@@ -94,6 +94,7 @@ export class AppComponent implements OnDestroy, OnInit {
   amountPaid$: Observable<number>;
   destroyed$: Subject<any> = new Subject<any>();
   credits$: Observable<Credit[]>;
+  creditTotal: number;
   creditTotal$: Observable<number>;
   onAdminLoginPage$: Observable<boolean>;
   HMR = HMR;
@@ -211,14 +212,14 @@ export class AppComponent implements OnDestroy, OnInit {
     this.credits$
       .takeUntil(this.destroyed$)
       .subscribe(credits => {
-        let creditTotal = 0;
+        this.creditTotal = 0;
         credits.forEach(credit => {
           if (credit.active) {
-            creditTotal += credit.creditValue;
+            this.creditTotal += credit.creditValue;
           }
         });
-        creditTotal = Math.ceil(creditTotal * 100) / 100;
-        this.store.dispatch(this.userActions.setCreditTotal(creditTotal));
+        this.creditTotal = Math.ceil(this.creditTotal * 100) / 100;
+        this.store.dispatch(this.userActions.setCreditTotal(this.creditTotal));
       });
     this.store.dispatch(this.prizeActions.getPrizes());
     this.store.dispatch(this.userActions.checkLoggedIn());
@@ -350,6 +351,7 @@ export class AppComponent implements OnDestroy, OnInit {
   }
   openCreditedDialog(offer: Offer) {
     this.creditDialogRef = this.dialog.open(CreditedOfferDialog, this.creditDialogConfig);
+    this.creditDialogRef.componentInstance.creditsTotal = this.creditTotal;
     this.creditDialogRef.componentInstance.offer = offer;
 
     this.creditDialogRef.afterClosed()
