@@ -15,17 +15,34 @@
   font-size: 79%;
 }
 
+md-card {
+  padding-top: 52px;
+}
+
+md-card-title {
+  color: #464645;
+}
+
 md-checkbox {
   position: absolute;
   right: 6px;
   top: 23px;
 }
 
-.new {
+.new-bounding {
   position: absolute;
-  top: 9px;
-  color: #79b03b;
-  font-weight: bold;
+  top: 2px;
+  width: 82%;
+  z-index: 1;
+}
+
+.new {
+  width: 88px;
+  margin: 0 auto;
+  @media screen and (max-width: 340px) {
+    width: 80px;
+    margin-top: 2px;
+  }
 }
 
 .unlocked {
@@ -69,7 +86,7 @@ md-card-content {
   text-align: center;
   line-height: 15px;
   font-size: 10px;
-  color: #464141;
+  color: #464645;
   :nth-child(2) {
     font-size: 19px;
   }
@@ -98,8 +115,15 @@ md-card-content {
 
 .popularity-rank {
   position: absolute;
-  top: 20px;
-  right: 10px;
+  top: 22px;
+  right: -1px;
+  width: 110px;
+  b {
+    position: absolute;
+    color: white;
+    top: 8px;
+    left: 87px;
+  }
 }
 
 .view-offer-btn {

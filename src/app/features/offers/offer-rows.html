@@ -16,8 +16,9 @@
     [sideNavOpen]="sideNavOpen"
     (checkOffer)="checkOffer?.emit($event)"
     >
-    <div class="offer-card-feature" offer-card-feature>
-      <span [style.visibility]="offer?.featured ? 'visible': 'hidden'">*Featured</span>
+    <div [style.visibility]="offer?.featured ? 'visible': 'hidden'" class="offer-card-feature" offer-card-feature>
+      <!-- <span [style.visibility]="offer?.featured ? 'visible': 'hidden'">*Featured</span> -->
+      <img src="assets/svg/featured-offer-element2.svg">
     </div>
     <div class="offer-card-image-container" offer-card-image [routerLink]="['/offers/offer-details', { id: offer?.id }]">
       <img class="os-offer-card-image" [src]="publish ? 'https://levelrewards.com/images/offer-images/' + offer?.filename : (offer?.directImageURL?.length > 1 ? offer?.directImageURL : offer?.imageURL)" [alt]="offer?.displayName">
