@@ -20,7 +20,7 @@ import { Offer } from '../models/offer';
         </span>
         <p *ngIf="needCredits" class="need-credits">You now have {{creditsTotal | number:'1.2-2'}} credits. You need {{needCredits | number: '1.2-2'}} more credits to make to to level {{nextLevel}} where you will be able to make {{'$' + nextLevel * 5}} per referral who reaches the same level!</p>
     </div>
-    <button type="button" md-button color="primary" (click)="dialogRef.close()">CONTINUE</button>
+    <button type="button" md-raised-button color="primary" class="white" (click)="dialogRef.close()">CONTINUE</button>
   </div>`,
   styles: [`.credited-offer-dialog{ text-align: center; }
   .os-offer-card-image { max-height: 100px; max-width: 200px; } h5, h6 { margin: 0 } h5 { color: #638b35 }

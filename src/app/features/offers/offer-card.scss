@@ -27,7 +27,8 @@ md-card-title {
 md-checkbox {
   position: absolute;
   right: 6px;
-  top: 23px;
+  top: 4px;
+  z-index: 2;
 }
 
 .new-bounding {
