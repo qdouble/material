@@ -15,6 +15,7 @@ export interface OfferState {
   loading: boolean;
   loaded: boolean;
   loadedUserOffers: boolean;
+  rankUpdatedAt: string;
   selectedOffer: string | null;
   userAgent: UserAgent;
 }
@@ -26,6 +27,7 @@ export const initialState: OfferState = {
   loading: false,
   loaded: false,
   loadedUserOffers: false,
+  rankUpdatedAt: null,
   selectedOffer: null,
   userAgent: null
 };
@@ -72,6 +74,7 @@ export function offerReducer(state = initialState, action: Action): OfferState {
 
     case OfferActions.GET_OFFERS_SUCCESS: {
       const offers: Offer[] = action.payload.offers;
+      const rankUpdatedAt = action.payload.rankUpdatedAt;
       if (!offers) return Object.assign({}, state, { loading: false });
       // if (state.loaded) {
       //   const newOffers: Offer[] = offers.filter(offer => !state.entities[offer.id!]);
@@ -113,6 +116,7 @@ export function offerReducer(state = initialState, action: Action): OfferState {
         loading: false,
         loaded: true,
         loadedUserOffers: action.payload.loadedUserOffers || false,
+        rankUpdatedAt: rankUpdatedAt
       });
 
 
@@ -172,6 +176,11 @@ function _getOfferIds() {
     .select(s => s.ids);
 }
 
+function _getOfferRankUpdatedAt() {
+  return (state$: Observable<OfferState>) => state$
+    .select(s => s.rankUpdatedAt);
+}
+
 function _getSelectedOffer() {
   return (state$: Observable<OfferState>) => state$
     .select(s => s.selectedOffer);
@@ -208,6 +217,10 @@ export function getOfferLoadedUserOffers() {
 
 export function getOfferLoading() {
   return compose(_getLoading(), _getOfferState());
+}
+
+export function getOfferRankUpdatedAt() {
+  return compose(_getOfferRankUpdatedAt(), _getOfferState());
 }
 
 export function getOfferSelected() {

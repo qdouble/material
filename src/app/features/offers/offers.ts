@@ -17,7 +17,12 @@ const firstBy = require('thenby');
 import { AppState } from '../../reducers';
 import { Credit } from '../../models/credit';
 import { Offer } from '../../models/offer';
-import { getOfferCollection, getOfferLoaded, getOfferLoadedUserOffers } from '../../reducers/offer';
+import {
+  getOfferCollection,
+  getOfferLoaded,
+  getOfferLoadedUserOffers,
+  getOfferRankUpdatedAt
+} from '../../reducers/offer';
 import { getUIMobile, getUISideNavOpen } from '../../reducers/ui';
 import { getCreditCollection, getUserLoggedIn, getCreditTotal } from '../../reducers/user';
 import { OfferActions } from '../../actions/offer';
@@ -62,6 +67,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   loggedIn$: Observable<boolean>;
   loggedIn: boolean;
   mobile$: Observable<boolean>;
+  offerRankUpdatedAt$: Observable<string>;
   offers$: Observable<Offer[]>;
   offersSorted$: Observable<Offer[]>;
   offersUnsorted$: Observable<Offer[]>;
@@ -212,10 +218,8 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
           }
         }
       });
+    this.offerRankUpdatedAt$ = this.store.let(getOfferRankUpdatedAt());
     this.store.dispatch(this.offerActions.getOffersUpdatedAt());
-    // setTimeout(() => {
-    //   this.openGettingStartedDialog();
-    // }, 1000);
   }
 
   ngAfterViewInit() {

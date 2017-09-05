@@ -133,9 +133,6 @@ md-slide-toggle {
   height: 188px;
 }
 
-.os-page-container {
-  // overflow: scroll;
-}
 
 .paging {
   text-align: center;
@@ -145,8 +142,14 @@ md-slide-toggle {
   font-size: 11px;
   text-align: center;
   margin-top: 12px;
-  color: #4a6b24;
+  color: #ffffff;
   line-height: 12px;
+  font-weight: bold;
+  background: #8bc34a;
+  padding: 6px;
+  p {
+    font-size: 11px;
+  }
 }
 
 .os-offer-display-options {

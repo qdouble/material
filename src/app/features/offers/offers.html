@@ -4,6 +4,7 @@
     <md-card class="accent-background" *ngIf="(loggedIn$ | async) && ((creditTotal$ | async) < 1)" id="step1">
       <md-card-subtitle class="white level-0-require" style="font-size: 15px">
         <p> In order to be eligible to earn, you need to get to level 1 (1.00 credits) or higher.</p>
+        <p>Every 1.00 credit = 1 Level and you will earn $5 per level your referrals complete, with the max set by your own level.</p>
         <p>Complete any of the offers below to earn credits so you can level up.</p> 
         <p>For further details, read the <a routerLink='/faq'>FAQ</a>.</p>
       </md-card-subtitle>
@@ -38,7 +39,10 @@
       referral
     </p>
   </div>
- <div id="popularity-rank">* Popularity Rank shows top crediting offers over last 24 hours</div>
+ <div id="popularity-rank">
+   <p>Popularity Rank shows top crediting offers over the last 24 hours</p>
+   <p>Last updated: {{(offerRankUpdatedAt$ | async) | date: 'medium' }}</p>
+  </div>
   <os-offer-rows [addUp]="addUp" [creditedOfferIds]="creditedOfferIds" [creditTotal]="creditTotal$ | async" [loggedIn]="loggedIn$ | async"
     [showingAvailable]="!showCompleted" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
     (checkOffer)="checkOffer($event)">
