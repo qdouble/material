@@ -141,12 +141,13 @@ md-slide-toggle {
 #popularity-rank {
   font-size: 11px;
   text-align: center;
-  margin-top: 12px;
+  margin: 12px auto;
   color: #ffffff;
   line-height: 12px;
   font-weight: bold;
   background: #8bc34a;
   padding: 6px;
+  max-width: 342px;
   p {
     font-size: 11px;
   }
@@ -196,4 +197,9 @@ md-progress-circle {
   max-width: 90%;
   margin: 10px auto;
   padding: 10px 24px;
+  ul {
+    font-size: 13px;
+    text-align: left;
+    margin-left: -14px;
+  }
 }
