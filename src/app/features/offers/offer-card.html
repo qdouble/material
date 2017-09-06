@@ -33,7 +33,7 @@
         <div>Complete and reach</div>
         <div>Level <ng-content select="[offer-card-level]"></ng-content></div>
         <div>Earn <b style="font-size: 12px;">$<ng-content select="[offer-card-earn]"></ng-content></b> per referral</div>
-        <div style="line-height: 3px;">that reaches your level</div>
+        <div style="line-height: 3px;">that reaches your Level</div>
       </div>
       <div *ngIf="!hideLevel &&creditedOfferIds &&creditedOfferIds.length > 0 && (creditedOfferIds.includes(offerId))" class="os-md-card-level">
         <div class="completed">Completed</div>
@@ -41,7 +41,7 @@
       <div *ngIf="hideLevel" class="os-md-card-level">
         <div>Complete and earn</div>
         <div>Partial Credit</div>
-        <div>towards reaching level {{(creditTotal + 1) | floor}}</div>
+        <div>towards reaching Level {{(creditTotal + 1) | floor}}</div>
       </div>
     </ng-container>
   </md-card-actions>
