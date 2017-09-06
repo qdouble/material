@@ -24,8 +24,8 @@
   </div>
   <div style="margin-top: 10px; margin-bottom: -10px" class="os-offer-display-options">
     <md-slide-toggle style="margin-right: 10px;" *ngIf="(credits$ | async)?.length" [(ngModel)]="showCompleted" color="primary">Show Completed</md-slide-toggle>
-    <md-slide-toggle *ngIf="!showCompleted && (creditTotal$ | async) > 1" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []"
-      color="primary">Add Up Offers</md-slide-toggle>
+    <md-slide-toggle *ngIf="!showCompleted" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []"
+      color="primary">Add Up Offer Credits</md-slide-toggle>
   </div>
   <!-- <div *ngIf="(creditTotal$ | async) > 1" style="margin-top: 10px; margin-bottom: -10px" class="os-offer-display-options"><button md-raised-button (click)="openGettingStartedDialog()"><md-icon>important_devices</md-icon> Getting Started</button></div> -->
   <div *ngIf="addUp && !showCompleted" class="add-up-instruct">
