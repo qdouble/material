@@ -559,6 +559,14 @@ export class UserActions {
     };
   }
 
+  static SHOW_LEVEL_BADGE = '[User] Show Level Badge';
+  showLevelBadge(level: number): Action {
+    return {
+      type: UserActions.SHOW_LEVEL_BADGE,
+      payload: level
+    };
+  }
+
   static SORT_REFERRALS_BY = '[User] Sort Referrals By';
   sortReferralsBy(sort: { sortBy: string, reverse: boolean }): Action {
     return {

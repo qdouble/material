@@ -36,7 +36,7 @@ import {
   getAmountPaid, getCreditTotal, getReferrerBlocked,
   getUserOnAdminPage, getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy
 } from './reducers/user';
-import { getCreditCollection } from './reducers/user';
+import { getCreditCollection, getLevelBadgeNum } from './reducers/user';
 import { getNotifyCollection } from './reducers/notify';
 
 import { validateUserName } from './validators';
@@ -48,6 +48,7 @@ import { SWAndPushService } from './services/sw-and-push';
 
 import { CompletedOrderDialog } from './dialogs/completed-order.dialog';
 import { CreditedOfferDialog } from './dialogs/credited-offer.dialog';
+import { LevelBadgeDialog } from './dialogs/level-badge.dialog';
 import { Offer } from './models/offer';
 import { Order } from './models/order';
 
@@ -80,15 +81,11 @@ export class AppComponent implements OnDestroy, OnInit {
   };
   creditDialogRef: MdDialogRef<CreditedOfferDialog>;
   creditDialogConfig: MdDialogConfig = {
-    disableClose: false,
-    width: '',
-    height: '',
-    position: {
-      top: '',
-      bottom: '',
-      left: '',
-      right: ''
-    }
+    disableClose: false
+  };
+  levelBadgeDialogRef: MdDialogRef<LevelBadgeDialog>;
+  levelBadgeDialogConfig: MdDialogConfig = {
+    disableClose: false
   };
   /////////////
   amountPaid$: Observable<number>;
@@ -293,6 +290,11 @@ export class AppComponent implements OnDestroy, OnInit {
           }
         });
       });
+      let showLevelBadge = this.store.let(getLevelBadgeNum());
+      showLevelBadge.filter(l => l !== undefined && l !== null)
+      .subscribe((level) => {
+        this.openLevelBadgeDialog(level);
+      });
   }
 
   activateEvent(event) {
@@ -353,6 +355,18 @@ export class AppComponent implements OnDestroy, OnInit {
     this.creditDialogRef = this.dialog.open(CreditedOfferDialog, this.creditDialogConfig);
     this.creditDialogRef.componentInstance.creditsTotal = this.creditTotal;
     this.creditDialogRef.componentInstance.offer = offer;
+
+    this.creditDialogRef.afterClosed()
+      .takeUntil(this.destroyed$)
+      .subscribe(result => {
+        this.creditDialogRef = null;
+      });
+  }
+
+  openLevelBadgeDialog(level: number) {
+    if (level === undefined || level === null) return;
+    this.levelBadgeDialogRef = this.dialog.open(LevelBadgeDialog, this.levelBadgeDialogConfig);
+    this.levelBadgeDialogRef.componentInstance.level = ('0' + String(level)).slice(-2);
 
     this.creditDialogRef.afterClosed()
       .takeUntil(this.destroyed$)

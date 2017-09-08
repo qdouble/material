@@ -32,6 +32,7 @@ export interface UserState {
   resetEmailSent: boolean;
   selectedReferralIds: string[];
   settingPrize: boolean;
+  showLevelBadgeNum: number;
   sortReferralBy: { sortBy: string, reverse: boolean };
   updatedAt: string;
   user: User;
@@ -59,6 +60,7 @@ export const initialState: UserState = {
   resetEmailSent: false,
   selectedReferralIds: [],
   settingPrize: false,
+  showLevelBadgeNum: null,
   sortReferralBy: { sortBy: 'addedOn', reverse: false },
   updatedAt: null,
   user: {}
@@ -368,6 +370,11 @@ export function userReducer(state = initialState, action: Action): UserState {
       return state;
     }
 
+    case UserActions.SHOW_LEVEL_BADGE: {
+      if (!action.payload) return state;
+      return {...state, showLevelBadgeNum: action.payload };
+    }
+
     case UserActions.SORT_REFERRALS_BY: {
       return Object.assign({}, state, {
         sortReferralBy: action.payload
@@ -468,6 +475,11 @@ function _getCreditTotal() {
 function _getEntryEmail() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.entryEmail);
+}
+
+function _getLevelBadgeNum() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.showLevelBadgeNum);
 }
 
 function _getLoaded() {
@@ -575,6 +587,10 @@ export function getCreditCollection() {
 
 export function getCreditTotal() {
   return compose(_getCreditTotal(), _getUserState());
+}
+
+export function getLevelBadgeNum() {
+  return compose(_getLevelBadgeNum(), _getUserState());
 }
 
 export function getReferral(id: string) {
