@@ -10,7 +10,7 @@
   </div>
   <span class="unlocked" *ngIf="offer.hideToUnQualifiedUsers && qualificationLevel > 0">Only Available for Members on Level {{qualificationLevel}}+</span>
   <!-- <span class="popularity-rank primary" *ngIf="offer.popularityRank">Popularity Rank: <b>{{offer.popularityRank}}</b></span> -->
-  <span class="popularity-rank" *ngIf="offer.popularityRank">
+  <span class="popularity-rank" *ngIf="offer.popularityRank && offer.popularityRank < 99">
     <img src="assets/svg/popularity-rank-element.svg">
     <b>{{offer.popularityRank}}</b>
   </span>

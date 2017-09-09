@@ -105,7 +105,8 @@ export function offerReducer(state = initialState, action: Action): OfferState {
           if (offer.id)
             return Object.assign(entities, {
               [offer.id]: Object.assign({}, offer, {
-                costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser
+                costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
+                popularityRank: offer.popularityRank ? offer.popularityRank : 99
               })
             });
         }, {});
