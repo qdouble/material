@@ -10,7 +10,7 @@
   <div class="os-status-page-section">
     <md-card id="referral-link-section">
       <!-- <md-card-title class="primary">Your Referral Link</md-card-title> -->
-      <md-card *ngIf="(creditTotal$ | async) < 1" class="accent-background white center">You are at Level 0 and are not yet eligible to refer people and earn money. Go to the offers page and complete offers to Level Up.</md-card>
+      <md-card *ngIf="(creditTotal$ | async) < 1" class="accent-background white" style="text-align: justify !important;">You are at Level 0 and are not yet eligible to refer people and earn money. Go to the offers page and complete offers to Level Up.</md-card>
       <md-card-content *ngIf="(creditTotal$ | async) >= 1">
         <p><a [href]="'https://levelrewards.com/register?ref=' + user?.username" target="_blank">https://levelrewards.com/register?ref={{user?.username}}</a></p>
         <div class="share-buttons">
@@ -42,7 +42,7 @@
       </md-card-content>
     </md-card>
   </div>
-  <div class="os-status-page-section">
+  <div *ngIf="(creditTotal$ | async) >= 1" class="os-status-page-section">
     <md-card id="announcements-section" *ngIf="showAnnouncements">
       <md-card-title class="primary">Announcements</md-card-title>
       <md-card-content>
@@ -99,7 +99,7 @@
       </md-card-content>
     </md-card>
   </div>
-  <div class="os-status-page-section">
+  <div *ngIf="(creditTotal$ | async) >= 1" class="os-status-page-section">
     <md-card id="selected-prize-section">
       <md-card-title class="primary">Your Selected Prize</md-card-title>
       <os-selected-prize [changePrize]="changePrize" [form]="selectPrizeForm" [prize]="prize$ | async" [prizes]="prizes$ | async"
@@ -108,7 +108,7 @@
         </os-selected-prize>
     </md-card>
   </div>
-  <div class="os-status-page-section">
+  <div *ngIf="(creditTotal$ | async) >= 1" class="os-status-page-section">
     <md-card id="referrals-table-section">
       <md-card-title class="primary">Your Referrals</md-card-title>
       <ng-container *ngIf="(referrals$ | async)?.length > 0">
