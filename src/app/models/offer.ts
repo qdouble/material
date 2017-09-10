@@ -38,6 +38,7 @@ export interface Offer {
   windows?: boolean;
   mac?: boolean;
   popularityRank?: number;
+  popularityRank2?: number;
   createdAt?: string;
   updatedAt?: string;
   // Helper Properties //

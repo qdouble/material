@@ -158,8 +158,10 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
           this.offersSorted$ = this.offersUnsorted$
             .map(arr => arr.sort(
               firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
-              .thenBy('popularityRank', 1).thenBy('featured', -1)
-                .thenBy('order').thenBy('name')));
+              .thenBy('popularityRank', 1)
+              .thenBy('popularityRank2', 1)
+              .thenBy('featured', -1)
+              .thenBy('order')));
         }
         this.pageOffset$.next(this.selectedPage);
 

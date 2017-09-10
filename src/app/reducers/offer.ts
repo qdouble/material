@@ -64,7 +64,11 @@ export function offerReducer(state = initialState, action: Action): OfferState {
         ids: newOfferIds,
         entities: Object.assign({}, state.entities, {
           [offer.id]: Object.assign({}, offer, {
-            costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser
+            costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
+            popularityRank: offer.popularityRank ? offer.popularityRank : 99,
+            popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
+            featured: offer.popularityRank ||
+              (offer.popularityRank2 && offer.popularityRank2 <= 20) ? true : false
           })
         }),
         userAgent: userAgent,
@@ -106,7 +110,10 @@ export function offerReducer(state = initialState, action: Action): OfferState {
             return Object.assign(entities, {
               [offer.id]: Object.assign({}, offer, {
                 costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
-                popularityRank: offer.popularityRank ? offer.popularityRank : 99
+                popularityRank: offer.popularityRank ? offer.popularityRank : 99,
+                popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
+                featured: offer.popularityRank ||
+                (offer.popularityRank2 && offer.popularityRank2 <= 20) ? true : false
               })
             });
         }, {});

@@ -81,7 +81,7 @@ export class OfferActions {
       type: OfferActions.GET_OFFERS_UPDATED_AT_SUCCESS,
       payload: offers
     };
-  } 
+  }
 
   static GET_VIEW_OFFERS = '[Offer] Get View Offers';
   getViewOffers(): Action {
