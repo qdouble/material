@@ -21,7 +21,7 @@ export class LoggedInRedirectGuard implements CanActivate {
     this.loggedIn$.filter(loggedIn => loggedIn !== null)
       .take(1).subscribe(loggedIn => {
         if (loggedIn) {
-          this.router.navigateByUrl('profile');
+          this.router.navigateByUrl('status');
         }
       });
     return !!this.isLoggedIn();
