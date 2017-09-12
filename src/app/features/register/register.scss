@@ -46,6 +46,15 @@ select-input {
   margin-bottom: -5px;
 }
 
+#register-top {
+  width: 160%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  @media screen and (min-width: 600px) {
+    width: 100%;
+  }
+}
+
 #registration-text {
   padding: 10px;
   font-size: 12px;

@@ -1,6 +1,6 @@
 <md-card id="offers-page" class="os-page-container">
   <div id="title-card-container">
-    <md-card id="step-title" class="os-title-card primary-background" *ngIf="(loggedIn$ | async)"><b>Step 2 :</b> Earn at least 1.00 credit</md-card>
+    <md-card id="step-title" class="os-title-card primary-background" *ngIf="(loggedIn$ | async)"><b>Step 1 :</b> Earn at least 1.00 credit</md-card>
     <md-card class="accent-background" *ngIf="(loggedIn$ | async) && ((creditTotal$ | async) < 1)" id="step1">
       <md-card-subtitle class="white level-0-require" style="font-size: 15px">
         <ul>
