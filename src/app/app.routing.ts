@@ -38,8 +38,8 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: Login,
-    canActivate: [LoggedInRedirectGuard]
+    loadChildren: './features/status/index#StatusModule',
+    canActivate: [AuthGuard]
   },
   {
     path: 'about-us',

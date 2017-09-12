@@ -1,4 +1,4 @@
-<md-card class="os-page-container">
+<md-card class="os-page-container" *ngIf="loaded$ | async">
   <div class="os-status-page-section">
     <md-card *ngIf="user?.hold" class="os-message-card warn-background white">
       <h5>Your Account is on Hold</h5>
