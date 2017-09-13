@@ -20,10 +20,10 @@
   </md-card-content>
   <md-card-actions>
     <ng-container *ngIf="!offer?.tempUnavailable">
-      <div *ngIf="!offer?.noCardRequired && !offer?.notATrial" class="credit-card-qa">
+      <!-- <div *ngIf="!offer?.noCardRequired && !offer?.notATrial" class="credit-card-qa">
         <img class="qa-chip" src="assets/svg/qa-primary-chip.svg"><p class="accent">Q: Why do some trials require a credit or debit card?</p>
         <img class="qa-chip" src="assets/svg/qa-accent-chip.svg"><p class="primary">A: The advertisers are looking for potential customers. While you are not required to keep a trial beyond the trial period, the use of your credit or debit card signals that you are willing to give their offer a fair try and have the means to keep it if you choose to.</p>
-      </div>
+      </div> -->
       <div *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" class="checkbox-row">
         <span *ngIf="!offer?.noCardRequired"><span class="warn">The use of prepaid cards and giftcards are not allowed.</span> Members are to keep any trial for at least 90% of the trial period or beyond.</span>
         <span *ngIf="!offer?.allowCreditRequests">This advertiser does not accept missing credit requests. Please be sure to <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a>.</span>
