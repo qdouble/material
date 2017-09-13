@@ -17,7 +17,6 @@
     (checkOffer)="checkOffer?.emit($event)"
     >
     <div [style.visibility]="offer?.featured ? 'visible': 'hidden'" class="offer-card-feature" offer-card-feature>
-      <!-- <span [style.visibility]="offer?.featured ? 'visible': 'hidden'">*Featured</span> -->
       <img src="assets/svg/featured-offer-element2.svg">
     </div>
     <div class="offer-card-image-container" offer-card-image [routerLink]="['/offers/offer-details', { id: offer?.id }]">
