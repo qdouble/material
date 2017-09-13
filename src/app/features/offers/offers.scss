@@ -32,6 +32,10 @@ md-slide-toggle {
   margin: 4px 0;
 }
 
+#offers-page {
+  overflow: hidden;
+}
+
 .os-offer-page-header { 
   min-height: 140px; 
   margin: 0 auto;
@@ -194,13 +198,11 @@ md-progress-circle {
   transform: translate(-50%, -40%);
 }
 
-#step1 {
-  max-width: 90%;
-  margin: 10px auto;
-  padding: 10px 24px;
-  ul {
-    font-size: 13px;
-    text-align: left;
-    margin-left: -14px;
+#top-instruct {
+  width: 125%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  @media screen and (min-width: 600px) {
+    width: 100%;
   }
 }

@@ -1,16 +1,6 @@
 <md-card id="offers-page" class="os-page-container">
   <div id="title-card-container">
-    <md-card id="step-title" class="os-title-card primary-background" *ngIf="(loggedIn$ | async)"><b>Step 1 :</b> Earn at least 1.00 credit</md-card>
-    <md-card class="accent-background" *ngIf="(loggedIn$ | async) && ((creditTotal$ | async) < 1)" id="step1">
-      <md-card-subtitle class="white level-0-require" style="font-size: 15px">
-        <ul>
-          <li> In order to be eligible to earn, you need to get to Level 1 or higher.</li>
-          <li>Every 1.00 credit = 1 Level. Earnings are calculated as Level your referrals reach x $5.</li>
-          <li>Your Level sets the maximum you can earn per referral.</li>
-          <li>Complete any of the offers below to earn credits and Level Up.</li> 
-        </ul>
-      </md-card-subtitle>
-    </md-card>
+    <img *ngIf="(loggedIn$ | async)" id="top-instruct" src="assets/svg/offers-top-instruct2.svg">
   </div>
   <div class="os-offer-display-options" [style.display]="((creditTotal$ | async) < 1) ? 'none' : 'flex'">
     <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
