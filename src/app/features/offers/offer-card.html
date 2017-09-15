@@ -8,25 +8,28 @@
       <img src="assets/svg/new-offer-element.svg">
     </div>
   </div>
-  <span class="unlocked" *ngIf="offer.hideToUnQualifiedUsers && qualificationLevel > 0">Only Available for Members on Level {{qualificationLevel}}+</span>
-  <!-- <span class="popularity-rank primary" *ngIf="offer.popularityRank">Popularity Rank: <b>{{offer.popularityRank}}</b></span> -->
   <span class="popularity-rank" *ngIf="offer.popularityRank && offer.popularityRank < 99">
     <img src="assets/svg/popularity-rank-element.svg">
     <b>{{offer.popularityRank}}</b>
   </span>
-  <md-card-title>
-    <ng-content select="[offer-card-name]"></ng-content>
-    <ng-content select="[offer-card-subtitle]"></ng-content>
-  </md-card-title>
-  <div [ngClass]="{'offer-card-image': sideNavOpen, 'offer-card-image-s-closed': !sideNavOpen }">
-    <ng-content select="[offer-card-image]" md-card-image></ng-content>
-  </div>
-  <md-card-content style="height: 60px;">
-    <div>Credit Value: <ng-content select="[offer-card-value]"></ng-content></div>
-    <div>Cost: <ng-content select="[offer-card-cost]"></ng-content></div>
-    <div>Credits: <ng-content select="[offer-card-credits]"></ng-content></div>
-  </md-card-content>
-  <md-card-actions>
+  <span class="unlocked" *ngIf="offer.hideToUnQualifiedUsers && qualificationLevel > 0">Only Available for Members on Level {{qualificationLevel}}+</span>
+  <div class="lower-offer-body" [routerLink]="['/offers/offer-details', { id: offer?.id }]">
+    
+    <!-- <span class="popularity-rank primary" *ngIf="offer.popularityRank">Popularity Rank: <b>{{offer.popularityRank}}</b></span> -->
+    <md-card-title>
+      <ng-content select="[offer-card-name]"></ng-content>
+      <ng-content select="[offer-card-subtitle]"></ng-content>
+    </md-card-title>
+    <div [ngClass]="{'offer-card-image': sideNavOpen, 'offer-card-image-s-closed': !sideNavOpen }">
+      <ng-content select="[offer-card-image]" md-card-image></ng-content>
+    </div>
+    <md-card-content style="height: 60px;">
+      <div>Credit Value: <ng-content select="[offer-card-value]"></ng-content></div>
+      <div>Cost: <ng-content select="[offer-card-cost]"></ng-content></div>
+      <div>Credits: <ng-content select="[offer-card-credits]"></ng-content></div>
+    </md-card-content>
+</div>
+  <!-- <md-card-actions>
     <button class="view-offer-btn" md-button color="primary" [routerLink]="['/offers/offer-details', {id: offerId}]">VIEW OFFER</button>
     <ng-container *ngIf="showingAvailable">
       <div *ngIf="!hideLevel && (!creditedOfferIds || creditedOfferIds && !creditedOfferIds.includes(offerId))" class="os-md-card-level">
@@ -44,5 +47,5 @@
         <div>towards reaching Level {{(creditTotal + 1) | floor}}</div>
       </div>
     </ng-container>
-  </md-card-actions>
+  </md-card-actions> -->
 </md-card>

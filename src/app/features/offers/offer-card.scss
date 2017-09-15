@@ -15,8 +15,13 @@
   font-size: 79%;
 }
 
+.lower-offer-body {
+  outline: none;
+}
+
 md-card {
   padding-top: 52px;
+  outline: none;
 }
 
 md-card-title {
@@ -49,14 +54,14 @@ md-checkbox {
 
 .unlocked {
   position: absolute;
-  bottom: 52px;
+  bottom: 5px;
   color: #79b03b;
   font-weight: bold;
   font-size: 11px;
 }
 
 .offer-face {
-  height: 307px;
+  height: 244px;
   width: 250px;
   display: inline-block;
   margin: 3px;
