@@ -215,7 +215,7 @@ export class AppComponent implements OnDestroy, OnInit {
             this.creditTotal += credit.creditValue;
           }
         });
-        this.creditTotal = Math.ceil(this.creditTotal * 100) / 100;
+        this.creditTotal = Number(Number(this.creditTotal).toFixed(2));
         this.store.dispatch(this.userActions.setCreditTotal(this.creditTotal));
       });
     this.store.dispatch(this.prizeActions.getPrizes());

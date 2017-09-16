@@ -16,6 +16,7 @@ export interface Offer {
   qualificationLevel?: number;
   varies?: boolean;
   versions?: OfferVersion[];
+  alternateVersions?: string[];
   tempUnavailable?: boolean;
   tempUnavailableMessage?: string;
   description?: string;
