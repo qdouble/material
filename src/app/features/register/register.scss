@@ -48,6 +48,7 @@ select-input {
 
 #register-top {
   width: 160%;
+  max-width: 850px;
   margin-left: 50%;
   transform: translateX(-50%);
   @media screen and (min-width: 600px) {

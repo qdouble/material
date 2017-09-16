@@ -85,6 +85,7 @@ export class Profile implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.countries$ = this.store.let(getCountryCollection());
     this.countryIds$ = this.countries$.map(countries => countries.map(country => country.id));
     this.countryIds$

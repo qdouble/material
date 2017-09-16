@@ -206,7 +206,7 @@ export class UserEffects {
     .map(action => <string>action.payload)
     .switchMap(() => this.userService.logout()
       .map(() => this.userActions.logoutSuccess())
-      .do(() => this.store.dispatch(go([''])))
+      .do(() => this.store.dispatch(go(['/login'])))
       .catch((err) => Observable.of(
         this.userActions.logoutFail(err),
         this.notifyActions.addNotify(err)

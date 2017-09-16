@@ -30,8 +30,13 @@
       </div>
       <!-- <md-checkbox *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" [(ngModel)]="agree" color="primary">I Agree</md-checkbox><br *ngIf="!offer?.noCardRequired"> -->
       <br>
+      <p class="complete center primary">
+        You currently have {{creditTotal | number: '1.2-2'}} credit(s). After completing this offer, you will have {{(offer?.creditValue + creditTotal) | number: '1.2-2'}} credit(s) and 
+        <span *ngIf="futureLevel > currentLevel">be on Level {{futureLevel}} where you can earn up to ${{futureLevel * 5}} per referral!</span>
+        <span *ngIf="futureLevel === currentLevel">you will be {{(currentLevel + 1 - (creditTotal + offer.creditValue)) | number: '1.2-2'}} credits away from Level {{currentLevel + 1}} where you can earn up to ${{(currentLevel + 1) * 5}} per referral!</span>
+      </p>
       <button md-raised-button color="primary" class="white" (click)="continueToOffer.emit(offer?.id)">COMPLETE THIS OFFER</button>
-      <!-- <p class="complete center primary">This offer is worth {{offer?.creditValue | number: '1.2-2'}} credits!</p> -->
+      
     </ng-container>
     <ng-container *ngIf="offer?.tempUnavailable">
       <button md-button class="white warn-background">TEMPORARILY UNAVAILABLE</button>

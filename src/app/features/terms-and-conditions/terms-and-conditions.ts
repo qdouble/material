@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'os-terms-and-conditions',
@@ -6,7 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./terms-and-conditions.scss']
 })
 
-export class TermsAndConditions {
-
+export class TermsAndConditions implements OnInit {
+  ngOnInit() {
+    (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
+  }
 }
 

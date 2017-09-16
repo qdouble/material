@@ -154,6 +154,7 @@ export class OrderComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     if (this.paypalIds.includes(this.f.get('selectedPrize').value) &&
       (this.f.get('paypal').value == undefined || this.f.get('paypal').value == ''
         || this.f.get('paypal').value.paypal === ' ')) {

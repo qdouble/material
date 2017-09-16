@@ -7,7 +7,7 @@
       Registration information is verified before we process payouts. Be sure to use fully accurate information.
     </md-card>
     <form [formGroup]="f" (ngSubmit)="submitForm()">
-      <os-form-input class="os-form-input" [autofocus]="true" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" type="email" controlName="confirmEmail" placeholder="Confirm Email Address" [form]="f"></os-form-input>
       <div [hidden]="!f.hasError('compareEmail') || 
           !f.get('confirmEmail').valid" class="warn-text">

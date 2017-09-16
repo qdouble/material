@@ -5,6 +5,7 @@ import { NotFound404Component } from './not-found404.component';
 import { ReferrerBlockedComponent } from './referrer-blocked';
 import {
   AuthGuard,
+  AuthRegGuard,
   LoggedInRedirectGuard
 } from './guards';
 
@@ -39,7 +40,7 @@ export const routes: Routes = [
     path: '',
     pathMatch: 'full',
     loadChildren: './features/status/index#StatusModule',
-    canActivate: [AuthGuard]
+    canActivate: [AuthRegGuard]
   },
   {
     path: 'about-us',

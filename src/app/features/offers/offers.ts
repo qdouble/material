@@ -206,6 +206,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     let lastUpdate$ = this.store.select(s => s.offer.lastUpdatedAt);
     let lastUpdate;
     lastUpdate$
