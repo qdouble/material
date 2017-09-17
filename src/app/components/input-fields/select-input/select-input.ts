@@ -5,7 +5,6 @@ import { AbstractControl, FormGroup } from '@angular/forms';
   selector: 'select-input',
   templateUrl: './select-input.html',
   styles: [` md-select { position: relative; top: -6px; }
-  label { margin-right: 7px; display: inline-table;}
   md-select { overflow: hidden; } .form-group { display: flex; }
   .full-width { width: 100% }`]
 })
