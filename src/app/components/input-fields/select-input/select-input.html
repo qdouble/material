@@ -1,6 +1,5 @@
 <div class="form-group">
-  <label>{{label}}</label>
-  <md-select [ngClass]="{'full-width': fullWidth, 'center-div': center }" [ngStyle]="{'width': width}" *ngIf="optionValues?.length > 0" [formControl]="dynamicControl">
+  <md-select [placeholder]="label" [ngClass]="{'full-width': fullWidth, 'center-div': center }" [ngStyle]="{'width': width}" *ngIf="optionValues?.length > 0" [formControl]="dynamicControl">
     <md-option #myOption *ngFor="let option of optionValues; let i = index" [value]="option">
       {{optionLabels[i]}}
     </md-option>

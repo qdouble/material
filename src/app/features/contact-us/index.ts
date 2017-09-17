@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { FooterModule } from '../footer';
+import { MATERIAL_MODULES } from '../../material.modules';
 import { routes } from './contact-us.routing';
 import { ContactUs } from './contact-us';
 
@@ -13,7 +13,7 @@ import { ContactUs } from './contact-us';
   imports: [
     CommonModule,
     FooterModule,
-    MaterialModule,
+    MATERIAL_MODULES,
     ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],

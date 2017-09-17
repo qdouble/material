@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { CustomPipesModule } from '../../pipes';
 import { FooterModule } from '../footer';
+import { MATERIAL_MODULES } from '../../material.modules';
 import { PagesModule } from '../../components/pages';
 
 import { OfferCard } from './offer-card';
@@ -21,7 +21,7 @@ import { routes } from './offers.routing';
     CustomPipesModule,
     FooterModule,
     FormsModule,
-    MaterialModule,
+    MATERIAL_MODULES,
     PagesModule,
     RouterModule.forChild(routes)
   ],

@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { UniqueSelectionDispatcher } from '@angular/material';
 
 const firstBy = require('thenby');
@@ -80,7 +81,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   sideNavOpen$: Observable<boolean>;
   selectedOption = 'Available';
   sortBy = 'featured';
-  sortBy$: Subject<any> = new Subject();
+  sortBy$: Subject<any> = new BehaviorSubject('featured');
   reverse = false;
   offersSelected = 0;
   offersSelectedCreditValue = 0;
@@ -163,8 +164,6 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
               .thenBy('featured', -1)
               .thenBy('order')));
         }
-        this.pageOffset$.next(this.selectedPage);
-
         this.pageOffset$
           .takeUntil(this.destroyed$)
           .subscribe(offset => {
@@ -189,6 +188,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
                   this.offersSorted$, Observable.of(this.creditedOfferIds), completed);
               });
           });
+          this.pageOffset$.next(this.selectedPage);
       });
 
     this.creditTotal$ = store.let(getCreditTotal());
@@ -229,7 +229,6 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   ngAfterViewInit() {
     if (this.route.snapshot.params['new']) {
       (typeof document !== 'undefined') ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
-      // this.openGettingStartedDialog();
     }
   }
 

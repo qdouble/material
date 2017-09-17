@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
+
+import { MATERIAL_MODULES } from '../../../material.modules';
 
 import { SelectInput } from './select-input';
 
@@ -9,7 +10,7 @@ import { SelectInput } from './select-input';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MaterialModule
+    MATERIAL_MODULES
   ],
   declarations: [SelectInput],
   exports: [SelectInput]

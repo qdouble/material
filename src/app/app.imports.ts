@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { IdlePreloadModule } from '@angularclass/idle-preload';
-import { MaterialModule } from '@angular/material';
+// import { MaterialModule } from '@angular/material';
 
 import { EffectsModule } from '@ngrx/effects';
 import { RouterStoreModule } from '@ngrx/router-store';
@@ -10,7 +10,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { useLogMonitor } from '@ngrx/store-log-monitor';
 import { FacebookModule } from 'ngx-facebook';
 
-// import { MATERIAL_MODULES } from './material.modules';
+import { MATERIAL_MODULES } from './material.modules';
 import { TransferHttpModule } from '../modules/transfer-http/transfer-http.module';
 
 import { FEATURE_MODULES } from './features';
@@ -62,8 +62,8 @@ export const APP_IMPORTS = [
   FormInputModule,
   FormsModule,
   IdlePreloadModule.forRoot(),
-  MaterialModule,
-  // MATERIAL_MODULES,
+  // MaterialModule,
+  MATERIAL_MODULES,
   ReactiveFormsModule,
   RouterStoreModule.connectRouter(),
   SelectInputModule,

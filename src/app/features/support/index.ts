@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 // import { EffectsModule } from '@ngrx/effects';
 
 import { CustomPipesModule } from '../../pipes';
 
 import { FooterModule } from '../footer';
+import { MATERIAL_MODULES } from '../../material.modules';
 import { SelectInputModule } from '../../components/input-fields/select-input';
 import { TextareaInputModule } from '../../components/input-fields/textarea-input';
 
@@ -37,7 +37,7 @@ import { routes } from './support.routing';
     ReactiveFormsModule,
     // EffectsModule.run(CreditRequestEffects),
     // EffectsModule.run(TicketEffects),
-    MaterialModule,
+    MATERIAL_MODULES,
     RouterModule.forChild(routes),
     SelectInputModule,
     TextareaInputModule

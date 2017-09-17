@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
+
+import { MATERIAL_MODULES } from '../../../../material.modules';
 
 import { SelectInputModule } from '../../../../components/input-fields/select-input';
 import { SelectedPrizeComponent } from './selected-prize';
@@ -8,7 +9,7 @@ import { SelectedPrizeComponent } from './selected-prize';
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule,
+    MATERIAL_MODULES,
     SelectInputModule
   ],
   declarations: [

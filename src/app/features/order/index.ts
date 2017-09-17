@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { FormInputModule } from '../../components/input-fields/form-input';
 import { FooterModule } from '../footer';
+import { MATERIAL_MODULES } from '../../material.modules';
 import { SelectInputModule } from '../../components/input-fields/select-input';
 import { SelectedPrizeModule } from '../status/common/selected-prize';
 
@@ -18,7 +18,7 @@ import { OrderFormComponent, OrderTableComponent } from './common';
     CommonModule,
     FormInputModule,
     FooterModule,
-    MaterialModule,
+    MATERIAL_MODULES,
     ReactiveFormsModule,
     RouterModule.forChild([{ path: '', component: OrderComponent }]),
     SelectInputModule,

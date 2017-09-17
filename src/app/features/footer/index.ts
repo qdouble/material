@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
+import { MATERIAL_MODULES } from '../../material.modules';
 import { FooterComponent } from './footer';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule,
+    MATERIAL_MODULES,
     RouterModule
   ],
   declarations: [FooterComponent],

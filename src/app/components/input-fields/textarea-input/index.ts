@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from '@angular/material';
+
+import { MATERIAL_MODULES } from '../../../material.modules';
 
 import { TextareaInput } from './textarea-input';
 
@@ -9,7 +10,7 @@ import { TextareaInput } from './textarea-input';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MaterialModule
+    MATERIAL_MODULES
   ],
   declarations: [TextareaInput],
   exports: [TextareaInput]

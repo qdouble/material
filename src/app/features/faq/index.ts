@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-
+import { MATERIAL_MODULES } from '../../material.modules';
 import { FAQ } from './faq';
 import { FooterModule } from '../footer';
 
@@ -14,7 +13,7 @@ import { routes } from './faq.routing';
   imports: [
     CommonModule,
     FooterModule,
-    MaterialModule,
+    MATERIAL_MODULES,
     RouterModule.forChild(routes)
   ],
   declarations: [FAQ]
