@@ -144,9 +144,6 @@
   background: $primary-color;
   height: 64px;
   width: 100%;
-  border-bottom: #7cb342;
-  border-width: 0 0 24px;
-  border-style: solid;
 }
 
 .os-toolbar-right {
@@ -161,23 +158,47 @@
   }
 }
 
-#status-bar {
-  background: #7CB342;
-  height: 24px;
-  width: 100%;
-  ul {
-    margin: 0 18px;
-    list-style-type: none;
-    float: right;
+.status-bar {
+  margin-top: 5px !important;
+  #status-back {
+    width: 315px;
+    height: 45px;
+    background-image: url("/assets/svg/status-back.svg");
+    background-repeat: no-repeat;
+    background-color: #ffffff;
+    text-align: center;
     color: white;
-    font-weight: 100;
-    white-space: nowrap;
-    font-size: 11px;
-  }
-  ul li {
-    display: inline;
-  }
-  b {
-    font-weight: 700;
+    font-size: 13px;
+    :nth-child(1) {
+      margin-top: 3.5px;
+    }
+    :nth-child(2) {
+      margin-top: -7px;
+    }
+    #credits-symbol, #earnings-symbol  {
+      width: 16px;
+      position: relative;
+      top: 4.4px;
+      margin-right: 2px;
+    }
+    #level-bar-back {
+      width: 90px;
+      height: 14.5px;
+      background-image: url("/assets/svg/level-bar-back.svg");
+      background-repeat: no-repeat;
+      background-color: #8CC152;
+      margin-left: 7px;
+      display: inline-block;
+      position: relative;
+      top: 1px;
+    }
+    .level-bar {
+      height: 8.7px;
+      max-width: 85px;
+      background: #fdb217;
+      position: relative;
+      left: 1px;
+      top: 1.8px;
+    }
   }
 }

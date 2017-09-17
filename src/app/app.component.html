@@ -54,15 +54,18 @@
       </div>
     </div>
   </md-toolbar>
-  <md-card id="my-page-card">
-      <div *ngIf="loggedIn" id="status-bar">
-        <ul>
-          <li>Level: <b>{{(creditTotal$ | async) | floor }} = <span style="font-size: 11px;">${{((creditTotal$ | async) | floor) * 5}} max/referral</span></b></li> |
-          <li>Credits: <b>{{(creditTotal$ | async) | number: '1.2-2' }}</b></li> |
-          <li>Earnings: <b>${{amountPaid$ | async}}</b></li>
-        </ul>
+  <md-card fxLayout="column" id="my-page-card">
+      <div *ngIf="loggedIn" fxLayoutAlign='end end' class="status-bar">
+        <div id="status-back">
+          <div>
+            <em>Level: <b>{{creditTotal | floor }} = ${{(creditTotal | floor) * 5 }} max/referral</b></em><div id="level-bar-back"><div class="level-bar" [style.width]="85 * (creditTotal / 100) + 'px'"></div></div>
+          </div>
+          <div>
+            <img id="credits-symbol" src="assets/svg/credits-symbol.svg"><em>Credits:</em> <b>{{creditTotal | number: '1.2-2' }}</b> | <img id="earnings-symbol" src="assets/svg/earnings-symbol.svg"><em>Earnings:</em> <b>${{amountPaid$ | async}}</b>
+          </div>
+        </div>
       </div>
-    <router-outlet (activate)="activateEvent($event)" (deactivate)="deactivateEvent($event)"></router-outlet>
+        <router-outlet (activate)="activateEvent($event)" (deactivate)="deactivateEvent($event)"></router-outlet>
   </md-card>
 </md-sidenav-container>
 <os-store-devtools *ngIf="showMonitor"></os-store-devtools>

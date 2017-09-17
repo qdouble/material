@@ -29,7 +29,7 @@
   height: -webkit-calc(100vh - 64px -48px);
   height: calc(100vh - 64px - 48px);
   min-height: 100%;
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 .os-page-container {
@@ -38,7 +38,7 @@
   min-height: -moz-calc(100vh - 64px - 48px);
   min-height: -webkit-calc(100vh - 64px -48px);
   min-height: calc(100vh - 64px - 48px);
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 .os-title-card {
