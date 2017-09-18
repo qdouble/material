@@ -20,19 +20,14 @@
   </md-card-content>
   <md-card-actions>
     <ng-container *ngIf="!offer?.tempUnavailable">
-      <!-- <div *ngIf="!offer?.noCardRequired && !offer?.notATrial" class="credit-card-qa">
-        <img class="qa-chip" src="assets/svg/qa-primary-chip.svg"><p class="accent">Q: Why do some offers require a credit/debit card?</p>
-        <img class="qa-chip" src="assets/svg/qa-accent-chip.svg"><p class="primary">A: While you are not required to keep an offer beyond the trial period, the use of your credit or debit card signals that you are willing to give the offer a fair try and that you are able keep it if you choose to.</p>
-      </div> -->
       <div *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" class="checkbox-row">
         <span *ngIf="!offer?.noCardRequired"><span class="warn">The use of prepaid cards and giftcards are not allowed.</span> Members are to keep any trial for at least 90% of the trial period or beyond.</span>
         <span *ngIf="!offer?.allowCreditRequests">This advertiser does not accept missing credit requests. Please be sure to <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a>.</span>
       </div>
-      <!-- <md-checkbox *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" [(ngModel)]="agree" color="primary">I Agree</md-checkbox><br *ngIf="!offer?.noCardRequired"> -->
       <p class="complete center primary">
         You currently have {{creditTotal | number: '1.2-2'}} credit(s). After completing this offer, you will have {{(offer?.creditValue + creditTotal) | number: '1.2-2'}} credit(s) and 
-        <span *ngIf="futureLevel > currentLevel">be on Level {{futureLevel}} where you can earn up to ${{futureLevel * 5}} per referral!</span>
-        <span *ngIf="futureLevel === currentLevel">you will be {{(currentLevel + 1 - (creditTotal + offer.creditValue)) | number: '1.2-2'}} credits away from Level {{currentLevel + 1}} where you can earn up to ${{(currentLevel + 1) * 5}} per referral!</span>
+        <span *ngIf="futureLevel > currentLevel">be on Level {{futureLevel}} where you can <em>earn up to ${{futureLevel * 5}} per referral!</em></span>
+        <span *ngIf="futureLevel === currentLevel">you will be {{(currentLevel + 1 - (creditTotal + offer.creditValue)) | number: '1.2-2'}} credits away from Level {{currentLevel + 1}} where you can <em>earn up to ${{(currentLevel + 1) * 5}} per referral!</em></span>
       </p>
       <button md-raised-button color="primary" class="white" (click)="continueToOffer.emit(offer?.id)">COMPLETE THIS OFFER</button>
       

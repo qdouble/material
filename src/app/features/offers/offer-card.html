@@ -14,8 +14,6 @@
   </span>
   <span class="unlocked" *ngIf="offer.hideToUnQualifiedUsers && qualificationLevel > 0">Only Available for Members on Level {{qualificationLevel}}+</span>
   <div class="lower-offer-body" [routerLink]="['/offers/offer-details', { id: offer?.id }]">
-    
-    <!-- <span class="popularity-rank primary" *ngIf="offer.popularityRank">Popularity Rank: <b>{{offer.popularityRank}}</b></span> -->
     <md-card-title>
       <ng-content select="[offer-card-name]"></ng-content>
       <ng-content select="[offer-card-subtitle]"></ng-content>
@@ -29,23 +27,4 @@
       <div>Credits: <ng-content select="[offer-card-credits]"></ng-content></div>
     </md-card-content>
 </div>
-  <!-- <md-card-actions>
-    <button class="view-offer-btn" md-button color="primary" [routerLink]="['/offers/offer-details', {id: offerId}]">VIEW OFFER</button>
-    <ng-container *ngIf="showingAvailable">
-      <div *ngIf="!hideLevel && (!creditedOfferIds || creditedOfferIds && !creditedOfferIds.includes(offerId))" class="os-md-card-level">
-        <div>Complete and reach</div>
-        <div>Level <ng-content select="[offer-card-level]"></ng-content></div>
-        <div>Earn <b style="font-size: 12px;">$<ng-content select="[offer-card-earn]"></ng-content></b> per referral</div>
-        <div style="line-height: 3px;">that reaches your Level</div>
-      </div>
-      <div *ngIf="!hideLevel &&creditedOfferIds &&creditedOfferIds.length > 0 && (creditedOfferIds.includes(offerId))" class="os-md-card-level">
-        <div class="completed">Completed</div>
-      </div>
-      <div *ngIf="hideLevel" class="os-md-card-level">
-        <div>Complete and earn</div>
-        <div>Partial Credit</div>
-        <div>towards reaching Level {{(creditTotal + 1) | floor}}</div>
-      </div>
-    </ng-container>
-  </md-card-actions> -->
 </md-card>
