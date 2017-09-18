@@ -55,7 +55,7 @@
     </div>
   </md-toolbar>
   <md-card fxLayout="column" id="my-page-card">
-      <div *ngIf="loggedIn" fxLayoutAlign='end end' class="status-bar">
+      <div *ngIf="loggedIn && showStatus" fxLayoutAlign='end end' class="status-bar">
         <div id="status-back">
           <div>
             <em>Level: <b>{{creditTotal | floor }} = ${{(creditTotal | floor) * 5 }} max/referral</b></em><div id="level-bar-back"><div class="level-bar" [style.width]="85 * (creditTotal / 100) + 'px'"></div></div>

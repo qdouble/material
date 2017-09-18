@@ -102,6 +102,7 @@ export class AppComponent implements OnDestroy, OnInit {
   notifiy$: Observable<Notify[]>;
   referredBy: string;
   showNotifications = false;
+  showStatus: boolean;
   snackRefs = [];
   unreadMessageTotal$: Observable<number>;
   unreadNotificatonPendingTotal$: Observable<number>;
@@ -152,7 +153,6 @@ export class AppComponent implements OnDestroy, OnInit {
       .subscribe(() => {
         this.store.dispatch(this.uiActions.getVersion());
         if (this.loggedIn) {
-          // this.store.dispatch(this.userActions.checkIfUserUpdated());
         }
       });
 
@@ -235,6 +235,8 @@ export class AppComponent implements OnDestroy, OnInit {
     this.creditTotal$ = this.store.let(getCreditTotal());
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
+        log('ROUTER EVENTS', val.url)
+        this.showStatus = val.url.startsWith('/offers')
         this.showNotifications = false;
       }
     });
