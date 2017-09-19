@@ -27,6 +27,7 @@ export class OfferCard implements OnInit {
   @Input() creditTotal: number;
   @Input() qualificationLevel: number;
   @Output() checkOffer = new EventEmitter();
+  @Output() goToOfferDetails = new EventEmitter();
   ngOnInit() {
     const dateNow = new Date();
     if (this.offer) {

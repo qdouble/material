@@ -13,7 +13,7 @@
     <b>{{offer.popularityRank}}</b>
   </span>
   <span class="unlocked" *ngIf="offer.hideToUnQualifiedUsers && qualificationLevel > 0">Only Available for Members on Level {{qualificationLevel}}+</span>
-  <div class="lower-offer-body" [routerLink]="['/offers/offer-details', { id: offer?.id }]">
+  <div class="lower-offer-body" (click)="goToOfferDetails.emit(offer)">
     <md-card-title>
       <ng-content select="[offer-card-name]"></ng-content>
       <ng-content select="[offer-card-subtitle]"></ng-content>

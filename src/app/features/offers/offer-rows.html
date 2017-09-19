@@ -15,6 +15,7 @@
     [showingAvailable]="showingAvailable"
     [sideNavOpen]="sideNavOpen"
     (checkOffer)="checkOffer?.emit($event)"
+    (goToOfferDetails)="goToOfferDetails.emit($event)"
     >
     <div [style.visibility]="offer?.featured ? 'visible': 'hidden'" class="offer-card-feature" offer-card-feature>
       <img src="assets/svg/featured-offer-element2.svg">

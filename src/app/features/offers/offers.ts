@@ -6,7 +6,7 @@ import {
   MdDialog, MdDialogRef, MdDialogConfig,
   MdSnackBar, MdSnackBarConfig
 } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -28,6 +28,7 @@ import { getUIMobile, getUISideNavOpen } from '../../reducers/ui';
 import { getCreditCollection, getUserLoggedIn, getCreditTotal } from '../../reducers/user';
 import { OfferActions } from '../../actions/offer';
 
+import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { GettingStartedDialog } from '../../dialogs/getting-started.dialog';
 
 @Component({
@@ -44,22 +45,14 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   checkedOffers: { id: string, creditValue: number, checked: boolean }[] = [];
   checkedOffers$: Subject<{ id: string, creditValue: number, checked: boolean }[]>
   = new Subject<{ id: string, creditValue: number, checked: boolean }[]>();
+  confirmDialogRef: MdDialogRef<ConfirmDialog>;
+  confirmDialogConfig: MdDialogConfig = {
+    disableClose: false
+  };
   credits$: Observable<Credit[]>;
   creditTotal$: Observable<number>;
   creditedOfferIds: string[];
   destroyed$: Subject<any> = new Subject();
-  gettingStartedRef: MdDialogRef<GettingStartedDialog>;
-  gettingStartedDialogConfig: MdDialogConfig = {
-    disableClose: false,
-    width: '',
-    height: '',
-    position: {
-      top: '',
-      bottom: '',
-      left: '',
-      right: ''
-    }
-  };
   lastCloseResult: string;
   loaded$: Observable<boolean>;
   loaded: boolean;
@@ -85,6 +78,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   reverse = false;
   offersSelected = 0;
   offersSelectedCreditValue = 0;
+  userLevel: number;
   // Paging
   pages: number[] = [];
   selectedPage = 1;
@@ -109,6 +103,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     public dialog: MdDialog,
     private offerActions: OfferActions,
     private route: ActivatedRoute,
+    private router: Router,
     private store: Store<AppState>
   ) {
     this.mobile$ = this.store.let(getUIMobile());
@@ -159,10 +154,10 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
           this.offersSorted$ = this.offersUnsorted$
             .map(arr => arr.sort(
               firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : - 1 })
-              .thenBy('popularityRank', 1)
-              .thenBy('popularityRank2', 1)
-              .thenBy('featured', -1)
-              .thenBy('order')));
+                .thenBy('popularityRank', 1)
+                .thenBy('popularityRank2', 1)
+                .thenBy('featured', -1)
+                .thenBy('order')));
         }
         this.pageOffset$
           .takeUntil(this.destroyed$)
@@ -188,10 +183,13 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
                   this.offersSorted$, Observable.of(this.creditedOfferIds), completed);
               });
           });
-          this.pageOffset$.next(this.selectedPage);
+        this.pageOffset$.next(this.selectedPage);
       });
 
     this.creditTotal$ = store.let(getCreditTotal());
+    this.creditTotal$.subscribe(total => {
+      this.userLevel = Math.floor(Number(Number(total).toFixed(2)));
+    });
     this.checkedOffers$.subscribe(offers => {
       let values = offers.map(o => o.creditValue);
       let selected = 0;
@@ -232,6 +230,15 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
+  goToOfferDetails(offer: Offer) {
+    if (offer.hideToUnQualifiedUsers && offer.qualificationLevel > this.userLevel) {
+      return this.openConfirmDialog(
+        `You are currently on Level ${this.userLevel}. <br>This offer is restricted to users on level ${offer.qualificationLevel} and above. You must level up in order to complete this offer.`
+      );
+    }
+    this.router.navigate(['offers', 'offer-details', { id: offer.id }])
+  }
+
   checkOffer(event: { id: string, creditValue: number, checked: boolean }) {
     if (event.checked) {
       this.checkedOffers = [...this.checkedOffers, event];
@@ -245,21 +252,18 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.sortBy$.next(value);
   }
 
-  openGettingStartedDialog() {
-    this.gettingStartedRef = this.dialog.open(GettingStartedDialog,
-      this.gettingStartedDialogConfig);
+  openConfirmDialog(message: string) {
+    this.confirmDialogRef = this.dialog.open(ConfirmDialog,
+      this.confirmDialogRef);
+    this.confirmDialogRef.componentInstance.confirmText = message;
+    this.confirmDialogRef.componentInstance.confirmColor = '#FD9F28';
+    this.confirmDialogRef.componentInstance.okayOnly = true;
 
-    this.gettingStartedRef.afterClosed()
+    this.confirmDialogRef.afterClosed()
       .takeUntil(this.destroyed$)
       .subscribe(result => {
-        this.gettingStartedRef = null;
+        this.confirmDialogRef = null;
       });
-  }
-
-  scrollToStep() {
-    setTimeout(() => {
-      (typeof document !== 'undefined') ? (document.getElementById('step-title').scrollIntoView()) : {};  // tslint:disable-line
-    }, 100);
   }
 
   ngOnDestroy() {

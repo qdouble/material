@@ -64,26 +64,28 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
         .subscribe(o => {
           this.offer = o;
           this.credits$
-          .takeUntil(this.destroyed$)
-          .filter(c => c !== null && c !== undefined)
-          .subscribe(credits => {
-            if (o) {
-              this.alreadyCompleted = !!credits.find(c => c.offerId === o.id);
-              if(o.alternateVersions) {
-                o.alternateVersions.forEach(version => {
-                  if (credits.find(c => c.offerId === version)) {
-                    this.alreadyCompleted = true;
-                  }
-                })
+            .takeUntil(this.destroyed$)
+            .filter(c => c !== null && c !== undefined)
+            .subscribe(credits => {
+              if (o) {
+                this.alreadyCompleted = !!credits.find(c => c.offerId === o.id);
+                if (o.alternateVersions) {
+                  o.alternateVersions.forEach(version => {
+                    if (credits.find(c => c.offerId === version)) {
+                      this.alreadyCompleted = true;
+                    }
+                  })
+                }
               }
-            }
-          })
+            })
         });
     });
     this.creditTotal$ = this.store.let(getCreditTotal());
-    this.creditTotal$.subscribe(total => {
-      this.userLevel = Math.floor(Number(Number(total).toFixed(2)));
-    });
+    this.creditTotal$
+      .takeUntil(this.destroyed$)
+      .subscribe(total => {
+        this.userLevel = Math.floor(Number(Number(total).toFixed(2)));
+      });
   }
 
   continueToOffer(offerId) {

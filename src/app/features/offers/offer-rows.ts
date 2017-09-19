@@ -21,6 +21,7 @@ export class OfferRows {
   @Input() sideNavOpen: boolean;
   @Input() creditTotal: number;
   @Output() checkOffer = new EventEmitter();
+  @Output() goToOfferDetails = new EventEmitter();
   trackById(index: number, offer: Offer) {
     return offer.id;
   }
