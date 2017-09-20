@@ -144,11 +144,13 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
     this.confirmDialogRef.componentInstance.subtextColor = `#7DB14A`;
     this.confirmDialogRef.componentInstance.url = `offers/offer-redirect?id=${offerId}`;
 
-    this.confirmDialogRef.afterClosed()
-      .takeUntil(this.destroyed$)
-      .subscribe(result => {
-        this.confirmDialogRef = null;
-      });
+    if (this.confirmDialogRef) {
+      this.confirmDialogRef.afterClosed()
+        .takeUntil(this.destroyed$)
+        .subscribe(result => {
+          this.confirmDialogRef = null;
+        });
+    }
   }
 
   openConfirmDialog(message: string) {
@@ -158,11 +160,13 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
     this.confirmDialogRef.componentInstance.confirmColor = '#FD9F28';
     this.confirmDialogRef.componentInstance.okayOnly = true;
 
-    this.confirmDialogRef.afterClosed()
-      .takeUntil(this.destroyed$)
-      .subscribe(result => {
-        this.confirmDialogRef = null;
-      });
+    if (this.confirmDialogConfig) {
+      this.confirmDialogRef.afterClosed()
+        .takeUntil(this.destroyed$)
+        .subscribe(result => {
+          this.confirmDialogRef = null;
+        });
+    }
   }
 
   ngOnDestroy() {

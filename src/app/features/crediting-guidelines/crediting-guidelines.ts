@@ -45,11 +45,13 @@ export class CreditingGuidelines implements OnDestroy, OnInit {
     this.confirmDialogRef.componentInstance.confirmColor = 'red';
     this.confirmDialogRef.componentInstance.okayOnly = true;
 
-    this.confirmDialogRef.afterClosed()
-      .takeUntil(this.destroyed$)
-      .subscribe(result => {
-        this.confirmDialogRef = null;
-      });
+    if (this.confirmDialogRef) {
+      this.confirmDialogRef.afterClosed()
+        .takeUntil(this.destroyed$)
+        .subscribe(result => {
+          this.confirmDialogRef = null;
+        });
+    }
   }
 
   ngOnDestroy() {

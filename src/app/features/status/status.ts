@@ -248,7 +248,8 @@ export class Status implements OnDestroy, OnInit {
       `Removing your referrals means they will no longer be under you. This cannot be undone.`;
     this.confirmDialogRef.componentInstance.subtextColor = '#F44336';
 
-    this.confirmDialogRef.afterClosed()
+    if(this.confirmDialogRef) {
+      this.confirmDialogRef.afterClosed()
       .takeUntil(this.destroyed$)
       .subscribe(result => {
         if (result) {
@@ -256,6 +257,7 @@ export class Status implements OnDestroy, OnInit {
         }
         this.confirmDialogRef = null;
       });
+    }
   }
 
   selectReferral(select: { id: string, checked: boolean }) {

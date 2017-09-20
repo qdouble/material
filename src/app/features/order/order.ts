@@ -41,7 +41,7 @@ export class OrderComponent implements OnDestroy, OnInit {
   loaded$: Observable<boolean>;
   orders$: Observable<Order[]>;
   ordersLoaded$: Observable<boolean>;
-  bankCheckId= '1468623188180';
+  bankCheckId = '1468623188180';
   bankTransferId = '1468623229999';
   needBankInfo: boolean;
   paypalIds = ['1468679688287', '1468679688287'];
@@ -229,14 +229,16 @@ export class OrderComponent implements OnDestroy, OnInit {
       You cannot switch payment methods after payment is sent.`;
     this.confirmDialogRef.componentInstance.subtextColor = '#F44336';
 
-    this.confirmDialogRef.afterClosed()
-      .takeUntil(this.destroyed$)
-      .subscribe(result => {
-        if (result) {
-          this.store.dispatch(this.orderAction.placeOrder(formValue));
-        }
-        this.confirmDialogRef = null;
-      });
+    if (this.confirmDialogRef) {
+      this.confirmDialogRef.afterClosed()
+        .takeUntil(this.destroyed$)
+        .subscribe(result => {
+          if (result) {
+            this.store.dispatch(this.orderAction.placeOrder(formValue));
+          }
+          this.confirmDialogRef = null;
+        });
+    }
   }
 
   openConfirmDialogInvalidPayPal() {
@@ -250,11 +252,14 @@ export class OrderComponent implements OnDestroy, OnInit {
     this.confirmDialogRef.componentInstance.subtextColor = '#73a03d';
     this.confirmDialogRef.componentInstance.okayOnly = true;
 
-    this.confirmDialogRef.afterClosed()
-      .takeUntil(this.destroyed$)
-      .subscribe(result => {
-        this.confirmDialogRef = null;
-      });
+    if (this.confirmDialogConfig) {
+      this.confirmDialogRef.afterClosed()
+        .takeUntil(this.destroyed$)
+        .subscribe(result => {
+          this.confirmDialogRef = null;
+        });
+    }
+
   }
 
   placeOrder() {

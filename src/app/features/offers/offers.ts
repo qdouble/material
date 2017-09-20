@@ -259,11 +259,13 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.confirmDialogRef.componentInstance.confirmColor = '#FD9F28';
     this.confirmDialogRef.componentInstance.okayOnly = true;
 
-    this.confirmDialogRef.afterClosed()
+    if (this.confirmDialogRef) {
+      this.confirmDialogRef.afterClosed()
       .takeUntil(this.destroyed$)
       .subscribe(result => {
         this.confirmDialogRef = null;
       });
+    }
   }
 
   ngOnDestroy() {

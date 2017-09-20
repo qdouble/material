@@ -100,6 +100,7 @@ export class AppComponent implements OnDestroy, OnInit {
   loggedIn: boolean;
   notifications$: Observable<Notification[]>;
   notifiy$: Observable<Notify[]>;
+  openLevelAfterClose = 0;
   referredBy: string;
   showNotifications = false;
   showStatus: boolean;
@@ -292,8 +293,8 @@ export class AppComponent implements OnDestroy, OnInit {
           }
         });
       });
-      let showLevelBadge = this.store.let(getLevelBadgeNum());
-      showLevelBadge.filter(l => l !== undefined && l !== null)
+    let showLevelBadge = this.store.let(getLevelBadgeNum());
+    showLevelBadge.filter(l => l !== undefined && l !== null)
       .subscribe((level) => {
         this.openLevelBadgeDialog(level);
       });
@@ -347,34 +348,45 @@ export class AppComponent implements OnDestroy, OnInit {
       this.completedOrderDialogRef);
     this.completedOrderDialogRef.componentInstance.order = order;
 
-    this.completedOrderDialogRef.afterClosed()
-      .takeUntil(this.destroyed$)
-      .subscribe(result => {
-        this.completedOrderDialogRef = null;
-      });
+    if (this.completedOrderDialogRef) {
+      this.completedOrderDialogRef.afterClosed()
+        .takeUntil(this.destroyed$)
+        .subscribe(result => {
+          this.completedOrderDialogRef = null;
+        });
+    }
   }
   openCreditedDialog(offer: Offer) {
     this.creditDialogRef = this.dialog.open(CreditedOfferDialog, this.creditDialogConfig);
     this.creditDialogRef.componentInstance.creditsTotal = this.creditTotal;
     this.creditDialogRef.componentInstance.offer = offer;
-
-    this.creditDialogRef.afterClosed()
-      .takeUntil(this.destroyed$)
-      .subscribe(result => {
-        this.creditDialogRef = null;
-      });
+    if (this.creditDialogRef) {
+      this.creditDialogRef.afterClosed()
+        .takeUntil(this.destroyed$)
+        .subscribe(result => {
+          if(this.openLevelAfterClose) {
+            this.openLevelBadgeDialog(this.openLevelAfterClose);
+            this.openLevelAfterClose = 0;
+          }
+          this.creditDialogRef = null;
+        });
+    }
   }
 
   openLevelBadgeDialog(level: number) {
+    if (this.dialog.openDialogs.length) {
+      return this.openLevelAfterClose = level;
+    }
     if (level === undefined || level === null) return;
     this.levelBadgeDialogRef = this.dialog.open(LevelBadgeDialog, this.levelBadgeDialogConfig);
     this.levelBadgeDialogRef.componentInstance.level = ('0' + String(level)).slice(-2);
-
-    this.creditDialogRef.afterClosed()
-      .takeUntil(this.destroyed$)
-      .subscribe(result => {
-        this.creditDialogRef = null;
-      });
+    if (this.creditDialogRef) {
+      this.creditDialogRef.afterClosed()
+        .takeUntil(this.destroyed$)
+        .subscribe(result => {
+          // this.creditDialogRef = null;
+        });
+    }
   }
 
   toggleMobile() {

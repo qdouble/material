@@ -219,12 +219,15 @@ export class Register implements OnDestroy, OnInit {
         this.dialogRef.componentInstance.ISP = ip.org;
       }
     });
-    this.dialogRef.afterClosed().subscribe(proceed => {
-      if (proceed) {
-        this.store.dispatch(this.userActions.register(this.f.value));
-      }
-      this.dialogRef = null;
-    });
+    if(this.dialogRef) {
+      this.dialogRef.afterClosed().subscribe(proceed => {
+        if (proceed) {
+          this.store.dispatch(this.userActions.register(this.f.value));
+        }
+        this.dialogRef = null;
+      });
+    }
+
   }
 
   submitForm() {
