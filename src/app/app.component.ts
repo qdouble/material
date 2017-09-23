@@ -236,8 +236,8 @@ export class AppComponent implements OnDestroy, OnInit {
     this.creditTotal$ = this.store.let(getCreditTotal());
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
-        log('ROUTER EVENTS', val.url)
-        this.showStatus = val.url.startsWith('/offers')
+        log('ROUTER EVENTS', val.url);
+        this.showStatus = val.url.startsWith('/offers');
         this.showNotifications = false;
       }
     });
@@ -364,7 +364,7 @@ export class AppComponent implements OnDestroy, OnInit {
       this.creditDialogRef.afterClosed()
         .takeUntil(this.destroyed$)
         .subscribe(result => {
-          if(this.openLevelAfterClose) {
+          if (this.openLevelAfterClose) {
             this.openLevelBadgeDialog(this.openLevelAfterClose);
             this.openLevelAfterClose = 0;
           }

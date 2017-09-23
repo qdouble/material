@@ -31,6 +31,8 @@ export class OfferDetailsCard implements OnChanges, OnInit {
   }
   setLevels() {
     this.currentLevel = Math.floor(Number(Number(this.creditTotal).toFixed(2)));
-    this.futureLevel = Math.floor(Number(Number(this.creditTotal + this.offer.creditValue).toFixed(2)))
+    this.futureLevel = Math.floor(
+      Number(Number(this.creditTotal + this.offer.creditValue).toFixed(2))
+    );
   }
 }

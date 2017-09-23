@@ -233,10 +233,12 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   goToOfferDetails(offer: Offer) {
     if (offer.hideToUnQualifiedUsers && offer.qualificationLevel > this.userLevel) {
       return this.openConfirmDialog(
-        `You are currently on Level ${this.userLevel}. <br>This offer is restricted to users on level ${offer.qualificationLevel} and above. You must level up in order to complete this offer.`
+        `You are currently on Level ${this.userLevel}.
+        <br>This offer is restricted to users on level ${offer.qualificationLevel}
+        and above. You must level up in order to complete this offer.`
       );
     }
-    this.router.navigate(['offers', 'offer-details', { id: offer.id }])
+    this.router.navigate(['offers', 'offer-details', { id: offer.id }]);
   }
 
   checkOffer(event: { id: string, creditValue: number, checked: boolean }) {
@@ -261,10 +263,10 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
 
     if (this.confirmDialogRef) {
       this.confirmDialogRef.afterClosed()
-      .takeUntil(this.destroyed$)
-      .subscribe(result => {
-        this.confirmDialogRef = null;
-      });
+        .takeUntil(this.destroyed$)
+        .subscribe(result => {
+          this.confirmDialogRef = null;
+        });
     }
   }
 

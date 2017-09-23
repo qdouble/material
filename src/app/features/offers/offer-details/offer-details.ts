@@ -32,7 +32,7 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
   confirmDialogConfig: MdDialogConfig = {
     disableClose: false
   };
-  credits$: Observable<Credit[]>
+  credits$: Observable<Credit[]>;
   creditTotal$: Observable<number>;
   destroyed$: Subject<any> = new Subject<any>();
   id: string;
@@ -74,10 +74,10 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
                     if (credits.find(c => c.offerId === version)) {
                       this.alreadyCompleted = true;
                     }
-                  })
+                  });
                 }
               }
-            })
+            });
         });
     });
     this.creditTotal$ = this.store.let(getCreditTotal());
@@ -129,7 +129,8 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
     }
     if (this.offer.hideToUnQualifiedUsers && this.offer.qualificationLevel > this.userLevel) {
       return this.openConfirmDialog(
-        `You are currently at Level ${this.userLevel}. <br>You must reach Level ${this.offer.qualificationLevel} in order to complete this offer.`
+        `You are currently at Level ${this.userLevel}.<br>
+        You must reach Level ${this.offer.qualificationLevel} in order to complete this offer.`
       );
     }
     openInNewTab(`offers/offer-redirect?id=${offerId}`);
@@ -138,9 +139,11 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
   openAlreadyCompletedDialog(offerId: string) {
     this.confirmDialogRef = this.dialog.open(ConfirmDialog,
       this.confirmDialogRef);
-    this.confirmDialogRef.componentInstance.confirmText = 'You have already completed this offer. You can only get credit for an offer one time.';
+    this.confirmDialogRef.componentInstance.confirmText =
+      'You have already completed this offer. You can only get credit for an offer one time.';
     this.confirmDialogRef.componentInstance.confirmColor = '#FD9F28';
-    this.confirmDialogRef.componentInstance.subtext = `Do you want to continue to this offer's website?`;
+    this.confirmDialogRef.componentInstance.subtext =
+      `Do you want to continue to this offer's website?`;
     this.confirmDialogRef.componentInstance.subtextColor = `#7DB14A`;
     this.confirmDialogRef.componentInstance.url = `offers/offer-redirect?id=${offerId}`;
 
