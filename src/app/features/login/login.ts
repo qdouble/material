@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -9,11 +10,20 @@ import { UserActions } from '../../actions/user';
 import { getUserEntryEmail } from '../../reducers/user';
 import { RegexValues } from '../../validators';
 
+
 @Component({
   selector: 'os-login',
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
-  encapsulation: ViewEncapsulation.Emulated
+  encapsulation: ViewEncapsulation.Emulated,
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(250)
+      ])
+    ])
+  ]
 })
 
 export class Login implements OnDestroy {

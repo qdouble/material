@@ -1,9 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'os-faq',
   templateUrl: './faq.html',
-  styleUrls: ['./faq.scss']
+  styleUrls: ['./faq.scss'],
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(250)
+      ])
+    ])
+  ]
 })
 
 export class FAQ implements OnInit {

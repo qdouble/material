@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +18,15 @@ import { getTicketCollection } from '../../reducers/ticket';
 @Component({
   selector: 'os-support',
   templateUrl: './support.html',
-  styleUrls: ['./support.scss']
+  styleUrls: ['./support.scss'],
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(250)
+      ])
+    ])
+  ]
 })
 
 export class Support implements OnInit {

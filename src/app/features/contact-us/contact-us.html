@@ -1,5 +1,5 @@
 <md-card class="os-page-container-vh">
-  <md-card class="os-form-container">
+  <md-card class="os-form-container" @fade>
     <form *ngIf="!hideForm" [formGroup]="f" (ngSubmit)="submitForm()">
       <md-card-title class="primary">Contact Us</md-card-title>
       <md-input-container>

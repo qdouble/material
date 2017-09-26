@@ -2,6 +2,7 @@ import {
   AfterViewInit, Component, ChangeDetectionStrategy,
   OnDestroy, OnInit, ViewEncapsulation
 } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -33,7 +34,15 @@ import { ConfirmDialog } from '../../dialogs/confirm.dialog';
   styleUrls: ['./offers.scss'],
   providers: [UniqueSelectionDispatcher],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.Emulated
+  encapsulation: ViewEncapsulation.Emulated,
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(250)
+      ])
+    ])
+  ]
 })
 
 export class Offers implements AfterViewInit, OnDestroy, OnInit {

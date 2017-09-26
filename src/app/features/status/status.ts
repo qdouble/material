@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { Store } from '@ngrx/store';
@@ -33,7 +34,15 @@ import {
 @Component({
   selector: 'os-status',
   templateUrl: './status.html',
-  styleUrls: ['./status.scss']
+  styleUrls: ['./status.scss'],
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(250)
+      ])
+    ])
+  ]
 })
 
 export class Status implements OnDestroy, OnInit {

@@ -1,5 +1,6 @@
 /* tslint:disable: variable-name */
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
@@ -26,7 +27,15 @@ import { IPMatchFoundDialog } from './ip-match-found.dialog';
   providers: [UsernameValidator],
   templateUrl: './register.html',
   styleUrls: ['./register.scss'],
-  encapsulation: ViewEncapsulation.Emulated
+  encapsulation: ViewEncapsulation.Emulated,
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(250)
+      ])
+    ])
+  ]
 })
 
 export class Register implements OnDestroy, OnInit {

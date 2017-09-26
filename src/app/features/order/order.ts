@@ -1,5 +1,6 @@
 /* tslint:disable triple-equals max-line-length */
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 
@@ -25,7 +26,15 @@ import { getUser, getUserLoaded, getUserSettingPrize } from '../../reducers/user
 @Component({
   selector: 'os-order',
   templateUrl: './order.html',
-  styleUrls: ['./order.scss']
+  styleUrls: ['./order.scss'],
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(250)
+      ])
+    ])
+  ]
 })
 
 export class OrderComponent implements OnDestroy, OnInit {

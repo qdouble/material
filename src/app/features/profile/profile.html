@@ -1,4 +1,4 @@
-<md-card class="os-page-container">
+<md-card class="os-page-container" @fade>
   <md-card class="os-form-container">
     <md-card-title class="primary">Profile</md-card-title>
     <md-card *ngIf="(loaded$ | async) && (user$ | async).profilePending" id="profile-pending" class="accent-medium-background">

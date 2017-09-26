@@ -1,5 +1,6 @@
 /* tslint:disable max-line-length */
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
@@ -8,7 +9,15 @@ import { Subject } from 'rxjs/Subject';
 @Component({
   selector: 'os-crediting-guidelines',
   templateUrl: './crediting-guidelines.html',
-  styleUrls: ['./crediting-guidelines.scss']
+  styleUrls: ['./crediting-guidelines.scss'],
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(250)
+      ])
+    ])
+  ]
 })
 
 export class CreditingGuidelines implements OnDestroy, OnInit {

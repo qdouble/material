@@ -1,4 +1,4 @@
-  <md-card class="os-page-container-vh">
+  <md-card class="os-page-container-vh" @fade>
     <md-card class="os-login-form-container">
       <md-card-title>{{forgotPassword ? 'Forgot Password' : 'Login'}}</md-card-title>
         <form [formGroup]="f" (ngSubmit)="submitForm()">

@@ -1,5 +1,6 @@
 /* tslint:disable: variable-name */
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +18,15 @@ import { CustomValidators, RegexValues } from '../../validators';
 @Component({
   selector: 'os-profile',
   templateUrl: './profile.html',
-  styleUrls: ['./profile.scss']
+  styleUrls: ['./profile.scss'],
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(250)
+      ])
+    ])
+  ]
 })
 
 export class Profile implements OnDestroy, OnInit {

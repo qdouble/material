@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -21,7 +22,15 @@ import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
 @Component({
   selector: 'os-offer-details',
   templateUrl: './offer-details.html',
-  styleUrls: ['./offer-details.scss']
+  styleUrls: ['./offer-details.scss'],
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(250)
+      ])
+    ])
+  ]
 })
 export class OfferDetailsComponent implements OnDestroy, OnInit {
   alreadyCompleted: boolean;
