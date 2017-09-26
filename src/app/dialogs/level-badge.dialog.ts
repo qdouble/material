@@ -1,5 +1,5 @@
 /* tslint:disable max-line-length */
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
 @Component({

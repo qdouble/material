@@ -50,7 +50,7 @@
         <md-icon style="color: #ffffff;" >mail</md-icon>
       </button>
       <div class="ntfy-messages-circle" *ngIf="unreadMessageTotal$ | async">
-        <div class="ntfy-number">{{unreadMessageTotal | async}}</div>
+        <div class="ntfy-number">{{unreadMessageTotal$ | async}}</div>
       </div>
     </div>
   </md-toolbar>

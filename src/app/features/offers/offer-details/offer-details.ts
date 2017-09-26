@@ -1,8 +1,5 @@
-import { Component, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
-import {
-  MdDialog, MdDialogRef, MdDialogConfig,
-  MdSnackBar, MdSnackBarConfig
-} from '@angular/material';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';

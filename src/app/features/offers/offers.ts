@@ -2,10 +2,7 @@ import {
   AfterViewInit, Component, ChangeDetectionStrategy,
   OnDestroy, OnInit, ViewEncapsulation
 } from '@angular/core';
-import {
-  MdDialog, MdDialogRef, MdDialogConfig,
-  MdSnackBar, MdSnackBarConfig
-} from '@angular/material';
+import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -29,7 +26,6 @@ import { getCreditCollection, getUserLoggedIn, getCreditTotal } from '../../redu
 import { OfferActions } from '../../actions/offer';
 
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
-import { GettingStartedDialog } from '../../dialogs/getting-started.dialog';
 
 @Component({
   selector: 'os-offers',

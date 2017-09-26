@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'os-faq',
@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./faq.scss']
 })
 
-export class FAQ {
+export class FAQ implements OnInit {
   ngOnInit() {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
   }

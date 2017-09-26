@@ -5,9 +5,11 @@ import { CreditRequestService } from './features/support/credit-request.service'
 import { TicketActions } from './features/support/ticket.actions';
 import { TicketService } from './features/support/ticket.service';
 
-import { AuthGuard, 
-  AuthRegGuard, 
-  LoggedInRedirectGuard } from '../app/guards';
+import {
+  AuthGuard,
+  AuthRegGuard,
+  LoggedInRedirectGuard
+} from '../app/guards';
 import { RESOLVE_DATA } from './resolve';
 import { services } from './services';
 import { actions } from './actions';

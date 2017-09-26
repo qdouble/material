@@ -10,7 +10,7 @@
       <ng-container *ngIf="referral && referral.active && (!referral.hidden || showHidden) && !referral.removed">
         <div *ngIf="referral" [ngClass]="{'gray': !referral.currentSponsor && !referral.unpaidLevels, 'green': (referral.payBeyondLevel < referral.currentLevel && !referral.hold), 'red': referral.hold, 'row': true, 'stripe-2': referral.hidden }">
           <div class="cell hide-1 nowrap">
-            {{referral?.addedOn | date: medium }}
+            {{referral?.addedOn | date: 'medium' }}
           </div>
           <div class="cell">
             <span class="long-username">{{referral?.username | slice:0:20 }}</span>

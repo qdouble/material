@@ -16,7 +16,6 @@ import { Credit } from './models/credit';
 import { Notification } from './models/notification';
 import { Notify } from './models/notify';
 import { NotificationActions } from './actions/notification';
-import { OrderActions } from './actions/order';
 import { PrizeActions } from './actions/prize';
 import { UIActions } from './actions/ui';
 import { UserActions } from './actions/user';

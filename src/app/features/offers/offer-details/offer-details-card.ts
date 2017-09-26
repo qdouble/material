@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Offer } from '../../../models/offer';
 import { UserAgent } from '../../../models/user-agent';
 

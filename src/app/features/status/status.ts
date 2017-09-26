@@ -8,7 +8,6 @@ import { Subject } from 'rxjs/Subject';
 
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { combineSort } from '../../helper/combine-sort';
-import { RegexValues } from '../../validators';
 
 import { AppState } from '../../reducers';
 import { Credit } from '../../models/credit';
@@ -248,7 +247,7 @@ export class Status implements OnDestroy, OnInit {
       `Removing your referrals means they will no longer be under you. This cannot be undone.`;
     this.confirmDialogRef.componentInstance.subtextColor = '#F44336';
 
-    if(this.confirmDialogRef) {
+    if (this.confirmDialogRef) {
       this.confirmDialogRef.afterClosed()
       .takeUntil(this.destroyed$)
       .subscribe(result => {

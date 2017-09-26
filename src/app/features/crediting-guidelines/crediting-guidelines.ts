@@ -1,9 +1,6 @@
 /* tslint:disable max-line-length */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  MdDialog, MdDialogRef, MdDialogConfig,
-  MdSnackBar, MdSnackBarConfig
-} from '@angular/material';
+import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { Subject } from 'rxjs/Subject';

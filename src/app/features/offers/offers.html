@@ -39,7 +39,7 @@
     (checkOffer)="checkOffer($event)" (goToOfferDetails)="goToOfferDetails($event)">
   </os-offer-rows>
   <div *ngIf="!showCompleted" class="paging">
-    <os-pages [itemsPerPage]="20" [selectedPage]="pageOffset$ | async" [totalItems]="(offersSorted$ | async)?.length" (pageOffset)="pageOffset$.next($event)" (click)="scrollToStep()"></os-pages>
+    <os-pages [itemsPerPage]="20" [selectedPage]="pageOffset$ | async" [totalItems]="(offersSorted$ | async)?.length" (pageOffset)="pageOffset$.next($event)"></os-pages>
   </div>
   <md-card id="no-completed-card" class="os-message-card accent-background white" *ngIf="selectedOption === 'Completed' && (offersCompleted$ | async)?.length < 1">
     You Have No Completed Offers. Complete an offer on the Available tab to level up!
