@@ -11,6 +11,8 @@ import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { UniqueSelectionDispatcher } from '@angular/material';
 
+import { primaryFlash } from '../../animations/my-animations';
+
 const firstBy = require('thenby');
 
 import { AppState } from '../../reducers';
@@ -33,7 +35,7 @@ import { ConfirmDialog } from '../../dialogs/confirm.dialog';
   templateUrl: './offers.html',
   styleUrls: ['./offers.scss'],
   providers: [UniqueSelectionDispatcher],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.Emulated,
   animations: [
     trigger('fade', [
@@ -41,7 +43,8 @@ import { ConfirmDialog } from '../../dialogs/confirm.dialog';
         style({ opacity: 0 }),
         animate(250)
       ])
-    ])
+    ]),
+    primaryFlash(350)
   ]
 })
 
@@ -58,6 +61,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   creditTotal$: Observable<number>;
   creditedOfferIds: string[];
   destroyed$: Subject<any> = new Subject();
+  flash: string;
   lastCloseResult: string;
   loaded$: Observable<boolean>;
   loaded: boolean;
@@ -210,6 +214,15 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit() {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
+    let count = 0;
+    setInterval(() => {
+      if (count % 2 === 0) {
+        this.flash = 'bright';
+      } else {
+        this.flash = 'dark';
+      }
+      count++;
+    }, 350);
     let lastUpdate$ = this.store.select(s => s.offer.lastUpdatedAt);
     let lastUpdate;
     lastUpdate$
@@ -238,9 +251,9 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   goToOfferDetails(offer: Offer) {
     if (offer.hideToUnQualifiedUsers && offer.qualificationLevel > this.userLevel) {
       return this.openConfirmDialog(
-        `You are currently on Level ${this.userLevel}.
-        <br>This offer is restricted to users on level ${offer.qualificationLevel}
-        and above. You must level up in order to complete this offer.`
+        `<b>You are currently on Level ${this.userLevel}.</b><br><br>
+        This offer is restricted to users on level ${offer.qualificationLevel} and above.
+        <em>You must get to level ${offer.qualificationLevel} in order to complete this offer.</em>`
       );
     }
     this.router.navigate(['offers', 'offer-details', { id: offer.id }]);

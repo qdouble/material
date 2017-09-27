@@ -40,24 +40,17 @@ import { IPMatchFoundDialog } from './ip-match-found.dialog';
 
 export class Register implements OnDestroy, OnInit {
   blocked: true;
-  destroyed$: Subject<any> = new Subject<any>();
-  dialogRef: MdDialogRef<IPMatchFoundDialog>;
   config: MdDialogConfig = {
-    disableClose: false,
-    // width: '90%',
-    height: '',
-    position: {
-      top: '',
-      bottom: '',
-      // left: '35px',
-      right: ''
-    }
+    disableClose: false
   };
   countries$: Observable<Country[]>;
   countryIds$: Observable<(string | undefined)[]>;
   countryNames$: Observable<(string | undefined)[]>;
   countryLoaded$: Observable<boolean>;
+  destroyed$: Subject<any> = new Subject<any>();
+  dialogRef: MdDialogRef<IPMatchFoundDialog>;
   f: FormGroup;
+  flash: string;
   entryEmail$: Observable<string | null>;
   ip$: Observable<string>;
   ipJson$: Observable<IP>;
