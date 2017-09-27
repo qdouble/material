@@ -33,7 +33,6 @@ import { ConfirmDialog } from '../../dialogs/confirm.dialog';
   templateUrl: './offers.html',
   styleUrls: ['./offers.scss'],
   providers: [UniqueSelectionDispatcher],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.Emulated,
   animations: [
     trigger('fade', [

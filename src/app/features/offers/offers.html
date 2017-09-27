@@ -2,7 +2,7 @@
   <div id="title-card-container">
     <img id="top-instruct" src="assets/svg/offers-top-instruct-ex4.svg">
     <div class="join-fb" *ngIf="(creditTotal$ | async) < 1">
-      <button md-raised-button color="primary" class="white" [@flashing]="flash"><img src="/assets/svg/facebook-box.svg">Join Our Proof Pic Group on Facebook</button>
+      <button md-raised-button color="primary" class="white" [@flashing]="flash"><img src="/assets/svg/facebook-box.svg">Join Our Payment Proof Group on Facebook</button>
     </div>
   </div>
   <div class="os-offer-display-options" [style.display]="((creditTotal$ | async) < 1) ? 'none' : 'flex'">

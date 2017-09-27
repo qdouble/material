@@ -33,13 +33,19 @@ import { getUser, getUserLoaded, getUserSettingPrize } from '../../reducers/user
         style({ opacity: 0 }),
         animate(250)
       ])
+    ]),
+    trigger('flashing', [
+      state('bright', style({ background: 'hsl(87.8,50.2%,62.7%)' })),
+      state('dark', style({ background: 'hsl(87.8,50.2%,52.7%)' })),
+      transition('bright <=> dark', [
+        animate(350)
+      ])
     ])
   ]
 })
 
 export class OrderComponent implements OnDestroy, OnInit {
   changePrize = false;
-
   confirmDialogRef: MdDialogRef<ConfirmDialog>;
   confirmDialogConfig: MdDialogConfig = {
     disableClose: false
@@ -47,6 +53,7 @@ export class OrderComponent implements OnDestroy, OnInit {
   currentYear = new Date().getFullYear();
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
+  flash: string;
   loaded$: Observable<boolean>;
   orders$: Observable<Order[]>;
   ordersLoaded$: Observable<boolean>;
@@ -163,6 +170,15 @@ export class OrderComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    let count = 0;
+    setInterval(() => {
+      if (count % 2 === 0) {
+        this.flash = 'bright';
+      } else {
+        this.flash = 'dark';
+      }
+      count++;
+    }, 350);
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     if (this.paypalIds.includes(this.f.get('selectedPrize').value) &&
       (this.f.get('paypal').value == undefined || this.f.get('paypal').value == ''
