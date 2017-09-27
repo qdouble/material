@@ -13,7 +13,7 @@
     </ng-container>
     <ng-container *ngIf="(!user?.orderPending && !user?.hasQualifiedReferrals)">
       <div class="join-fb" *ngIf="user?.currentLevel < 1">
-        <button md-raised-button color="primary" class="white" [@flashing]="flash"><img src="/assets/svg/facebook-box.svg">Join Our Payment Proof Group on Facebook</button>
+        <button md-raised-button color="primary" class="white" [@flashing]="flash"><img src="/assets/svg/facebook-box.svg">Click to Join Our Payment Proof Pic Group</button>
       </div>
       <md-card class="os-message-card accent-background white">
         <ng-container *ngIf="user?.currentLevel < 1">
