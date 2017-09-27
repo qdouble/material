@@ -11,8 +11,6 @@ import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { UniqueSelectionDispatcher } from '@angular/material';
 
-import { primaryFlash } from '../../animations/my-animations';
-
 const firstBy = require('thenby');
 
 import { AppState } from '../../reducers';
@@ -44,7 +42,13 @@ import { ConfirmDialog } from '../../dialogs/confirm.dialog';
         animate(250)
       ])
     ]),
-    primaryFlash(350)
+    trigger('flashing', [
+      state('bright', style({background: 'hsl(87.8,50.2%,62.7%)'})),
+      state('dark', style({background: 'hsl(87.8,50.2%,52.7%)'})),
+      transition('bright <=> dark', [
+        animate(350)
+      ])
+    ])
   ]
 })
 

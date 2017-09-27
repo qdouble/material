@@ -5,14 +5,18 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Offer } from '../../../models/offer';
 import { UserAgent } from '../../../models/user-agent';
 
-import { primaryFlash } from '../../../animations/my-animations';
-
 @Component({
   selector: 'os-offer-details-card',
   templateUrl: './offer-details-card.html',
   styleUrls: ['./offer-details.scss'],
   animations: [
-    primaryFlash(350)
+    trigger('flashing', [
+      state('bright', style({background: 'hsl(87.8,50.2%,62.7%)'})),
+      state('dark', style({background: 'hsl(87.8,50.2%,52.7%)'})),
+      transition('bright <=> dark', [
+        animate(350)
+      ])
+    ])
   ]
 })
 
