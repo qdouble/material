@@ -18,6 +18,18 @@
   text-align: center;
 }
 
+.join-fb {
+  text-align: center;
+  margin-bottom: 10px;
+  img {
+    margin-right: 4px;
+  }
+  button {
+    margin-bottom: 5px;
+  }
+}
+
+
 #no-completed-card {
   max-width: 600px;
   margin-top: 10px;
@@ -199,7 +211,7 @@ md-progress-circle {
 }
 
 #top-instruct {
-  width: 158%;
+  width: 152%;
   margin-left: 50%;
   transform: translateX(-50%);
   @media screen and (min-width: 600px) {

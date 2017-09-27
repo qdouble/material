@@ -1,6 +1,10 @@
 <md-card id="offers-page" class="os-page-container" @fade>
   <div id="title-card-container">
     <img id="top-instruct" src="assets/svg/offers-top-instruct-ex4.svg">
+    <div class="join-fb" *ngIf="(creditTotal$ | async) < 1">
+      <button md-raised-button color="primary" class="white"><img src="/assets/svg/facebook-box.svg">Join Our Newbies Group on Facebook</button>
+      <button md-raised-button color="primary" class="white"><img src="/assets/svg/facebook-box.svg">Join Our Proof Pic Group on Facebook</button>
+    </div>
   </div>
   <div class="os-offer-display-options" [style.display]="((creditTotal$ | async) < 1) ? 'none' : 'flex'">
     <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
@@ -30,7 +34,7 @@
       referral
     </p>
   </div>
- <div id="popularity-rank">
+ <div id="popularity-rank" *ngIf="(creditTotal$ | async) > 1">
    <p>Popularity Rank shows top crediting offers over the last 24 hours</p>
    <p>Last updated: {{(offerRankUpdatedAt$ | async) | date: 'medium' }}</p>
   </div>

@@ -1,9 +1,6 @@
 <h5 *ngIf="blocked" style="text-align: center">This referer has been blocked due to inappropriate advertising.</h5>
 <md-card *ngIf="!blocked" class="register-page-container" @fade>
   <img id="register-top" src="assets/svg/register-top-1366x768.svg">
-  <div class="faq-btn-container">
-      <a routerLink="/faq" queryParamsHandling="preserve"><button md-raised-button color="primary" class="white faq-button">Click Here to Read the FAQ</button></a>
-  </div>
   <md-card class="os-title-card primary-background">Create Your Account</md-card>
   <md-card class="os-form-container">
     <md-card id="registration-text" class="primary-background white">
