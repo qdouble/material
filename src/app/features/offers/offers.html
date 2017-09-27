@@ -1,11 +1,11 @@
 <md-card id="offers-page" class="os-page-container" @fade>
   <div id="title-card-container">
-    <img id="top-instruct" src="assets/svg/offers-top-instruct-ex4.svg">
-    <div class="join-fb" *ngIf="(creditTotal$ | async) < 1">
-      <button md-raised-button color="primary" class="white" [@flashing]="flash"><img src="/assets/svg/facebook-box.svg">Join Our Payment Proof Group on Facebook</button>
+    <div class="join-fb" *ngIf="userLevel < 1 && loggedIn">
+        <button md-raised-button color="primary" class="white" [@flashing]="flash"><img src="/assets/svg/facebook-box.svg">Join Our Payment Proof Group on Facebook</button>
     </div>
+    <img id="top-instruct" src="assets/svg/offers-top-instruct-ex4.svg">
   </div>
-  <div class="os-offer-display-options" [style.display]="((creditTotal$ | async) < 1) ? 'none' : 'flex'">
+  <div class="os-offer-display-options" [style.display]="(userLevel < 1) ? 'none' : 'flex'">
     <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
       <md-button-toggle *ngFor="let option of sortByValues; let i = index" [value]="option">
         {{sortByLabels[i]}}
@@ -33,7 +33,7 @@
       referral
     </p>
   </div>
- <div id="popularity-rank" *ngIf="(creditTotal$ | async) > 1">
+ <div id="popularity-rank" *ngIf="userLevel > 1">
    <p>Popularity Rank shows top crediting offers over the last 24 hours</p>
    <p>Last updated: {{(offerRankUpdatedAt$ | async) | date: 'medium' }}</p>
   </div>
