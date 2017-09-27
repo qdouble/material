@@ -34,7 +34,7 @@ export const initialState: UIState = {
   sendingContact: false,
   sideNavOpen: false,
   latestVersion: null,
-  version: '0.4.5'
+  version: '0.4.6'
 };
 
 export function uiReducer(state = initialState, action: Action): UIState {
