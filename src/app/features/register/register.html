@@ -8,11 +8,6 @@
     </md-card>
     <form [formGroup]="f" (ngSubmit)="submitForm()">
       <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
-      <os-form-input class="os-form-input" type="email" controlName="confirmEmail" placeholder="Confirm Email Address" [form]="f"></os-form-input>
-      <div [hidden]="!f.hasError('compareEmail') || 
-          !f.get('confirmEmail').valid" class="warn-text">
-        Email addresses do not match.
-      </div>
       <os-form-input class="os-form-input" type="text" controlName="username" placeholder="Username" [form]="f"></os-form-input>
       <div [hidden]="!f.get('username').hasError('usernameTaken')" class="warn-text">
         Username has already been taken.

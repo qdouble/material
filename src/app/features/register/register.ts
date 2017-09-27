@@ -79,8 +79,6 @@ export class Register implements OnDestroy, OnInit {
       referredBy: new FormControl(),
       email: new FormControl(PUBLISH ? '' : `${this.RANDOM_EMAIL}`,
         [Validators.required, Validators.pattern(RegexValues.email)]),
-      confirmEmail: new FormControl(PUBLISH ? '' : `${this.RANDOM_EMAIL}`,
-        [Validators.required, Validators.pattern(RegexValues.email)]),
       username: new FormControl(PUBLISH ? '' : `myUserName${this.RANDOM_NUM}`,
         [Validators.required, Validators.pattern(RegexValues.username)],
         <any>this.userValidator.usernameTaken),
@@ -112,8 +110,8 @@ export class Register implements OnDestroy, OnInit {
       hidden: new FormControl(true),
       selectedPrize: new FormControl(null),
     }, Validators.compose(
-      [CustomValidators.compare('email', 'confirmEmail', 'compareEmail'),
-      CustomValidators.compare('password', 'confirmPassword', 'comparePassword')]));
+      [CustomValidators.compare('password', 'confirmPassword', 'comparePassword')
+    ]));
   }
 
   ngOnInit() {
