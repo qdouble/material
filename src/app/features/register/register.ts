@@ -64,7 +64,7 @@ export class Register implements OnDestroy, OnInit {
   selectedPrize$: Observable<string | null>;
   selectedPrize: string | null;
   showPrizes: boolean;
-
+  step = 1;
   constructor(
     private countryActions: CountryActions,
     public dialog: MdDialog,

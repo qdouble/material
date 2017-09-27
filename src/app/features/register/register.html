@@ -1,51 +1,59 @@
 <h5 *ngIf="blocked" style="text-align: center">This referer has been blocked due to inappropriate advertising.</h5>
 <md-card *ngIf="!blocked" class="register-page-container" @fade>
-  <img id="register-top" src="assets/svg/register-top-1366x768.svg">
-  <md-card class="os-title-card primary-background">Create Your Account</md-card>
+  <img *ngIf="step === 1" id="register-top" src="assets/svg/register-top-1366x768.svg">
+  <md-card class="os-title-card primary-background">Register</md-card>
   <md-card class="os-form-container">
-    <md-card id="registration-text" class="primary-background white">
-      Registration information is verified before we process payouts. Be sure to use fully accurate information.
-    </md-card>
     <form [formGroup]="f" (ngSubmit)="submitForm()">
-      <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
-      <os-form-input class="os-form-input" type="text" controlName="username" placeholder="Username" [form]="f"></os-form-input>
-      <div [hidden]="!f.get('username').hasError('usernameTaken')" class="warn-text">
-        Username has already been taken.
+      <div *ngIf="step === 1">
+        <md-card-subtitle>Step 1: Enter Account Information</md-card-subtitle>
+        <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
+        <os-form-input class="os-form-input" type="text" controlName="username" placeholder="Username" [form]="f"></os-form-input>
+        <div [hidden]="!f.get('username').hasError('usernameTaken')" class="warn-text">
+          Username has already been taken.
+        </div>
+        <os-form-input class="os-form-input" type="password" controlName="password" placeholder="Password" [form]="f"></os-form-input>
+        <os-form-input class="os-form-input" type="password" controlName="confirmPassword" placeholder="Confirm Password" [form]="f"></os-form-input>
+        <div [hidden]="!f.hasError('comparePassword') || 
+            !f.get('confirmPassword').valid" class="warn-text">
+          Passwords do not match.
+        </div>
       </div>
-      <os-form-input class="os-form-input" type="password" controlName="password" placeholder="Password" [form]="f"></os-form-input>
-      <os-form-input class="os-form-input" type="password" controlName="confirmPassword" placeholder="Confirm Password" [form]="f"></os-form-input>
-      <div [hidden]="!f.hasError('comparePassword') || 
-          !f.get('confirmPassword').valid" class="warn-text">
-        Passwords do not match.
-      </div>
-      <os-form-input class="os-form-input" type="text" controlName="firstName" placeholder="First Name" [form]="f"></os-form-input>
-      <os-form-input class="os-form-input" type="text" controlName="lastName" placeholder="Last Name" [form]="f"></os-form-input>
-      <os-form-input class="os-form-input" type="text" controlName="address" placeholder="Street Address (No PO Box Allowed)" [form]="f"></os-form-input>
-      <os-form-input class="os-form-input" type="text" controlName="city" placeholder="City" [form]="f"></os-form-input>
-      <os-form-input class="os-form-input" type="text" controlName="State" placeholder="State" [form]="f"></os-form-input>
-      <os-form-input class="os-form-input" type="text" controlName="zipCode" placeholder="Zip Code" [form]="f"></os-form-input>
-      <select-input [label]="'Country'" [optionValues]="countryIds$ | async" [optionLabels]="countryNames$ | async" [controlName]="'country'"
-        [form]="f">
-      </select-input>
-      <os-form-input class="os-form-input" type="text" controlName="phone" placeholder="Phone Number" [form]="f"></os-form-input>
-      <div class="form-group">
-        <label>Birthday</label>
-        <input type="date" formControlName="birthday" class="form-control">
-      </div>
-      <div>
-        <label>How would you like to recieve your prize?</label>
-        <select-input *ngIf="showPrizes" class="receive-prize" fullWidth="true" [optionValues]="prizeIds$ | async" [optionLabels]="prizeNames$ | async"
-          [controlName]="'selectedPrize'" [form]="f">
+      <div *ngIf="step === 2">
+        <md-card-subtitle>Step 2: Enter Account Details</md-card-subtitle>
+        <div id="registration-text" class="primary-background white">
+          <p>Registration information is verified before we process payments. Please be sure to use fully accurate information.</p>
+        </div>
+        <os-form-input class="os-form-input" type="text" controlName="firstName" placeholder="First Name" [form]="f"></os-form-input>
+        <os-form-input class="os-form-input" type="text" controlName="lastName" placeholder="Last Name" [form]="f"></os-form-input>
+        <os-form-input class="os-form-input" type="text" controlName="address" placeholder="Street Address (No PO Box Allowed)" [form]="f"></os-form-input>
+        <os-form-input class="os-form-input" type="text" controlName="city" placeholder="City" [form]="f"></os-form-input>
+        <os-form-input class="os-form-input" type="text" controlName="State" placeholder="State" [form]="f"></os-form-input>
+        <os-form-input class="os-form-input" type="text" controlName="zipCode" placeholder="Zip Code" [form]="f"></os-form-input>
+        <select-input [label]="'Country'" [optionValues]="countryIds$ | async" [optionLabels]="countryNames$ | async" [controlName]="'country'"
+          [form]="f">
         </select-input>
+        <os-form-input class="os-form-input" type="text" controlName="phone" placeholder="Phone Number" [form]="f"></os-form-input>
+        <div class="form-group">
+          <label>Birthday</label>
+          <input type="date" formControlName="birthday" class="form-control">
+        </div>
+        <div>
+          <label>How would you like to recieve your prize?</label>
+          <select-input *ngIf="showPrizes" class="receive-prize" fullWidth="true" [optionValues]="prizeIds$ | async" [optionLabels]="prizeNames$ | async"
+            [controlName]="'selectedPrize'" [form]="f">
+          </select-input>
+        </div>
+        <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address'" [controlName]="'paypal'"
+          [form]="f">
+        </os-form-input>
+        <div class="os-agree-checkbox">
+          <md-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the <a routerLink="../terms-and-conditions">Terms and Conditions</a></md-checkbox>
+          <md-checkbox color="primary" formControlName="agree2" type="checkbox">I am aware that only one account per household is allowed</md-checkbox>
+        </div>
       </div>
-      <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address'" [controlName]="'paypal'"
-        [form]="f">
-      </os-form-input>
-      <div class="os-agree-checkbox">
-        <md-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the <a routerLink="../terms-and-conditions">Terms and Conditions</a></md-checkbox>
-        <md-checkbox color="primary" formControlName="agree2" type="checkbox">I am aware that only one account per household is allowed</md-checkbox>
-      </div>
-      <button class="white" md-raised-button color="primary" type="submit" [disabled]="!f.valid">Register</button>
+      <button *ngIf="step === 1" class="white" md-raised-button color="primary" type="button" (click)="step = 2">Next</button>
+      <button *ngIf="step === 2" class="white" md-raised-button color="primary" type="submit" [disabled]="!f.valid">Register</button>
+      <p class="go-back" *ngIf="step === 2" (click)="step = 1"><a>Go Back to Step 1</a></p>
       <p id="referred-by" *ngIf="f.get('referredBy').value">
         You are being referred by: {{f.get('referredBy').value}}
       </p>
