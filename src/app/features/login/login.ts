@@ -34,8 +34,7 @@ export class Login implements OnDestroy {
   resetEmailSent$: Observable<boolean>;
 
   f = new FormGroup({
-    email: new FormControl('', [Validators.required,
-    Validators.pattern(RegexValues.email)]),
+    email: new FormControl('', [Validators.required]),
     password: new FormControl(PUBLISH ? '' : 'password', Validators.required)
   });
 

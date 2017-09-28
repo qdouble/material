@@ -1,8 +1,8 @@
   <md-card class="os-page-container-vh" @fade>
     <md-card class="os-login-form-container">
       <md-card-title>{{forgotPassword ? 'Forgot Password' : 'Login'}}</md-card-title>
-        <form [formGroup]="f" (ngSubmit)="submitForm()">
-          <os-form-input class="os-form-input" [autofocus]="true" type="email" controlName="email" placeholder="Email Address" name="Email" [form]="f"></os-form-input>
+        <form [formGroup]="f" (ngSubmit)="submitForm()" novalidate>
+          <os-form-input class="os-form-input" [autofocus]="true" type="email" controlName="email" placeholder="Email or Username" name="Email" [form]="f"></os-form-input>
           <os-form-input *ngIf="!forgotPassword" class="os-form-input" type="password" controlName="password" placeholder="Password" name="Password" [form]="f"></os-form-input>
           <button md-raised-button color="primary" [disabled]="!f.valid" type="submit">{{forgotPassword ? 'SEND PASSWORD RESET' : 'LOGIN'}}</button>
         </form>
