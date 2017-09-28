@@ -29,7 +29,7 @@
         <span *ngIf="futureLevel > currentLevel">be on Level {{futureLevel}} where you can <em>earn ${{futureLevel * 5}} per referral!</em></span>
         <span *ngIf="futureLevel === currentLevel">you will be {{(currentLevel + 1 - (creditTotal + offer.creditValue)) | number: '1.2-2'}} credits away from Level {{currentLevel + 1}} where you can <em>earn ${{(currentLevel + 1) * 5}} per referral!</em></span>
       </p>
-      <button md-raised-button color="primary" class="white" (click)="continueToOffer.emit(offer?.id)" [@flashing]="flash">COMPLETE THIS OFFER</button>
+      <button md-raised-button color="primary" class="white" (click)="continueToOffer.emit(offer?.id)">COMPLETE THIS OFFER</button>
       
     </ng-container>
     <ng-container *ngIf="offer?.tempUnavailable">

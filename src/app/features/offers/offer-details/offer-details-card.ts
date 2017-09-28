@@ -8,16 +8,7 @@ import { UserAgent } from '../../../models/user-agent';
 @Component({
   selector: 'os-offer-details-card',
   templateUrl: './offer-details-card.html',
-  styleUrls: ['./offer-details.scss'],
-  animations: [
-    trigger('flashing', [
-      state('bright', style({background: 'hsl(87.8,50.2%,62.7%)'})),
-      state('dark', style({background: 'hsl(87.8,50.2%,52.7%)'})),
-      transition('bright <=> dark', [
-        animate(350)
-      ])
-    ])
-  ]
+  styleUrls: ['./offer-details.scss']
 })
 
 export class OfferDetailsCard implements OnChanges, OnInit {
@@ -37,15 +28,6 @@ export class OfferDetailsCard implements OnChanges, OnInit {
   }
   ngOnInit() {
     this.setLevels();
-    let count = 0;
-    setInterval(() => {
-      if (count % 2 === 0) {
-        this.flash = 'bright';
-      } else {
-        this.flash = 'dark';
-      }
-      count++;
-    }, 350);
   }
 
   setLevels() {

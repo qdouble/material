@@ -12,6 +12,7 @@ import { User } from '../models/user';
 
 export interface UserState {
   amountPaid: number;
+  askQuestions: boolean;
   creditIds: string[];
   credits: { [id: string]: Credit };
   creditTotal: number;
@@ -40,6 +41,7 @@ export interface UserState {
 
 export const initialState: UserState = {
   amountPaid: 0,
+  askQuestions: null,
   creditIds: [],
   credits: {},
   creditTotal: 0,
@@ -90,6 +92,9 @@ export function userReducer(state = initialState, action: Action): UserState {
         })
       });
     }
+
+    case UserActions.ASK_QUESTIONS:
+    return Object.assign({...state, askQuestions: true});
 
     case UserActions.CHANGE_SELECTED_PRIZE:
       return Object.assign({}, state, { settingPrize: true });
@@ -451,6 +456,11 @@ export function userReducer(state = initialState, action: Action): UserState {
   }
 }
 
+function _getAskQuestions() {
+  return (state$: Observable<UserState>) => state$
+    .select(s => s.askQuestions);
+}
+
 function _getCreditEntities() {
   return (state$: Observable<UserState>) => state$
     .select(s => s.credits);
@@ -561,6 +571,10 @@ function _getUser() {
 function _getUserState() {
   return (state$: Observable<AppState>) => state$
     .select(s => s.user);
+}
+
+export function getAskQuestions() {
+  return compose(_getAskQuestions(), _getUserState());
 }
 
 export function getUserOnAdminPage() {

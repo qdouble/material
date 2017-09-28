@@ -32,7 +32,7 @@ import {
 } from './reducers/ui';
 
 import {
-  getAmountPaid, getCreditTotal, getReferrerBlocked,
+  getAmountPaid, getAskQuestions, getCreditTotal, getReferrerBlocked,
   getUserOnAdminPage, getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy
 } from './reducers/user';
 import { getCreditCollection, getLevelBadgeNum } from './reducers/user';
@@ -45,6 +45,7 @@ import { log, MOBILE, SERVICE_WORKER_SUPPORT } from './services/constants';
 import { PushNotification } from './models/push-notification';
 import { SWAndPushService } from './services/sw-and-push';
 
+import { AskQuestionsDialog } from './dialogs/ask-questions.dialog';
 import { CompletedOrderDialog } from './dialogs/completed-order.dialog';
 import { CreditedOfferDialog } from './dialogs/credited-offer.dialog';
 import { LevelBadgeDialog } from './dialogs/level-badge.dialog';
@@ -74,6 +75,8 @@ export class AppComponent implements OnDestroy, OnInit {
   webSocket$: Subject<any>;
   closeConnection$: Subject<any> = new Subject<any>();
   ///// Completed Offer Dialog //////
+  askQuestionsDialogRef: MdDialogRef<AskQuestionsDialog>;
+  askQuestionsDialogConfig: MdDialogConfig = { disableClose: true };
   completedOrderDialogRef: MdDialogRef<CompletedOrderDialog>;
   completedOrderDialogConfig: MdDialogConfig = {
     disableClose: false
@@ -88,10 +91,12 @@ export class AppComponent implements OnDestroy, OnInit {
   };
   /////////////
   amountPaid$: Observable<number>;
+  askQuestions$: Observable<boolean>;
   destroyed$: Subject<any> = new Subject<any>();
   credits$: Observable<Credit[]>;
   creditTotal: number;
   creditTotal$: Observable<number>;
+  firstName: string;
   onAdminLoginPage$: Observable<boolean>;
   HMR = HMR;
   latestVersion$: Observable<string>;
@@ -231,8 +236,18 @@ export class AppComponent implements OnDestroy, OnInit {
         }
       });
     this.amountPaid$ = this.store.let(getAmountPaid());
+    this.askQuestions$ = this.store.let(getAskQuestions());
+    this.askQuestions$.subscribe(ask => {
+      if (ask) {
+        setTimeout(() => {
+          this.openAskQuestionsDialog();
+        }, 1);
+      }
+    });
     this.cache.set('cached', true);
     this.creditTotal$ = this.store.let(getCreditTotal());
+    let firstName = this.store.select(s => s.user.user.firstName);
+    firstName.takeUntil(this.destroyed$).subscribe(n => this.firstName = n);
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
         log('ROUTER EVENTS', val.url);
@@ -342,9 +357,26 @@ export class AppComponent implements OnDestroy, OnInit {
     this.store.dispatch(this.notificationActions.markAllAsRead());
   }
 
+  openAskQuestionsDialog() {
+    this.askQuestionsDialogRef = this.dialog.open(AskQuestionsDialog,
+      this.askQuestionsDialogConfig);
+    this.askQuestionsDialogRef.componentInstance.firstName = this.firstName;
+
+    if (this.askQuestionsDialogRef) {
+      this.askQuestionsDialogRef.afterClosed()
+        .takeUntil(this.destroyed$)
+        .subscribe(result => {
+          if (result) {
+            this.router.navigate(['/support']);
+          }
+          this.askQuestionsDialogRef = null;
+        });
+    }
+  }
+
   openCompletedOrderDialog(order: Order) {
     this.completedOrderDialogRef = this.dialog.open(CompletedOrderDialog,
-      this.completedOrderDialogRef);
+      this.completedOrderDialogConfig);
     this.completedOrderDialogRef.componentInstance.order = order;
 
     if (this.completedOrderDialogRef) {

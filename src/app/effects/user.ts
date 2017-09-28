@@ -184,6 +184,9 @@ export class UserEffects {
         this.notifyActions.addNotify(res)
       ))
       .do((res: any) => {
+        if (res.payload.askQuestions) {
+          this.store.dispatch(this.userActions.askQuestions());
+        }
         if (res.payload.redirectTo === 'offers') {
           this.store.dispatch(this.offerActions.clearOffers());
           return this.store.dispatch(go([res.payload.redirectTo, { new: true, returning: true }]));

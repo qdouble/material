@@ -50,6 +50,13 @@ export class UserActions {
     };
   }
 
+  static ASK_QUESTIONS = '[User] Ask Questions';
+  askQuestions(): Action {
+    return {
+      type: UserActions.ASK_QUESTIONS
+    };
+  }
+
   static CHANGE_SELECTED_PRIZE = '[User] Change Selected Prize';
   changeSelectedPrize(id: string): Action {
     return {
