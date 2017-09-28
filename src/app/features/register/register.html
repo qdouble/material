@@ -4,7 +4,7 @@
   <md-card class="os-title-card primary-background">Register</md-card>
   <md-card class="os-form-container">
     <form [formGroup]="f" (ngSubmit)="submitForm()">
-      <div *ngIf="step === 1">
+      <div *ngIf="step === 1" @fade>
         <md-card-subtitle>Step 1: Enter Account Information</md-card-subtitle>
         <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
         <os-form-input class="os-form-input" type="text" controlName="username" placeholder="Username" [form]="f"></os-form-input>
@@ -18,7 +18,7 @@
           Passwords do not match.
         </div>
       </div>
-      <div *ngIf="step === 2">
+      <div *ngIf="step === 2" @fade>
         <md-card-subtitle>Step 2: Enter Account Details</md-card-subtitle>
         <div id="registration-text" class="primary-background white">
           <p>Registration information is verified before we process payments. Please be sure to use fully accurate information.</p>
