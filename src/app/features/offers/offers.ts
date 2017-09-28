@@ -40,13 +40,6 @@ import { ConfirmDialog } from '../../dialogs/confirm.dialog';
         style({ opacity: 0 }),
         animate(250)
       ])
-    ]),
-    trigger('flashing', [
-      state('bright', style({background: 'hsl(87.8,50.2%,62.7%)'})),
-      state('dark', style({background: 'hsl(87.8,50.2%,52.7%)'})),
-      transition('bright <=> dark', [
-        animate(350)
-      ])
     ])
   ]
 })
@@ -217,15 +210,6 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit() {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
-    let count = 0;
-    setInterval(() => {
-      if (count % 2 === 0) {
-        this.flash = 'bright';
-      } else {
-        this.flash = 'dark';
-      }
-      count++;
-    }, 350);
     let lastUpdate$ = this.store.select(s => s.offer.lastUpdatedAt);
     let lastUpdate;
     lastUpdate$
