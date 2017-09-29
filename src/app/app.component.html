@@ -31,6 +31,9 @@
         <button *ngIf="loggedIn" md-icon-button color="primary" (click)="showNotifications = !showNotifications">
           <md-icon style="color: #ffffff;" >notifications</md-icon>
         </button>
+        <button *ngIf="loggedIn" md-icon-button color="primary" [routerLink]="['/support', {help_toolbar: true}]">
+          <md-icon style="color: #ffffff;" >help</md-icon>
+        </button>
         <div class="ntfy-count-circle" *ngIf="(unreadNotificatonPendingTotal$ | async) || (unreadNotificationTotal$ | async)" (click)="showNotifications = !showNotifications">
           <div class="ntfy-number">{{((unreadNotificatonPendingTotal$ | async) || (unreadNotificationTotal$ | async)) | showMax: 99}}</div>
         </div>    

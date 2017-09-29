@@ -27,6 +27,11 @@
         <os-support-ticket [addedObs]="added$" [ticketSubject]="ticketSubject"></os-support-ticket>
       </md-card>
       <br>
+      <a [routerLink]="['/faq']">
+        <md-card id="credit-request-tab" class="os-message-card primary-background white">
+          <b>Click Here to Read the Answers to <br>Frequently Asked Questions</b>
+        </md-card>
+      </a>
       <a [routerLink]="['credit-request']">
         <md-card id="credit-request-tab" class="os-message-card accent-background white">
           Missing credit for an offer you completed?<br> <b>Click Here to File a Missing Credit Request.</b>

@@ -55,7 +55,7 @@ export class Support implements OnInit {
     this.creditRequests$ = store.let(getCreditRequestCollection());
     this.unsortedTickets$ = store.let(getTicketCollection());
 
-    this.sortByVar$ = this.store.select(state => state.ticket.sortBy);
+    this.sortByVar$ = this.store.select(s => s.ticket.sortBy);
     this.sortByVarToArray$ = this.sortByVar$
       .filter(s => s !== undefined)
       .map(sort => [sort.sortBy, sort.reverse]);

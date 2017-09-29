@@ -1,18 +1,18 @@
 @import 'variables';
 
 #level-menu-logo {
-  height: 55%;
+  height: 53%;
   margin-top: 1px;
-  margin-left: 12px;
+  margin-left: 7px;
   @media screen and (max-width: 370px) {
-    height: 56%;
+    height: 47%;
     margin-top: 1px;
-    margin-left: 15px;
+    margin-left: 7px;
   }
   @media screen and (max-width: 340px) {
-    height: 49%;
+    height: 40%;
     margin-top: 1px;
-    margin-left: 5px;
+    margin-left: 3px;
   }
 }
 

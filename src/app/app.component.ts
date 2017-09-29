@@ -367,7 +367,7 @@ export class AppComponent implements OnDestroy, OnInit {
         .takeUntil(this.destroyed$)
         .subscribe(result => {
           if (result) {
-            this.router.navigate(['/support']);
+            this.router.navigate(['/support', { askQ: true }]);
           }
           this.askQuestionsDialogRef = null;
         });
