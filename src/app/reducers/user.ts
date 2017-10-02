@@ -35,6 +35,7 @@ export interface UserState {
   settingPrize: boolean;
   showLevelBadgeNum: number;
   sortReferralBy: { sortBy: string, reverse: boolean };
+  testShowRefRandom: number;
   updatedAt: string;
   user: User;
 }
@@ -64,6 +65,7 @@ export const initialState: UserState = {
   settingPrize: false,
   showLevelBadgeNum: null,
   sortReferralBy: { sortBy: 'addedOn', reverse: false },
+  testShowRefRandom: null,
   updatedAt: null,
   user: {}
 };
@@ -94,7 +96,7 @@ export function userReducer(state = initialState, action: Action): UserState {
     }
 
     case UserActions.ASK_QUESTIONS:
-    return Object.assign({...state, askQuestions: true});
+      return Object.assign({ ...state, askQuestions: true });
 
     case UserActions.CHANGE_SELECTED_PRIZE:
       return Object.assign({}, state, { settingPrize: true });
@@ -377,13 +379,17 @@ export function userReducer(state = initialState, action: Action): UserState {
 
     case UserActions.SHOW_LEVEL_BADGE: {
       if (!action.payload) return state;
-      return {...state, showLevelBadgeNum: action.payload };
+      return { ...state, showLevelBadgeNum: action.payload };
     }
 
     case UserActions.SORT_REFERRALS_BY: {
       return Object.assign({}, state, {
         sortReferralBy: action.payload
       });
+    }
+
+    case UserActions.TEST_SHOW_REF_RANDOM: {
+      return { ...state, testShowRefRandom: action.payload };
     }
 
     case UserActions.UPDATE_CURRENT_LEVEL: {

@@ -29,6 +29,33 @@
   }
 }
 
+.referral-link {
+  max-width: 540px;
+  margin: 0 auto 14px auto;
+  text-align: center;
+  md-card-title {
+    font-size: 17px;
+    margin-bottom: 4px;
+    color: #558B2F;
+  }
+  md-card-subtitle {
+    font-size: 11px;
+    margin-bottom: 0;
+  }
+  p {
+    font-size: 12px;
+  }
+  a:link {
+    color: #5a822b;
+  }
+  #fb-post-btn {
+    text-align: center;
+    background: #3B5998;
+    color: white !important;
+    font-weight: 700;
+  }
+}
+
 
 #no-completed-card {
   max-width: 600px;

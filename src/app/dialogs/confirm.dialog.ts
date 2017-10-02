@@ -1,5 +1,5 @@
 /* tslint:disable max-line-length */
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 import { openInNewTab } from '../helper/open-in-new-tab';
 
@@ -21,14 +21,8 @@ import { openInNewTab } from '../helper/open-in-new-tab';
   styles: [`.confirm-dialog{ text-align: center; max-width: 400px; }
   .confirm-dialog h5 { margin: 0 0 10px !important; word-wrap:break-word; font-size: 18px; }
   .button-row { margin-top: 5px; }
-  .mat-dialog-container {
-    background: #fff !important;
-    padding: 24px !important;
-    max-width: 80vw !important;
-  }
   `
-  ],
-  encapsulation: ViewEncapsulation.None
+  ]
 })
 export class ConfirmDialog {
   confirmColor = 'black';

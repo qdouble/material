@@ -108,7 +108,7 @@
         </os-selected-prize>
     </md-card>
   </div>
-  <div *ngIf="(creditTotal$ | async) >= 1" class="os-status-page-section">
+  <div *ngIf="(creditTotal$ | async) >= 1 || (referrals$ | async)?.length" class="os-status-page-section">
     <md-card id="referrals-table-section">
       <md-card-title class="primary">Your Referrals</md-card-title>
       <ng-container *ngIf="(referrals$ | async)?.length > 0">

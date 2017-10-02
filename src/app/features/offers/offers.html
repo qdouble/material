@@ -1,7 +1,18 @@
 <md-card id="offers-page" class="os-page-container" @fade>
+  <div *ngIf="loggedIn && (userLevel < 1) && (testShowRef$ | async)" class="referral-link">
+    <md-card-title>Earn $5 Per Level Your Referrals Complete</md-card-title>
+    <md-card-subtitle>The max you can make per referral is based on your own level</md-card-subtitle>
+      <p><a [href]="'https://levelrewards.com/register?ref=' + (username$ | async)" target="_blank">https://levelrewards.com/register?ref={{(username$ | async)}}</a></p>
+      <div class="share-buttons">
+        <button id="fb-post-btn" md-raised-button class="white" color="primary"  (click)="fbShare()" class="white">
+            <img src="/assets/svg/facebook-box.svg"> Share
+        </button>
+      </div>
+  </div>
   <div id="title-card-container">
     <img id="top-instruct" src="assets/svg/offers-top-instruct-ex4.svg">
   </div>
+  
   <div class="os-offer-display-options" [style.display]="(userLevel < 1) ? 'none' : 'flex'">
     <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
       <md-button-toggle *ngFor="let option of sortByValues; let i = index" [value]="option">

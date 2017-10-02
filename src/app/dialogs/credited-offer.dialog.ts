@@ -1,5 +1,5 @@
 /* tslint:disable max-line-length */
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
 import { Offer } from '../models/offer';
@@ -24,14 +24,8 @@ import { Offer } from '../models/offer';
   .os-offer-card-image { max-height: 100px; max-width: 200px; } h5, h6 { margin: 0 } h5 { color: #638b35 }
   .main-text{ font-weight: bold; font-size: 13px; margin-top: 10px; }
   .credited-offer-dialog button { margin-top: 5px; width: 100%; }
-  .mat-dialog-container {
-    background: #fff !important;
-    padding: 24px !important;
-    max-width: 80vw !important;
-  }
   .need-credits {font-size: 15px;}
-  `],
-  encapsulation: ViewEncapsulation.None
+  `]
 })
 export class CreditedOfferDialog implements OnInit {
   creditsTotal = 0;

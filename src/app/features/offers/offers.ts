@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { UniqueSelectionDispatcher } from '@angular/material';
+import { FacebookService, UIResponse, UIParams } from 'ngx-facebook';
 
 const firstBy = require('thenby');
 
@@ -25,6 +26,7 @@ import {
 import { getUIMobile, getUISideNavOpen } from '../../reducers/ui';
 import { getCreditCollection, getUserLoggedIn, getCreditTotal } from '../../reducers/user';
 import { OfferActions } from '../../actions/offer';
+import { UserActions } from '../../actions/user';
 
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 
@@ -83,7 +85,10 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   reverse = false;
   offersSelected = 0;
   offersSelectedCreditValue = 0;
+  testShowRef$: Observable<number>;
   userLevel: number;
+  username$: Observable<string>;
+  username: string;
   // Paging
   pages: number[] = [];
   selectedPage = 1;
@@ -106,11 +111,17 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   ];
   constructor(
     public dialog: MdDialog,
+    private facebook: FacebookService,
     private offerActions: OfferActions,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private userActions: UserActions
   ) {
+    facebook.init({
+      appId: '1784209348260534',
+      version: 'v2.10'
+    });
     this.mobile$ = this.store.let(getUIMobile());
     this.sideNavOpen$ = this.store.let(getUISideNavOpen());
     this.loaded$ = this.store.let(getOfferLoaded());
@@ -210,6 +221,13 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit() {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
+    this.route.params
+    .subscribe(param => {
+      console.log('HELLO!!!', param);
+      if (param['showRef']) {
+        this.store.dispatch(this.userActions.testShowRefRandom(param['showRef']));
+      }
+    });
     let lastUpdate$ = this.store.select(s => s.offer.lastUpdatedAt);
     let lastUpdate;
     lastUpdate$
@@ -226,6 +244,9 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
         }
       });
     this.offerRankUpdatedAt$ = this.store.let(getOfferRankUpdatedAt());
+    this.testShowRef$ = this.store.select(s => s.user.testShowRefRandom);
+    this.username$ = this.store.select(s => s.user.user.username);
+    this.username$.takeUntil(this.destroyed$).subscribe(u => this.username = u);
     this.store.dispatch(this.offerActions.getOffersUpdatedAt());
   }
 
@@ -259,6 +280,23 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.sortBy$.next(value);
   }
 
+  fbShare() {
+
+    const options: UIParams = {
+      method: 'share',
+      href: 'https://levelrewards.com/register?ref=' + this.username
+    };
+
+    this.facebook.ui(options)
+      .then((res: UIResponse) => {
+        if (ENV === 'development') {
+          console.log('Got the users profile', res);
+        }
+      })
+      .catch(this.handleError);
+
+  }
+
   openConfirmDialog(message: string) {
     this.confirmDialogRef = this.dialog.open(ConfirmDialog,
       this.confirmDialogRef);
@@ -277,5 +315,8 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnDestroy() {
     this.destroyed$.next();
+  }
+  private handleError(error) {
+    console.error('Error processing action', error);
   }
 }

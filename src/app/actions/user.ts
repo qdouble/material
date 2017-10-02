@@ -582,6 +582,14 @@ export class UserActions {
     };
   }
 
+  static TEST_SHOW_REF_RANDOM = '[User] Test Show Ref Random';
+  testShowRefRandom(num: number): Action {
+    return {
+      type: UserActions.TEST_SHOW_REF_RANDOM,
+      payload: num
+    };
+  }
+
   static UPDATE_CURRENT_LEVEL = '[User] Update Current Level';
   updateCurrentLevel(current: { currentLevel: number, leveledUp: boolean }): Action {
     return {

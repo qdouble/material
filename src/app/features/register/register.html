@@ -1,7 +1,7 @@
 <h5 *ngIf="blocked" style="text-align: center">This referer has been blocked due to inappropriate advertising.</h5>
 <md-card *ngIf="!blocked" class="register-page-container" @fade>
   <img *ngIf="step === 1" id="register-top" src="assets/svg/register-top-1366x768.svg">
-  <md-card class="os-title-card primary-background">Register and Start Earning Today!</md-card>
+  <md-card class="os-title-card primary-background">Register</md-card>
   <md-card class="os-form-container">
     <form [formGroup]="f" (ngSubmit)="submitForm()">
       <div [hidden]="step === 2" @fade>

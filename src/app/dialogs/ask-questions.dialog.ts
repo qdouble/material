@@ -1,5 +1,5 @@
 /* tslint:disable max-line-length */
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 import { openInNewTab } from '../helper/open-in-new-tab';
 
@@ -18,8 +18,7 @@ import { openInNewTab } from '../helper/open-in-new-tab';
   button {width: 100%;}
   p {line-height: 1.3;}
   `
-  ],
-  encapsulation: ViewEncapsulation.None
+  ]
 })
 export class AskQuestionsDialog {
   firstName: string;
