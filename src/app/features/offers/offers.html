@@ -1,7 +1,8 @@
 <md-card id="offers-page" class="os-page-container" @fade>
   <div *ngIf="loggedIn && (userLevel < 1) && (testShowRef$ | async)" class="referral-link">
-    <md-card-title>Earn $5 Per Level Your Referrals Complete</md-card-title>
-    <md-card-subtitle>The max you can make per referral is based on your own level</md-card-subtitle>
+    <md-card-title>Welcome to Level Rewards, {{firstName$ | async}}!</md-card-title>
+    <md-card-title>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</md-card-title>
+    <md-card-subtitle>Just Level Up and Share Your Link:</md-card-subtitle>
       <p><a [href]="'https://levelrewards.com/register?ref=' + (username$ | async)" target="_blank">https://levelrewards.com/register?ref={{(username$ | async)}}</a></p>
       <div class="share-buttons">
         <button id="fb-post-btn" md-raised-button class="white" color="primary"  (click)="fbShare()" class="white">

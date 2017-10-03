@@ -60,6 +60,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   creditedOfferIds: string[];
   destroyed$: Subject<any> = new Subject();
   flash: string;
+  firstName$: Observable<string>;
   lastCloseResult: string;
   loaded$: Observable<boolean>;
   loaded: boolean;
@@ -223,10 +224,11 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.route.params
     .subscribe(param => {
-      if (param['showRef']) {
-        this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRef'])));
+      if (param['showRefB']) {
+        this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefB'])));
       }
     });
+    this.firstName$ = this.store.select(s => s.user.user.firstName);
     let lastUpdate$ = this.store.select(s => s.offer.lastUpdatedAt);
     let lastUpdate;
     lastUpdate$
