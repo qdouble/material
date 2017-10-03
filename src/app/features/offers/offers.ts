@@ -87,6 +87,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   offersSelected = 0;
   offersSelectedCreditValue = 0;
   testShowRef$: Observable<number>;
+  testShowRefLevel: number;
   userLevel: number;
   username$: Observable<string>;
   username: string;
@@ -224,8 +225,8 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.route.params
     .subscribe(param => {
-      if (param['showRefB']) {
-        this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefB'])));
+      if (param['showRefC']) {
+        this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefC'])));
       }
     });
     this.firstName$ = this.store.select(s => s.user.user.firstName);
