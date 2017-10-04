@@ -10,7 +10,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { UniqueSelectionDispatcher } from '@angular/material';
-import { FacebookService, UIResponse, UIParams } from 'ngx-facebook';
 
 const firstBy = require('thenby');
 
@@ -114,17 +113,12 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   ];
   constructor(
     public dialog: MdDialog,
-    private facebook: FacebookService,
     private offerActions: OfferActions,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<AppState>,
     private userActions: UserActions
   ) {
-    facebook.init({
-      appId: '1784209348260534',
-      version: 'v2.10'
-    });
     this.mobile$ = this.store.let(getUIMobile());
     this.sideNavOpen$ = this.store.let(getUISideNavOpen());
     this.loaded$ = this.store.let(getOfferLoaded());
@@ -226,8 +220,8 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.route.params
     .subscribe(param => {
-      if (param['showRefE']) {
-        this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefE'])));
+      if (param['showRefF']) {
+        this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefF'])));
       }
      if (param['new']) {
        this.store.dispatch(this.userActions.testNewEqualTrue(true));
@@ -285,23 +279,6 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
 
   changeSort(value: string | null) {
     this.sortBy$.next(value);
-  }
-
-  fbShare() {
-
-    const options: UIParams = {
-      method: 'share',
-      href: 'https://levelrewards.com/register?ref=' + this.username
-    };
-
-    this.facebook.ui(options)
-      .then((res: UIResponse) => {
-        if (ENV === 'development') {
-          console.log('Got the users profile', res);
-        }
-      })
-      .catch(this.handleError);
-
   }
 
   openConfirmDialog(message: string) {

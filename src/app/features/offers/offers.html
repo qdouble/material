@@ -1,14 +1,13 @@
 <md-card id="offers-page" class="os-page-container" @fade>
   <div *ngIf="loggedIn && (testNewEqualTrue$ | async)" class="referral-link">
     <md-card-title>Welcome to Level Rewards, {{firstName$ | async}}!</md-card-title>
-    <md-card-title><b>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b></md-card-title>
+    <md-card-title *ngIf="!(testShowRef$ | async)"><b>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b></md-card-title>
+    <ng-container *ngIf="testShowRef$ | async">
+      <md-card-title><b>Here's the easiest way to earn your first $50 with us:</b></md-card-title>
+      <md-card-title><b>Get to Level 10 and Have 1 Friend Match Your Level</b></md-card-title>
+    </ng-container>
     <md-card-subtitle>Just Level Up and Share Your Link With a Friend:</md-card-subtitle>
       <p><a [href]="'https://levelrewards.com/register?ref=' + (username$ | async)" target="_blank">https://levelrewards.com/register?ref={{(username$ | async)}}</a></p>
-      <div *ngIf="(testShowRef$ | async)" class="share-buttons">
-        <button id="fb-post-btn" md-raised-button class="white" color="primary"  (click)="fbShare()" class="white">
-            <img src="/assets/svg/facebook-box.svg"> Share
-        </button>
-      </div>
   </div>
   <div id="title-card-container">
     <img id="top-instruct" src="assets/svg/offers-top-instruct-ex4.svg">
