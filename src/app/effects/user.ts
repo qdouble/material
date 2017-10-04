@@ -188,12 +188,12 @@ export class UserEffects {
           this.store.dispatch(this.userActions.askQuestions());
         }
         if (res.payload.redirectTo === 'offers') {
-          let randValues = [0, 4, 10, 20];
-          let showRefRand = Math.floor(Math.random() * 4);
+          let showRefRand = Math.floor(Math.random() * 2);
           this.store.dispatch(this.offerActions.clearOffers());
           this.store.dispatch(go([res.payload.redirectTo,
-          { new: true, returning: true, showRefC: randValues[showRefRand] }]));
-          this.store.dispatch(this.userActions.testShowRefRandom(randValues[showRefRand]));
+          { new: true, returning: true, showRefD: showRefRand }]));
+          this.store.dispatch(this.userActions.testShowRefRandom(showRefRand));
+          this.store.dispatch(this.userActions.testNewEqualTrue(true));
           return;
         }
         if (res.payload.redirectTo) {
@@ -251,11 +251,11 @@ export class UserEffects {
       .map(res => this.userActions.registerSuccess(res))
       .do(res => {
         if (res.payload.redirectTo) {
-          let randValues = [0, 4, 10, 20];
-          let showRefRand = Math.floor(Math.random() * 4);
+          let showRefRand = Math.floor(Math.random() * 2);
           this.store.dispatch(go([res.payload.redirectTo,
-          { new: true, showRefC: randValues[showRefRand] }]));
-          this.store.dispatch(this.userActions.testShowRefRandom(randValues[showRefRand]));
+          { new: true, showRefD: showRefRand }]));
+          this.store.dispatch(this.userActions.testShowRefRandom(showRefRand));
+          this.store.dispatch(this.userActions.testNewEqualTrue(true));
         }
         if (!res.payload.success) {
           this.store.dispatch(this.notifyActions.addNotify(res.payload));

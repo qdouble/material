@@ -86,6 +86,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   reverse = false;
   offersSelected = 0;
   offersSelectedCreditValue = 0;
+  testNewEqualTrue$: Observable<boolean>;
   testShowRef$: Observable<number>;
   testShowRefLevel: number;
   userLevel: number;
@@ -225,9 +226,12 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.route.params
     .subscribe(param => {
-      if (param['showRefC']) {
-        this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefC'])));
+      if (param['showRefD']) {
+        this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefD'])));
       }
+     if (param['new']) {
+       this.store.dispatch(this.userActions.testNewEqualTrue(true));
+     }
     });
     this.firstName$ = this.store.select(s => s.user.user.firstName);
     let lastUpdate$ = this.store.select(s => s.offer.lastUpdatedAt);
@@ -246,6 +250,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
         }
       });
     this.offerRankUpdatedAt$ = this.store.let(getOfferRankUpdatedAt());
+    this.testNewEqualTrue$ = this.store.select(s => s.user.isNew);
     this.testShowRef$ = this.store.select(s => s.user.testShowRefRandom);
     this.username$ = this.store.select(s => s.user.user.username);
     this.username$.takeUntil(this.destroyed$).subscribe(u => this.username = u);

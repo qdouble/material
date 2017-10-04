@@ -19,6 +19,7 @@ export interface UserState {
   entryEmail: string | null;
   ip: string;
   ipJson: IP;
+  isNew: boolean;
   lastUpdate: string;
   loading: boolean;
   loaded: boolean;
@@ -49,6 +50,7 @@ export const initialState: UserState = {
   entryEmail: null,
   ip: null,
   ipJson: null,
+  isNew: false,
   lastUpdate: null,
   loading: false,
   loaded: false,
@@ -386,6 +388,10 @@ export function userReducer(state = initialState, action: Action): UserState {
       return Object.assign({}, state, {
         sortReferralBy: action.payload
       });
+    }
+
+    case UserActions.TEST_NEW_EQUAL_TRUE : {
+      return {...state, isNew: action.payload };
     }
 
     case UserActions.TEST_SHOW_REF_RANDOM: {
