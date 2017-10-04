@@ -1,7 +1,7 @@
 <md-card id="offers-page" class="os-page-container" @fade>
   <div *ngIf="loggedIn && (testNewEqualTrue$ | async)" class="referral-link">
     <md-card-title>Welcome to Level Rewards, {{firstName$ | async}}!</md-card-title>
-    <md-card-title><b>Quick $50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b></md-card-title>
+    <md-card-title><b>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b></md-card-title>
     <md-card-subtitle>Just Level Up and Share Your Link With a Friend:</md-card-subtitle>
       <p><a [href]="'https://levelrewards.com/register?ref=' + (username$ | async)" target="_blank">https://levelrewards.com/register?ref={{(username$ | async)}}</a></p>
       <div *ngIf="(testShowRef$ | async)" class="share-buttons">
