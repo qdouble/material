@@ -1,9 +1,8 @@
 <md-card id="offers-page" class="os-page-container" @fade>
   <div *ngIf="loggedIn && (testNewEqualTrue$ | async)" class="referral-link">
     <md-card-title>Welcome to Level Rewards, {{firstName$ | async}}!</md-card-title>
-    <md-card-title *ngIf="!(testShowRef$ | async)"><b>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b></md-card-title>
-    <md-card-title *ngIf="(testShowRef$ | async)"><b><i>$50 A Day Formula:</i><br> Get to Level 10 and Get Just 1 Referral to Match You Each Day!</b></md-card-title>
-    <md-card-subtitle>Just Level Up and Share Your Link:</md-card-subtitle>
+    <md-card-title><b>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b></md-card-title>
+    <md-card-subtitle>Just Level Up and Share Your Link With a Friend:</md-card-subtitle>
       <p><a [href]="'https://levelrewards.com/register?ref=' + (username$ | async)" target="_blank">https://levelrewards.com/register?ref={{(username$ | async)}}</a></p>
   </div>
   <div id="title-card-container">
@@ -43,7 +42,7 @@
    <p>Last updated: {{(offerRankUpdatedAt$ | async) | date: 'medium' }}</p>
   </div>
   <os-offer-rows [addUp]="addUp" [creditedOfferIds]="creditedOfferIds" [creditTotal]="creditTotal$ | async" [loggedIn]="loggedIn$ | async"
-    [showingAvailable]="!showCompleted" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
+    [showingAvailable]="!showCompleted" [showPopularityRank]="testShowRef$ | async" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
     (checkOffer)="checkOffer($event)" (goToOfferDetails)="goToOfferDetails($event)">
   </os-offer-rows>
   <div *ngIf="!showCompleted" class="paging">

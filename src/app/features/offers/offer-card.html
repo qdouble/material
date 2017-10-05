@@ -8,7 +8,7 @@
       <img src="assets/svg/new-offer-element.svg">
     </div>
   </div>
-  <span class="popularity-rank" *ngIf="offer.popularityRank && offer.popularityRank < 99">
+  <span class="popularity-rank" *ngIf="!showPopularityRank && offer.popularityRank && offer.popularityRank < 99">
     <img src="assets/svg/popularity-rank-element.svg">
     <b>{{offer.popularityRank}}</b>
   </span>
