@@ -67,7 +67,7 @@ export function offerReducer(state = initialState, action: Action): OfferState {
             costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
             popularityRank: offer.popularityRank ? offer.popularityRank : 99,
             popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
-            featured: offer.popularityRank
+            featured: !!offer.popularityRank
           })
         }),
         userAgent: userAgent,
@@ -111,7 +111,7 @@ export function offerReducer(state = initialState, action: Action): OfferState {
                 costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
                 popularityRank: offer.popularityRank ? offer.popularityRank : 99,
                 popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
-                featured: offer.popularityRank
+                featured: !!offer.popularityRank
               })
             });
         }, {});
