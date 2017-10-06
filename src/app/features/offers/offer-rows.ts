@@ -19,6 +19,7 @@ export class OfferRows {
   @Input() offers: Offer[];
   @Input() showingAvailable: boolean;
   @Input() hidePopularityRank: boolean;
+  @Input() hideToUnqualified: boolean;
   @Input() sideNavOpen: boolean;
   @Input() creditTotal: number;
   @Output() checkOffer = new EventEmitter();
