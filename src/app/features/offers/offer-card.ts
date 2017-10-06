@@ -21,7 +21,7 @@ export class OfferCard implements OnInit {
   @Input() loggedIn: boolean;
   @Input() mobile: boolean;
   @Input() showingAvailable: boolean;
-  @Input() showPopularityRank: boolean;
+  @Input() hidePopularityRank: boolean;
   @Input() sideNavOpen: boolean;
   @Input() offerId: string;
   @Input() offer: Offer;

@@ -191,7 +191,7 @@ export class UserEffects {
           let showRefRand = Math.floor(Math.random() * 2);
           this.store.dispatch(this.offerActions.clearOffers());
           this.store.dispatch(go([res.payload.redirectTo,
-          { new: true, returning: true, showRefH: showRefRand }]));
+          { new: true, returning: true, showRefI: showRefRand }]));
           this.store.dispatch(this.userActions.testShowRefRandom(showRefRand));
           this.store.dispatch(this.userActions.testNewEqualTrue(true));
           return;
@@ -253,7 +253,7 @@ export class UserEffects {
         if (res.payload.redirectTo) {
           let showRefRand = Math.floor(Math.random() * 2);
           this.store.dispatch(go([res.payload.redirectTo,
-          { new: true, showRefH: showRefRand }]));
+          { new: true, showRefI: showRefRand }]));
           this.store.dispatch(this.userActions.testShowRefRandom(showRefRand));
           this.store.dispatch(this.userActions.testNewEqualTrue(true));
         }
