@@ -42,7 +42,7 @@
    <p>Last updated: {{(offerRankUpdatedAt$ | async) | date: 'medium' }}</p>
   </div>
   <os-offer-rows [addUp]="addUp" [creditedOfferIds]="creditedOfferIds" [creditTotal]="creditTotal$ | async" [loggedIn]="loggedIn$ | async"
-    [showingAvailable]="!showCompleted" [hidePopularityRank]="loggedIn && userLevel < 1" [hideToUnqualified]="loggedIn && userLevel < 1" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
+    [showingAvailable]="!showCompleted" [hidePopularityRank]="!loggedIn || (loggedIn && userLevel < 1)" [hideToUnqualified]="loggedIn && userLevel < 1" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
     (checkOffer)="checkOffer($event)" (goToOfferDetails)="goToOfferDetails($event)">
   </os-offer-rows>
   <div *ngIf="!showCompleted && !(testShowRef$ | async)" class="paging">
