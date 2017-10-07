@@ -219,14 +219,14 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit() {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.route.params
-    .subscribe(param => {
-      if (param['showRefJ']) {
-        this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefJ'])));
-      }
-     if (param['new']) {
-       this.store.dispatch(this.userActions.testNewEqualTrue(true));
-     }
-    });
+      .subscribe(param => {
+        if (param['showRefJ']) {
+          this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefJ'])));
+        }
+        if (param['new']) {
+          this.store.dispatch(this.userActions.testNewEqualTrue(true));
+        }
+      });
     this.firstName$ = this.store.select(s => s.user.user.firstName);
     let lastUpdate$ = this.store.select(s => s.offer.lastUpdatedAt);
     let lastUpdate;
@@ -246,6 +246,11 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.offerRankUpdatedAt$ = this.store.let(getOfferRankUpdatedAt());
     this.testNewEqualTrue$ = this.store.select(s => s.user.isNew);
     this.testShowRef$ = this.store.select(s => s.user.testShowRefRandom);
+    this.testShowRef$.takeUntil(this.destroyed$)
+      .filter(t => t === 1)
+      .subscribe(test => {
+        this.pageOffset$.next('all');
+      });
     this.username$ = this.store.select(s => s.user.user.username);
     this.username$.takeUntil(this.destroyed$).subscribe(u => this.username = u);
     this.store.dispatch(this.offerActions.getOffersUpdatedAt());

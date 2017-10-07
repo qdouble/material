@@ -16,10 +16,10 @@
       </md-button-toggle>
     </md-button-toggle-group>
   </div>
-  <div *ngIf="!showCompleted" class="paging">
+  <div *ngIf="!showCompleted && !(testShowRef$ | async)" class="paging">
     <os-pages [itemsPerPage]="20" [selectedPage]="pageOffset$ | async" [totalItems]="(offersSorted$ | async)?.length" (pageOffset)="pageOffset$.next($event)"></os-pages>
   </div>
-  <div style="margin-top: 10px; margin-bottom: -10px" class="os-offer-display-options">
+  <div *ngIf="!(testShowRef$ | async)" style="margin-top: 10px; margin-bottom: -10px" class="os-offer-display-options">
     <md-slide-toggle style="margin-right: 10px;" *ngIf="(credits$ | async)?.length" [(ngModel)]="showCompleted" color="primary">Show Completed</md-slide-toggle>
     <md-slide-toggle *ngIf="!showCompleted" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []"
       color="primary">Add Up Offer Credits</md-slide-toggle>
@@ -42,7 +42,7 @@
    <p>Last updated: {{(offerRankUpdatedAt$ | async) | date: 'medium' }}</p>
   </div>
   <os-offer-rows [addUp]="addUp" [creditedOfferIds]="creditedOfferIds" [creditTotal]="creditTotal$ | async" [loggedIn]="loggedIn$ | async"
-    [showingAvailable]="!showCompleted" [hidePopularityRank]="loggedIn && userLevel < 1" [hideToUnqualified]="testShowRef$ | async" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
+    [showingAvailable]="!showCompleted" [hidePopularityRank]="loggedIn && userLevel < 1" [hideToUnqualified]="loggedIn && userLevel < 1" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
     (checkOffer)="checkOffer($event)" (goToOfferDetails)="goToOfferDetails($event)">
   </os-offer-rows>
   <div *ngIf="!showCompleted" class="paging">
