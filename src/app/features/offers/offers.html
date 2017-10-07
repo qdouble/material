@@ -9,17 +9,14 @@
     <img id="top-instruct" src="assets/svg/offers-top-instruct-ex4.svg">
   </div>
   
-  <div class="os-offer-display-options" [style.display]="(userLevel < 1) ? 'none' : 'flex'">
+  <div class="os-offer-display-options" [style.display]="(userLevel < 1) && !(testShowRef$ | async) ? 'none' : 'flex'">
     <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
       <md-button-toggle *ngFor="let option of sortByValues; let i = index" [value]="option">
         {{sortByLabels[i]}}
       </md-button-toggle>
     </md-button-toggle-group>
   </div>
-  <div *ngIf="!showCompleted && !(testShowRef$ | async)" class="paging">
-    <os-pages [itemsPerPage]="20" [selectedPage]="pageOffset$ | async" [totalItems]="(offersSorted$ | async)?.length" (pageOffset)="pageOffset$.next($event)"></os-pages>
-  </div>
-  <div *ngIf="!(testShowRef$ | async)" style="margin-top: 10px; margin-bottom: -5px" class="os-offer-display-options">
+  <div *ngIf="!(testShowRef$ | async)" style="margin-top: 10px;" class="os-offer-display-options">
     <md-slide-toggle style="margin-right: 10px;" *ngIf="(credits$ | async)?.length" [(ngModel)]="showCompleted" color="primary">Show Completed</md-slide-toggle>
     <md-slide-toggle *ngIf="!showCompleted && userLevel > 1" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []"
       color="primary">Add Up Offer Credits</md-slide-toggle>
@@ -37,17 +34,10 @@
       referral
     </p>
   </div>
- <div id="popularity-rank" *ngIf="userLevel > 1">
-   <p>Popularity Rank shows top crediting offers over the last 24 hours</p>
-   <p>Last updated: {{(offerRankUpdatedAt$ | async) | date: 'medium' }}</p>
-  </div>
   <os-offer-rows [addUp]="addUp" [creditedOfferIds]="creditedOfferIds" [creditTotal]="creditTotal$ | async" [loggedIn]="loggedIn$ | async"
-    [showingAvailable]="!showCompleted" [hidePopularityRank]="!loggedIn || (loggedIn && userLevel < 1)" [hideToUnqualified]="loggedIn && userLevel < 1" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
+    [showingAvailable]="!showCompleted" [hideToUnqualified]="loggedIn && userLevel < 1" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
     (checkOffer)="checkOffer($event)" (goToOfferDetails)="goToOfferDetails($event)">
   </os-offer-rows>
-  <div *ngIf="!showCompleted && !(testShowRef$ | async)" class="paging">
-    <os-pages [itemsPerPage]="20" [selectedPage]="pageOffset$ | async" [totalItems]="(offersSorted$ | async)?.length" (pageOffset)="pageOffset$.next($event)"></os-pages>
-  </div>
   <md-card id="no-completed-card" class="os-message-card accent-background white" *ngIf="selectedOption === 'Completed' && (offersCompleted$ | async)?.length < 1">
     You Have No Completed Offers. Complete an offer on the Available tab to level up!
   </md-card>

@@ -8,10 +8,6 @@
       <img src="assets/svg/new-offer-element.svg">
     </div>
   </div>
-  <span class="popularity-rank" *ngIf="!hidePopularityRank && offer.popularityRank && offer.popularityRank < 99">
-    <img src="assets/svg/popularity-rank-element.svg">
-    <b>{{offer.popularityRank}}</b>
-  </span>
   <span class="unlocked" *ngIf="offer.hideToUnQualifiedUsers && qualificationLevel > 0">Only Available for Members on Level {{qualificationLevel}}+</span>
   <div class="lower-offer-body" (click)="goToOfferDetails.emit(offer)">
     <md-card-title>

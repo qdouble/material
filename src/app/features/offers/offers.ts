@@ -172,31 +172,20 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
                 .thenBy('featured', -1)
                 .thenBy('order')));
         }
-        this.pageOffset$
-          .takeUntil(this.destroyed$)
-          .subscribe(offset => {
-            if (offset !== 'all') {
-              this.offers$ = this.offersSorted$
-                .map(arr => arr.slice((offset - 1) * this.offersPerPage,
-                  this.offersPerPage * (offset)));
-            } else {
-              this.offers$ = this.offersSorted$;
-            }
 
-            let completed = (arr: Offer[], offerIds) => {
-              return arr.filter(offer => offerIds.includes(offer.id));
-            };
-            this.credits$ = this.store.let(getCreditCollection());
-            this.credits$
-              .takeUntil(this.destroyed$)
-              .filter(credits => credits.length > 0)
-              .subscribe(credits => {
-                this.creditedOfferIds = credits.map(credit => credit.offerId);
-                this.offersCompleted$ = Observable.combineLatest(
-                  this.offersSorted$, Observable.of(this.creditedOfferIds), completed);
-              });
+        this.offers$ = this.offersSorted$;
+        let completed = (arr: Offer[], offerIds) => {
+          return arr.filter(offer => offerIds.includes(offer.id));
+        };
+        this.credits$ = this.store.let(getCreditCollection());
+        this.credits$
+          .takeUntil(this.destroyed$)
+          .filter(credits => credits.length > 0)
+          .subscribe(credits => {
+            this.creditedOfferIds = credits.map(credit => credit.offerId);
+            this.offersCompleted$ = Observable.combineLatest(
+              this.offersSorted$, Observable.of(this.creditedOfferIds), completed);
           });
-        this.pageOffset$.next(this.selectedPage);
       });
 
     this.creditTotal$ = store.let(getCreditTotal());
@@ -220,8 +209,8 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.route.params
       .subscribe(param => {
-        if (param['showRefK']) {
-          this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefK'])));
+        if (param['showRefL']) {
+          this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefL'])));
         }
         if (param['new']) {
           this.store.dispatch(this.userActions.newEqualTrue(true));
@@ -246,11 +235,6 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.offerRankUpdatedAt$ = this.store.let(getOfferRankUpdatedAt());
     this.newEqualTrue$ = this.store.select(s => s.user.isNew);
     this.testShowRef$ = this.store.select(s => s.user.testShowRefRandom);
-    this.testShowRef$.takeUntil(this.destroyed$)
-      .filter(t => t === 1)
-      .subscribe(test => {
-        this.pageOffset$.next('all');
-      });
     this.username$ = this.store.select(s => s.user.user.username);
     this.username$.takeUntil(this.destroyed$).subscribe(u => this.username = u);
     this.store.dispatch(this.offerActions.getOffersUpdatedAt());
