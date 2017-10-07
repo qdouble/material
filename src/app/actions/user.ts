@@ -391,6 +391,14 @@ export class UserActions {
     };
   }
 
+  static NEW_EQUAL_TRUE = '[User] New Equal True';
+  newEqualTrue(isTrue: boolean): Action {
+    return {
+      type: UserActions.NEW_EQUAL_TRUE,
+      payload: isTrue
+    };
+  }
+
   static RECORD_CLICK = '[User] Record Click';
   recordClick(offerId: string): Action {
     return {
@@ -582,13 +590,7 @@ export class UserActions {
     };
   }
 
-  static TEST_NEW_EQUAL_TRUE = '[User] Test New Equal True';
-  testNewEqualTrue(isTrue: boolean): Action {
-    return {
-      type: UserActions.TEST_NEW_EQUAL_TRUE,
-      payload: isTrue
-    };
-  }
+
 
   static TEST_SHOW_REF_RANDOM = '[User] Test Show Ref Random';
   testShowRefRandom(num: number): Action {

@@ -390,7 +390,7 @@ export function userReducer(state = initialState, action: Action): UserState {
       });
     }
 
-    case UserActions.TEST_NEW_EQUAL_TRUE : {
+    case UserActions.NEW_EQUAL_TRUE : {
       return {...state, isNew: action.payload };
     }
 

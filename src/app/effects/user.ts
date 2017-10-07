@@ -193,7 +193,7 @@ export class UserEffects {
           this.store.dispatch(go([res.payload.redirectTo,
           { new: true, returning: true, showRefJ: showRefRand }]));
           this.store.dispatch(this.userActions.testShowRefRandom(showRefRand));
-          this.store.dispatch(this.userActions.testNewEqualTrue(true));
+          this.store.dispatch(this.userActions.newEqualTrue(true));
           return;
         }
         if (res.payload.redirectTo) {
@@ -255,7 +255,7 @@ export class UserEffects {
           this.store.dispatch(go([res.payload.redirectTo,
           { new: true, showRefJ: showRefRand }]));
           this.store.dispatch(this.userActions.testShowRefRandom(showRefRand));
-          this.store.dispatch(this.userActions.testNewEqualTrue(true));
+          this.store.dispatch(this.userActions.newEqualTrue(true));
         }
         if (!res.payload.success) {
           this.store.dispatch(this.notifyActions.addNotify(res.payload));

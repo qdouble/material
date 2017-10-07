@@ -85,7 +85,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   reverse = false;
   offersSelected = 0;
   offersSelectedCreditValue = 0;
-  testNewEqualTrue$: Observable<boolean>;
+  newEqualTrue$: Observable<boolean>;
   testShowRef$: Observable<number>;
   testShowRefLevel: number;
   userLevel: number;
@@ -224,7 +224,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
           this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefJ'])));
         }
         if (param['new']) {
-          this.store.dispatch(this.userActions.testNewEqualTrue(true));
+          this.store.dispatch(this.userActions.newEqualTrue(true));
         }
       });
     this.firstName$ = this.store.select(s => s.user.user.firstName);
@@ -244,7 +244,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
         }
       });
     this.offerRankUpdatedAt$ = this.store.let(getOfferRankUpdatedAt());
-    this.testNewEqualTrue$ = this.store.select(s => s.user.isNew);
+    this.newEqualTrue$ = this.store.select(s => s.user.isNew);
     this.testShowRef$ = this.store.select(s => s.user.testShowRefRandom);
     this.testShowRef$.takeUntil(this.destroyed$)
       .filter(t => t === 1)
