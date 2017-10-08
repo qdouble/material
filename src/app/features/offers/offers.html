@@ -7,7 +7,6 @@
       <md-card-subtitle>Just Level Up and Share Your Link With a Friend:</md-card-subtitle>
       <p><a [href]="'https://levelrewards.com/register?ref=' + (username$ | async)" target="_blank">https://levelrewards.com/register?ref={{(username$ | async)}}</a></p>
     </ng-container>
-    <a *ngIf="testShowRef$ | async" target="_blank" href="http://levelrewardstraining.com/completing-levels/"><button style="margin-top: 10px;" md-raised-button color="primary" class="white"><md-icon>library_books</md-icon>Completing Levels - Training Site Guide</button></a>
   </div>
   <div *ngIf="userLevel >= 1 && !(newEqualTrue$ | async)" class="referral-link">
     <md-card-title>Welcome Back, {{firstName$ | async}}!</md-card-title>
@@ -17,7 +16,9 @@
   <div id="title-card-container">
     <img id="top-instruct" src="assets/svg/offers-top-instruct-ex4.svg">
   </div>
-  
+  <div *ngIf="testShowRef$ | async" style="text-align: center; margin-bottom: 5px;">
+    <a  target="_blank" href="http://levelrewardstraining.com/mission/">How Exactly Does The Level Rewards Program Work? </a>
+  </div>
   <div class="os-offer-display-options" [style.display]="(userLevel < 1) ? 'none' : 'flex'">
     <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
       <md-button-toggle *ngFor="let option of sortByValues; let i = index" [value]="option">

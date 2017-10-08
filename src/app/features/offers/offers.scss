@@ -1,3 +1,7 @@
+a:link {
+  color: #5a822b;
+}
+
 .add-up-instruct {
   text-align: center;
   margin-top: 10px;
@@ -45,9 +49,7 @@
   p {
     font-size: 12px;
   }
-  a:link {
-    color: #5a822b;
-  }
+  
   #fb-post-btn {
     text-align: center;
     background: #3B5998;
@@ -176,25 +178,6 @@ md-slide-toggle {
   height: 188px;
 }
 
-
-.paging {
-  text-align: center;
-}
-
-#popularity-rank {
-  font-size: 11px;
-  text-align: center;
-  margin: 12px auto;
-  color: #ffffff;
-  line-height: 12px;
-  font-weight: bold;
-  background: #8bc34a;
-  padding: 6px;
-  max-width: 342px;
-  p {
-    font-size: 11px;
-  }
-}
 
 .os-offer-display-options {
   display: flex;
