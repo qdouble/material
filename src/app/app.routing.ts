@@ -39,7 +39,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadChildren: './features/status/index#StatusModule',
+    loadChildren: './features/offers/index#OffersModule',
     canActivate: [AuthRegGuard]
   },
   {

@@ -32,6 +32,7 @@ export interface UserState {
   referralIds: string[];
   referrals: { [id: string]: Referral };
   resetEmailSent: boolean;
+  returningUser: boolean;
   selectedReferralIds: string[];
   settingPrize: boolean;
   showLevelBadgeNum: number;
@@ -63,6 +64,7 @@ export const initialState: UserState = {
   referralIds: [],
   referrals: {},
   resetEmailSent: false,
+  returningUser: false,
   selectedReferralIds: [],
   settingPrize: false,
   showLevelBadgeNum: null,
@@ -324,6 +326,10 @@ export function userReducer(state = initialState, action: Action): UserState {
       // return { ...state, referralIds: idsMod, referrals: refsMod };
     }
 
+    case UserActions.RETURNING_USER: {
+      return { ...state, returningUser: true };
+    }
+
     case UserActions.SELECT_REFERRALS: {
       const ids: string[] = action.payload;
       let newIds: string[] = [...state.selectedReferralIds];
@@ -390,8 +396,8 @@ export function userReducer(state = initialState, action: Action): UserState {
       });
     }
 
-    case UserActions.NEW_EQUAL_TRUE : {
-      return {...state, isNew: action.payload };
+    case UserActions.NEW_EQUAL_TRUE: {
+      return { ...state, isNew: action.payload };
     }
 
     case UserActions.TEST_SHOW_REF_RANDOM: {

@@ -82,6 +82,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   selectedOption = 'Available';
   sortBy = 'featured';
   sortBy$: Subject<any> = new BehaviorSubject('featured');
+  returningUser$: Observable<boolean>;
   reverse = false;
   offersSelected = 0;
   offersSelectedCreditValue = 0;
@@ -209,11 +210,14 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.route.params
       .subscribe(param => {
-        if (param['showRefL']) {
-          this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefL'])));
+        if (param['showRefM']) {
+          this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefM'])));
         }
         if (param['new']) {
           this.store.dispatch(this.userActions.newEqualTrue(true));
+        }
+        if (param['returning']) {
+          this.store.dispatch(this.userActions.returningUser());
         }
       });
     this.firstName$ = this.store.select(s => s.user.user.firstName);
@@ -234,6 +238,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
       });
     this.offerRankUpdatedAt$ = this.store.let(getOfferRankUpdatedAt());
     this.newEqualTrue$ = this.store.select(s => s.user.isNew);
+    this.returningUser$ = this.store.select(s => s.user.returningUser);
     this.testShowRef$ = this.store.select(s => s.user.testShowRefRandom);
     this.username$ = this.store.select(s => s.user.user.username);
     this.username$.takeUntil(this.destroyed$).subscribe(u => this.username = u);

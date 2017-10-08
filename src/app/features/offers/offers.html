@@ -1,15 +1,24 @@
 <md-card id="offers-page" class="os-page-container" @fade>
   <div *ngIf="loggedIn && (newEqualTrue$ | async)" class="referral-link">
-    <md-card-title>Welcome to Level Rewards, {{firstName$ | async}}!</md-card-title>
+    <md-card-title *ngIf="!(returningUser$ | async) && userLevel < 1">Welcome to Level Rewards, {{firstName$ | async}}!</md-card-title>
+    <md-card-title *ngIf="(returningUser$ | async) || userLevel > 1">Welcome Back, {{firstName$ | async}}!</md-card-title>
     <md-card-title><b>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b></md-card-title>
-    <md-card-subtitle>Just Level Up and Share Your Link With a Friend:</md-card-subtitle>
-    <p><a [href]="'https://levelrewards.com/register?ref=' + (username$ | async)" target="_blank">https://levelrewards.com/register?ref={{(username$ | async)}}</a></p>
+    <ng-container *ngIf="userLevel < 1">
+      <md-card-subtitle>Just Level Up and Share Your Link With a Friend:</md-card-subtitle>
+      <p><a [href]="'https://levelrewards.com/register?ref=' + (username$ | async)" target="_blank">https://levelrewards.com/register?ref={{(username$ | async)}}</a></p>
+    </ng-container>
+    <a *ngIf="testShowRef$ | async" target="_blank" href="http://levelrewardstraining.com/completing-levels/"><button style="margin-top: 10px;" md-raised-button color="primary" class="white"><md-icon>library_books</md-icon>Completing Levels - Training Site Guide</button></a>
+  </div>
+  <div *ngIf="userLevel >= 1 && !(newEqualTrue$ | async)" class="referral-link">
+    <md-card-title>Welcome Back, {{firstName$ | async}}!</md-card-title>
+    <md-card-title *ngIf="userLevel < 10"><b>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b></md-card-title>
+    <button color="primary" class="white" md-raised-button routerLink="/status">Go to Status Page</button>
   </div>
   <div id="title-card-container">
     <img id="top-instruct" src="assets/svg/offers-top-instruct-ex4.svg">
   </div>
   
-  <div class="os-offer-display-options" [style.display]="(userLevel < 1) && !(testShowRef$ | async) ? 'none' : 'flex'">
+  <div class="os-offer-display-options" [style.display]="(userLevel < 1) ? 'none' : 'flex'">
     <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
       <md-button-toggle *ngFor="let option of sortByValues; let i = index" [value]="option">
         {{sortByLabels[i]}}

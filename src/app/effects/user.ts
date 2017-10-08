@@ -191,15 +191,12 @@ export class UserEffects {
           let showRefRand = Math.floor(Math.random() * 2);
           this.store.dispatch(this.offerActions.clearOffers());
           this.store.dispatch(go([res.payload.redirectTo,
-          { new: true, returning: true, showRefL: showRefRand }]));
+          { new: true, returning: true, showRefM: showRefRand }]));
           this.store.dispatch(this.userActions.testShowRefRandom(showRefRand));
-          this.store.dispatch(this.userActions.newEqualTrue(true));
           return;
         }
         if (res.payload.redirectTo) {
-          this.store.dispatch(go([res.payload.redirectTo]));
-        }
-        if (res.payload.redirectTo === 'status') {
+          this.store.dispatch(go(['/offers']));
           this.store.dispatch(this.offerActions.clearOffers());
         }
       })
@@ -253,9 +250,8 @@ export class UserEffects {
         if (res.payload.redirectTo) {
           let showRefRand = Math.floor(Math.random() * 2);
           this.store.dispatch(go([res.payload.redirectTo,
-          { new: true, showRefL: showRefRand }]));
+          { new: true, showRefM: showRefRand }]));
           this.store.dispatch(this.userActions.testShowRefRandom(showRefRand));
-          this.store.dispatch(this.userActions.newEqualTrue(true));
         }
         if (!res.payload.success) {
           this.store.dispatch(this.notifyActions.addNotify(res.payload));

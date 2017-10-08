@@ -494,6 +494,13 @@ export class UserActions {
     };
   }
 
+  static RETURNING_USER = '[User] Returning User';
+  returningUser(): Action {
+    return {
+      type: UserActions.RETURNING_USER
+    };
+  }
+
   static SELECT_REFERRALS = '[User] Select Referrals';
   selectReferrals(ids: string[]): Action {
     return {
