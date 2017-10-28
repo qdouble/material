@@ -1,44 +1,134 @@
 <main class="os-home-container">
-  <!--<div class="os-home-col">
-  </div>
-  <div class="os-home-col">
-    <md-card class="os-home-card-top">
-      <h4>Step 1: Choose How You Would Like to Receive Your Prize</h4>
-      <prizes-display [prizes]="prizes$ | async" [form]="prizeForm">
-      </prizes-display>
-      <h4> Step 2: Register or Extend Your Account</h4>
-      <form novalidate [formGroup]="f" (ngSubmit)="submitForm()">
-        <os-form-input [error]="''" [label]="'Email Address'" [controlName]="'email'" [form]="f" [submit]="'Submit'"></os-form-input>
-      </form>
-    </md-card>
-  </div>-->
-
-  <!--<div fxLayout='column' class="zero">
-    <div fxFlex="33" class="one"></div>
-    <div fxFlex="33%" fxLayout="row" class="two">
-      <div fxFlex="22%" class="two_one">Hello</div>
-      <div fxFlex="205px" class="two_two">Who Are You</div>
-      <div fxFlex="30" class="two_three">I am the Man</div>
-    </div>
-    <div fxFlex class="three"></div>
-  </div>-->
-
   <div class="containerX">
-    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="coloredContainerX box">
-      <div class="os-intro" fxFlex="">
-        <!--<p>Start Earning With</p>
-        <p>Level Rewards</p>-->
+    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="containerRow">
+      <div class="os-welcome" fxFlex="">
+        <img id="welcome-img" src="\assets\svg\welcome.svg">
+        <p>The Top Freebie Referral Site on the Web!</p>
       </div>
       <div class="os-sign-up" fxFlex>
-          <!--<h4>Step 1: Choose How You Would Like to Receive Your Prize</h4>
-          <prizes-display [prizes]="prizes$ | async" [form]="prizeForm">
-          </prizes-display>
-          <h4> Step 2: Register or Extend Your Account</h4>
-          <form novalidate [formGroup]="f" (ngSubmit)="submitForm()">
-            <os-form-input [error]="''" [label]="'Email Address'" [controlName]="'email'" [form]="f" [submit]="'Submit'"></os-form-input>
-          </form>-->
+        <a [routerLink]="['login']" queryParamsHandling="preserve"><img src="\assets\svg\login-btn.svg"></a>
+        <br>
+        <img id="or-marker" src="\assets\svg\or-marker.svg">
+        <br>
+        <a [routerLink]="['register']" queryParamsHandling="preserve"><img src="\assets\svg\sign-up-btn.svg"></a>
       </div>
     </div>
   </div>
-
+  <div class="container-back">
+    <div class="containerX">
+      <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="containerRow">
+        <div class="os-welcome" fxFlex="">
+          <img class="main-images" style="margin-top: 44px;" src="\assets\png\brands.png">
+          <div class="sectionContainer">
+            <p>We promote high commission offers from a variety of big name brands. *Companies that are being promoted can change
+              on a daily basis. </p>
+              <a [routerLink]="['offers/view-offers']" queryParamsHandling="preserve"><img class="view-btns" src="\assets\svg\view-offers-btn.svg"></a>
+          </div>
+        </div>
+        <div class="os-welcome" fxFlex="">
+          <img class="main-images" src="\assets\png\proof_images.png">
+          <div class="sectionContainer">
+            <p>Level Rewards pays daily! Be sure to join our Facebook group where are members post proof of payments they've
+              received. </p>
+            <img class="view-btns" src="\assets\svg\vistit-fb-btn.svg">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="containerX">
+    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="containerRow">
+      <div class="os-welcome" fxFlex="">
+        <img class="full-image" style="margin-top: 30px;" src="\assets\svg\i-agree-img.svg">
+      </div>
+      <div class="os-welcome" fxFlex="">
+        <img class="full-image" style="margin-top: 72px;" src="\assets\svg\complete-free.svg">
+        <div class="sectionContainer">
+          <p>Each offer is worth a certain number of credits based on it’s commission. The credits of every offer you complete
+            are added up and every 1.00 credit puts you up 1 level. </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-seperator"></div>
+  <div class="containerX">
+    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="containerRow">
+      <div class="os-welcome" fxFlex="">
+        <img class="full-image" style="margin-top: 64px;" src="\assets\svg\each-level.svg">
+        <div class="sectionContainer">
+          <p>You’ll earn $5 per Level your referrals reach, but you can’t earn beyond your own Level.</p>
+        </div>
+      </div>
+      <div class="os-welcome" fxFlex="">
+        <img class="full-image" style="margin-top: 30px;" src="\assets\svg\level-example.svg">
+      </div>
+    </div>
+  </div>
+  <div class="container-seperator"></div>
+  <div class="containerX">
+    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="containerRow">
+      <div class="os-welcome" fxFlex="">
+        <img class="full-image" style="margin-top: 30px;" src="\assets\svg\share-link-img.svg">
+      </div>
+      <div class="os-welcome" fxFlex="">
+        <img class="full-image" style="margin-top: 70px;" src="\assets\svg\share-your-link.svg">
+        <div class="sectionContainer">
+          <p>Level Rewards is an referral incentive program that incentivizes users to complete offers by getting paid to refer
+            friends. Referral incentive offers typically pay much higher than direct GPT(‘Get Paid To”) offers. </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-seperator"></div>
+  <div class="containerX">
+    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="containerRow">
+      <div class="os-welcome" fxFlex="">
+        <img class="full-image" style="margin-top: 40px;" src="\assets\svg\the-more.svg">
+        <div class="sectionContainer">
+          <p>Every time your referrals level up, you’ll be able to request payment for their completions as long as they are
+            not beyond your level! Build a good relationship with your referrals and you’ll continually earn!</p>
+        </div>
+      </div>
+      <div class="os-welcome" fxFlex="">
+        <img class="full-image" style="margin-top: 10px;" src="\assets\svg\money-exchange.svg">
+      </div>
+    </div>
+  </div>
+  <div class="container-seperator"></div>
+  <div class="containerX">
+    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="containerRow">
+      <div class="os-welcome" fxFlex="">
+        <img class="full-image" style="margin-top: 30px;" src="\assets\svg\start-leveling-img.svg">
+      </div>
+      <div class="os-welcome" fxFlex="">
+        <img class="full-image" style="margin-top: 70px;" src="\assets\svg\start-leveling.svg">
+        <div class="sectionContainer">
+          <p>Once you Level Up, we have community groups and training material in place to help you to get started earning money
+            online! </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-seperator"></div>
+  <div class="containerX">
+    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxFlex class="containerRow">
+      <div class="os-welcome" fxFlex="">
+        <img id="welcome-img" style="margin-top: 36px;" src="\assets\svg\get-started-now.svg">
+        <p>Complete Offers - Level Up - Refer Others - Get Paid</p>
+      </div>
+      <div class="os-sign-up" fxFlex>
+          <a [routerLink]="['login']" queryParamsHandling="preserve"><img src="\assets\svg\login-btn.svg"></a>
+          <br>
+          <img id="or-marker" src="\assets\svg\or-marker.svg">
+          <br>
+          <a [routerLink]="['register']" queryParamsHandling="preserve"><img src="\assets\svg\sign-up-btn.svg"></a>
+        </div>
+    </div>
+  </div>
+  <div class="disclaimer-text">
+    *Level Rewards is not guaranteeing any income level. The income claims presented are not intended to serve as a guarantee
+    of income. Instead, they're designed to give you an idea of what's possible. Success in this business - as with any marketing
+    related business, requires leadership, work and dedication. There is no guarantee that you will make an exact amount
+    of money with Level Rewards, and Level Rewards cannot guarantee that you will make any money at all.
+  </div>
 </main>

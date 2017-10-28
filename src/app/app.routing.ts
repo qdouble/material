@@ -14,7 +14,7 @@ import { AdminLogin } from './admin-login';
 import {
   AboutUs,
   ForgotPassword,
-  // Homepage,
+  Homepage,
   HowItWorks,
   Login,
   Logout,
@@ -39,8 +39,8 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadChildren: './features/offers/index#OffersModule',
-    canActivate: [AuthRegGuard]
+    component: Homepage,
+    // canActivate: [AuthRegGuard]
   },
   {
     path: 'about-us',
