@@ -39,8 +39,8 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: Homepage,
-    // canActivate: [AuthRegGuard]
+    canActivate: [LoggedInRedirectGuard],
+    component: Homepage
   },
   {
     path: 'about-us',
