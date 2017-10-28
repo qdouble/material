@@ -9,9 +9,8 @@
           <p><a [href]="'https://levelrewards.com/register?ref=' + username" target="_blank">https://levelrewards.com/register?ref={{username}}</a></p>
       </ng-container>
       <ng-container *ngIf="(testShowRef$ | async)">
-          <md-card-subtitle>Just Level Up and Promote One of These Landing Pages:</md-card-subtitle>
-          <a [href]="'http://' + username + '.checksonchecks.com/levelup'" target="_blank">{{'http://' + username}}.checksonchecks.com/levelup</a><br>
-          <a [href]="'http://www.startthenprofit.net/m/?ref=' + username" target="_blank">{{'http://www.startthenprofit.net/m/?ref=' + username}}</a><br>
+          <md-card-subtitle>Just Level Up and Share Your Link to Start Earning:</md-card-subtitle>
+          <p><a [href]="'https://levelrewards.com/?ref=' + username" target="_blank">https://levelrewards.com/?ref={{username}}</a></p>
       </ng-container>
     </ng-container>
   </div>

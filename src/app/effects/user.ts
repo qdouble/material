@@ -191,7 +191,7 @@ export class UserEffects {
           let showRefRand = Math.floor(Math.random() * 2);
           this.store.dispatch(this.offerActions.clearOffers());
           this.store.dispatch(go([res.payload.redirectTo,
-          { new: true, returning: true, showRefO: showRefRand }]));
+          { new: true, returning: true, showRefP: showRefRand }]));
           this.store.dispatch(this.userActions.testShowRefRandom(showRefRand));
           return;
         }
@@ -211,7 +211,7 @@ export class UserEffects {
     .map(action => <string>action.payload)
     .switchMap(() => this.userService.logout()
       .map(() => this.userActions.logoutSuccess())
-      .do(() => this.store.dispatch(go(['/login'])))
+      .do(() => this.store.dispatch(go(['/'])))
       .catch((err) => Observable.of(
         this.userActions.logoutFail(err),
         this.notifyActions.addNotify(err)
@@ -250,7 +250,7 @@ export class UserEffects {
         if (res.payload.redirectTo) {
           let showRefRand = Math.floor(Math.random() * 2);
           this.store.dispatch(go([res.payload.redirectTo,
-          { new: true, showRefO: showRefRand }]));
+          { new: true, showRefP: showRefRand }]));
           this.store.dispatch(this.userActions.testShowRefRandom(showRefRand));
         }
         if (!res.payload.success) {
