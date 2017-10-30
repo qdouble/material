@@ -5,8 +5,8 @@
     <md-card-title><b>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b></md-card-title>
     <ng-container *ngIf="userLevel < 1  && (username$ | async); let username">
       <ng-container *ngIf="!(testShowRef$ | async)">
-          <md-card-subtitle>Just Level Up and Share Your Link With a Friend:</md-card-subtitle>
-          <p><a [href]="'https://levelrewards.com/register?ref=' + username" target="_blank">https://levelrewards.com/register?ref={{username}}</a></p>
+          <md-card-subtitle>Earn Money From Everyone Who Levels Up Using Your Link!</md-card-subtitle>
+          <p><a [href]="'https://levelrewards.com/?ref=' + username" target="_blank">https://levelrewards.com/?ref={{username}}</a></p>
       </ng-container>
       <ng-container *ngIf="(testShowRef$ | async)">
           <md-card-subtitle>Just Level Up and Share Your Link to Start Earning:</md-card-subtitle>
