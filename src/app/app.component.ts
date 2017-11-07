@@ -388,6 +388,7 @@ export class AppComponent implements OnDestroy, OnInit {
     }
   }
   openCreditedDialog(offer: Offer) {
+    if (offer.displayName === 'Bonus Credit') return;
     this.creditDialogRef = this.dialog.open(CreditedOfferDialog, this.creditDialogConfig);
     this.creditDialogRef.componentInstance.creditsTotal = this.creditTotal;
     this.creditDialogRef.componentInstance.offer = offer;
