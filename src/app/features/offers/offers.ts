@@ -23,11 +23,12 @@ import {
   getOfferRankUpdatedAt
 } from '../../reducers/offer';
 import { getUIMobile, getUISideNavOpen } from '../../reducers/ui';
-import { getCreditCollection, getUserLoggedIn, getCreditTotal } from '../../reducers/user';
+import { getCreditCollection, getUserLoggedIn, getCreditTotal, getUser } from '../../reducers/user';
 import { OfferActions } from '../../actions/offer';
 import { UserActions } from '../../actions/user';
 
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'os-offers',
@@ -89,9 +90,17 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   newEqualTrue$: Observable<boolean>;
   testShowRef$: Observable<number>;
   testShowRefLevel: number;
+  timeRemaining: {
+    'total': number,
+    'days': number,
+    'hours': number,
+    'minutes': number,
+    'seconds': number
+  };
   userLevel: number;
   username$: Observable<string>;
   username: string;
+  user$: Observable<User>;
   // Paging
   pages: number[] = [];
   selectedPage = 1;
@@ -120,6 +129,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     private store: Store<AppState>,
     private userActions: UserActions
   ) {
+    this.user$ = this.store.let(getUser());
     this.mobile$ = this.store.let(getUIMobile());
     this.sideNavOpen$ = this.store.let(getUISideNavOpen());
     this.loaded$ = this.store.let(getOfferLoaded());
@@ -210,8 +220,8 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.route.params
       .subscribe(param => {
-        if (param['showRefQ']) {
-          this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefQ'])));
+        if (param['showRefR']) {
+          this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefR'])));
         }
         if (param['new']) {
           this.store.dispatch(this.userActions.newEqualTrue(true));
@@ -243,6 +253,39 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.username$ = this.store.select(s => s.user.user.username);
     this.username$.takeUntil(this.destroyed$).subscribe(u => this.username = u);
     this.store.dispatch(this.offerActions.getOffersUpdatedAt());
+
+    this.user$
+      .filter(user => user.createdAt !== undefined)
+      .takeUntil(this.destroyed$)
+      .subscribe(user => {
+
+        let createdAt = Date.parse(<any>user.createdAt);
+        let deadline = new Date(createdAt + 24 * 60 * 60 * 1000);
+
+        function getTimeRemaining(endtime) {
+          let t = Date.parse(endtime) - Date.parse(<any>new Date());
+          let seconds = Math.floor((t / 1000) % 60);
+          let minutes = Math.floor((t / 1000 / 60) % 60);
+          let hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+          let days = Math.floor(t / (1000 * 60 * 60 * 24));
+          return {
+            'total': t,
+            'days': days,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds
+          };
+        }
+
+
+        let countdown = setInterval(() => {
+          this.timeRemaining = getTimeRemaining(deadline);
+          console.log('Time remaining: ', this.timeRemaining);
+          if (this.timeRemaining.hours < 0) clearInterval(countdown);
+        }, 1000);
+
+      });
+
   }
 
   ngAfterViewInit() {
