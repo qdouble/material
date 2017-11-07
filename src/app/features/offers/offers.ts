@@ -280,7 +280,6 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
 
         let countdown = setInterval(() => {
           this.timeRemaining = getTimeRemaining(deadline);
-          console.log('Time remaining: ', this.timeRemaining);
           if (this.timeRemaining.hours < 0) clearInterval(countdown);
         }, 1000);
 
