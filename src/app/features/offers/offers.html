@@ -1,42 +1,67 @@
 <md-card id="offers-page" class="os-page-container" @fade>
   <div *ngIf="loggedIn && (newEqualTrue$ | async)" class="referral-link">
     <md-card-title *ngIf="!(returningUser$ | async) && userLevel < 1">Welcome to Level Rewards, {{firstName$ | async}}!</md-card-title>
-    <md-card-title *ngIf="(returningUser$ | async) || userLevel > 1">Welcome Back, {{firstName$ | async}}!</md-card-title>
+    <md-card-title *ngIf="(returningUser$ | async) || userLevel > 1" ngClass]="{'accent': (testShowRef$ | async)}">Welcome Back, {{firstName$ | async}}!</md-card-title>
     <md-card-title *ngIf="timeRemaining">
       <b *ngIf="timeRemaining.hours < 0">$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b>
-      <b *ngIf="timeRemaining.hours > 0 && userLevel < 5">Get to level 5 on Your first Day and Get a Free Bonus Level!</b>
+      <b *ngIf="timeRemaining.hours > 0 && userLevel < 5" [ngClass]="{'accent': (testShowRef$ | async)}">Get to Level 5 On Your First Day and Receive a Bonus Level Up!</b>
     </md-card-title>
     <div class="countdown" *ngIf="timeRemaining && timeRemaining.hours >= 0 && userLevel < 5">
-        <md-card-subtitle>You will then be on level 6</md-card-subtitle>
-        <md-card-subtitle>Where you can earn up to $30 per referral!</md-card-subtitle>
-        <md-card-subtitle>{{timeRemaining.hours | number: '2.0-0'}} Hours : {{timeRemaining.minutes | number: '2.0-0'}} Minutes : {{timeRemaining.seconds | number: '2.0-0'}} Seconds remaining</md-card-subtitle>
+      <div class="time-container">
+        <div class="container-label">Hours</div>
+        <div class="container-number">{{timeRemaining.hours | number: '2.0-0'}}</div>
+      </div>
+      :
+      <div class="time-container">
+        <div class="container-label">Mins.</div>
+        <div class="container-number">{{timeRemaining.minutes | number: '2.0-0'}}</div>
+      </div>
+      :
+      <div class="time-container">
+        <div class="container-label">Sec.</div>
+        <div class="container-number">{{timeRemaining.seconds | number: '2.0-0'}}</div>
+      </div>
     </div>
     <ng-container *ngIf="userLevel < 1  && (username$ | async); let username">
       <!-- <ng-container *ngIf="!(testShowRef$ | async)">
           <md-card-subtitle>Earn Money From Everyone Who Levels Up Using Your Link!</md-card-subtitle>
           <p><a [href]="'https://levelrewards.com/?ref=' + username" target="_blank">https://levelrewards.com/?ref={{username}}</a></p>
       </ng-container> -->
-      <ng-container *ngIf="(testShowRef$ | async)">
-        <br>
-        <md-card-subtitle>Just Level Up and Share Your Link to Start Earning:</md-card-subtitle>
-        <p><a [href]="'https://levelrewards.com/?ref=' + username" target="_blank">https://levelrewards.com/?ref={{username}}</a></p>
+      <ng-container>
+        <md-card-subtitle>Share Your Link to Start Earning:</md-card-subtitle>
+        <p>
+          <a [href]="'https://levelrewards.com/?ref=' + username" target="_blank">https://levelrewards.com/?ref={{username}}</a>
+        </p>
       </ng-container>
     </ng-container>
   </div>
   <div *ngIf="loggedIn && userLevel < 5 && !(newEqualTrue$ | async) && timeRemaining && timeRemaining.hours > 0" class="referral-link">
-      <md-card-title *ngIf="timeRemaining">
-          <b>Get to level 5 on Your First Day and Get a Free Bonus Level!</b>
-      </md-card-title>
-      <md-card-subtitle>You will then be on level 6</md-card-subtitle>
-      <md-card-subtitle>Where you can earn up to $30 per referral!</md-card-subtitle>
-      <md-card-subtitle>{{timeRemaining.hours | number: '2.0-0'}} Hours : {{timeRemaining.minutes | number: '2.0-0'}} Minutes : {{timeRemaining.seconds | number: '2.0-0'}} Seconds remaining</md-card-subtitle>
+    <md-card-title *ngIf="timeRemaining">
+      <b ngClass]="{'accent': (testShowRef$ | async)}">Get to Level 5 On Your First Day and Receive a Bonus Level Up!</b>
+    </md-card-title>
+    <div class="time-container">
+        <div class="container-label">Hours</div>
+        <div class="container-number">{{timeRemaining.hours | number: '2.0-0'}}</div>
+      </div>
+      :
+      <div class="time-container">
+        <div class="container-label">Mins.</div>
+        <div class="container-number">{{timeRemaining.minutes | number: '2.0-0'}}</div>
+      </div>
+      :
+      <div class="time-container">
+        <div class="container-label">Sec.</div>
+        <div class="container-number">{{timeRemaining.seconds | number: '2.0-0'}}</div>
+      </div>
   </div>
   <div *ngIf="userLevel >= 1 && !(newEqualTrue$ | async)" class="referral-link">
     <md-card-title>Welcome Back, {{firstName$ | async}}!</md-card-title>
-    <md-card-title *ngIf="userLevel < 10"><b>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b></md-card-title>
+    <md-card-title *ngIf="userLevel < 10">
+      <b>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b>
+    </md-card-title>
     <button color="primary" class="white" md-raised-button routerLink="/status">Go to Status Page</button>
   </div>
-  
+
   <div id="title-card-container">
     <img id="top-instruct" src="assets/svg/offers-top-instruct-ex4.svg">
   </div>
@@ -53,21 +78,29 @@
       color="primary">Add Up Offer Credits</md-slide-toggle>
   </div>
   <div *ngIf="addUp && !showCompleted" class="add-up-instruct">
-    <p><b>&#8681; Check Offers Below to Calculate &#8681;</b></p>
+    <p>
+      <b>&#8681; Check Offers Below to Calculate &#8681;</b>
+    </p>
     <p>Offers Checked: {{offersSelected}}</p>
     <p>Credit Value of Checked: {{offersSelectedCreditValue | number: '2.0-0'}}</p>
     <p>Your Current Level: {{creditTotal$ | async | floor}}</p>
     <p>Your Current Credits: {{(creditTotal$ | async | floor) | number: '2.0-0'}}</p>
-    <p>You Will Reach Level: <b>{{offersSelectedCreditValue + (creditTotal$ | async) | floor}}</b></p>
-    <p>Your Total Credits Will Be: <b>{{offersSelectedCreditValue + (creditTotal$ | async) | number: '2.0-0'}}</b></p>
-    <p>You Could Earn Up to <b>${{(offersSelectedCreditValue + (creditTotal$ | async) | floor) * 5 | number: '2.0-0'}} per referral</b></p>
+    <p>You Will Reach Level:
+      <b>{{offersSelectedCreditValue + (creditTotal$ | async) | floor}}</b>
+    </p>
+    <p>Your Total Credits Will Be:
+      <b>{{offersSelectedCreditValue + (creditTotal$ | async) | number: '2.0-0'}}</b>
+    </p>
+    <p>You Could Earn Up to
+      <b>${{(offersSelectedCreditValue + (creditTotal$ | async) | floor) * 5 | number: '2.0-0'}} per referral</b>
+    </p>
     <p style="font-size: 10px;">*Checking the offers calculates the level you will reach if you complete them and your maximum earning potential per
       referral
     </p>
   </div>
   <os-offer-rows [addUp]="addUp" [creditedOfferIds]="creditedOfferIds" [creditTotal]="creditTotal$ | async" [loggedIn]="loggedIn$ | async"
-    [showingAvailable]="!showCompleted" [hideToUnqualified]="loggedIn && userLevel < 1" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)" [sideNavOpen]="sideNavOpen$ | async"
-    (checkOffer)="checkOffer($event)" (goToOfferDetails)="goToOfferDetails($event)">
+    [showingAvailable]="!showCompleted" [hideToUnqualified]="loggedIn && userLevel < 1" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)"
+    [sideNavOpen]="sideNavOpen$ | async" (checkOffer)="checkOffer($event)" (goToOfferDetails)="goToOfferDetails($event)">
   </os-offer-rows>
   <md-card id="no-completed-card" class="os-message-card accent-background white" *ngIf="selectedOption === 'Completed' && (offersCompleted$ | async)?.length < 1">
     You Have No Completed Offers. Complete an offer on the Available tab to level up!

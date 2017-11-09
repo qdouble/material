@@ -208,6 +208,15 @@ os-offer-rows {
   font-size: 18px;
 }
 
+.time-container {
+  display: inline-block;
+  color: #446f15;
+  .container-label {
+    font-size: 12px;
+    line-height: 1;
+  }
+}
+
 #title-card-container {
   max-width: 954px;
   margin: 0 auto;

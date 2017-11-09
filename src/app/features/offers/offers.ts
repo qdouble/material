@@ -220,8 +220,8 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.route.params
       .subscribe(param => {
-        if (param['showRefR']) {
-          this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefR'])));
+        if (param['showRefS']) {
+          this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefS'])));
         }
         if (param['new']) {
           this.store.dispatch(this.userActions.newEqualTrue(true));
