@@ -33,10 +33,9 @@ export class UserEffects {
     .switchMap(user => this.userService.loginAdmin(user)
       .mergeMap(res => Observable.of(
         this.userActions.adminLoginSuccess(res),
-        res['message_type'] !== 'success' ? this.notifyActions.addNotify(res) : null
+        res['message_type'] !== 'success' ? this.notifyActions.addNotify(res) : {},
+        res['redirectTo'] ? window.location.href = res['redirectTo'] : {}
       ))
-      .do((res: any) => res.payload.redirectTo ?
-        window.location.href = res.payload.redirectTo : null)
       .catch((err) => Observable.of(
         this.userActions.adminLoginFail(err),
         this.notifyActions.addNotify(err)
