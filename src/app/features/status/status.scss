@@ -42,6 +42,7 @@ a:link {
 .l-links {
   white-space: nowrap;
   overflow: scroll;
+  text-align: center;
 }
 
 .link-rules ul li.warn {
@@ -83,6 +84,17 @@ md-slide-toggle {
     :nth-child(2) {
       text-align: justify;
     }
+  }
+}
+
+.referral-links {
+  text-align: center;
+  overflow: none;
+  @media screen and (max-width: 600px) {
+    overflow: auto;
+  }
+  a {
+    white-space: nowrap !important;
   }
 }
 

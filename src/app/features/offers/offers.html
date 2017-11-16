@@ -11,6 +11,7 @@
       <b *ngIf="timeRemaining.hours > 0 && userLevel < 5" [ngClass]="{'accent': (testShowRef$ | async)}">Get to Level 5 On Your First Day and Receive a Bonus Level Up!</b>
     </md-card-title>
     <div class="countdown" *ngIf="timeRemaining && timeRemaining.hours >= 0 && userLevel < 5">
+      <p style="color: #446f15">Get to Level 5 Before Time Expires to Recieve Bonus</p>
       <div class="time-container">
         <div class="container-label">Hours</div>
         <div class="container-number">{{timeRemaining.hours | number: '2.0-0'}}</div>
@@ -26,6 +27,7 @@
         <div class="container-number">{{timeRemaining.seconds | number: '2.0-0'}}</div>
       </div>
     </div>
+    
     <ng-container *ngIf="userLevel < 1  && (username$ | async); let username">
       <!-- <ng-container *ngIf="!(testShowRef$ | async)">
           <md-card-subtitle>Earn Money From Everyone Who Levels Up Using Your Link!</md-card-subtitle>
@@ -44,6 +46,7 @@
       <b [ngClass]="{'accent': (testShowRef$ | async)}">Get to Level 5 On Your First Day and Receive a Bonus Level Up!</b>
     </md-card-title>
     <div>
+      <p style="color: #446f15">Get to Level 5 Before Time Expires to Recieve Bonus</p>
       <div class="time-container">
         <div class="container-label">Hours</div>
         <div class="container-number">{{timeRemaining.hours | number: '2.0-0'}}</div>
