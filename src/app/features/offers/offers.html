@@ -65,8 +65,8 @@
   </div>
   <div *ngIf="userLevel >= 1 && !(newEqualTrue$ | async)" class="referral-link">
     <md-card-title>Welcome Back, {{firstName$ | async}}!</md-card-title>
-    <md-card-title *ngIf="userLevel < 10">
-      <b>$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b>
+    <md-card-title *ngIf="userLevel > 5">
+      <div class="accent"><b>If Any of Your Referrals Get to Level 5 on Their First Day, They Will Receive a Free Bonus Level Which You Will Get Paid For!</b></div>
     </md-card-title>
     <button color="primary" class="white" md-raised-button routerLink="/status">Go to Status Page</button>
   </div>
