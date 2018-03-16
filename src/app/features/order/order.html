@@ -41,6 +41,9 @@
         [selectedPrizeLabels]="selectedPrizeLabels$ | async" [selectedPrizeValues]="selectedPrizeValues$ | async" (cancelPrizeChange)="cancelPrizeChange()"
         (changeSelectedPrize)="changeSelectedPrize()">
       </os-selected-prize>
+      <mat-card-subtitle *ngIf="(prize$ | async)?.name.includes('Bank')" class="warn">
+        <b>Please note that Bank Transfers typically take 3 to 5 business days to complete.</b>
+      </mat-card-subtitle>
       <div id="order-form">
         <mat-card id="please-be-sure-card" class="accent-background white">Please ensure that all information is absolutely correct before requesting payment!</mat-card>
         <os-order-form [form]="f" [loaded]="loaded$ | async" [needBankInfo]="needBankInfo" [needPaypalEmail]="needPaypalEmail" [placing]="placing$ | async" [user]="user$ | async" (placeOrder)="placeOrder()">
