@@ -44,6 +44,7 @@ const HMR = hasProcessFlag('hot');
 const PROD = EVENT.includes('prod');
 const PUBLISH = EVENT.includes('publish');
 const SERVER = EVENT.includes('server');
+const TEST = EVENT.includes('test');
 const WATCH = hasProcessFlag('watch');
 const UNIVERSAL = EVENT.includes('universal');
 
@@ -280,7 +281,7 @@ const clientConfig = function webpackConfig(): WebpackConfig {
 
   if (!DLL) {
     config.output = {
-      path: PUBLISH ? '/var/www/html' : root('dist'),
+      path: PUBLISH ? !TEST ? '/var/www/html' : '/var/www/test' : root('dist'),
       filename: !PROD ? '[name].bundle.js' : '[name].[chunkhash].bundle.js',
       sourceMapFilename: !PROD ? '[name].bundle.map' : '[name].[chunkhash].bundle.map',
       chunkFilename: !PROD ? '[id].chunk.js' : '[id].[chunkhash].chunk.js'
