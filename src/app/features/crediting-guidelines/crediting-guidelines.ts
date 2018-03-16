@@ -1,7 +1,7 @@
 /* tslint:disable max-line-length */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { Subject } from 'rxjs/Subject';
@@ -21,15 +21,15 @@ import { Subject } from 'rxjs/Subject';
 })
 
 export class CreditingGuidelines implements OnDestroy, OnInit {
-  confirmDialogRef: MdDialogRef<ConfirmDialog>;
-  confirmDialogConfig: MdDialogConfig = {
+  confirmDialogRef: MatDialogRef<ConfirmDialog>;
+  confirmDialogConfig: MatDialogConfig = {
     disableClose: false
   };
   destroyed$: Subject<any> = new Subject<any>();
   match: boolean;
 
   constructor(
-    public dialog: MdDialog,
+    public dialog: MatDialog,
     private route: ActivatedRoute
   ) { }
 

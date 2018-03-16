@@ -1,21 +1,21 @@
-<md-card class="os-page-container" @fade>
-  <md-card class="step-title os-title-card primary-background">Request Payment</md-card>
-  <md-card id="place-order" class="os-form-container">
+<mat-card class="os-page-container" @fade>
+  <mat-card class="step-title os-title-card primary-background">Request Payment</mat-card>
+  <mat-card id="place-order" class="os-form-container">
     <ng-container *ngIf="user?.orderPending">
-      <md-card class="order-status primary-background white">
+      <mat-card class="order-status primary-background white">
         <h6 class="center">Payment pending approval</h6>
         <p>You have a payment request that is currently pending. You can not place another request until payment request is resolved. All pending level ups before request is processed will be
         will be paid out at the same time.</p>
         <br>
         <p>REMINDER: Make sure to tell your referrals to fully test out and keep any offer that they complete for the majority of the trial period.</p><br>
         <p>Low quality referrals will just lead to fewer good offers being available and it being harder for you to earn in the future, so make sure you do your part in providing high quality leads.</p>
-      </md-card>
+      </mat-card>
     </ng-container>
     <ng-container *ngIf="(!user?.orderPending && !user?.hasQualifiedReferrals)">
       <div class="join-fb" *ngIf="user?.currentLevel < 1">
-        <button md-raised-button color="primary" class="white" [@flashing]="flash"><img src="/assets/svg/facebook-box.svg">Click to Join Our Payment Proof Pic Group</button>
+        <button mat-raised-button color="primary" class="white" [@flashing]="flash"><img src="/assets/svg/facebook-box.svg">Click to Join Our Payment Proof Pic Group</button>
       </div>
-      <md-card class="os-message-card accent-background white">
+      <mat-card class="os-message-card accent-background white">
         <ng-container *ngIf="user?.currentLevel < 1">
           <div style="text-align: left; padding: 4px;">
           <p>As you are currently on level 0, you are not qualified to request payment.</p><br>
@@ -32,30 +32,29 @@
           You have no referrals that you can currently request payment for.
         </ng-container>
 
-      </md-card>
+      </mat-card>
     </ng-container>
     <ng-container *ngIf="!user?.orderPending && user?.hasQualifiedReferrals && !user?.hold">
-      <md-card class="order-status primary-background white">Congratulations! You have met all requirements! Request your payment!</md-card>
-      <md-card-subtitle>After approval, you will be paid through:</md-card-subtitle>
+      <mat-card class="order-status primary-background white">Congratulations! You have met all requirements! Request your payment!</mat-card>
+      <mat-card-subtitle>After approval, you will be paid through:</mat-card-subtitle>
       <os-selected-prize [changePrize]="changePrize" [form]="selectPrizeForm" [prize]="prize$ | async" [prizes]="prizes$ | async"
         [selectedPrizeLabels]="selectedPrizeLabels$ | async" [selectedPrizeValues]="selectedPrizeValues$ | async" (cancelPrizeChange)="cancelPrizeChange()"
         (changeSelectedPrize)="changeSelectedPrize()">
       </os-selected-prize>
       <div id="order-form">
-        <md-card id="please-be-sure-card" class="accent-background white">Please ensure that all information is absolutely correct before requesting payment!</md-card>
+        <mat-card id="please-be-sure-card" class="accent-background white">Please ensure that all information is absolutely correct before requesting payment!</mat-card>
         <os-order-form [form]="f" [loaded]="loaded$ | async" [needBankInfo]="needBankInfo" [needPaypalEmail]="needPaypalEmail" [placing]="placing$ | async" [user]="user$ | async" (placeOrder)="placeOrder()">
         </os-order-form>
       </div>
     </ng-container>
 
-    <md-card class="os-message-card accent-background white" *ngIf="!user?.orderPending && user?.hasQualifiedReferrals && user?.hold">
+    <mat-card class="os-message-card accent-background white" *ngIf="!user?.orderPending && user?.hasQualifiedReferrals && user?.hold">
           You are currently on hold and can not request any payments until your hold is removed.
-  </md-card>
-
-  </md-card>
-  <md-card *ngIf="totalEarnings > 0" class="os-form-container earnings">
-    <md-card-title class="primary">Earnings</md-card-title>
-    <md-card-content>
+    </mat-card>
+  </mat-card>
+  <mat-card *ngIf="totalEarnings > 0" class="os-form-container earnings">
+    <mat-card-title class="primary">Earnings</mat-card-title>
+    <mat-card-content>
       <div class="table">
         <div class="row header">
           <div class="cell">Paid To</div>
@@ -74,12 +73,12 @@
           <div class="cell">${{ thisYearEarnings | number: '1.2-2' }}</div>
         </div>
       </div>
-    </md-card-content>
-  </md-card>
-  <md-card *ngIf="(orders$| async)?.length > 0" class="os-form-container">
-    <md-card-title class="primary">Payment History</md-card-title>
+    </mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="(orders$| async)?.length > 0" class="os-form-container">
+    <mat-card-title class="primary">Payment History</mat-card-title>
     <os-orders-table [loaded]="ordersLoaded$ | async" [orders]="orders$ | async">
     </os-orders-table>
-  </md-card>
+  </mat-card>
   <os-footer></os-footer>
-</md-card>
+</mat-card>

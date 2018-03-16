@@ -1,16 +1,16 @@
 /* tslint:disable: no-switch-case-fall-through */
-import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { compose } from '@ngrx/core/compose';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
-import { AppState } from '../reducers';
-import { OfferActions } from '../actions/offer';
+import { OfferActionTypes, OfferActions } from '../actions/offer';
 import { Offer } from '../models/offer';
 import { UserAgent } from '../models/user-agent';
 
-export interface OfferState {
+export const adapter = createEntityAdapter<Offer>({
+  selectId: (offer: Offer) => offer.id
+});
+
+export interface State extends EntityState<Offer> {
   ids: string[];
-  entities: { [id: string]: Offer };
   lastUpdatedAt: string;
   loading: boolean;
   loaded: boolean;
@@ -20,9 +20,8 @@ export interface OfferState {
   userAgent: UserAgent;
 }
 
-export const initialState: OfferState = {
+export const initialState: State = adapter.getInitialState({
   ids: [],
-  entities: {},
   lastUpdatedAt: null,
   loading: false,
   loaded: false,
@@ -30,107 +29,83 @@ export const initialState: OfferState = {
   rankUpdatedAt: null,
   selectedOffer: null,
   userAgent: null
-};
+});
 
-export function offerReducer(state = initialState, action: Action): OfferState {
+export function offerReducer(state = initialState, action: OfferActions): State {
   switch (action.type) {
 
-    case OfferActions.CLEAR_OFFERS:
-      return Object.assign({}, state, {
-        ids: [],
-        entities: {},
+    case OfferActionTypes.ClearOffers:
+      return {
+        ...adapter.removeAll(state),
         loaded: false,
         loadedUserOffers: false
-      });
+      };
 
-    case OfferActions.GET_OFFER:
-    case OfferActions.GET_OFFERS:
-      return Object.assign({}, state, { loading: true });
+    case OfferActionTypes.GetOffer:
+      return { ...state, selectedOffer: action.payload };
+    case OfferActionTypes.GetOffers:
+      return { ...state, loading: true };
 
-    case OfferActions.GET_OFFER_FAIL:
-    case OfferActions.GET_OFFERS_FAIL: {
-      return Object.assign({}, state, { loading: false });
+    case OfferActionTypes.GetOfferFail:
+    case OfferActionTypes.GetOffersFail: {
+      return { ...state, loading: false };
     }
 
-    case OfferActions.GET_OFFER_SUCCESS: {
-      const offer: Offer = action.payload.offer;
+    case OfferActionTypes.GetOfferSuccess: {
+      const offer = action.payload.offer;
       const userAgent = action.payload.userAgent;
-      if (!offer) return Object.assign({}, state, { loading: false });
-      const newOfferIds = [...state.ids];
-      if (!state.ids.includes(offer.id)) {
-        newOfferIds.push(offer.id);
-      }
-      return Object.assign({}, state, {
-        ids: newOfferIds,
-        entities: Object.assign({}, state.entities, {
-          [offer.id]: Object.assign({}, offer, {
+      if (!offer) return { ...state, loading: false };
+      return {
+        ...adapter.upsertOne({
+          id: offer.id, changes: {
+            ...offer,
             costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
             popularityRank: offer.popularityRank ? offer.popularityRank : 99,
             popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
             featured: offer.popularityRank ||
-            (offer.popularityRank2 && offer.popularityRank2 <= 20) ? true : false
-          })
-        }),
+              (offer.popularityRank2 && offer.popularityRank2 <= 20) ? true : false
+          }
+        }, state),
         userAgent: userAgent,
         loading: false
-      });
+      };
     }
 
-    case OfferActions.GET_OFFERS_SUCCESS: {
-      const offers: Offer[] = action.payload.offers;
+    case OfferActionTypes.GetOffersSuccess: {
+      const offers = action.payload.offers;
+      const loadedUserOffers = action.payload.loadedUserOffers;
       const rankUpdatedAt = action.payload.rankUpdatedAt;
-      if (!offers) return Object.assign({}, state, { loading: false });
-      // if (state.loaded) {
-      //   const newOffers: Offer[] = offers.filter(offer => !state.entities[offer.id!]);
-      //   const newOfferIds: string[] = newOffers.map(offer => offer.id!);
-      //   const newOfferEntities = newOffers.reduce(
-      //     (entities: { [id: string]: Offer }, offer: Offer) => {
-      //       if (offer.id)
-      //         return Object.assign(entities, {
-      //           [offer.id]: Object.assign({}, offer, {
-      //             costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser
-      //           })
-      //         });
-      //     }, {});
+      if (!offers) return { ...state, loading: false };
 
-      //   return Object.assign({}, state, {
-      //     ids: [...state.ids, ...newOfferIds],
-      //     entities: Object.assign({}, state.entities, newOfferEntities),
-      //     loading: false,
-      //     loadedUserOffers: action.payload.loadedUserOffers || false,
-      //     loaded: true
-      //   });
-      // }
-
-      const newOffers: Offer[] = offers;
-      const offerIds: string[] = newOffers.map(offer => offer.id!);
+      const newOffers = offers;
+      const offerIds = newOffers.map(offer => offer.id!);
       const offerEntities = newOffers.reduce(
         (entities: { [id: string]: Offer }, offer: Offer) => {
           if (offer.id)
             return Object.assign(entities, {
-              [offer.id]: Object.assign({}, offer, {
+              [offer.id]: {
+                ...offer,
                 costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
                 popularityRank: offer.popularityRank ? offer.popularityRank : 99,
                 popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
                 featured: offer.popularityRank ||
-                (offer.popularityRank2 && offer.popularityRank2 <= 20) ? true : false
-              })
+                  (offer.popularityRank2 && offer.popularityRank2 <= 20) ? true : false
+              }
             });
         }, {});
 
-      return Object.assign({}, state, {
+      return {
+        ...state,
         ids: [...offerIds],
         entities: offerEntities,
         loading: false,
         loaded: true,
-        loadedUserOffers: action.payload.loadedUserOffers || false,
+        loadedUserOffers: loadedUserOffers || false,
         rankUpdatedAt: rankUpdatedAt
-      });
-
-
+      };
     }
 
-    case OfferActions.GET_OFFERS_UPDATED_AT_SUCCESS: {
+    case OfferActionTypes.GetOffersUpdatedAtSuccess: {
       const lastUpdatedAt = action.payload.lastUpdatedAt;
       if (!lastUpdatedAt || lastUpdatedAt === state.lastUpdatedAt) return state;
       return {
@@ -139,104 +114,22 @@ export function offerReducer(state = initialState, action: Action): OfferState {
       };
     }
 
-    case OfferActions.SELECT_OFFER:
-      return Object.assign({}, state, { selectedOffer: action.payload });
-
     default: {
       return state;
     }
   }
 }
 
-function _getLoaded() {
-  return (state$: Observable<OfferState>) => state$
-    .select(s => s.loaded);
-}
+export const getLastUpdatedAt = (state: State) => state.lastUpdatedAt;
 
-function _getLoadedUserOffers() {
-  return (state$: Observable<OfferState>) => state$
-    .select(s => s.loadedUserOffers);
-}
+export const getLoaded = (state: State) => state.loaded;
 
-function _getLoading() {
-  return (state$: Observable<OfferState>) => state$
-    .select(s => s.loading);
-}
+export const getLoading = (state: State) => state.loading;
 
-function _getOfferEntities() {
-  return (state$: Observable<OfferState>) => state$
-    .select(s => s.entities);
-}
+export const getLoadedUserOffers = (state: State) => state.loadedUserOffers;
 
-function _getOffer(id: string) {
-  return (state$: Observable<OfferState>) => state$
-    .select(s => s.entities[id]);
-}
+export const getRankUpdatedAt = (state: State) => state.rankUpdatedAt;
 
-function _getOffers(offerIds: string[]) {
-  return (state$: Observable<OfferState>) => state$
-    .let(_getOfferEntities())
-    .map(entities => offerIds.map(id => entities[id]));
-}
+export const getUserAgent = (state: State) => state.userAgent;
 
-function _getOfferIds() {
-  return (state$: Observable<OfferState>) => state$
-    .select(s => s.ids);
-}
-
-function _getOfferRankUpdatedAt() {
-  return (state$: Observable<OfferState>) => state$
-    .select(s => s.rankUpdatedAt);
-}
-
-function _getSelectedOffer() {
-  return (state$: Observable<OfferState>) => state$
-    .select(s => s.selectedOffer);
-}
-
-function _getOfferState() {
-  return (state$: Observable<AppState>) => state$
-    .select(s => s.offer);
-}
-
-export function getOffer(id: string) {
-  return compose(_getOffer(id), _getOfferState());
-}
-
-export function getOffers(offerIds: string[]) {
-  return compose(_getOffers(offerIds), _getOfferState());
-}
-
-export function getOfferIds() {
-  return compose(_getOfferIds(), _getOfferState());
-}
-
-export function getOfferEntities() {
-  return compose(_getOfferEntities(), _getOfferState());
-}
-
-export function getOfferLoaded() {
-  return compose(_getLoaded(), _getOfferState());
-}
-
-export function getOfferLoadedUserOffers() {
-  return compose(_getLoadedUserOffers(), _getOfferState());
-}
-
-export function getOfferLoading() {
-  return compose(_getLoading(), _getOfferState());
-}
-
-export function getOfferRankUpdatedAt() {
-  return compose(_getOfferRankUpdatedAt(), _getOfferState());
-}
-
-export function getOfferSelected() {
-  return compose(_getSelectedOffer(), _getOfferState());
-}
-
-export function getOfferCollection() {
-  return (state$: Observable<AppState>) => state$
-    .let(getOfferIds())
-    .switchMap(offerId => state$.let(getOffers(offerId)));
-}
+export const getSelectedOffer = (state: State) => state.selectedOffer;

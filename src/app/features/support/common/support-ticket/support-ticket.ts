@@ -5,26 +5,30 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { AppState } from '../../../../reducers';
-import { TicketActions } from '../../ticket.actions';
+import * as ticketActions from '../../ticket.actions';
 
 @Component({
   selector: 'os-support-ticket',
   template: `
   <section>
-    <form [formGroup]="f" (ngSubmit)="submitForm()">
-      <md-input-container>
-        <input mdInput maxlength=90 placeholder="Subject" formControlName="subject">
-      </md-input-container>
+    <form *ngIf="!hide" [formGroup]="f" (ngSubmit)="submitForm()">
+      <mat-input-container>
+        <input matInput maxlength=90 placeholder="Subject" formControlName="subject">
+      </mat-input-container>
       <br>
-      <md-input-container>
-        <textarea mdInput [rows]="6" placeholder="Question" formControlName="question"></textarea>
-      </md-input-container>
+      <mat-input-container>
+        <textarea matInput [rows]="6" placeholder="Question" formControlName="question"></textarea>
+      </mat-input-container>
       <br>
-      <button md-raised-button class="white" color="primary" [disabled]="!f.valid">SUBMIT</button>
+      <button mat-raised-button class="white" color="primary" [disabled]="!f.valid">SUBMIT</button>
     </form>
+    <b class="primary" *ngIf="hide">
+    Support ticket sent successfully!
+    You should receive an email notfication after your ticket is responded to.
+    </b>
   </section>
   `,
-  styles: [`md-input-container { width: 99%; }`]
+  styles: [`mat-input-container { width: 99%; }`]
 })
 
 export class SupportTicket implements OnDestroy, OnInit {
@@ -33,11 +37,11 @@ export class SupportTicket implements OnDestroy, OnInit {
     subject: new FormControl('', Validators.required),
     question: new FormControl('', Validators.required)
   });
+  hide: boolean;
   @Input() addedObs: Observable<boolean>;
   @Input() ticketSubject: string;
   constructor(
-    private store: Store<AppState>,
-    private ticketActions: TicketActions
+    private store: Store<AppState>
   ) { }
 
   ngOnInit() {
@@ -45,12 +49,15 @@ export class SupportTicket implements OnDestroy, OnInit {
   }
 
   submitForm() {
-    this.store.dispatch(this.ticketActions.addTicket(this.f.value));
+    this.store.dispatch(new ticketActions.AddTicket(this.f.value));
     this.addedObs
       .filter(a => a === true)
       .take(1)
       .takeUntil(this.destroyed$)
-      .subscribe(() => this.f.reset());
+      .subscribe(() => {
+        this.f.reset();
+        this.hide = true;
+      });
   }
 
   ngOnDestroy() {

@@ -20,17 +20,17 @@
   cursor: pointer;
 }
 
-md-card {
+mat-card {
   padding-top: 52px;
   outline: none;
 }
 
-md-card-title {
+mat-card-title {
   color: #464645;
   margin-top: -2px;
 }
 
-md-checkbox {
+mat-checkbox {
   position: absolute;
   right: 6px;
   top: 4px;
@@ -83,11 +83,11 @@ md-checkbox {
   }
 }
 
-md-card-content {
+mat-card-content {
   padding-top: 15px;
 }
 
-.os-md-card-level {
+.os-mat-card-level {
   position: absolute;
   bottom: 10px;
   right: 15px;

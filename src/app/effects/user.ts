@@ -1,17 +1,82 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
-import { go } from '@ngrx/router-store';
-import { Store } from '@ngrx/store';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Store, Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { concat } from 'rxjs/observable/concat';
+import {
+  tap,
+  map,
+  mergeMap,
+  switchMap,
+  catchError,
+} from 'rxjs/operators';
 
 import { AppState } from '../reducers';
 
-import { NotificationActions } from '../actions/notification';
-import { NotifyActions } from '../actions/notify';
-import { OfferActions } from '../actions/offer';
-import { User } from '../models/user';
-import { UserActions } from '../actions/user';
+import { SetNotificationUnreadTotal } from '../actions/notification';
+import { AddNotify } from '../actions/notify';
+import { ClearOffers } from '../actions/offer';
+import { Go } from '../actions/router';
+import {
+  AdminLogin,
+  AdminLoginFail,
+  AdminLoginSuccess,
+  AskQuestions,
+  ChangeSelectedPrize,
+  ChangeSelectedPrizeFail,
+  ChangeSelectedPrizeSuccess,
+  CheckEmail,
+  CheckEmailFail,
+  CheckEmailSuccess,
+  CheckIfUserUpdatedFail,
+  CheckIfUserUpdatedSuccess,
+  CheckIPMatch,
+  CheckIPMatchFail,
+  CheckIPMatchSuccess,
+  CheckLoggedInFail,
+  CheckLoggedInSuccess,
+  CheckReferrerUsername,
+  CheckReferrerUsernameFail,
+  CheckReferrerUsernameSuccess,
+  DismissProfileChangesFail,
+  DismissProfileChangesSuccess,
+  ForgotPassword,
+  ForgotPasswordFail,
+  ForgotPasswordSuccess,
+  HideReferrals,
+  HideReferralsFail,
+  HideReferralsSuccess,
+  GetProfileFail,
+  GetProfileSuccess,
+  GetReferral,
+  GetReferralFail,
+  GetReferralSuccess,
+  Login,
+  LoginFail,
+  LoginSuccess,
+  LogoutFail,
+  LogoutSuccess,
+  RecordClick,
+  RecordClickFail,
+  RecordClickSuccess,
+  Register,
+  RegisterFail,
+  RegisterSuccess,
+  RemoveReferrals,
+  RemoveReferralsSuccess,
+  ResetPassword,
+  ResetPasswordFail,
+  ResetPasswordSuccess,
+  SetSponsor,
+  SetSponsorFail,
+  SetSponsorSuccess,
+  TestShowRefRandom,
+  UpdateProfile,
+  UpdateProfileFail,
+  UpdateProfileSuccess,
+  UserActionTypes
+} from '../actions/user';
 import { UserService } from '../services/user';
 
 @Injectable()
@@ -19,305 +84,285 @@ import { UserService } from '../services/user';
 export class UserEffects {
   constructor(
     public actions$: Actions,
-    private notificationActions: NotificationActions,
-    private notifyActions: NotifyActions,
     private store: Store<AppState>,
-    private offerActions: OfferActions,
-    private userActions: UserActions,
     private userService: UserService
   ) { }
 
-  @Effect() adminLogin$ = this.actions$
-    .ofType(UserActions.ADMIN_LOGIN)
-    .map(action => <User>action.payload)
-    .switchMap(user => this.userService.loginAdmin(user)
-      .mergeMap(res => Observable.of(
-        this.userActions.adminLoginSuccess(res),
-        res['message_type'] !== 'success' ? this.notifyActions.addNotify(res) : {},
-        res['redirectTo'] ? window.location.href = res['redirectTo'] : {}
-      ))
-      .catch((err) => Observable.of(
-        this.userActions.adminLoginFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
-
-  @Effect() changeSelectedPrize$ = this.actions$
-    .ofType(UserActions.CHANGE_SELECTED_PRIZE)
-    .map(action => <string>action.payload)
-    .switchMap(id => this.userService.changeSelectedPrize(id)
-      .mergeMap((res: any) => Observable.of(
-        this.userActions.changeSelectedPrizeSuccess(res),
-        // res['message_type'] !== 'success' ? this.notifyActions.addNotify(res) : null
-      ))
-      .catch((err) => Observable.of(
-        this.userActions.changeSelectedPrizeFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
-
-  @Effect() checkEmail$ = this.actions$
-    .ofType(UserActions.CHECK_EMAIL)
-    .map(action => <string>action.payload)
-    .switchMap(email => this.userService.checkEmail(email)
-      .map((res: any) => this.userActions.checkEmailSuccess(res))
-      .do((res: any) => res.payload.redirectTo ?
-        this.store.dispatch(go([res.payload.redirectTo], undefined,
-          { preserveQueryParams: true })) : null)
-      .catch((err) => Observable.of(
-        this.userActions.checkEmailFail(err)
-      ))
-    );
-
-  @Effect() checkIfUserUpdated$ = this.actions$
-    .ofType(UserActions.CHECK_IF_USER_UPDATED)
-    .map(action => action.payload)
-    .switchMap(() => this.userService.checkIfUserUpdated()
-      .map((res) => this.userActions.checkIfUserUpdatedSuccess(res))
-      .catch((err) => Observable.of(
-        this.userActions.checkIfUserUpdatedFail(err)
-      ))
-    );
-
-  @Effect() checkIPMatch$ = this.actions$
-    .ofType(UserActions.CHECK_IP_MATCH)
-    .map(action => action.payload)
-    .switchMap((sponsor) => this.userService.checkIPMatch(sponsor)
-      .map((res) => this.userActions.checkIPMatchSuccess(res))
-      .catch((err) => Observable.of(
-        this.userActions.checkIPMatchFail(err)
-      ))
-    );
-
-  @Effect() checkLoggedIn$ = this.actions$
-    .ofType(UserActions.CHECK_LOGGED_IN)
-    .map(action => <string>action.payload)
-    .switchMap(() => this.userService.checkLoggedIn()
-      .map((res: any) => this.userActions.checkLoggedInSuccess(res))
-      .catch((err) => Observable.of(
-        this.userActions.checkLoggedInFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
-
-  @Effect() checkReferrerUsername$ = this.actions$
-    .ofType(UserActions.CHECK_REFERRER_USERNAME)
-    .map(action => <string>action.payload)
-    .switchMap(username => this.userService.checkReferrerUsername(username)
-      .map((res: any) => this.userActions.checkReferrerUsernameSuccess(res))
-      .catch((err) => Observable.of(
-        this.userActions.checkReferrerUsernameFail(err)
-      ))
-    );
-
-  @Effect() dismissProfileChanges$ = this.actions$
-    .ofType(UserActions.DISMISS_PROFILE_CHANGES)
-    .map(action => <any>action.payload)
-    .switchMap(() => this.userService.dismissProfileChanges()
-      .map((res: any) => this.userActions.dismissProfileChangesSuccess(res))
-      .catch((err) => Observable.of(
-        this.userActions.dismissProfileChangesFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
-
-  @Effect() forgotPassword$ = this.actions$
-    .ofType(UserActions.FORGOT_PASSWORD)
-    .map(action => <string>action.payload)
-    .switchMap((email) => this.userService.forgotPassword(email)
-      .mergeMap(res => Observable.of(
-        this.userActions.forgotPasswordSuccess(res),
-        this.notifyActions.addNotify(res)
-      ))
-      .do((res: any) => res.payload.redirectTo ?
-        this.store.dispatch(go([res.payload.redirectTo], undefined,
-          { preserveQueryParams: true })) : null)
-      .catch((err) => Observable.of(
-        this.userActions.forgotPasswordFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
-
-  @Effect() hideReferrals$ = this.actions$
-    .ofType(UserActions.HIDE_REFERRALS)
-    .map(action => <{ ids: string[], hide: boolean }>action.payload)
-    .switchMap((hideRefs) => this.userService.hideReferrals(hideRefs)
-      .mergeMap((res) => Observable.of(
-        this.userActions.hideReferralsSuccess(res))
+  @Effect() adminLogin$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.AdminLogin),
+    map((action: AdminLogin) => action.payload),
+    switchMap(user => this.userService.loginAdmin(user).pipe(
+      tap((res) => {
+        if (res['redirectTo']) {
+          window.location.href = res['redirectTo'];
+        }
+      }),
+      mergeMap(res => concat(
+        Observable.of(new AdminLoginSuccess(res)),
+        // tslint:disable-next-line:max-line-length
+        Observable.of(res['message_type'] !== 'success' ? new AddNotify(res) : { type: 'Empty Action' })
       )
-      .catch((err) => Observable.of(
-        this.userActions.hideReferralsFail(err)
-      ))
-    );
-
-  @Effect() getProfile$ = this.actions$
-    .ofType(UserActions.GET_PROFILE)
-    .map(action => <string>action.payload)
-    .switchMap(() => this.userService.getProfile()
-      .mergeMap((res: any) => Observable.of(
-        this.notificationActions.setNotificationTotal(res),
-        this.userActions.getProfileSuccess(res))
+      ),
+      catchError((err) => concat(
+        Observable.of(new AdminLoginFail(err)),
+        Observable.of(new AddNotify(err)))
       )
-      .catch((err) => Observable.of(
-        this.userActions.getProfileFail(err)
-      ))
-    );
+    )));
 
-  @Effect() getReferral$ = this.actions$
-    .ofType(UserActions.GET_REFERRAL)
-    .map(action => <string>action.payload)
-    .switchMap((id) => this.userService.getReferral(id)
-      .map((res: any) => this.userActions.getReferralSuccess(res))
-      .catch((err) => Observable.of(
-        this.userActions.getReferralFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
+  @Effect() changeSelectedPrize$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.ChangeSelectedPrize),
+    map((action: ChangeSelectedPrize) => action.payload),
+    switchMap(id => this.userService.changeSelectedPrize(id).pipe(
+      map((res) => new ChangeSelectedPrizeSuccess(res)),
+      catchError((err) => concat(
+        Observable.of(new ChangeSelectedPrizeFail(err)),
+        Observable.of(new AddNotify(err)))
+      )
+    )));
 
-  @Effect() login$ = this.actions$
-    .ofType(UserActions.LOGIN)
-    .map(action => <User>action.payload)
-    .switchMap(user => this.userService.loginUser(user)
-      .mergeMap(res => Observable.of(
-        this.userActions.loginSuccess(res),
-        this.notifyActions.addNotify(res)
-      ))
-      .do((res: any) => {
+  @Effect() checkEmail$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.CheckEmail),
+    map((action: CheckEmail) => action.payload),
+    switchMap(email => this.userService.checkEmail(email).pipe(
+      map((res) => new CheckEmailSuccess(res)),
+      tap((res) => res.payload.redirectTo ?
+        this.store.dispatch(
+          new Go({ path: [res.payload.redirectTo], extras: { preserveQueryParams: true } }))
+        : null),
+      catchError((err) => Observable.of(new CheckEmailFail(err)))
+    )));
+
+  @Effect() checkIfUserUpdated$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.CheckIfUserUpdated),
+    switchMap(() => this.userService.checkIfUserUpdated().pipe(
+      map((res) => new CheckIfUserUpdatedSuccess(res)),
+      catchError((err) => Observable.of(new CheckIfUserUpdatedFail(err)))
+    )));
+
+  @Effect() checkIPMatch$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.CheckIPMatch),
+    map((action: CheckIPMatch) => action.payload),
+    switchMap((sponsor) => this.userService.checkIPMatch(sponsor).pipe(
+      map((res) => new CheckIPMatchSuccess(res)),
+      catchError((err) => Observable.of(new CheckIPMatchFail(err)))
+    )));
+
+  @Effect() checkLoggedIn$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.CheckLoggedIn),
+    switchMap(() => this.userService.checkLoggedIn().pipe(
+      map((res) => new CheckLoggedInSuccess(res)),
+      catchError((err) => concat(
+        Observable.of(new CheckLoggedInFail(err)),
+        Observable.of(new AddNotify(err)))
+      )
+    )));
+
+  @Effect() checkReferrerUsername$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.CheckReferrerUsername),
+    map((action: CheckReferrerUsername) => action.payload),
+    switchMap(username => this.userService.checkReferrerUsername(username).pipe(
+      map((res) => new CheckReferrerUsernameSuccess(res)),
+      catchError((err) => Observable.of(new CheckReferrerUsernameFail(err)))
+    )));
+
+  @Effect() dismissProfileChanges$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.DismissProfileChanges),
+    switchMap(() => this.userService.dismissProfileChanges().pipe(
+      map((res) => new DismissProfileChangesSuccess(res)),
+      catchError((err) => concat(
+        Observable.of(new DismissProfileChangesFail(err)),
+        Observable.of(new AddNotify(err)))
+      )
+    )));
+
+  @Effect() forgotPassword$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.ForgotPassword),
+    map((action: ForgotPassword) => action.payload),
+    switchMap((email) => this.userService.forgotPassword(email).pipe(
+      mergeMap(res => concat(
+        Observable.of(new ForgotPasswordSuccess(res)),
+        Observable.of(new AddNotify(res)))
+      ),
+      tap((res) => res.payload.redirectTo ?
+        this.store.dispatch(
+          new Go({ path: [res.payload.redirectTo], extras: { preserveQueryParams: true } }))
+        : null),
+      catchError((err) => concat(
+        Observable.of(new ForgotPasswordFail(err)),
+        Observable.of(new AddNotify(err)))
+      )
+    )));
+
+  @Effect() hideReferrals$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.HideReferrals),
+    map((action: HideReferrals) => <{ ids: string[], hide: boolean }>action.payload),
+    switchMap((hideRefs) => this.userService.hideReferrals(hideRefs).pipe(
+      map((res) => new HideReferralsSuccess(res)),
+      catchError((err) => Observable.of(new HideReferralsFail(err)))
+    )));
+
+  @Effect() getProfile$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.GetProfile),
+    switchMap(() => this.userService.getProfile().pipe(
+      mergeMap((res) => concat(
+        Observable.of(new SetNotificationUnreadTotal(res)),
+        Observable.of(new GetProfileSuccess(res)))
+      ),
+      catchError((err) => Observable.of(new GetProfileFail(err)))
+    )));
+
+  @Effect() getReferral$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.GetReferral),
+    map((action: GetReferral) => action.payload),
+    switchMap((id) => this.userService.getReferral(id).pipe(
+      map((res) => new GetReferralSuccess(res)),
+      catchError((err) => concat(
+        Observable.of(new GetReferralFail(err)),
+        Observable.of(new AddNotify(err)))
+      )
+    )));
+
+  @Effect() login$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.Login),
+    map((action: Login) => action.payload),
+    switchMap(user => this.userService.loginUser(user).pipe(
+      mergeMap(res => concat(
+        Observable.of(new LoginSuccess(res)),
+        Observable.of(new AddNotify(res)))
+      ),
+      tap((res: any) => {
         if (res.payload.askQuestions) {
-          this.store.dispatch(this.userActions.askQuestions());
+          this.store.dispatch(new AskQuestions());
         }
         if (res.payload.redirectTo === 'offers') {
           // let showTestRand = Math.floor(Math.random() * 2);
           let showTestRand = 1;
-          this.store.dispatch(this.offerActions.clearOffers());
-          this.store.dispatch(go([res.payload.redirectTo,
-          { new: true, returning: true, showRefT: showTestRand }]));
-          this.store.dispatch(this.userActions.testShowRefRandom(showTestRand));
+          this.store.dispatch(new ClearOffers());
+          this.store.dispatch(new Go({
+            path: [res.payload.redirectTo],
+            query: { new: true, returning: true, showRefT: showTestRand }
+          }));
+          this.store.dispatch(new TestShowRefRandom(showTestRand));
           return;
         }
         if (res.payload.redirectTo) {
-          this.store.dispatch(go(['/offers']));
-          this.store.dispatch(this.offerActions.clearOffers());
+          this.store.dispatch(new Go({ path: ['/offers'] }));
+          this.store.dispatch(new ClearOffers());
         }
-      })
-      .catch((err) => Observable.of(
-        this.userActions.loginFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
+      }),
+      catchError((err) => concat(
+        Observable.of(new LoginFail(err)),
+        Observable.of(new AddNotify(err)))
+      )
+    )));
 
-  @Effect() logout$ = this.actions$
-    .ofType(UserActions.LOGOUT)
-    .map(action => <string>action.payload)
-    .switchMap(() => this.userService.logout()
-      .map(() => this.userActions.logoutSuccess())
-      .do(() => this.store.dispatch(go(['/'])))
-      .catch((err) => Observable.of(
-        this.userActions.logoutFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
+  @Effect() logout$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.Logout),
+    switchMap(() => this.userService.logout().pipe(
+      map(() => new LogoutSuccess()),
+      tap(() => this.store.dispatch(new Go({ path: ['/'] }))),
+      catchError((err) => concat(
+        Observable.of(new LogoutFail(err)),
+        Observable.of(new AddNotify(err)))
+      )
+    )));
 
-  @Effect() recordClick$ = this.actions$
-    .ofType(UserActions.RECORD_CLICK)
-    .map(action => <string>action.payload)
-    .switchMap(offer => this.userService.recordClick(offer)
-      .mergeMap(res => Observable.of(
-        this.userActions.recordClickSuccess(res),
-        this.notifyActions.addNotify(res)
-      ))
-      .do((res: any) => {
+  @Effect() recordClick$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.RecordClick),
+    map((action: RecordClick) => action.payload),
+    switchMap(offer => this.userService.recordClick(offer).pipe(
+      mergeMap(res => concat(
+        Observable.of(new RecordClickSuccess(res)),
+        Observable.of(new AddNotify(res)))
+      ),
+      tap((res) => {
         let redirectTo = res.payload.redirectTo;
         if (redirectTo === '/crediting-guidelines') {
-          this.store.dispatch(go([redirectTo], { match: true }));
+          this.store.dispatch(new Go({ path: [redirectTo, { match: true }] }));
         } else if (redirectTo) {
           window.location.replace(redirectTo);
         }
-        this.notifyActions.addNotify(res);
-      })
-      .catch((err) => Observable.of(
-        this.userActions.recordClickFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
+      }),
+      catchError((err) => concat(
+        Observable.of(new RecordClickFail(err)),
+        Observable.of(new AddNotify(err)))
+      )
+    )));
 
-  @Effect() register$ = this.actions$
-    .ofType(UserActions.REGISTER)
-    .map(action => <User>action.payload)
-    .switchMap(user => this.userService.registerUser(user)
-      .map(res => this.userActions.registerSuccess(res))
-      .do(res => {
+  @Effect() register$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.Register),
+    map((action: Register) => action.payload),
+    switchMap(user => this.userService.registerUser(user).pipe(
+      map(res => new RegisterSuccess(res)),
+      tap((res: any) => {
         if (res.payload.redirectTo) {
           // let showTestRand = Math.floor(Math.random() * 2);
           let showTestRand = 1;
-          this.store.dispatch(go([res.payload.redirectTo,
-          { new: true, showRefT: showTestRand }]));
-          this.store.dispatch(this.userActions.testShowRefRandom(showTestRand));
+          this.store.dispatch(new Go({
+            path: [res.payload.redirectTo,
+            { new: true, showRefT: showTestRand }]
+          }));
+          this.store.dispatch(new TestShowRefRandom(showTestRand));
         }
         if (!res.payload.success) {
-          this.store.dispatch(this.notifyActions.addNotify(res.payload));
+          this.store.dispatch(new AddNotify(res.payload));
         }
-      })
-      .catch((err) => Observable.of(
-        this.userActions.registerFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
-
-  @Effect() removeReferrals$ = this.actions$
-    .ofType(UserActions.REMOVE_REFERRALS)
-    .map(action => <string[]>action.payload)
-    .switchMap((ids) => this.userService.removeReferrals(ids)
-      .mergeMap((res) => Observable.of(
-        this.userActions.removeReferralsSuccess(res))
+      }),
+      catchError((err) => concat(
+        Observable.of(new RegisterFail(err)),
+        Observable.of(new AddNotify(err)))
       )
-      .catch((err) => Observable.of(
-        this.userActions.hideReferralsFail(err)
-      ))
-    );
+    )));
 
-  @Effect() resetPassword$ = this.actions$
-    .ofType(UserActions.RESET_PASSWORD)
-    .map(action => <{ email: string, code: string, password: string }>action.payload)
-    .switchMap((email) => this.userService.resetPassword(email)
-      .mergeMap(res => Observable.of(
-        this.userActions.resetPasswordSuccess(res),
-        this.notifyActions.addNotify(res)
-      ))
-      .do((res: any) => res.payload.redirectTo ?
-        this.store.dispatch(go([res.payload.redirectTo])) : null)
-      .catch((err) => Observable.of(
-        this.userActions.resetPasswordFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
+  @Effect() removeReferrals$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.RemoveReferrals),
+    map((action: RemoveReferrals) => action.payload),
+    switchMap((ids) => this.userService.removeReferrals(ids).pipe(
+      mergeMap((res) => Observable.of(new RemoveReferralsSuccess(res))),
+      catchError((err) => Observable.of(new HideReferralsFail(err)))
+    )));
 
-  @Effect() setSponsor$ = this.actions$
-    .ofType(UserActions.SET_SPONSOR)
-    .map(action => <string>action.payload)
-    .switchMap(sponsor => this.userService.setSponsor(sponsor)
-      .mergeMap(res => Observable.of(
-        this.userActions.setSponsorSuccess(res),
-        res['message'] ? this.notifyActions.addNotify(res) : null
-      ))
-      .catch((err) => Observable.of(
-        this.userActions.setSponsorFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
+  @Effect() resetPassword$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.ResetPassword),
+    map((action: ResetPassword) => action.payload),
+    switchMap((email) => this.userService.resetPassword(email).pipe(
+      mergeMap(res => concat(
+        Observable.of(new ResetPasswordSuccess(res)),
+        Observable.of(new AddNotify(res)))
+      ),
+      tap((res) => res.payload.redirectTo ?
+        this.store.dispatch(new Go({ path: [res.payload.redirectTo] })) : null),
+      catchError((err) => concat(
+        Observable.of(new ResetPasswordFail(err)),
+        Observable.of(new AddNotify(err)))
+      )
+    )));
 
-  @Effect() updateProfile$ = this.actions$
-    .ofType(UserActions.UPDATE_PROFILE)
-    .map(action => <User>action.payload)
-    .switchMap(user => this.userService.updateProfile(user)
-      .mergeMap(res => Observable.of(
-        this.userActions.updateProfileSuccess(res),
-        this.notifyActions.addNotify(res)
-      ))
-      .catch((err) => Observable.of(
-        this.userActions.updateProfileFail(err),
-        this.notifyActions.addNotify(err)
-      ))
-    );
+  @Effect() setSponsor$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.SetSponsor),
+    map((action: SetSponsor) => action.payload),
+    switchMap(sponsor => this.userService.setSponsor(sponsor).pipe(
+      mergeMap(res => concat(
+        Observable.of(new SetSponsorSuccess(res)),
+        Observable.of(res['message'] ? new AddNotify(res) : null)
+      )),
+      catchError((err) => concat(
+        Observable.of(new SetSponsorFail(err)),
+        Observable.of(new AddNotify(err)))
+      )
+    )));
 
+  @Effect() updateProfile$: Observable<Action> = this.actions$.pipe(
+    ofType(UserActionTypes.UpdateProfile),
+    map((action: UpdateProfile) => action.payload),
+    switchMap(user => this.userService.updateProfile(user).pipe(
+      mergeMap(res => concat(
+        Observable.of(new UpdateProfileSuccess(res)),
+        Observable.of(new AddNotify(res))
+      )),
+      catchError((err) => concat(
+        Observable.of(new UpdateProfileFail(err)),
+        Observable.of(new AddNotify(err)))
+      )
+    )));
 }

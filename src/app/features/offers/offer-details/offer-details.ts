@@ -1,21 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { openInNewTab } from '../../../helper/open-in-new-tab';
 
-import { AppState } from '../../../reducers';
+import * as fromStore from '../../../reducers';
 import { Credit } from '../../../models/credit';
 import { Offer } from '../../../models/offer';
-import { getOffer } from '../../../reducers/offer';
-import { OfferActions } from '../../../actions/offer';
+import * as offerActions from '../../../actions/offer';
 import { UserAgent } from '../../../models/user-agent';
-
-import { getCreditTotal, getCreditCollection } from '../../../reducers/user';
 
 import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
 
@@ -34,8 +31,8 @@ import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
 })
 export class OfferDetailsComponent implements OnDestroy, OnInit {
   alreadyCompleted: boolean;
-  confirmDialogRef: MdDialogRef<ConfirmDialog>;
-  confirmDialogConfig: MdDialogConfig = {
+  confirmDialogRef: MatDialogRef<ConfirmDialog>;
+  confirmDialogConfig: MatDialogConfig = {
     disableClose: false
   };
   credits$: Observable<Credit[]>;
@@ -50,21 +47,20 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
   offer: Offer;
 
   constructor(
-    public dialog: MdDialog,
-    private offerActions: OfferActions,
+    public dialog: MatDialog,
     private route: ActivatedRoute,
-    private store: Store<AppState>
+    private store: Store<fromStore.AppState>
   ) { }
 
   ngOnInit() {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
-    this.credits$ = this.store.let(getCreditCollection());
+    this.credits$ = this.store.pipe(select(fromStore.getUserCreditCollection));
     this.route.params.forEach(param => {
       let id = param['id'];
-      this.store.dispatch(this.offerActions.getOffer(id));
+      this.store.dispatch(new offerActions.GetOffer(id));
       this.userAgent$ = this.store.select(s => s.offer.userAgent);
       this.userAgent$.takeUntil(this.destroyed$).subscribe(u => this.userAgent = u);
-      this.offer$ = this.store.let(getOffer(id));
+      this.offer$ = this.store.pipe(select(fromStore.getSelectedOffer));
       this.offer$
         .takeUntil(this.destroyed$)
         .subscribe(o => {
@@ -86,7 +82,7 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
             });
         });
     });
-    this.creditTotal$ = this.store.let(getCreditTotal());
+    this.creditTotal$ = this.store.pipe(select(fromStore.getUserCreditTotal));
     this.creditTotal$
       .takeUntil(this.destroyed$)
       .subscribe(total => {

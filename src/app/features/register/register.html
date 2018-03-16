@@ -1,11 +1,12 @@
 <h5 *ngIf="blocked" style="text-align: center">This referer has been blocked due to inappropriate advertising.</h5>
-<md-card *ngIf="!blocked" class="register-page-container" @fade>
+<mat-card *ngIf="!blocked" class="register-page-container" @fade>
   <img *ngIf="step === 1" id="register-top" src="assets/svg/register-top-1366x768.svg">
-  <md-card class="os-title-card primary-background">Register</md-card>
-  <md-card class="os-form-container">
+  <mat-card class="os-title-card primary-background">Register</mat-card>
+  <mat-card class="os-form-container">
     <form [formGroup]="f" (ngSubmit)="submitForm()">
       <div [hidden]="step === 2" @fade>
-        <md-card-subtitle>Step 1: Enter Account Information</md-card-subtitle>
+        <mat-card-subtitle><b>Only accepting residents of the USA, Canada, UK and Australia.</b></mat-card-subtitle>
+        <mat-card-subtitle>Step 1: Enter Account Information</mat-card-subtitle>
         <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
         <os-form-input class="os-form-input" type="text" controlName="username" placeholder="Username" [form]="f"></os-form-input>
         <div [hidden]="!f.get('username').hasError('usernameTaken')" class="warn-text">
@@ -19,7 +20,7 @@
         </div>
       </div>
       <div *ngIf="step === 2" @fade>
-        <md-card-subtitle>Step 2: Enter Account Details</md-card-subtitle>
+        <mat-card-subtitle>Step 2: Enter Account Details</mat-card-subtitle>
         <div id="registration-text" class="primary-background white">
           <p>Registration information is verified before we process payments. Please be sure to use fully accurate information.</p>
         </div>
@@ -47,17 +48,17 @@
           [form]="f">
         </os-form-input>
         <div class="os-agree-checkbox">
-          <md-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the <a routerLink="../terms-and-conditions">Terms and Conditions</a></md-checkbox>
-          <md-checkbox color="primary" formControlName="agree2" type="checkbox">I am aware that only one account per household is allowed</md-checkbox>
+          <mat-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the <a routerLink="../terms-and-conditions">Terms and Conditions</a></mat-checkbox>
+          <mat-checkbox color="primary" formControlName="agree2" type="checkbox">I am aware that only one account per household is allowed</mat-checkbox>
         </div>
       </div>
-      <button *ngIf="step === 1" class="white" md-raised-button color="primary" type="button" (click)="step = 2">Next</button>
-      <button *ngIf="step === 2" class="white" md-raised-button color="primary" type="submit" [disabled]="!f.valid">Register</button>
+      <button *ngIf="step === 1" class="white" mat-raised-button color="primary" type="button" (click)="step = 2">Next</button>
+      <button *ngIf="step === 2" class="white" mat-raised-button color="primary" type="submit" [disabled]="!f.valid">Register</button>
       <p class="go-back" *ngIf="step === 2" (click)="step = 1"><a>Go Back to Step 1</a></p>
       <p id="referred-by" *ngIf="f.get('referredBy').value">
         You are being referred by: {{f.get('referredBy').value}}
       </p>
     </form>
-  </md-card>
+  </mat-card>
   <os-footer></os-footer>
-</md-card>
+</mat-card>

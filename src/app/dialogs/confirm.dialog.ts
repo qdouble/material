@@ -1,6 +1,6 @@
 /* tslint:disable max-line-length */
 import { Component } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { openInNewTab } from '../helper/open-in-new-tab';
 
 @Component({
@@ -10,12 +10,12 @@ import { openInNewTab } from '../helper/open-in-new-tab';
     <h5 [style.color]="confirmColor" [innerHTML]="confirmText"></h5>
     <p [style.color]="subtextColor" [innerHTML]="subtext"></p>
     <div *ngIf="!okayOnly" class="button-row">
-      <button type="button" md-raised-button color="warn" (click)="dialogRef.close(false)">NO</button>
-      <button *ngIf="!url" type="button" class="white" md-raised-button color="primary" (click)="dialogRef.close(true)">YES</button>
-      <button *ngIf="url" type="button" class="white" md-raised-button color="primary" (click)="openLink(); dialogRef.close(true)">YES</button>
+      <button type="button" mat-raised-button color="warn" (click)="dialogRef.close(false)">NO</button>
+      <button *ngIf="!url" type="button" class="white" mat-raised-button color="primary" (click)="dialogRef.close(true)">YES</button>
+      <button *ngIf="url" type="button" class="white" mat-raised-button color="primary" (click)="openLink(); dialogRef.close(true)">YES</button>
     </div>
     <div *ngIf="okayOnly" class="button-row">
-      <button type="button" class="white" md-raised-button color="primary" (click)="dialogRef.close(true)">OK</button>
+      <button type="button" class="white" mat-raised-button color="primary" (click)="dialogRef.close(true)">OK</button>
     </div>
   </div>`,
   styles: [`.confirm-dialog{ text-align: center; max-width: 400px; }
@@ -31,7 +31,7 @@ export class ConfirmDialog {
   subtext: string;
   subtextColor = 'black';
   url: string;
-  constructor(public dialogRef: MdDialogRef<ConfirmDialog>) { }
+  constructor(public dialogRef: MatDialogRef<ConfirmDialog>) { }
   openLink() {
     openInNewTab(this.url);
   }

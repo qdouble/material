@@ -4,11 +4,11 @@ a {
   color: #74a838;
 }
 
-md-card-title {
+mat-card-title {
   color: $primary-color-x-dark;
 }
 
-md-input {
+mat-input {
   color: $primary-color-x-dark;
 }
 
@@ -18,7 +18,7 @@ select-input {
 }
 
 @media screen and (max-width: 465px) {
-  :host /deep/ .md-checkbox-layout .md-checkbox-label {
+  :host /deep/ .mat-checkbox-layout .mat-checkbox-label {
     line-height: 14px;
   }
 }

@@ -1,6 +1,6 @@
 /* tslint:disable max-line-length */
 import { Component, OnInit } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 
 import { Offer } from '../models/offer';
 
@@ -16,7 +16,7 @@ import { Offer } from '../models/offer';
     <div class="offer.reminder">
         <p *ngIf="needCredits" class="need-credits">You now have {{creditsTotal | number:'1.2-2'}} credits. <b>You need {{needCredits | number: '1.2-2'}} more credits to make to to Level {{nextLevel}}</b> where you will be able to make <b>{{'$' + nextLevel * 5}} per referral</b> who reaches the same level!</p>
     </div>
-    <button type="button" md-raised-button color="primary" class="white" (click)="dialogRef.close()">CONTINUE</button>
+    <button type="button" mat-raised-button color="primary" class="white" (click)="dialogRef.close()">CONTINUE</button>
     <p class="main-text" *ngIf="!offer.reminder">Be sure to fully try out offer for <u>at least 90% of the trial period</u> as quick/immediate cancellation or not trying the offer can cause your credit to be revoked.</p>
     <pre class="main-text" *ngIf="offer.reminder">{{offer.reminder}}</pre>
   </div>`,
@@ -33,7 +33,7 @@ export class CreditedOfferDialog implements OnInit {
   publish = PUBLISH;
   needCredits = 0;
   nextLevel = 0;
-  constructor(public dialogRef: MdDialogRef<CreditedOfferDialog>) { }
+  constructor(public dialogRef: MatDialogRef<CreditedOfferDialog>) { }
   ngOnInit() {
     this.nextLevel = Math.ceil(this.creditsTotal);
     this.needCredits = Math.ceil(this.creditsTotal) - this.creditsTotal;

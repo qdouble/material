@@ -1,14 +1,27 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Store, Action } from '@ngrx/store';
+import { concat } from 'rxjs/observable/concat';
+import {
+  tap,
+  map,
+  switchMap,
+  catchError,
+} from 'rxjs/operators';
 
 import { AppState } from '../reducers';
-import { Order } from '../models/order';
-import { NotifyActions } from '../actions/notify';
-import { OrderActions } from '../actions/order';
-import { UserActions } from '../actions/user';
+import { AddNotify } from '../actions/notify';
+import {
+  GetOrdersFail,
+  GetOrdersSuccess,
+  PlaceOrder,
+  PlaceOrderFail,
+  PlaceOrderSuccess,
+  OrderActionTypes
+} from '../actions/order';
+import { SetOrderPending } from '../actions/user';
 import { OrderService } from '../services/order';
 
 @Injectable()
@@ -16,49 +29,36 @@ import { OrderService } from '../services/order';
 export class OrderEffects {
   constructor(
     public actions$: Actions,
-    private notifyActions: NotifyActions,
-    private orderActions: OrderActions,
     private orderService: OrderService,
-    private store: Store<AppState>,
-    private userActions: UserActions
+    private store: Store<AppState>
   ) { }
 
-  @Effect() getOrders$ = this.actions$
-    .ofType(OrderActions.GET_ORDERS)
-    .map(action => <string>action.payload)
-    .switchMap(() => this.orderService.getOrders()
-      .map((res: any) => this.orderActions.getOrdersSuccess(res))
-      .do(((res) => {
-        if (res.payload.hasQualifiedReferrals !== undefined) {
-          this.store.dispatch(
-            this.userActions.setHasQualifiedReferrals(res.payload.hasQualifiedReferrals));
-          if (res.payload.orderPending !== undefined) {
-            this.store.dispatch(this.userActions.setOrderPending(res.payload.orderPending));
-          }
-        }
-      }))
-      .catch((err) => Observable.of(
-        this.orderActions.getOrdersFail(err),
-        this.notifyActions.addNotify(err)
+  @Effect() getOrders$: Observable<Action> = this.actions$.pipe(
+    ofType(OrderActionTypes.GetOrders),
+    switchMap(() => this.orderService.getOrders().pipe(
+      map((res) => new GetOrdersSuccess(res)),
+      catchError((err) => concat(
+        Observable.of(new GetOrdersFail(err)),
+        Observable.of(new AddNotify(err))
       ))
-    );
+    )));
 
-  @Effect() placeOrder$ = this.actions$
-    .ofType(OrderActions.PLACE_ORDER)
-    .map(action => <Order>action.payload)
-    .switchMap(order => this.orderService.placeOrder(order)
-      .map((res: any) => this.orderActions.placeOrderSuccess(res))
-      .do(((res) => {
+  @Effect() placeOrder$: Observable<Action> = this.actions$.pipe(
+    ofType(OrderActionTypes.PlaceOrder),
+    map((action: PlaceOrder) => action.payload),
+    switchMap(order => this.orderService.placeOrder(order).pipe(
+      map((res) => new PlaceOrderSuccess(res)),
+      tap(((res) => {
         if (res.payload.message_type !== 'success') {
-          this.store.dispatch(this.notifyActions.addNotify(res.payload));
+          this.store.dispatch(new AddNotify(res.payload));
         }
         if (res.payload.order) {
-          this.store.dispatch(this.userActions.setOrderPending(true));
+          this.store.dispatch(new SetOrderPending(true));
         }
-      }))
-      .catch((err) => Observable.of(
-        this.orderActions.placeOrderFail(err),
-        this.notifyActions.addNotify(err)
+      })),
+      catchError((err) => concat(
+        Observable.of(new PlaceOrderFail(err)),
+        Observable.of(new AddNotify(err))
       ))
-    );
+    )));
 }

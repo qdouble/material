@@ -1,10 +1,10 @@
-<md-card class="os-page-container" @fade>
+<mat-card class="os-page-container" @fade>
   <div id="details" class="details-container">
-    <button md-button routerLink="/offers" color="primary" class="back-button" preserveFragment><md-icon>keyboard_arrow_left</md-icon>Back to Offers Page</button>
-    <md-card *ngIf="(creditTotal$ | async) < 1" id="complete-offer" class="os-title-card primary-background"><b>Step 2 :</b> Read and complete</md-card>
-    <md-card *ngIf="(creditTotal$ | async) > 1" id="important-review" class="accent-background">
-      <md-card-subtitle class="white">Important: Please review the following information before continuing with the offer!</md-card-subtitle>
-    </md-card>
+    <button mat-button routerLink="/offers" color="primary" class="back-button" preserveFragment><mat-icon>keyboard_arrow_left</mat-icon>Back to Offers Page</button>
+    <mat-card *ngIf="(creditTotal$ | async) < 1" id="complete-offer" class="os-title-card primary-background"><b>Step 2 :</b> Read and complete</mat-card>
+    <mat-card *ngIf="(creditTotal$ | async) > 1" id="important-review" class="accent-background">
+      <mat-card-subtitle class="white">Important: Please review the following information before continuing with the offer!</mat-card-subtitle>
+    </mat-card>
     <os-offer-details-card *ngIf="offer$ | async" [alreadyCompleted]="alreadyCompleted" [creditTotal]="creditTotal$ | async" [offer]="offer$ | async" [publish]="publish" [userAgent]="userAgent$ | async" (continueToOffer)="continueToOffer($event)"></os-offer-details-card>
   </div>
-</md-card>
+</mat-card>

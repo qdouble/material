@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { back } from '@ngrx/router-store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { AppState } from '../../../reducers';
-import { TicketActions } from '../ticket.actions';
-import { getTicket, getTicketAddedMessage, getTicketAddingMessage } from '../../../reducers/ticket';
+import * as fromStore from '../../../reducers';
+import * as ticketActions  from '../ticket.actions';
 import { Ticket, TicketMessage } from '../ticket.model';
+import { Back } from '../../../actions/router';
 
 @Component({
   selector: 'os-view-ticket',
@@ -22,27 +21,26 @@ export class ViewTicket {
   ticket$: Observable<Ticket>;
   constructor(
     private route: ActivatedRoute,
-    private store: Store<AppState>,
-    private ticketActions: TicketActions
+    private store: Store<fromStore.AppState>
   ) {
     this.route.params.forEach(param => {
-      store.dispatch(ticketActions.getTicket(param['id']));
-      this.ticket$ = store.let(getTicket(param['id']));
-      this.addedTicketMessage$ = this.store.let(getTicketAddedMessage());
-      this.addingTicketMessage$ = this.store.let(getTicketAddingMessage());
+      store.dispatch(new ticketActions.GetTicket(param['id']));
+      this.ticket$ = store.pipe(select(fromStore.getSelectedTicket));
+      this.addedTicketMessage$ = this.store.pipe(select(fromStore.getTicketAddedMessage));
+      this.addingTicketMessage$ = this.store.pipe(select(fromStore.getTicketAddingMessage));
       this.loading$ = this.store.select(s => s.ticket.loading);
     });
   }
   addMessage(message: TicketMessage) {
-    this.store.dispatch(this.ticketActions.addMessage(message));
+    this.store.dispatch(new ticketActions.AddMessage(message));
   }
   closeTicket(closeTicket: { id: string, close: boolean }) {
-    this.store.dispatch(this.ticketActions.closeTicket(closeTicket));
+    this.store.dispatch(new ticketActions.CloseTicket(closeTicket));
   }
   goBack(event) {
-    this.store.dispatch(back());
+    this.store.dispatch(new Back());
   }
   markTicketAsRead(ticket: { id: string, mark: boolean }) {
-    this.store.dispatch(this.ticketActions.markTicketAsRead(ticket));
+    this.store.dispatch(new ticketActions.MarkTicketAsRead(ticket));
   }
 }

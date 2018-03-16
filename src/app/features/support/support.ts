@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { combineSort } from '../../helper/combine-sort';
 
-import { AppState } from '../../reducers';
+import * as fromStore from '../../reducers';
 import { CreditRequest } from './credit-request.model';
 import { Ticket } from './ticket.model';
-import { CreditRequestActions } from './credit-request.actions';
-import { TicketActions } from './ticket.actions';
-import { getCreditRequestCollection } from '../../reducers/credit-request';
-import { getTicketCollection } from '../../reducers/ticket';
+import * as creditRequestActions from './credit-request.actions';
+import * as ticketActions from './ticket.actions';
 
 @Component({
   selector: 'os-support',
@@ -43,17 +41,15 @@ export class Support implements OnInit {
   ticketSubject: string;
   unsortedTickets$: Observable<Ticket[]>;
   constructor(
-    private creditRequestActions: CreditRequestActions,
     private route: ActivatedRoute,
-    private store: Store<AppState>,
-    private ticketActions: TicketActions
+    private store: Store<fromStore.AppState>
   ) {
     this.added$ = this.store.select(s => s.ticket.added);
 
-    store.dispatch(this.ticketActions.getTickets());
-    store.dispatch(this.creditRequestActions.getCreditRequests());
-    this.creditRequests$ = store.let(getCreditRequestCollection());
-    this.unsortedTickets$ = store.let(getTicketCollection());
+    store.dispatch(new ticketActions.GetTickets());
+    store.dispatch(new creditRequestActions.GetCreditRequests());
+    this.creditRequests$ = store.pipe(select(fromStore.getCreditRequestCollection));
+    this.unsortedTickets$ = store.pipe(select(fromStore.getTicketCollection));
 
     this.sortByVar$ = this.store.select(s => s.ticket.sortBy);
     this.sortByVarToArray$ = this.sortByVar$
@@ -62,6 +58,7 @@ export class Support implements OnInit {
     this.tickets$ = Observable
       .combineLatest(this.sortByVarToArray$, this.unsortedTickets$, combineSort);
     function showClosed(arr: Ticket[], prop) {
+      if (!arr) return;
       return arr.filter(ticket => ticket.closed === prop);
     }
     this.openTickets$ = Observable
@@ -79,7 +76,7 @@ export class Support implements OnInit {
     });
   }
   closeTicket(ticket: { id: string, close: boolean }) {
-    this.store.dispatch(this.ticketActions.closeTicket(ticket));
+    this.store.dispatch(new ticketActions.CloseTicket(ticket));
   }
   sortBy(prop: string) {
     if (prop === this.lastSort && !this.reverseSort) {
@@ -88,7 +85,7 @@ export class Support implements OnInit {
       this.reverseSort = false;
     }
     this.store.dispatch(
-      this.ticketActions.sortBy({ sortBy: prop, reverse: this.reverseSort })
+      new ticketActions.SortBy({ sortBy: prop, reverse: this.reverseSort })
     );
     this.lastSort = prop;
   }

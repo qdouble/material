@@ -1,33 +1,40 @@
-/* tslint:disable: member-ordering */
-import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
 
-import { Country } from '../models/country';
+import { GetCountriesResponse } from '../models/country';
 
-@Injectable()
-
-export class CountryActions {
-  static GET_COUNTRIES = '[Country] Get Countries';
-  getCountries(): Action {
-    return {
-      type: CountryActions.GET_COUNTRIES
-    };
-  }
-
-  static GET_COUNTRIES_FAIL = '[Country] Get Countries Fail';
-  getCountriesFail(res: Response): Action {
-    return {
-      type: CountryActions.GET_COUNTRIES_FAIL
-    };
-  }
-
-  static GET_COUNTRIES_SUCCESS = '[Country] Get Countries Success';
-  getCountriesSuccess(countries: Country): Action {
-    return {
-      type: CountryActions.GET_COUNTRIES_SUCCESS,
-      payload: countries
-    };
-  }
-
+export enum CountryActionTypes {
+  GetCountries = '[Country] Get Countries',
+  GetCountriesFail = '[Country] Get Countries Fail',
+  GetCountriesSuccess = '[Country] Get Countries Success',
+  Select = '[Country] Select'
 }
+
+export class GetCountries implements Action {
+  readonly type = CountryActionTypes.GetCountries;
+
+  constructor() { }
+}
+
+export class GetCountriesFail implements Action {
+  readonly type = CountryActionTypes.GetCountriesFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetCountriesSuccess implements Action {
+  readonly type = CountryActionTypes.GetCountriesSuccess;
+
+  constructor(public payload: GetCountriesResponse) { }
+}
+
+export class Select implements Action {
+  readonly type = CountryActionTypes.Select;
+
+  constructor(public payload: string) {}
+}
+
+export type CountryActions =
+  | GetCountries
+  | GetCountriesFail
+  | GetCountriesSuccess
+  | Select;

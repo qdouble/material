@@ -2,9 +2,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
@@ -12,16 +12,13 @@ import { RegexValues } from '../../validators';
 
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 
-import { PrizeActions } from '../../actions/prize';
-import { OrderActions } from '../../actions/order';
-import { UserActions } from '../../actions/user';
+import * as fromStore from '../../reducers';
+import * as prizeActions from '../../actions/prize';
+import * as orderActions from '../../actions/order';
+import * as userActions from '../../actions/user';
 import { Prize } from '../../models/prize';
 import { Order } from '../../models/order';
 import { User } from '../../models/user';
-import { AppState } from '../../reducers';
-import { getPrize, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
-import { getOrderPlacing, getOrderCollection, getOrderLoaded } from '../../reducers/order';
-import { getUser, getUserLoaded, getUserSettingPrize } from '../../reducers/user';
 
 @Component({
   selector: 'os-order',
@@ -46,8 +43,8 @@ import { getUser, getUserLoaded, getUserSettingPrize } from '../../reducers/user
 
 export class OrderComponent implements OnDestroy, OnInit {
   changePrize = false;
-  confirmDialogRef: MdDialogRef<ConfirmDialog>;
-  confirmDialogConfig: MdDialogConfig = {
+  confirmDialogRef: MatDialogRef<ConfirmDialog>;
+  confirmDialogConfig: MatDialogConfig = {
     disableClose: false
   };
   currentYear = new Date().getFullYear();
@@ -78,12 +75,9 @@ export class OrderComponent implements OnDestroy, OnInit {
   user: User;
   user$: Observable<User>;
   constructor(
-    public dialog: MdDialog,
+    public dialog: MatDialog,
     private fb: FormBuilder,
-    private store: Store<AppState>,
-    private orderAction: OrderActions,
-    private prizeActions: PrizeActions,
-    private userActions: UserActions
+    private store: Store<fromStore.AppState>
   ) {
     this.f = this.fb.group({
       firstName: ['', [Validators.required, Validators.pattern(RegexValues.nameValue)]],
@@ -101,17 +95,17 @@ export class OrderComponent implements OnDestroy, OnInit {
       routingNumber: [{ value: '', disabled: true }, [Validators.pattern(RegexValues.bankNumbers), Validators.required]],
       accountNumber: [{ value: '', disabled: true }, [Validators.pattern(RegexValues.bankNumbers), Validators.required]]
     });
-    this.loaded$ = store.let(getUserLoaded());
-    this.placing$ = store.let(getOrderPlacing());
-    store.let(getPrizeLoaded())
+    this.loaded$ = store.pipe(select(fromStore.getUserLoaded));
+    this.placing$ = store.pipe(select(fromStore.getOrderPlacing));
+    store.pipe(select(fromStore.getPrizeLoaded))
       .take(1)
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
-        if (loaded) this.store.dispatch(this.prizeActions.getPrizes());
+        if (loaded) this.store.dispatch(new prizeActions.GetPrizes());
       });
     this.selectPrizeForm = fb.group({ 'selectedPrize': null });
-    this.settingPrize$ = store.let(getUserSettingPrize());
-    this.user$ = store.let(getUser());
+    this.settingPrize$ = store.pipe(select(fromStore.getUserSettingPrize));
+    this.user$ = store.pipe(select(fromStore.getUserProfile));
     this.user$
       .takeUntil(this.destroyed$)
       .subscribe(user => {
@@ -120,8 +114,9 @@ export class OrderComponent implements OnDestroy, OnInit {
         if (this.user.savedAccountNum) {
           this.f.get('useSavedBank').setValue(true);
         }
-        this.prize$ = this.store.let(getPrize(user.selectedPrize));
-        this.prizes$ = this.store.let(getPrizeCollection());
+        this.store.dispatch(new prizeActions.SelectPrize(user.selectedPrize));
+        this.prize$ = this.store.pipe(select(fromStore.getSelectedPrize));
+        this.prizes$ = this.store.pipe(select(fromStore.getPrizeCollection));
         this.selectedPrizeLabels$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
         this.selectedPrizeValues$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
         this.selectedPrizeLabels$
@@ -140,7 +135,7 @@ export class OrderComponent implements OnDestroy, OnInit {
               if (this.user.selectedPrize !== undefined && prizeIds.includes(this.user.selectedPrize)) {
                 selectedPrize.setValue(user.selectedPrize);
               } else if (this.user.selectedPrize === this.bankCheckId) {
-                this.store.dispatch(this.userActions.changeSelectedPrize(this.bankTransferId));
+                this.store.dispatch(new userActions.ChangeSelectedPrize(this.bankTransferId));
               } else {
                 selectedPrize.setValue(prizes[0].id);
               }
@@ -149,9 +144,9 @@ export class OrderComponent implements OnDestroy, OnInit {
             }
           });
       });
-    this.store.dispatch(this.orderAction.getOrders());
-    this.orders$ = this.store.let(getOrderCollection());
-    this.ordersLoaded$ = this.store.let(getOrderLoaded());
+    this.store.dispatch(new orderActions.GetOrders());
+    this.orders$ = this.store.pipe(select(fromStore.getOrderCollection));
+    this.ordersLoaded$ = this.store.pipe(select(fromStore.getOrderLoaded));
     this.orders$
       .filter(orders => Array.isArray(orders) && orders.length > 0)
       .takeUntil(this.destroyed$)
@@ -231,7 +226,7 @@ export class OrderComponent implements OnDestroy, OnInit {
 
   changeSelectedPrize() {
     if (this.changePrize) {
-      this.store.dispatch(this.userActions.changeSelectedPrize(
+      this.store.dispatch(new userActions.ChangeSelectedPrize(
         this.selectPrizeForm.get('selectedPrize').value));
       this.settingPrize$
         .filter(s => s !== false)
@@ -259,7 +254,7 @@ export class OrderComponent implements OnDestroy, OnInit {
         .takeUntil(this.destroyed$)
         .subscribe(result => {
           if (result) {
-            this.store.dispatch(this.orderAction.placeOrder(formValue));
+            this.store.dispatch(new orderActions.PlaceOrder(formValue));
           }
           this.confirmDialogRef = null;
         });
@@ -284,7 +279,6 @@ export class OrderComponent implements OnDestroy, OnInit {
           this.confirmDialogRef = null;
         });
     }
-
   }
 
   placeOrder() {
@@ -300,7 +294,7 @@ export class OrderComponent implements OnDestroy, OnInit {
     } else if (f.selectedPrizeName === 'PayPal') {
       this.openConfirmDialog(f);
     } else {
-      this.store.dispatch(this.orderAction.placeOrder(f));
+      this.store.dispatch(new orderActions.PlaceOrder(f));
     }
   }
 

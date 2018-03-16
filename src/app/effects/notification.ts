@@ -1,67 +1,75 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
+import {
+  map,
+  switchMap,
+  catchError,
+} from 'rxjs/operators';
 
 import { NotificationService } from '../services/notification';
-import { NotificationActions } from '../actions/notification';
+import {
+  DeleteAllNotificationsFail,
+  DeleteAllNotificationsSuccess,
+  DeleteNotifications,
+  DeleteNotificationsFail,
+  DeleteNotificationsSuccess,
+  NotificationActionTypes,
+  MarkAllAsReadFail,
+  MarkAllAsReadSuccess,
+  MarkNotificationsAsRead,
+  MarkNotificationsAsReadFail,
+  MarkNotificationsAsReadSuccess,
+  GetNotificationsSuccess,
+  GetNotificationsFail,
+  GetNotifications
+} from '../actions/notification';
 
 @Injectable()
 
 export class NotificationEffects {
   constructor(
     public actions$: Actions,
-    private notificationActions: NotificationActions,
     private notificationService: NotificationService,
   ) { }
 
-  @Effect() deleteAllNotifications$ = this.actions$
-    .ofType(NotificationActions.DELETE_ALL_NOTIFICATIONS)
-    .map(action => <null>action.payload)
-    .switchMap(() => this.notificationService.deleteAllNotifications()
-      .map((res) => this.notificationActions.deleteAllNotificationsSuccess(res))
-      .catch((err) => Observable.of(
-        this.notificationActions.deleteAllNotificationsFail(err)
-      ))
-    );
+  @Effect() deleteAllNotifications$: Observable<Action> = this.actions$.pipe(
+    ofType(NotificationActionTypes.DeleteAllNotifications),
+    switchMap(() => this.notificationService.deleteAllNotifications().pipe(
+      map((res) => new DeleteAllNotificationsSuccess(res)),
+      catchError((err) => Observable.of(new DeleteAllNotificationsFail(err)))
+    )));
 
-  @Effect() deleteNotifications$ = this.actions$
-    .ofType(NotificationActions.DELETE_NOTIFICATIONS)
-    .map(action => <string[]>action.payload)
-    .switchMap(ids => this.notificationService.deleteNotifications(ids)
-      .map((res) => this.notificationActions.deleteNotificationsSuccess(res))
-      .catch((err) => Observable.of(
-        this.notificationActions.deleteNotificationsFail(err)
-      ))
-    );
+  @Effect() deleteNotifications$: Observable<Action> = this.actions$.pipe(
+    ofType(NotificationActionTypes.DeleteNotifications),
+    map((action: DeleteNotifications) => action.payload),
+    switchMap(ids => this.notificationService.deleteNotifications(ids).pipe(
+      map((res) => new DeleteNotificationsSuccess(res)),
+      catchError((err) => Observable.of(new DeleteNotificationsFail(err)))
+    )));
 
-  @Effect() getNotifications$ = this.actions$
-    .ofType(NotificationActions.GET_NOTIFICATIONS)
-    .map(action => <string>action.payload)
-    .switchMap(query => this.notificationService.getNotifications(query)
-      .map((res: any) => this.notificationActions.getNotificationsSuccess(res))
-      .catch((err) => Observable.of(
-        this.notificationActions.getNotificationsFail(err)
-      ))
-    );
+  @Effect() getNotifications$: Observable<Action> = this.actions$.pipe(
+    ofType(NotificationActionTypes.GetNotifications),
+    map((action: GetNotifications) => action.payload),
+    switchMap(query => this.notificationService.getNotifications(query).pipe(
+      map((res) => new GetNotificationsSuccess(res)),
+      catchError((err) => Observable.of(new GetNotificationsFail(err)))
+    )));
 
-  @Effect() markAllAsRead$ = this.actions$
-    .ofType(NotificationActions.MARK_ALL_AS_READ)
-    .map(action => <string>action.payload)
-    .switchMap(query => this.notificationService.markAllAsRead()
-      .map((res: any) => this.notificationActions.markAllAsReadSuccess(res.success))
-      .catch((err) => Observable.of(
-        this.notificationActions.markAllAsReadFail(err)
-      ))
-    );
+  @Effect() markAllAsRead$: Observable<Action> = this.actions$.pipe(
+    ofType(NotificationActionTypes.MarkAllAsRead),
+    switchMap(query => this.notificationService.markAllAsRead().pipe(
+      map((res) => new MarkAllAsReadSuccess(res)),
+      catchError((err) => Observable.of(new MarkAllAsReadFail(err)))
+    )));
 
-  @Effect() markNotificationsAsRead$ = this.actions$
-    .ofType(NotificationActions.MARK_NOTIFICATIONS_AS_READ)
-    .map(action => <{ ids: string[], read: boolean }>action.payload)
-    .switchMap(mark => this.notificationService.markNotificationsAsRead(mark)
-      .map((res) => this.notificationActions.markNotificationsAsReadSuccess(res))
-      .catch((err) => Observable.of(
-        this.notificationActions.markNotificationsAsReadFail(err)
-      ))
-    );
+  @Effect() markNotificationsAsRead$: Observable<Action> = this.actions$.pipe(
+    ofType(NotificationActionTypes.MarkNotificationsAsRead),
+    map((action: MarkNotificationsAsRead) => action.payload),
+    switchMap(mark => this.notificationService.markNotificationsAsRead(mark).pipe(
+      map((res) => new MarkNotificationsAsReadSuccess(res)),
+      catchError((err) => Observable.of(new MarkNotificationsAsReadFail(err)))
+    )));
 }

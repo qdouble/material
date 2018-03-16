@@ -1,136 +1,137 @@
-/* tslint:disable: member-ordering */
-import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 
 import { Offer } from '../models/offer';
 import { Order } from '../models/order';
 import { PushNotification } from '../models/push-notification';
+import { ContactUsResponse, GetVersionResponse } from '../models/ui';
 
-@Injectable()
-
-export class UIActions {
-  static CONTACT_US = '[UI] Contact Us';
-  contactUs(contact: { email: string, subject: string, question: string }): Action {
-    return {
-      type: UIActions.CONTACT_US,
-      payload: contact
-    };
-  }
-
-  static ADD_USER_ID_TO_SOCKET = '[UI] Add User ID to Socket';
-  addUserIDToSocket(id: string): Action {
-    return {
-      type: UIActions.ADD_USER_ID_TO_SOCKET,
-      payload: id
-    };
-  }
-
-  static ADD_USER_ID_TO_SOCKET_FAIL = '[UI] Add User ID to Socket Fail';
-  addUserIDToSocketFail(err: Error): Action {
-    return {
-      type: UIActions.ADD_USER_ID_TO_SOCKET_FAIL,
-      payload: err
-    };
-  }
-
-  static ADD_USER_ID_TO_SOCKET_SUCCESS = '[UI] Add User ID to Socket Success';
-  addUserIDToSocketSuccess(res: any): Action {
-    return {
-      type: UIActions.ADD_USER_ID_TO_SOCKET_SUCCESS,
-      payload: res
-    };
-  }
-
-  static CONTACT_US_FAIL = '[UI] Contact Us Fail';
-  contactUsFail(err: Error): Action {
-    return {
-      type: UIActions.CONTACT_US_FAIL,
-      payload: err
-    };
-  }
-
-  static CONTACT_US_SUCCESS = '[UI] Contact Us Success';
-  contactUsSuccess(version: { version: string }): Action {
-    return {
-      type: UIActions.CONTACT_US_SUCCESS,
-      payload: version
-    };
-  }
-
-  static CREATE_PUSH_NOTIFICATION = '[UI] Create Push Notification';
-  createPushNotification(push: PushNotification): Action {
-    return {
-      type: UIActions.CONTACT_US_SUCCESS,
-      payload: push
-    };
-  }
-
-  static DISPLAY_COMPLETED_ORDER_DIALOG = '[UI] Display Completed Order Dialog';
-  displayCompletedOrderDialog(order: Order): Action {
-    return {
-      type: UIActions.DISPLAY_COMPLETED_ORDER_DIALOG,
-      payload: order
-    };
-  }
-
-  static DISPLAY_CREDITED_OFFER_DIALOG = '[UI] Display Credited Offer Dialog';
-  displayCreditedOfferDialog(offer: Offer): Action {
-    return {
-      type: UIActions.DISPLAY_CREDITED_OFFER_DIALOG,
-      payload: offer
-    };
-  }
-
-  static GET_VERSION = '[UI] Get Version';
-  getVersion(): Action {
-    return {
-      type: UIActions.GET_VERSION
-    };
-  }
-
-  static GET_VERSION_FAIL = '[UI] Get Version Fail';
-  getVersionFail(err: Error): Action {
-    return {
-      type: UIActions.GET_VERSION_FAIL,
-      payload: err
-    };
-  }
-
-  static GET_VERSION_SUCCESS = '[UI] Get Version Success';
-  getVersionSuccess(version: { version: string }): Action {
-    return {
-      type: UIActions.GET_VERSION_SUCCESS,
-      payload: version
-    };
-  }
-
-  static MARK_COMPLETED_ORDER_AS_VIEWED = '[UI] Mark Complete Order As Viewed';
-  markCompletedOrderAsViewed(id: string): Action {
-    return {
-      type: UIActions.MARK_COMPLETED_ORDER_AS_VIEWED,
-      payload: id
-    };
-  }
-
-  static MARK_CREDITED_OFFER_AS_VIEWED = '[UI] Mark Credited Offer As Viewed';
-  markCreditedOfferAsViewed(id: string): Action {
-    return {
-      type: UIActions.MARK_CREDITED_OFFER_AS_VIEWED,
-      payload: id
-    };
-  }
-
-  static SET_MOBILE = '[UI] Set Mobile';
-  setMobile(mobile: boolean): Action {
-    return {
-      type: UIActions.SET_MOBILE,
-      payload: mobile
-    };
-  }
-  static TOGGLE_SIDE_NAV_OPEN = '[UI] Toggle SideNav Open';
-  toggleSideNavOpen(): Action {
-    return {
-      type: UIActions.TOGGLE_SIDE_NAV_OPEN
-    };
-  }
+export enum UIActionTypes {
+  AddUserIDToSocket = '[UI] Add User ID to Socket',
+  AddUserIDToSocketFail = '[UI] Add User ID to Socket Fail',
+  AddUserIDToSocketSuccess = '[UI] Add User ID to Socket Success',
+  ContactUs = '[UI] Contact Us',
+  ContactUsFail = '[UI] Contact Us Fail',
+  ContactUsSuccess = '[UI] Contact Us Success',
+  CreatePushNotification = '[UI] Create Push Notification',
+  CreatePushNotificationFail = '[UI] Create Push Notification Fail',
+  CreatePushNotificationSuccess = '[UI] Create Push Notification Success',
+  DisplayCompletedOrderDialog = '[UI] Display Completed Order Dialog',
+  DisplayCreditedOfferDialog = '[UI] Display Credited Offer Dialog',
+  GetVersion = '[UI] Get Version',
+  GetVersionFail = '[UI] Get Version Fail',
+  GetVersionSuccess = '[UI] Get Version Success',
+  MarkCompletedOrderAsViewed = '[UI] Mark Completed Order As Viewed',
+  MarkCreditedOfferAsViewed = '[UI] Mark Credited Offer As Viewed',
+  SetMobile = '[UI] Set Mobile',
+  ToggleSideNavOpen = '[UI] Toggle SideNav Open'
 }
+
+export class AddUserIDToSocket implements Action {
+  readonly type = UIActionTypes.AddUserIDToSocket;
+
+  constructor(public payload: string) { }
+}
+
+export class AddUserIDToSocketFail implements Action {
+  readonly type = UIActionTypes.AddUserIDToSocketFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class AddUserIDToSocketSuccess implements Action {
+  readonly type = UIActionTypes.AddUserIDToSocketSuccess;
+
+  constructor(public payload: string) { }
+}
+
+export class ContactUs implements Action {
+  readonly type = UIActionTypes.ContactUs;
+
+  constructor(public payload: { email: string, subject: string, question: string }) { }
+}
+
+export class ContactUsFail implements Action {
+  readonly type = UIActionTypes.ContactUsFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class ContactUsSuccess implements Action {
+  readonly type = UIActionTypes.ContactUsSuccess;
+
+  constructor(public payload: ContactUsResponse) { }
+}
+
+export class CreatePushNotification implements Action {
+  readonly type = UIActionTypes.CreatePushNotification;
+
+  constructor(public payload: PushNotification) { }
+}
+
+export class DisplayCompletedOrderDialog implements Action {
+  readonly type = UIActionTypes.DisplayCompletedOrderDialog;
+
+  constructor(public payload: { order: Order }) { }
+}
+
+export class DisplayCreditedOfferDialog implements Action {
+  readonly type = UIActionTypes.DisplayCreditedOfferDialog;
+
+  constructor(public payload: { offer: Offer }) { }
+}
+
+export class GetVersion implements Action {
+  readonly type = UIActionTypes.GetVersion;
+}
+
+export class GetVersionFail implements Action {
+  readonly type = UIActionTypes.GetVersionFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetVersionSuccess implements Action {
+  readonly type = UIActionTypes.GetVersionSuccess;
+
+  constructor(public payload: GetVersionResponse) { }
+}
+
+export class MarkCompletedOrderAsViewed implements Action {
+  readonly type = UIActionTypes.MarkCompletedOrderAsViewed;
+
+  constructor(public payload: string) { }
+}
+
+export class MarkCreditedOfferAsViewed implements Action {
+  readonly type = UIActionTypes.MarkCreditedOfferAsViewed;
+
+  constructor(public payload: string) { }
+}
+
+export class SetMobile implements Action {
+  readonly type = UIActionTypes.SetMobile;
+
+  constructor(public payload: boolean) { }
+}
+
+export class ToggleSideNavOpen implements Action {
+  readonly type = UIActionTypes.ToggleSideNavOpen;
+}
+
+export type UIActions =
+  | AddUserIDToSocket
+  | AddUserIDToSocketFail
+  | AddUserIDToSocketSuccess
+  | ContactUs
+  | ContactUsFail
+  | ContactUsSuccess
+  | CreatePushNotification
+  | DisplayCompletedOrderDialog
+  | DisplayCreditedOfferDialog
+  | GetVersion
+  | GetVersionFail
+  | GetVersionSuccess
+  | MarkCompletedOrderAsViewed
+  | MarkCreditedOfferAsViewed
+  | SetMobile
+  | ToggleSideNavOpen;

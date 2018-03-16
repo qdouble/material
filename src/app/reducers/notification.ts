@@ -1,37 +1,38 @@
 /* tslint:disable: no-switch-case-fall-through */
-/* tslint:disable: variable-names */
-import { Observable } from 'rxjs/Observable';
-import { compose } from '@ngrx/core/compose';
-import { Action } from '@ngrx/store';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
-import { AppState } from './';
-import { NotificationActions } from '../actions/notification';
+import { NotificationActions, NotificationActionTypes } from '../actions/notification';
 import { Notification } from '../models/notification';
 
-export interface NotificationState {
-  ids: string[];
-  entities: { [id: string]: Notification };
+export const adapter = createEntityAdapter<Notification>({
+  selectId: (notification: Notification) => notification.id
+});
+
+export interface State extends EntityState<Notification> {
+  ids: number[];
   pendingTotal: number;
   unreadTotal: number;
+  selectedNotification: number | null;
 }
 
-export const initialState: NotificationState = {
+export const initialState: State = adapter.getInitialState({
   ids: [],
-  entities: {},
   pendingTotal: null,
-  unreadTotal: 0
-};
+  unreadTotal: 0,
+  selectedNotification: null
+});
 
-export function notificationReducer(state = initialState, action: Action): NotificationState {
+export function notificationReducer(
+  state = initialState,
+  action: NotificationActions
+): State {
   switch (action.type) {
 
-    case NotificationActions.ADD_NOTIFICATION: {
-      let message: (string | undefined);
-      let type: (string | undefined);
+    case NotificationActionTypes.AddNotification: {
+      let message: string | undefined;
       const response = action.payload;
-      const id: number = state.ids.length + 1;
+      const id = state.ids.length + 1;
       if (response.message) message = response.message;
-      if (response.message_type) type = response.message_type;
 
       switch (response.status) {
         case 0:
@@ -50,115 +51,91 @@ export function notificationReducer(state = initialState, action: Action): Notif
         id: id,
         message: message
       };
-      return Object.assign({}, state, {
-        ids: [...state.ids, id],
-        entities: Object.assign({}, state.entities, {
-          [id]: notification
-        })
-      });
+
+      return {
+        ...adapter.addOne(notification, state)
+      };
     }
 
-    case NotificationActions.DELETE_ALL_NOTIFICATIONS_SUCCESS: {
-      const success: boolean = action.payload.success;
+    case NotificationActionTypes.DeleteAllNotificationsSuccess: {
+      const success = action.payload.success;
       if (!success) return state;
-      return Object.assign({}, state, {
+      return {
+        ...state,
         ids: [],
         entities: {},
         pendingTotal: null,
         unreadTotal: 0
-      });
+      };
     }
 
-    case NotificationActions.DELETE_NOTIFICATIONS_SUCCESS: {
-      const ids: string[] = action.payload.ids;
+    case NotificationActionTypes.DeleteNotificationsSuccess: {
+      const ids = action.payload.ids;
       let reduceTotal = 0;
       if (!ids) return state;
-      const entitiesMod = Object.assign({}, state.entities);
       ids.forEach(id => {
-        if (!entitiesMod[id].read) {
+        if (!state.entities[id].read) {
           reduceTotal += 1;
         }
-        delete entitiesMod[id];
       });
 
-      return Object.assign({}, state, {
-        ids: state.ids.filter(id => !ids.includes(id)),
-        entities: entitiesMod,
+      return {
+        ...adapter.removeMany(ids, state),
         unreadTotal: state.unreadTotal - reduceTotal
-      });
+      };
     }
 
-    case NotificationActions.INC_PENDING_UNREAD_TOTAL: {
-      const inc: number = action.payload;
+    case NotificationActionTypes.IncPendingUnreadTotal: {
+      const inc = action.payload;
       if (!inc) return state;
       let pendingTotal = state.pendingTotal ? inc + state.pendingTotal : inc + state.unreadTotal;
 
-      return Object.assign({}, state, {
-        pendingTotal: pendingTotal
-      });
+      return { ...state, pendingTotal: pendingTotal };
     }
 
-    case NotificationActions.GET_NOTIFICATIONS_SUCCESS: {
-      const notifications: Notification[] = action.payload.notifications;
-      const unreadTotal: number = action.payload.unreadTotal;
+    case NotificationActionTypes.GetNotificationsSuccess: {
+      const notifications = action.payload.notifications;
+      const unreadTotal = action.payload.unreadTotal;
       if (!notifications) return state;
       const newNotifications = notifications
         .filter(notification => !state.entities[notification.id]);
 
-      const newNotificationIds = newNotifications.map(notification => notification.id);
-      const newNotificationEntities = newNotifications
-        .reduce((entities: { [id: string]: Notification }, notification: Notification) => {
-          return Object.assign(entities, {
-            [notification.id]: notification
-          });
-        }, {});
-
-      return Object.assign({}, state, {
-        ids: [...state.ids, ...newNotificationIds],
-        entities: Object.assign({}, state.entities, newNotificationEntities),
+      return {
+        ...adapter.addMany(newNotifications, state),
         unreadTotal: unreadTotal,
         pendingTotal: null
-      });
+      };
     }
 
-    case NotificationActions.MARK_ALL_AS_READ_SUCCESS: {
-      if (!action.payload) return state;
-      const newNotifications = Object.assign({}, state.entities);
-
-      Object.keys(newNotifications).forEach((index => {
-        newNotifications[index] = Object.assign({}, newNotifications[index], {
-          read: true
-        });
-      }));
-      return Object.assign({}, state, {
-        entities: newNotifications,
+    case NotificationActionTypes.MarkAllAsReadSuccess: {
+      if (!(action.payload && action.payload.success)) return state;
+      let ids = state.ids;
+      return {
+        ...adapter.updateMany(ids.map(u => ({
+          id: u,
+          changes: { read: true }
+        })), state),
         unreadTotal: 0
-      });
+      };
     }
 
-    case NotificationActions.MARK_NOTIFICATIONS_AS_READ_SUCCESS: {
+    case NotificationActionTypes.MarkNotificationsAsReadSuccess: {
       const ids = action.payload.ids;
       const read = action.payload.read;
       let newUnreadTotal = read ? state.unreadTotal - ids.length : state.unreadTotal + ids.length;
       if (!ids || ids.length < 1 || typeof read !== 'boolean') return state;
-      const newNotifications = Object.assign({}, state.entities);
-
-      ids.forEach((id => {
-        newNotifications[id] = Object.assign({}, newNotifications[id], {
-          read: read
-        });
-      }));
-
-      return Object.assign({}, state, {
-        entities: newNotifications,
+      return {
+        ...adapter.updateMany(ids.map(i => ({ id: i, changes: { read: read } })), state),
         unreadTotal: newUnreadTotal
-      });
+      };
     }
 
-    case NotificationActions.SET_NOTIFICATION_UNREAD_TOTAL: {
-      return Object.assign({}, state, {
-        unreadTotal: action.payload.unreadTotal
-      });
+    case NotificationActionTypes.Select: {
+      return { ...state, selectedNotification: action.payload };
+    }
+
+    case NotificationActionTypes.SetNotificationUnreadTotal: {
+      return { ...state, unreadTotal: action.payload.unreadTotal };
     }
 
     default: {
@@ -167,65 +144,8 @@ export function notificationReducer(state = initialState, action: Action): Notif
   }
 }
 
-function _getNofityEntities() {
-  return (state$: Observable<NotificationState>) => state$
-    .select(s => s.entities);
-}
+export const getPending = (state: State) => state.pendingTotal;
 
-function _getNotification(id: string) {
-  return (state$: Observable<NotificationState>) => state$
-    .select(s => s.entities[id]);
-}
+export const getUnreadTotal = (state: State) => state.unreadTotal;
 
-function _getNotifications(notificationIds: string[]) {
-  return (state$: Observable<NotificationState>) => state$
-    .let(_getNofityEntities())
-    .map(entities => notificationIds.map(id => entities[id]));
-}
-
-function _getNotificationIds() {
-  return (state$: Observable<NotificationState>) => state$
-    .select(s => s.ids);
-}
-
-function _getNotificationCollection() {
-  return (state$: Observable<NotificationState>) => state$
-    .let(_getNotificationIds())
-    .switchMap((userId) => state$.let(_getNotifications(userId))
-    );
-}
-
-function _getNotificationState() {
-  return (state$: Observable<AppState>) => state$
-    .select(s => s.notification);
-}
-
-function _getNoficationPendingTotal() {
-  return (state$: Observable<NotificationState>) => state$
-    .select(s => s.pendingTotal);
-}
-
-function _getNoficationUnreadTotal() {
-  return (state$: Observable<NotificationState>) => state$
-    .select(s => s.unreadTotal);
-}
-
-export function getNotification(notificationId: string) {
-  return compose(_getNotification(notificationId), _getNotificationState());
-}
-
-export function getNotifications(notificationIds: string[]) {
-  return compose(_getNotifications(notificationIds), _getNotificationState());
-}
-
-export function getNotificationCollection() {
-  return compose(_getNotificationCollection(), _getNotificationState());
-}
-
-export function getNoficationPendingTotal() {
-  return compose(_getNoficationPendingTotal(), _getNotificationState());
-}
-
-export function getNotificationUnreadTotal() {
-  return compose(_getNoficationUnreadTotal(), _getNotificationState());
-}
+export const getSelectedNotification = (state: State) => state.selectedNotification;

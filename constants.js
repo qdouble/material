@@ -26,7 +26,7 @@ exports.DEV_SERVER_PROXY_CONFIG = {
  * https://webpack.github.io/docs/configuration.html#devtool
  */
 exports.DEV_SOURCE_MAPS = 'eval';
-exports.PROD_SOURCE_MAPS = 'source-map';
+exports.PROD_SOURCE_MAPS = undefined;
 
 /**
  * Set watch options for Dev Server. For better HMR performance, you can 

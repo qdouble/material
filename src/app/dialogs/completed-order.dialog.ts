@@ -1,6 +1,6 @@
 /* tslint:disable max-line-length */
 import { Component } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 
 import { Order } from '../models/order';
 
@@ -12,8 +12,8 @@ import { Order } from '../models/order';
       <h6>Share a screenshot of your payment and inspire others!</h6>
       <p>Showing people that the program works will make it easier for you to get more signups and completions!</p>
       <img src="assets/jpg/fb-proof-banner-congrats.jpg">
-      <a href="https://www.facebook.com/groups/irproofpics/?congrats=true" target="_blank"><button md-raised-button color="primary" class="white">Go to Proof Pic Group</button></a>
-      <button md-button color="warn" (click)="dialogRef.close()">Close</button>
+      <a href="https://www.facebook.com/groups/irproofpics/?congrats=true" target="_blank"><button mat-raised-button color="primary" class="white">Go to Proof Pic Group</button></a>
+      <button mat-button color="warn" (click)="dialogRef.close()">Close</button>
   </div>`,
   styles: [`.completed-order-dialog{ text-align: center; max-width: 500px; }
   .completed-order-dialog img { max-width: 100%; } h5, h6 { margin: 0 }
@@ -25,5 +25,5 @@ import { Order } from '../models/order';
 export class CompletedOrderDialog {
   order: Order;
   publish = PUBLISH;
-  constructor(public dialogRef: MdDialogRef<CompletedOrderDialog>) { }
+  constructor(public dialogRef: MatDialogRef<CompletedOrderDialog>) { }
 }

@@ -1,14 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { PrizeActions } from '../../actions/prize';
-import { UserActions } from '../../actions/user';
+import * as fromStore from '../../reducers';
+import * as prizeActions from '../../actions/prize';
+import * as userActions from '../../actions/user';
 import { Prize } from '../../models/prize';
-import { AppState } from '../../reducers';
-import { getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
 import { RegexValues } from '../../validators';
 
 @Component({
@@ -29,20 +28,18 @@ export class Homepage implements OnDestroy {
   prizeForm = new FormGroup({});
 
   constructor(
-    private prizeActions: PrizeActions,
-    private store: Store<AppState>,
-    private userActions: UserActions
+    private store: Store<fromStore.AppState>
   ) {
-    this.prizes$ = this.store.let(getPrizeCollection());
-    this.prizesLoaded$ = this.store.let(getPrizeLoaded());
+    this.prizes$ = this.store.pipe(select(fromStore.getPrizeCollection));
+    this.prizesLoaded$ = this.store.pipe(select(fromStore.getPrizeLoaded));
     this.prizesLoadedSub = this.prizesLoaded$.subscribe(val => {
-      if (!val) this.store.dispatch(this.prizeActions.getPrizes());
+      if (!val) this.store.dispatch(new prizeActions.GetPrizes());
     });
   }
 
   submitForm() {
-    this.store.dispatch(this.userActions.checkEmail(this.f.get('email').value));
-    this.store.dispatch(this.prizeActions.selectPrize(this.prizeForm.value.selectedPrize));
+    this.store.dispatch(new userActions.CheckEmail(this.f.get('email').value));
+    this.store.dispatch(new prizeActions.SelectPrize(this.prizeForm.value.selectedPrize));
   }
 
   ngOnDestroy() {

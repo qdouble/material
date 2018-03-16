@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
-import { Order } from '../models/order';
+import { Order, GetOrderResponse, GetOrdersResponse } from '../models/order';
 import { RequestBase } from './request-base';
 
 @Injectable()
@@ -12,12 +12,12 @@ export class OrderService extends RequestBase {
     super(http);
   }
 
-  getOrders(): Observable<Order[]> {
+  getOrders(): Observable<GetOrdersResponse> {
     return this.http.get(`${API_USER_URL}/getOrders`, this.optionsNoPre)
       .map(res => res.json());
   }
 
-  placeOrder(order: Order): Observable<Order> {
+  placeOrder(order: Order): Observable<GetOrderResponse> {
     return this.http.post(`${API_USER_URL}/placeOrder`, order, this.options)
       .map(res => res.json());
   }

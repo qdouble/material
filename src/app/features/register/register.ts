@@ -1,23 +1,20 @@
 /* tslint:disable: variable-name */
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import { CountryActions } from '../../actions/country';
-import { PrizeActions } from '../../actions/prize';
-import { UserActions } from '../../actions/user';
+import * as countryActions from '../../actions/country';
+import * as prizeActions from '../../actions/prize';
+import * as userActions from '../../actions/user';
 import { Country } from '../../models/country';
 import { IP } from '../../models/ip';
 import { Prize } from '../../models/prize';
-import { AppState } from '../../reducers';
-import { getCountryCollection, getCountryLoaded } from '../../reducers/country';
-import { getPrizeSelected, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
-import { getReferrerBlocked, getUserEntryEmail, getUserReferredBy } from '../../reducers/user';
+import * as fromStore from '../../reducers';
 import { CustomValidators, RegexValues, UsernameValidator } from '../../validators';
 
 import { IPMatchFoundDialog } from './ip-match-found.dialog';
@@ -40,7 +37,7 @@ import { IPMatchFoundDialog } from './ip-match-found.dialog';
 
 export class Register implements OnDestroy, OnInit {
   blocked: true;
-  config: MdDialogConfig = {
+  config: MatDialogConfig = {
     disableClose: false
   };
   countries$: Observable<Country[]>;
@@ -48,7 +45,7 @@ export class Register implements OnDestroy, OnInit {
   countryNames$: Observable<(string | undefined)[]>;
   countryLoaded$: Observable<boolean>;
   destroyed$: Subject<any> = new Subject<any>();
-  dialogRef: MdDialogRef<IPMatchFoundDialog>;
+  dialogRef: MatDialogRef<IPMatchFoundDialog>;
   f: FormGroup;
   flash: string;
   entryEmail$: Observable<string | null>;
@@ -66,12 +63,9 @@ export class Register implements OnDestroy, OnInit {
   showPrizes: boolean;
   step = 1;
   constructor(
-    private countryActions: CountryActions,
-    public dialog: MdDialog,
-    private prizeActions: PrizeActions,
+    public dialog: MatDialog,
     private route: ActivatedRoute,
-    private store: Store<AppState>,
-    private userActions: UserActions,
+    private store: Store<fromStore.AppState>,
     private userValidator: UsernameValidator
   ) {
 
@@ -115,35 +109,35 @@ export class Register implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.countryLoaded$ = this.store.let(getCountryLoaded());
+    this.countryLoaded$ = this.store.pipe(select(fromStore.getCountryLoaded));
     this.countryLoaded$
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
-        if (!loaded) this.store.dispatch(this.countryActions.getCountries());
+        if (!loaded) this.store.dispatch(new countryActions.GetCountries());
       });
-    this.prizeLoaded$ = this.store.let(getPrizeLoaded());
+    this.prizeLoaded$ = this.store.pipe(select(fromStore.getPrizeLoaded));
     this.prizeLoaded$
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
         if (!loaded) {
-          this.store.dispatch(this.prizeActions.getPrizes());
+          this.store.dispatch(new prizeActions.GetPrizes());
         }
       });
-    this.countryLoaded$ = this.store.let(getCountryLoaded());
+    this.countryLoaded$ = this.store.pipe(select(fromStore.getCountryLoaded));
     this.countryLoaded$
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
         if (!loaded) {
-          this.store.dispatch(this.countryActions.getCountries());
+          this.store.dispatch(new countryActions.GetCountries());
         }
       });
-    this.store.let(getReferrerBlocked()).takeUntil(this.destroyed$)
+    this.store.pipe(select(fromStore.getUserReferrerBlocked)).takeUntil(this.destroyed$)
       .subscribe(blocked => {
         if (blocked) {
           this.blocked = true;
         }
       });
-    this.countries$ = this.store.let(getCountryCollection());
+    this.countries$ = this.store.pipe(select(fromStore.getCountryCollection));
     this.countryIds$ = this.countries$.map(countries => countries.map(country => country.id));
     this.countryIds$
       .filter(ids => ids.length > 0)
@@ -152,7 +146,7 @@ export class Register implements OnDestroy, OnInit {
       .subscribe(ids => this.f.get('country').setValue(ids[0]));
     this.countryNames$ = this.countries$
       .map(countries => countries.map(country => country.displayName));
-    this.entryEmail$ = this.store.let(getUserEntryEmail());
+    this.entryEmail$ = this.store.pipe(select(fromStore.getUserEntryEmail));
     this.entryEmail$
       .takeUntil(this.destroyed$)
       .take(1)
@@ -162,7 +156,7 @@ export class Register implements OnDestroy, OnInit {
 
     this.ip$ = this.store.select(s => s.user.ip);
     this.ipJson$ = this.store.select(s => s.user.ipJson);
-    this.referredBy$ = this.store.let(getUserReferredBy());
+    this.referredBy$ = this.store.pipe(select(fromStore.getUserReferredBy));
     this.referredBy$
       .takeUntil(this.destroyed$)
       .filter(ref => ref !== null)
@@ -170,7 +164,7 @@ export class Register implements OnDestroy, OnInit {
         this.f.get('referredBy').setValue(ref);
       });
 
-    this.prizes$ = this.store.let(getPrizeCollection());
+    this.prizes$ = this.store.pipe(select(fromStore.getPrizeCollection));
     this.prizeIds$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
     this.prizeNames$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
     this.route.queryParams.forEach(param => {
@@ -188,7 +182,7 @@ export class Register implements OnDestroy, OnInit {
         this.f.get('phone').patchValue(param.phone);
       }
     });
-    this.selectedPrize$ = this.store.let(getPrizeSelected());
+    this.selectedPrize$ = this.store.pipe(select(fromStore.getSelectedPrizeId));
     this.selectedPrize$
       .takeUntil(this.destroyed$)
       .subscribe(id => {
@@ -198,6 +192,7 @@ export class Register implements OnDestroy, OnInit {
       .filter(ids => ids.length > 0)
       .takeUntil(this.destroyed$)
       .subscribe(ids => {
+        this.store.dispatch(new prizeActions.SelectPrize(ids[0]));
         if (this.f.get('selectedPrize').value === null) {
           this.f.patchValue({ selectedPrize: ids[0] });
         }
@@ -222,7 +217,7 @@ export class Register implements OnDestroy, OnInit {
     if (this.dialogRef) {
       this.dialogRef.afterClosed().subscribe(proceed => {
         if (proceed) {
-          this.store.dispatch(this.userActions.register(this.f.value));
+          this.store.dispatch(new userActions.Register(this.f.value));
         }
         this.dialogRef = null;
       });
@@ -240,10 +235,10 @@ export class Register implements OnDestroy, OnInit {
         if (match) {
           this.openIPMatchDialog();
         } else {
-          this.store.dispatch(this.userActions.register(this.f.value));
+          this.store.dispatch(new userActions.Register(this.f.value));
         }
       });
-    this.store.dispatch(this.userActions.checkIPMatch(this.f.get('referredBy').value));
+    this.store.dispatch(new userActions.CheckIPMatch(this.f.get('referredBy').value));
   }
 
   ngOnDestroy() {

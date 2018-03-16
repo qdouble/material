@@ -1,3 +1,5 @@
+import { GenericResponse } from './generic-response';
+
 export interface Offer {
   id?: string;
   displayName?: string;
@@ -52,4 +54,19 @@ export interface OfferVersion {
   commission: number;
   creditValue: number;
   bonus?: boolean;
+}
+
+export interface GetOfferResponse extends GenericResponse {
+  offer: Offer;
+  userAgent: any;
+}
+
+export interface GetOffersResponse extends GenericResponse {
+  offers: Offer[];
+  rankUpdatedAt?: string;
+  loadedUserOffers?: boolean;
+}
+
+export interface GetOffersUpdatedAtResponse extends GenericResponse {
+  lastUpdatedAt: string;
 }

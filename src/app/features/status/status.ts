@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
-import { Store } from '@ngrx/store';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
+import { Store, select } from '@ngrx/store';
 import { FacebookService, UIResponse, UIParams } from 'ngx-facebook';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -10,26 +10,15 @@ import { Subject } from 'rxjs/Subject';
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { combineSort } from '../../helper/combine-sort';
 
-import { AppState } from '../../reducers';
+import * as fromStore from '../../reducers';
 import { Credit } from '../../models/credit';
 import { Prize } from '../../models/prize';
 import { Referral } from '../../models/referral';
 import { User } from '../../models/user';
 
 import { ReferralsTable } from './common/referrals-table';
-import { PrizeActions } from '../../actions/prize';
-import { UserActions } from '../../actions/user';
-import { getPrize, getPrizeCollection, getPrizeLoaded } from '../../reducers/prize';
-import { getCreditCollection, getCreditTotal } from '../../reducers/user';
-import {
-  getReferralCollection,
-  getReferral,
-  getSelectedReferralIds,
-  getUser,
-  getUserLoaded,
-  getUserLoading,
-  getUserSettingPrize
-} from '../../reducers/user';
+import * as prizeActions from '../../actions/prize';
+import * as userActions from '../../actions/user';
 
 @Component({
   selector: 'os-status',
@@ -47,8 +36,8 @@ import {
 
 export class Status implements OnDestroy, OnInit {
   changePrize = false;
-  confirmDialogRef: MdDialogRef<ConfirmDialog>;
-  confirmDialogConfig: MdDialogConfig = {
+  confirmDialogRef: MatDialogRef<ConfirmDialog>;
+  confirmDialogConfig: MatDialogConfig = {
     disableClose: false
   };
   credits$: Observable<Credit[]>;
@@ -79,12 +68,10 @@ export class Status implements OnDestroy, OnInit {
   user: User;
   @ViewChild(ReferralsTable) referralTable: ReferralsTable;
   constructor(
-    public dialog: MdDialog,
+    public dialog: MatDialog,
     private facebook: FacebookService,
     private fb: FormBuilder,
-    private store: Store<AppState>,
-    private prizeActions: PrizeActions,
-    private userActions: UserActions
+    private store: Store<fromStore.AppState>
   ) {
     facebook.init({
       appId: '1784209348260534',
@@ -95,28 +82,29 @@ export class Status implements OnDestroy, OnInit {
       {
         'sponsorUserName': ['', [Validators.required, Validators.minLength(3)]]
       });
-    this.loaded$ = store.let(getUserLoaded());
-    this.loading$ = store.let(getUserLoading());
-    store.let(getPrizeLoaded())
+    this.loaded$ = store.pipe(select(fromStore.getUserLoaded));
+    this.loading$ = store.pipe(select(fromStore.getUserLoading));
+    store.pipe(select(fromStore.getPrizeLoaded))
       .take(1)
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
-        if (loaded) this.store.dispatch(this.prizeActions.getPrizes());
+        if (loaded) this.store.dispatch(new prizeActions.GetPrizes());
       });
-    this.settingPrize$ = store.let(getUserSettingPrize());
-    let referralsUnsorted$ = store.let(getReferralCollection());
+    this.settingPrize$ = store.pipe(select(fromStore.getUserSettingPrize));
+    let referralsUnsorted$ = store.pipe(select(fromStore.getUserReferralCollection));
     let sortReferralBy$ = store.select(s => s.user.sortReferralBy);
     let sortReferralsByToArray$ = sortReferralBy$.map(sort => [sort.sortBy, sort.reverse]);
     sortReferralBy$.subscribe(sort => this.sortingBy = sort);
     this.referrals$ = Observable
       .combineLatest(sortReferralsByToArray$, referralsUnsorted$, combineSort);
-    this.user$ = store.let(getUser());
+    this.user$ = store.pipe(select(fromStore.getUserProfile));
     this.user$
       .takeUntil(this.destroyed$)
       .subscribe(user => {
         this.user = user;
-        this.prize$ = this.store.let(getPrize(user.selectedPrize));
-        this.prizes$ = this.store.let(getPrizeCollection());
+        this.store.dispatch(new prizeActions.SelectPrize(user.selectedPrize));
+        this.prize$ = this.store.pipe(select(fromStore.getSelectedPrize));
+        this.prizes$ = this.store.pipe(select(fromStore.getPrizeCollection));
         this.selectedPrizeLabels$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
         this.selectedPrizeValues$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
         this.prizes$
@@ -129,12 +117,12 @@ export class Status implements OnDestroy, OnInit {
                   selectedPrize.setValue(prizes[0].id);
               }
             } else {
-              this.store.dispatch(this.prizeActions.getPrizes());
+              this.store.dispatch(new prizeActions.GetPrizes());
             }
           });
       });
-    this.credits$ = store.let(getCreditCollection());
-    this.creditTotal$ = store.let(getCreditTotal());
+    this.credits$ = store.pipe(select(fromStore.getUserCreditCollection));
+    this.creditTotal$ = store.pipe(select(fromStore.getUserCreditTotal));
 
     this.updatedAt$ = store.select(s => s.user.updatedAt);
     this.updatedAt$
@@ -142,7 +130,7 @@ export class Status implements OnDestroy, OnInit {
       .subscribe(updatedAt => {
         this.updatedAt = updatedAt;
         if (updatedAt) {
-          this.store.dispatch(this.userActions.checkIfUserUpdated());
+          this.store.dispatch(new userActions.CheckIfUserUpdated());
         }
       });
     let lastUpdate$ = store.select(s => s.user.lastUpdate);
@@ -151,14 +139,14 @@ export class Status implements OnDestroy, OnInit {
       .takeUntil(this.destroyed$)
       .subscribe(lastUpdate => {
         if (this.updatedAt && lastUpdate !== this.updatedAt) {
-          store.dispatch(userActions.getProfile());
+          store.dispatch(new userActions.GetProfile());
         }
       });
   }
 
   ngOnInit() {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
-    this.selectedReferralIds$ = this.store.let(getSelectedReferralIds());
+    this.selectedReferralIds$ = this.store.pipe(select(fromStore.getSelectedReferralIds));
     this.selectedReferralIds$
       .takeUntil(this.destroyed$)
       .subscribe(ids => this.selectedReferralIds = ids);
@@ -188,7 +176,7 @@ export class Status implements OnDestroy, OnInit {
 
   changeSelectedPrize() {
     if (this.changePrize) {
-      this.store.dispatch(this.userActions.changeSelectedPrize(
+      this.store.dispatch(new userActions.ChangeSelectedPrize(
         this.selectPrizeForm.get('selectedPrize').value));
       this.settingPrize$
         .filter(s => s !== false)
@@ -200,11 +188,11 @@ export class Status implements OnDestroy, OnInit {
   }
 
   deselectAllReferrals() {
-    this.store.dispatch(this.userActions.deSelectAllReferrals());
+    this.store.dispatch(new userActions.DeselectAllReferrals());
   }
 
   deselectReferrals(ids: string[]) {
-    this.store.dispatch(this.userActions.deSelectReferrals(ids));
+    this.store.dispatch(new userActions.DeselectReferrals(ids));
   }
 
   fbShare() {
@@ -226,13 +214,13 @@ export class Status implements OnDestroy, OnInit {
 
   getReferral(referral: User) {
     if (referral.currentSponsor) {
-      this.store.dispatch(this.userActions.getReferral(referral.id));
+      this.store.dispatch(new userActions.GetReferral(referral.id));
     }
     this.loading$
       .filter(l => l === false)
       .take(1)
       .subscribe(() => {
-        let referral$ = this.store.let(getReferral(referral.id));
+        let referral$ = this.store.pipe(select(fromStore.getUserSelectedReferral));
         referral$.take(1).subscribe(ref => {
           this.referralTable.open(ref);
         });
@@ -240,7 +228,7 @@ export class Status implements OnDestroy, OnInit {
   }
 
   hideReferrals(hide: boolean) {
-    this.store.dispatch(this.userActions.hideReferrals({
+    this.store.dispatch(new userActions.HideReferrals({
       ids: this.selectedReferralIds, hide: hide
     }));
   }
@@ -261,37 +249,37 @@ export class Status implements OnDestroy, OnInit {
       .takeUntil(this.destroyed$)
       .subscribe(result => {
         if (result) {
-          this.store.dispatch(this.userActions.removeReferrals(this.selectedReferralIds));
+          this.store.dispatch(new userActions.RemoveReferrals(this.selectedReferralIds));
         }
         this.confirmDialogRef = null;
       });
     }
   }
 
-  selectReferral(select: { id: string, checked: boolean }) {
-    if (select.checked) {
-      this.selectReferrals([select.id]);
+  selectReferral(selected: { id: string, checked: boolean }) {
+    if (selected.checked) {
+      this.selectReferrals([selected.id]);
     } else {
-      this.deselectReferrals([select.id]);
+      this.deselectReferrals([selected.id]);
     }
   }
 
   selectReferrals(ids: string[]) {
-    this.store.dispatch(this.userActions.selectReferrals(ids));
+    this.store.dispatch(new userActions.SelectReferrals(ids));
   }
 
   sortBy(sortBy: string) {
     if (sortBy === this.sortingBy.sortBy) {
       this.store.dispatch(
-        this.userActions.sortReferralsBy({ sortBy: sortBy, reverse: !this.sortingBy.reverse }));
+        new userActions.SortReferralsBy({ sortBy: sortBy, reverse: !this.sortingBy.reverse }));
     } else {
       this.store.dispatch(
-        this.userActions.sortReferralsBy({ sortBy: sortBy, reverse: false }));
+        new userActions.SortReferralsBy({ sortBy: sortBy, reverse: false }));
     }
   }
 
   submitSponsor() {
-    this.store.dispatch(this.userActions.setSponsor(this.sponsorForm.get('sponsorUserName').value));
+    this.store.dispatch(new userActions.SetSponsor(this.sponsorForm.get('sponsorUserName').value));
   }
 
   ngOnDestroy() {

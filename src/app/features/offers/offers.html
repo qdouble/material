@@ -1,17 +1,17 @@
-<md-card id="offers-page" class="os-page-container" @fade>
+<mat-card id="offers-page" class="os-page-container" @fade>
   <div *ngIf="loggedIn && (newEqualTrue$ | async)" class="referral-link">
-    <md-card-title *ngIf="!(returningUser$ | async) && userLevel < 1" >
+    <mat-card-title *ngIf="!(returningUser$ | async) && userLevel < 1" >
       <div [ngClass]="{'accent': (testShowRef$ | async)}">Welcome to Level Rewards, {{firstName$ | async}}!</div>
-    </md-card-title>
-    <md-card-title *ngIf="(returningUser$ | async) || userLevel > 1">
+    </mat-card-title>
+    <mat-card-title *ngIf="(returningUser$ | async) || userLevel > 1">
       <div [ngClass]="{'accent': (testShowRef$ | async)}">Welcome Back, {{firstName$ | async}}!</div>
-    </md-card-title>
-    <md-card-title *ngIf="timeRemaining">
+    </mat-card-title>
+    <mat-card-title *ngIf="timeRemaining">
       <b *ngIf="timeRemaining.hours < 0">$50 Formula: Get to Level 10 and Get 1 Referral to Match You!</b>
       <b *ngIf="timeRemaining.hours > 0 && userLevel < 5" [ngClass]="{'accent': (testShowRef$ | async)}">Get to Level 5 On Your First Day and Receive a Bonus Level Up!</b>
-    </md-card-title>
+    </mat-card-title>
     <div class="countdown" *ngIf="timeRemaining && timeRemaining.hours >= 0 && userLevel < 5">
-      <p style="color: #446f15">Get to Level 5 Before Time Expires to Recieve Bonus</p>
+      <p style="color: #446f15"><b>Get to Level 5 Before Time Expires to Recieve Bonus</b></p>
       <div class="time-container">
         <div class="container-label">Hours</div>
         <div class="container-number">{{timeRemaining.hours | number: '2.0-0'}}</div>
@@ -29,12 +29,8 @@
     </div>
     
     <ng-container *ngIf="userLevel < 1  && (username$ | async); let username">
-      <!-- <ng-container *ngIf="!(testShowRef$ | async)">
-          <md-card-subtitle>Earn Money From Everyone Who Levels Up Using Your Link!</md-card-subtitle>
-          <p><a [href]="'https://levelrewards.com/?ref=' + username" target="_blank">https://levelrewards.com/?ref={{username}}</a></p>
-      </ng-container> -->
       <ng-container>
-        <md-card-subtitle>Share Your Link to Start Earning:</md-card-subtitle>
+        <mat-card-subtitle>Share Your Link to Start Earning:</mat-card-subtitle>
         <p>
           <a [href]="'https://levelrewards.com/?ref=' + username" target="_blank">https://levelrewards.com/?ref={{username}}</a>
         </p>
@@ -42,9 +38,9 @@
     </ng-container>
   </div>
   <div *ngIf="loggedIn && userLevel < 5 && !(newEqualTrue$ | async) && timeRemaining && timeRemaining.hours > 0" class="referral-link">
-    <md-card-title>
+    <mat-card-title>
       <b [ngClass]="{'accent': (testShowRef$ | async)}">Get to Level 5 On Your First Day and Receive a Bonus Level Up!</b>
-    </md-card-title>
+    </mat-card-title>
     <div>
       <p style="color: #446f15">Get to Level 5 Before Time Expires to Recieve Bonus</p>
       <div class="time-container">
@@ -64,27 +60,27 @@
     </div>
   </div>
   <div *ngIf="userLevel >= 1 && !(newEqualTrue$ | async)" class="referral-link">
-    <md-card-title>Welcome Back, {{firstName$ | async}}!</md-card-title>
-    <md-card-title *ngIf="userLevel > 5">
+    <mat-card-title>Welcome Back, {{firstName$ | async}}!</mat-card-title>
+    <mat-card-title *ngIf="userLevel > 5">
       <div class="accent"><b>If Any of Your Referrals Get to Level 5 on Their First Day, They Will Receive a Free Bonus Level Which You Will Get Paid For!</b></div>
-    </md-card-title>
-    <button color="primary" class="white" md-raised-button routerLink="/status">Go to Status Page</button>
+    </mat-card-title>
+    <button color="primary" class="white" mat-raised-button routerLink="/status">Go to Status Page</button>
   </div>
 
   <div id="title-card-container">
     <img id="top-instruct" src="assets/svg/offers-top-instruct-ex4.svg">
   </div>
   <div class="os-offer-display-options" [style.display]="(userLevel < 1) ? 'none' : 'flex'">
-    <md-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
-      <md-button-toggle *ngFor="let option of sortByValues; let i = index" [value]="option">
+    <mat-button-toggle-group name="selectOption" [(ngModel)]="sortBy" (ngModelChange)="changeSort($event)">
+      <mat-button-toggle *ngFor="let option of sortByValues; let i = index" [value]="option">
         {{sortByLabels[i]}}
-      </md-button-toggle>
-    </md-button-toggle-group>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
   <div *ngIf="!(testShowRef$ | async)" style="margin-top: 10px;" class="os-offer-display-options">
-    <md-slide-toggle style="margin-right: 10px;" *ngIf="(credits$ | async)?.length" [(ngModel)]="showCompleted" color="primary">Show Completed</md-slide-toggle>
-    <md-slide-toggle *ngIf="!showCompleted && userLevel > 1" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []"
-      color="primary">Add Up Offer Credits</md-slide-toggle>
+    <mat-slide-toggle style="margin-right: 10px;" *ngIf="(credits$ | async)?.length" [(ngModel)]="showCompleted" color="primary">Show Completed</mat-slide-toggle>
+    <mat-slide-toggle *ngIf="!showCompleted && userLevel > 1" [(ngModel)]="addUp" (ngModelChange)="checkedOffers$.next([]); checkedOffers = []"
+      color="primary">Add Up Offer Credits</mat-slide-toggle>
   </div>
   <div *ngIf="addUp && !showCompleted" class="add-up-instruct">
     <p>
@@ -111,10 +107,10 @@
     [showingAvailable]="!showCompleted" [hideToUnqualified]="loggedIn && userLevel < 1" [offers]="!showCompleted ? (offers$ | async) : (offersCompleted$ | async)"
     [sideNavOpen]="sideNavOpen$ | async" (checkOffer)="checkOffer($event)" (goToOfferDetails)="goToOfferDetails($event)">
   </os-offer-rows>
-  <md-card id="no-completed-card" class="os-message-card accent-background white" *ngIf="selectedOption === 'Completed' && (offersCompleted$ | async)?.length < 1">
+  <mat-card id="no-completed-card" class="os-message-card accent-background white" *ngIf="selectedOption === 'Completed' && (offersCompleted$ | async)?.length < 1">
     You Have No Completed Offers. Complete an offer on the Available tab to level up!
-  </md-card>
-  <md-card *ngIf="!showCompleted && (offers$ | async)?.length > 0" class="os-offer-page-footer">
+  </mat-card>
+  <mat-card *ngIf="!showCompleted && (offers$ | async)?.length > 0" class="os-offer-page-footer">
     <p>*The level you reach determines the maximum amount of earnings you can receive per referral. The actual amount you make
       per referral is determined by the level your referrals reach (level reached multiplied by $5). All orders are subject
       to verification and cross-checks to validate the legitmacy of signups. In certain instances, we may put an account
@@ -122,6 +118,6 @@
       were legitimate (card/transaction proof). Account holds will only be removed when such information is sent. If we detect
       fraudulent activity, an account may be held indefinetly or suspended. Please try the advertisers offers to the fullest
       and abide by our terms and conditions. </p>
-  </md-card>
+  </mat-card>
   <os-footer></os-footer>
-</md-card>
+</mat-card>

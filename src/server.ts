@@ -5,7 +5,6 @@ import './polyfills.server';
 import './rxjs.imports';
 import * as express from 'express';
 import * as path from 'path';
-import { platformServer, renderModuleFactory } from '@angular/platform-server';
 import { ServerAppModule } from './app/server.app.module';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { routes } from './server.routes';

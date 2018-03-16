@@ -1,17 +1,17 @@
-<md-card class="os-page-container" @fade>
-  <md-card class="os-form-container">
-    <md-card-title class="primary">Profile</md-card-title>
-    <md-card *ngIf="(loaded$ | async) && (user$ | async).profilePending" id="profile-pending" class="accent-medium-background">
-      <md-card-content>
+<mat-card class="os-page-container" @fade>
+  <mat-card class="os-form-container">
+    <mat-card-title class="primary">Profile</mat-card-title>
+    <mat-card *ngIf="(loaded$ | async) && (user$ | async).profilePending" id="profile-pending" class="accent-medium-background">
+      <mat-card-content>
         <h6>Your Profile Changes are Pending Approval</h6>
         <p>You must either wait for admin approval before making further changes or you can dismiss pending changes.</p>
         <p><em>*If you changed your password, the password change was applied immediately.</em></p>
-        <button md-raised-button color="warn" (click)="dismissProfileChanges()">DISMISS PENDING CHANGES</button>
-      </md-card-content>
-      <md-card-actions>
-        <button md-button (click)="viewPending = !viewPending">{{ viewPending ? 'HIDE PENDING CHANGES' : 'VIEW PENDING CHANGES' }}</button>
-      </md-card-actions>
-      <md-card-content id="pending-changes" *ngIf="viewPending">
+        <button mat-raised-button color="warn" (click)="dismissProfileChanges()">DISMISS PENDING CHANGES</button>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="viewPending = !viewPending">{{ viewPending ? 'HIDE PENDING CHANGES' : 'VIEW PENDING CHANGES' }}</button>
+      </mat-card-actions>
+      <mat-card-content id="pending-changes" *ngIf="viewPending">
         <p>First Name: {{ pendingProfile?.firstName }}</p>
         <p>Last Name: {{ pendingProfile?.lastName }}</p>
         <p>Username: {{ pendingProfile?.username }}</p>
@@ -23,8 +23,8 @@
         <p>Phone: {{ pendingProfile?.phone }}</p>
         <p>PayPal: {{ pendingProfile?.paypal }}</p>
         <p>Birthday: {{ pendingProfile?.birthday }}</p>
-      </md-card-content>
-    </md-card>
+      </mat-card-content>
+    </mat-card>
     <form *ngIf="(loaded$ | async) && !(user$ | async).profilePending" [formGroup]="f" (ngSubmit)="submitForm()" autocomplete="off">
       <os-form-input class="os-form-input" placeholder="First Name" controlName="firstName" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" placeholder="Last Name" controlName="lastName" [form]="f"></os-form-input>
@@ -52,7 +52,7 @@
       </select-input>
       <os-form-input class="os-form-input" placeholder="Phone Number" controlName="phone" [form]="f"></os-form-input>
       <os-form-input class="os-form-input" placeholder="PayPal Email Address" controlName="paypal" [form]="f"></os-form-input>
-      <md-checkbox #changePassword color="primary">Change Password</md-checkbox>
+      <mat-checkbox #changePassword color="primary">Change Password</mat-checkbox>
       <ng-container *ngIf="changePassword.checked">
         <os-form-input class="os-form-input" placeholder="Change Password" controlName="password2" type="password" autocomplete="off" [form]="f"></os-form-input>
         <os-form-input class="os-form-input" placeholder="Confirm New Password" controlName="confirmPassword" type="password" autocomplete="off" [form]="f"></os-form-input>
@@ -65,16 +65,16 @@
         <input type="date" formControlName="birthday" class="form-control">
       </div>
       
-      <md-checkbox color="primary" class="os-form-input" formControlName="receiveEmailNotifications">Receive Email Notifications</md-checkbox>
+      <mat-checkbox color="primary" class="os-form-input" formControlName="receiveEmailNotifications">Receive Email Notifications</mat-checkbox>
       <div class="os-notification-types" style="margin-left: 30px;" *ngIf="f.get('receiveEmailNotifications').value">
-        <md-checkbox color="primary" class="os-form-input" formControlName="receiveUpdateNotifications">Receive Update Notifications</md-checkbox>
-        <md-checkbox color="primary" class="os-form-input" formControlName="receiveAdminMessages">Receive Admin Messages</md-checkbox>
-        <md-checkbox color="primary" class="os-form-input" formControlName="receiveSponsorMessages">Receive Sponsor Messages</md-checkbox>
-        <md-checkbox color="primary" class="os-form-input" formControlName="receiveReferralMessages">Receive Referrals Messages</md-checkbox>
-        <md-checkbox color="primary" class="os-form-input" formControlName="optOutOfMassEmails">Opt out of Of Mass Emails</md-checkbox>
+        <mat-checkbox color="primary" class="os-form-input" formControlName="receiveUpdateNotifications">Receive Update Notifications</mat-checkbox>
+        <mat-checkbox color="primary" class="os-form-input" formControlName="receiveAdminMessages">Receive Admin Messages</mat-checkbox>
+        <mat-checkbox color="primary" class="os-form-input" formControlName="receiveSponsorMessages">Receive Sponsor Messages</mat-checkbox>
+        <mat-checkbox color="primary" class="os-form-input" formControlName="receiveReferralMessages">Receive Referrals Messages</mat-checkbox>
+        <mat-checkbox color="primary" class="os-form-input" formControlName="optOutOfMassEmails">Opt out of Of Mass Emails</mat-checkbox>
       </div>
-      <button md-raised-button type="submit" color="primary" class="white" [disabled]="f.invalid || (f.value | json) === (initialFormValue | json )">Update Profile</button>
+      <button mat-raised-button type="submit" color="primary" class="white" [disabled]="f.invalid || (f.value | json) === (initialFormValue | json )">Update Profile</button>
     </form>
-  </md-card>
+  </mat-card>
   <os-footer></os-footer>
-</md-card>
+</mat-card>

@@ -3,8 +3,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { IdlePreloadModule } from '@angularclass/idle-preload';
 
 import { EffectsModule } from '@ngrx/effects';
-import { RouterStoreModule } from '@ngrx/router-store';
-import { StoreModule } from '@ngrx/store';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreModule, MetaReducer } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { useLogMonitor } from '@ngrx/store-log-monitor';
 import { FacebookModule } from 'ngx-facebook';
@@ -25,18 +25,19 @@ import { NotificationEffects } from './effects/notification';
 import { OfferEffects } from './effects/offer';
 import { OrderEffects } from './effects/order';
 import { PrizeEffects } from './effects/prize';
+import { RouterEffects } from './effects/router';
 import { UIEffects } from './effects/ui';
 import { UserEffects } from './effects/user';
-import { rootReducer } from './reducers';
 import { StoreDevToolsModule } from './features/store-devtools.module';
 
 import { CustomPipesModule } from './pipes';
+import { DEV_REDUCERS, reducers, resetOnLogout, AppState } from './reducers';
 
 const STORE_DEV_TOOLS_IMPORTS = [];
 if (ENV === 'development' && !AOT &&
   ['monitor', 'both'].includes(STORE_DEV_TOOLS) // set in constants.js file in project root
 ) STORE_DEV_TOOLS_IMPORTS.push(...[
-  StoreDevtoolsModule.instrumentStore({
+  StoreDevtoolsModule.instrument({
     monitor: useLogMonitor({
       visible: true,
       position: 'right'
@@ -44,29 +45,35 @@ if (ENV === 'development' && !AOT &&
   })
 ]);
 
+
+export const metaReducers: MetaReducer<AppState>[] = ENV === 'development' ?
+  [...DEV_REDUCERS, resetOnLogout] : [resetOnLogout];
+
 export const APP_IMPORTS = [
   CustomPipesModule,
-  EffectsModule.run(CountryEffects),
-  EffectsModule.run(CreditRequestEffects),
-  EffectsModule.run(NotificationEffects),
-  EffectsModule.run(OfferEffects),
-  EffectsModule.run(OrderEffects),
-  EffectsModule.run(PrizeEffects),
-  EffectsModule.run(TicketEffects),
-  EffectsModule.run(UIEffects),
-  EffectsModule.run(UserEffects),
+  EffectsModule.forRoot([
+    CountryEffects,
+    CreditRequestEffects,
+    NotificationEffects,
+    OfferEffects,
+    OrderEffects,
+    PrizeEffects,
+    RouterEffects,
+    TicketEffects,
+    UIEffects,
+    UserEffects
+  ]),
   FacebookModule.forRoot(),
   FEATURE_MODULES,
   FlexLayoutModule,
   FormInputModule,
   FormsModule,
   IdlePreloadModule.forRoot(),
-  // MaterialModule,
   MATERIAL_MODULES,
   ReactiveFormsModule,
-  RouterStoreModule.connectRouter(),
   SelectInputModule,
-  StoreModule.provideStore(rootReducer),
+  StoreRouterConnectingModule,
+  StoreModule.forRoot(reducers, { metaReducers }),
   STORE_DEV_TOOLS_IMPORTS,
   StoreDevToolsModule,
   TextareaInputModule,

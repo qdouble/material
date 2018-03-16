@@ -1,16 +1,12 @@
 /* tslint:disable: no-switch-case-fall-through */
-import { Observable } from 'rxjs/Observable';
-import { compose } from '@ngrx/core/compose';
-import { Action } from '@ngrx/store';
 
-import { AppState } from './';
-import { UserActions } from '../actions/user';
+import { UserActions, UserActionTypes } from '../actions/user';
 import { Credit } from '../models/credit';
 import { IP } from '../models/ip';
 import { Referral } from '../models/referral';
-import { User } from '../models/user';
+import { User, UserReferral } from '../models/user';
 
-export interface UserState {
+export interface State {
   amountPaid: number;
   askQuestions: boolean;
   creditIds: string[];
@@ -30,11 +26,13 @@ export interface UserState {
   referrerBlocked: boolean;
   referredBy: string | null;
   referralIds: string[];
-  referrals: { [id: string]: Referral };
+  referrals: { [id: string]: Referral | UserReferral };
   resetEmailSent: boolean;
   returningUser: boolean;
-  selectedReferralIds: string[];
   settingPrize: boolean;
+  selectedPrize: string | null;
+  selectedReferral: string | null;
+  selectedReferralIds: string[];
   showLevelBadgeNum: number;
   sortReferralBy: { sortBy: string, reverse: boolean };
   testShowRefRandom: number;
@@ -42,7 +40,7 @@ export interface UserState {
   user: User;
 }
 
-export const initialState: UserState = {
+export const initialState: State = {
   amountPaid: 0,
   askQuestions: null,
   creditIds: [],
@@ -65,6 +63,8 @@ export const initialState: UserState = {
   referrals: {},
   resetEmailSent: false,
   returningUser: false,
+  selectedPrize: '',
+  selectedReferral: null,
   selectedReferralIds: [],
   settingPrize: false,
   showLevelBadgeNum: null,
@@ -74,112 +74,109 @@ export const initialState: UserState = {
   user: {}
 };
 
-export function userReducer(state = initialState, action: Action): UserState {
+export function userReducer(state = initialState, action: UserActions): State {
   switch (action.type) {
 
-    case UserActions.ADD_CREDIT: {
-      let credit: Credit = action.payload.credit;
+    case UserActionTypes.AddCredit: {
+      let credit = action.payload.credit;
       if (!credit || state.creditIds.includes(credit.id)) return state;
-      return Object.assign({}, state, {
+      return {
+        ...state,
         creditIds: [...state.creditIds, credit.id],
-        credits: Object.assign({}, state.credits, {
-          [credit.id]: credit
-        })
-      });
+        credits: { ...state.credits, [credit.id]: credit }
+      };
     }
 
-    case UserActions.ADD_REFERRAL: {
-      let referral: Referral = action.payload.referral;
+    case UserActionTypes.AddReferral: {
+      let referral = action.payload.referral;
       if (!referral || state.referralIds.includes(referral.id)) return state;
-      return Object.assign({}, state, {
+      return {
+        ...state,
         referralIds: [...state.referralIds, referral.id],
-        referrals: Object.assign({}, state.referrals, {
-          [referral.id]: referral
-        })
-      });
+        referrals: { ...state.referrals, [referral.id]: referral }
+      };
     }
 
-    case UserActions.ASK_QUESTIONS:
-      return Object.assign({ ...state, askQuestions: true });
+    case UserActionTypes.AskQuestions:
+      return { ...state, askQuestions: true };
 
-    case UserActions.CHANGE_SELECTED_PRIZE:
-      return Object.assign({}, state, { settingPrize: true });
+    case UserActionTypes.ChangeSelectedPrize:
+      return { ...state, settingPrize: true };
 
-    case UserActions.CHANGE_SELECTED_PRIZE_FAIL:
-      return Object.assign({}, state, { settingPrize: false });
+    case UserActionTypes.ChangeSelectedPrizeFail:
+      return { ...state, settingPrize: false };
 
-    case UserActions.CHANGE_SELECTED_PRIZE_SUCCESS: {
+    case UserActionTypes.ChangeSelectedPrizeSuccess: {
       let id = action.payload.id;
-      if (!id) return Object.assign({}, state, { settingPrize: false });
-      return Object.assign({}, state, {
-        loading: false, user: Object.assign({}, state.user,
-          { selectedPrize: id, settingPrize: false })
-      });
+      if (!id) return { ...state, settingPrize: false };
+      return {
+        ...state, loading: false,
+        user: {
+          ...state.user,
+          selectedPrize: id,
+          settingPrize: false
+        }
+      };
     }
 
-    case UserActions.CHECK_EMAIL:
-      return Object.assign({}, state, {
+    case UserActionTypes.CheckEmail:
+      return {
+        ...state,
         entryEmail: action.payload,
         loading: true
-      });
+      };
 
-    case UserActions.CHECK_EMAIL_FAIL: {
-      return Object.assign({}, state, {
-        loading: false
-      });
+    case UserActionTypes.CheckEmailFail: {
+      return { ...state, loading: false };
     }
 
-    case UserActions.CHECK_EMAIL_SUCCESS: {
-      return Object.assign({}, state, {
-        loading: false
-      });
+    case UserActionTypes.CheckEmailSuccess: {
+      return { ...state, loading: false };
     }
 
-    case UserActions.CHECK_REFERRER_USERNAME_SUCCESS: {
+    case UserActionTypes.CheckReferrerUsernameSuccess: {
       if (action.payload.blocked) {
         return { ...state, referrerBlocked: true };
       }
       return state;
     }
 
-    case UserActions.CHECK_IF_USER_UPDATED_SUCCESS: {
+    case UserActionTypes.CheckIfUserUpdatedSuccess: {
       let updatedAt = action.payload.updatedAt;
       if (!updatedAt) return state;
-      return Object.assign({}, state, {
-        lastUpdate: updatedAt
-      });
+      return { ...state, lastUpdate: updatedAt };
     }
 
-    case UserActions.CHECK_IP_MATCH:
-    case UserActions.CHECK_IP_MATCH_FAIL:
-      return Object.assign({}, state, {
-        matches: undefined
-      });
+    case UserActionTypes.CheckIPMatch:
+    case UserActionTypes.CheckIPMatchFail:
+      return { ...state, matches: undefined };
 
-    case UserActions.CHECK_IP_MATCH_SUCCESS: {
+    case UserActionTypes.CheckIPMatchSuccess: {
       let ip: string = action.payload.ip;
       let ipJson = action.payload.ipJson;
       let matches: boolean = action.payload.matches;
       if (matches === undefined) return state;
-      return Object.assign({}, state, {
+      return {
+        ...state,
         ip: ip,
         ipJson: ipJson,
         matches: matches
-      });
+      };
     }
 
-    case UserActions.CHECK_LOGGED_IN_SUCCESS: {
-      return Object.assign({}, state, {
+    case UserActionTypes.CheckLoggedInSuccess: {
+      return {
+        ...state,
         loginChecked: true,
         loggedIn: !!action.payload
-      });
+      };
     }
 
-    case UserActions.DESELECT_ALL_REFERRALS: {
+    case UserActionTypes.DeselectAllReferrals: {
       return { ...state, selectedReferralIds: [] };
     }
 
-    case UserActions.DESELECT_REFERRALS: {
+    case UserActionTypes.DeselectReferrals: {
       const ids: string[] = action.payload;
       if (!ids || !ids.length) return state;
       let filteredIds: string[] = [...state.selectedReferralIds];
@@ -189,22 +186,20 @@ export function userReducer(state = initialState, action: Action): UserState {
       return { ...state, selectedReferralIds: filteredIds };
     }
 
-    case UserActions.DISMISS_PROFILE_CHANGES_SUCCESS: {
-      return Object.assign({}, state, {
-        user: Object.assign({}, state.user, { profilePending: false })
-      });
+    case UserActionTypes.DismissProfileChangesSuccess: {
+      return { ...state, user: { ...state.user, profilePending: false } };
     }
 
-    case UserActions.FORGOT_PASSWORD:
-      return Object.assign({}, state, { loading: true, resetEmailSent: false });
+    case UserActionTypes.ForgotPassword:
+      return { ...state, loading: true, resetEmailSent: false };
 
-    case UserActions.FORGOT_PASSWORD_FAIL:
-      return Object.assign({}, state, { loading: false });
+    case UserActionTypes.ForgotPasswordFail:
+      return { ...state, loading: false };
 
-    case UserActions.FORGOT_PASSWORD_SUCCESS:
-      return Object.assign({}, state, { loading: false, resetEmailSent: true });
+    case UserActionTypes.ForgotPasswordSuccess:
+      return { ...state, loading: false, resetEmailSent: true };
 
-    case UserActions.HIDE_REFERRALS_SUCCESS: {
+    case UserActionTypes.HideReferralsSuccess: {
       const ids: string[] = action.payload.ids;
       const hide: boolean = action.payload.hide;
       if (!ids || !ids.length || hide === undefined) return state;
@@ -216,18 +211,18 @@ export function userReducer(state = initialState, action: Action): UserState {
       return { ...state, referrals: refsMod, selectedReferralIds: [] };
     }
 
-    case UserActions.GET_PROFILE: {
-      return Object.assign({}, state, { loading: true });
+    case UserActionTypes.GetProfile: {
+      return { ...state, loading: true };
     }
 
-    case UserActions.GET_PROFILE_FAIL: {
-      return Object.assign({}, state, { loading: false });
+    case UserActionTypes.GetProfileFail: {
+      return { ...state, loading: false };
     }
 
-    case UserActions.GET_PROFILE_SUCCESS: {
+    case UserActionTypes.GetProfileSuccess: {
       let user: User = action.payload.user;
-      if (!user) return Object.assign({}, state, { loading: false });
-      let userOnly: any = Object.assign({}, user);
+      if (!user) return { ...state, loading: false };
+      let userOnly = { ...user };
       delete userOnly['referrals'];
       delete userOnly['referralIds'];
       delete userOnly['credits'];
@@ -240,7 +235,8 @@ export function userReducer(state = initialState, action: Action): UserState {
               [credit.id]: credit
             });
         }, {});
-      return Object.assign({}, state, {
+      return {
+        ...state,
         amountPaid: user.amountPaid,
         creditIds: creditIds,
         credits: creditEntities,
@@ -251,63 +247,55 @@ export function userReducer(state = initialState, action: Action): UserState {
         referrals: user.referrals || {},
         updatedAt: user.updatedAt,
         user: userOnly
-      });
+      };
     }
 
-    case UserActions.GET_REFERRAL:
-      return Object.assign({}, state, { loading: true });
+    case UserActionTypes.GetReferral:
+      return { ...state, loading: true, selectedReferral: action.payload };
 
-    case UserActions.GET_REFERRAL_FAIL:
-      return Object.assign({}, state, { loading: false });
+    case UserActionTypes.GetReferralFail:
+      return { ...state, loading: false };
 
-    case UserActions.GET_REFERRAL_SUCCESS: {
+    case UserActionTypes.GetReferralSuccess: {
       let referral = action.payload.referral;
-      if (!referral || !referral.id) return Object.assign({}, state, { loading: false });
+      if (!referral || !referral.id) return { ...state, loading: false };
       let id = referral.id;
-      let referralMod = Object.assign({}, state.referrals);
+      let referralMod = { ...state.referrals };
       Object.keys(referral).forEach(key => {
         if (referralMod[id][key] === undefined) {
-          referralMod = Object.assign({}, referralMod, {
-            [id]: Object.assign({}, referralMod[id], {
-              [key]: referral[key]
-            })
-          });
+          referralMod = { ...referralMod, [id]: { ...referralMod[id], [key]: referral[key] } };
         }
       });
-      return Object.assign({}, state, {
+      return {
+        ...state,
         referrals: referralMod,
         loading: false
-      });
+      };
     }
 
-    case UserActions.LOGIN_SUCCESS:
+    case UserActionTypes.LoginSuccess:
       if (action.payload.message_type === 'success') {
-        return Object.assign({}, state, {
-          loggedIn: true
-        });
+        return { ...state, loggedIn: true };
       }
       return state;
 
-    case UserActions.LOGOUT_SUCCESS:
-      return Object.assign({}, state, { loggedIn: false });
+    case UserActionTypes.LogoutSuccess:
+      return { ...state, loggedIn: false };
 
-    case UserActions.REGISTER:
-      return Object.assign({}, state, {
-        loading: true
-      });
+    case UserActionTypes.Register:
+      return { ...state, loading: false };
 
-    case UserActions.REGISTER_FAIL:
-      return Object.assign({}, state, {
-        loading: false
-      });
+    case UserActionTypes.RegisterFail:
+      return { ...state, loading: false };
 
-    case UserActions.REGISTER_SUCCESS:
-      return Object.assign({}, state, {
+    case UserActionTypes.RegisterSuccess:
+      return {
+        ...state,
         loading: false,
         loggedIn: action.payload.success || false
-      });
+      };
 
-    case UserActions.REMOVE_REFERRALS_SUCCESS: {
+    case UserActionTypes.RemoveReferralsSuccess: {
       const ids: string[] = action.payload.ids;
       if (!ids || !ids.length) return state;
       let refsMod = { ...state.referrals };
@@ -316,21 +304,17 @@ export function userReducer(state = initialState, action: Action): UserState {
       });
 
       return { ...state, referrals: refsMod, selectedReferralIds: [] };
-      // const ids: string[] = action.payload;
-      // let idsMod = [...state.referralIds];
-      // let refsMod = { ...state.referrals };
-      // ids.forEach(id => {
-      //   idsMod = [...idsMod.filter(i => i !== id)];
-      //   refsMod = { ...refsMod, [id]: undefined };
-      // });
-      // return { ...state, referralIds: idsMod, referrals: refsMod };
     }
 
-    case UserActions.RETURNING_USER: {
+    case UserActionTypes.ReturningUser: {
       return { ...state, returningUser: true };
     }
 
-    case UserActions.SELECT_REFERRALS: {
+    case UserActionTypes.SelectPrize: {
+      return { ...state, selectedPrize: action.payload };
+    }
+
+    case UserActionTypes.SelectReferrals: {
       const ids: string[] = action.payload;
       let newIds: string[] = [...state.selectedReferralIds];
       ids.forEach(id => {
@@ -341,131 +325,111 @@ export function userReducer(state = initialState, action: Action): UserState {
       return { ...state, selectedReferralIds: newIds };
     }
 
-    case UserActions.SET_ADMIN_LOGIN_PAGE:
-      return Object.assign({}, state, {
-        onAdminPage: action.payload
-      });
+    case UserActionTypes.SetAdminLoginPage:
+      return { ...state, onAdminPage: action.payload };
 
-    case UserActions.SET_AMOUNT_PAID:
+    case UserActionTypes.SetAmountPaid:
       return { ...state, amountPaid: action.payload };
 
-    case UserActions.SET_CREDIT_TOTAL:
-      return Object.assign({}, state, {
-        creditTotal: action.payload
-      });
+    case UserActionTypes.SetCreditTotal:
+      return { ...state, creditTotal: action.payload };
 
-    case UserActions.SET_HAS_QUALFIED_REFERRALS:
-      return Object.assign({}, state, {
-        user: Object.assign({}, state.user, {
-          hasQualifiedReferrals: action.payload
-        })
-      });
+    case UserActionTypes.SetHasQaulifiedReferrals:
+      return { ...state, user: { ...state.user, hasQualifiedReferrals: action.payload } };
 
 
-    case UserActions.SET_ORDER_PENDING:
-      return Object.assign({}, state, {
-        user: Object.assign({}, state.user, {
-          orderPending: action.payload
-        })
-      });
+    case UserActionTypes.SetOrderPending:
+      return { ...state, user: { ...state.user, orderPending: action.payload } };
 
-    case UserActions.SET_REFERRED_BY:
-      return Object.assign({}, state, { referredBy: action.payload });
+    case UserActionTypes.SetReferredBy:
+      return { ...state, referredBy: action.payload };
 
-    case UserActions.SET_SPONSOR_SUCCESS: {
+    case UserActionTypes.SetSponsorSuccess: {
       let user: User = action.payload;
       if (user && user.currentSponsor && user.currentSponsorEmail) {
-        return Object.assign({}, state, {
-          user: Object.assign({}, state.user, {
+        return {
+          ...state,
+          user: {
+            ...state.user,
             currentSponsor: user.currentSponsor,
             currentSponsorEmail: user.currentSponsorEmail
-          })
-        });
+          }
+        };
       }
       return state;
     }
 
-    case UserActions.SHOW_LEVEL_BADGE: {
+    case UserActionTypes.ShowLevelBadge: {
       if (!action.payload) return state;
       return { ...state, showLevelBadgeNum: action.payload };
     }
 
-    case UserActions.SORT_REFERRALS_BY: {
-      return Object.assign({}, state, {
-        sortReferralBy: action.payload
-      });
+    case UserActionTypes.SortReferralsBy: {
+      return { ...state, sortReferralBy: action.payload };
     }
 
-    case UserActions.NEW_EQUAL_TRUE: {
+    case UserActionTypes.NewEqualTrue: {
       return { ...state, isNew: action.payload };
     }
 
-    case UserActions.TEST_SHOW_REF_RANDOM: {
+    case UserActionTypes.TestShowRefRandom: {
       return { ...state, testShowRefRandom: action.payload };
     }
 
-    case UserActions.UPDATE_CURRENT_LEVEL: {
+    case UserActionTypes.UpdateCurrentLevel: {
       let user: User = action.payload;
       if (user.currentLevel === undefined || user.leveledUp === undefined) return state;
-      return Object.assign({}, state, {
-        user: Object.assign({}, state.user, {
+      return {
+        ...state,
+        user: {
+          ...state.user,
           currentLevel: user.currentLevel,
           leveledUp: user.leveledUp
-        })
-      });
+        }
+      };
     }
 
-    case UserActions.UPDATE_ORDER_PENDING: {
-      return Object.assign({}, state, {
-        user: Object.assign({}, state.user, {
-          orderPending: action.payload
-        })
-      });
+    case UserActionTypes.UpdateOrderPending: {
+      return {
+        ...state,
+        user: { ...state.user, orderPending: action.payload }
+      };
     }
 
-    case UserActions.UPDATE_HAS_QUALIFIED_REFERRALS: {
+    case UserActionTypes.UpdateHasQualifiedReferrals: {
       let user: User = action.payload;
       if (user.hasQualifiedReferrals === undefined) return state;
-      return Object.assign({}, state, {
-        user: Object.assign({}, state.user, {
+      return {
+        ...state,
+        user: {
+          ...state.user,
           hasQualifiedReferrals: user.hasQualifiedReferrals,
           hasReferralsBeyondLevel: user.hasReferralsBeyondLevel
-        })
-      });
+        }
+      };
     }
 
-    case UserActions.UPDATE_PROFILE:
-      return Object.assign({}, state, {
-        loading: true
-      });
+    case UserActionTypes.UpdateProfile:
+      return { ...state, loading: false };
 
-    case UserActions.UPDATE_PROFILE_FAIL:
-      return Object.assign({}, state, {
-        loading: false
-      });
+    case UserActionTypes.UpdateProfileFail:
+      return { ...state, loading: false };
 
-    case UserActions.UPDATE_PROFILE_SUCCESS: {
+    case UserActionTypes.UpdateProfileSuccess: {
       const user = action.payload.user;
-      if (!user) return Object.assign({}, state, { loading: false });
+      if (!user) return { ...state, loading: false };
 
-      let userUpdate = Object.assign({}, state.user);
+      let userUpdate = { ...state.user };
       Object.keys(user).forEach(function (key, index) {
-        userUpdate = Object.assign({}, userUpdate, { [key]: user[key] });
+        userUpdate = { ...userUpdate, [key]: user[key] };
       });
-      return Object.assign({}, state, {
-        loading: false,
-        user: userUpdate
-      });
+      return { ...state, loading: false, user: userUpdate };
     }
 
-    case UserActions.UPDATE_REFERRAL: {
+    case UserActionTypes.UpdateReferral: {
       let referral: Referral = action.payload.referral;
       if (!referral) return state;
-      return Object.assign({}, state, {
-        referrals: Object.assign({}, state.referrals, {
-          [referral.id]: referral
-        })
-      });
+      return { ...state, referrals: { ...state.referrals, [referral.id]: referral } };
     }
 
     default: {
@@ -474,219 +438,64 @@ export function userReducer(state = initialState, action: Action): UserState {
   }
 }
 
-function _getAskQuestions() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.askQuestions);
-}
+export const getAmountPaid = (state: State) => state.amountPaid;
 
-function _getCreditEntities() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.credits);
-}
+export const getAskQuestions = (state: State) => state.askQuestions;
 
-function _getCredits(offerIds: string[]) {
-  return (state$: Observable<UserState>) => state$
-    .let(_getCreditEntities())
-    .map(entities => offerIds.map(id => entities[id]));
-}
+export const getCreditIds = (state: State) => state.creditIds;
 
-function _getCreditIds() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.creditIds);
-}
+export const getCredits = (state: State) => state.credits;
 
-function _getCreditTotal() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.creditTotal);
-}
+export const getCreditTotal = (state: State) => state.creditTotal;
 
-function _getEntryEmail() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.entryEmail);
-}
+export const getEntryEmail = (state: State) => state.entryEmail;
 
-function _getLevelBadgeNum() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.showLevelBadgeNum);
-}
+export const getIP = (state: State) => state.ip;
 
-function _getLoaded() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.loaded);
-}
+export const getIPJson = (state: State) => state.ipJson;
 
-function _getLoading() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.loading);
-}
+export const getIsNew = (state: State) => state.isNew;
 
-function _getLoginChecked() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.loginChecked);
-}
+export const getLastUpdate = (state: State) => state.lastUpdate;
 
-function _getLoggedIn() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.loggedIn);
-}
+export const getLoading = (state: State) => state.loading;
 
-function _getOnAdminLoginPage() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.onAdminPage);
-}
+export const getLoaded = (state: State) => state.loaded;
 
-function _getReferrerBlocked() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.referrerBlocked);
-}
+export const getLoginChecked = (state: State) => state.loginChecked;
 
-function _getReferredBy() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.referredBy);
-}
+export const getLoggedIn = (state: State) => state.loggedIn;
 
-function _getReferralEntities() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.referrals);
-}
+export const getMatches = (state: State) => state.matches;
 
-function _getReferral(id: string) {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.referrals[id]);
-}
+export const getOnAdminPage = (state: State) => state.onAdminPage;
 
-function _getReferrals(offerIds: string[]) {
-  return (state$: Observable<UserState>) => state$
-    .let(_getReferralEntities())
-    .map(entities => offerIds.map(id => entities[id]));
-}
+export const getReferrerBlocked = (state: State) => state.referrerBlocked;
 
-function _getReferralIds() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.referralIds);
-}
+export const getReferredBy = (state: State) => state.referredBy;
 
-function _getSelectedReferralIds() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.selectedReferralIds);
-}
+export const getReferralIds = (state: State) => state.referralIds;
 
-function _getSettingPrize() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.settingPrize);
-}
+export const getReferrals = (state: State) => state.referrals;
 
-function _getAmountPaid() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.amountPaid);
-}
+export const getResetEmailSent = (state: State) => state.resetEmailSent;
 
-function _getUser() {
-  return (state$: Observable<UserState>) => state$
-    .select(s => s.user);
-}
+export const getReturningUser = (state: State) => state.returningUser;
 
-function _getUserState() {
-  return (state$: Observable<AppState>) => state$
-    .select(s => s.user);
-}
+export const getSelectedPrize = (state: State) => state.selectedPrize;
 
-export function getAskQuestions() {
-  return compose(_getAskQuestions(), _getUserState());
-}
+export const getSelectedReferral = (state: State) => state.selectedReferral;
 
-export function getUserOnAdminPage() {
-  return compose(_getOnAdminLoginPage(), _getUserState());
-}
+export const getSelectedReferralIds = (state: State) => state.selectedReferralIds;
 
-export function getCredits(ids: string[]) {
-  return compose(_getCredits(ids), _getUserState());
-}
+export const getSettingPrize = (state: State) => state.settingPrize;
 
-export function getCreditIds() {
-  return compose(_getCreditIds(), _getUserState());
-}
+export const getShowLevelBadgeNum = (state: State) => state.showLevelBadgeNum;
 
-export function getCreditEntities() {
-  return compose(_getCreditEntities(), _getUserState());
-}
+export const getSortReferralBy = (state: State) => state.sortReferralBy;
 
-export function getCreditCollection() {
-  return (state$: Observable<AppState>) => state$
-    .let(getCreditIds())
-    .switchMap(id => state$.let(getCredits(id)));
-}
+export const getTestShowRefRandom = (state: State) => state.testShowRefRandom;
 
-export function getCreditTotal() {
-  return compose(_getCreditTotal(), _getUserState());
-}
+export const getUpdatedAt = (state: State) => state.updatedAt;
 
-export function getLevelBadgeNum() {
-  return compose(_getLevelBadgeNum(), _getUserState());
-}
-
-export function getReferral(id: string) {
-  return compose(_getReferral(id), _getUserState());
-}
-
-export function getReferrals(ids: string[]) {
-  return compose(_getReferrals(ids), _getUserState());
-}
-
-export function getReferralIds() {
-  return compose(_getReferralIds(), _getUserState());
-}
-
-export function getReferralEntities() {
-  return compose(_getReferralEntities(), _getUserState());
-}
-
-export function getReferrerBlocked() {
-  return compose(_getReferrerBlocked(), _getUserState());
-}
-
-export function getReferralCollection() {
-  return (state$: Observable<AppState>) => state$
-    .let(getReferralIds())
-    .switchMap(id => state$.let(getReferrals(id)));
-}
-
-export function getSelectedReferralIds() {
-  return compose(_getSelectedReferralIds(), _getUserState());
-}
-
-export function getAmountPaid() {
-  return compose(_getAmountPaid(), _getUserState());
-}
-
-export function getUser() {
-  return compose(_getUser(), _getUserState());
-}
-
-export function getUserEntryEmail() {
-  return compose(_getEntryEmail(), _getUserState());
-}
-
-export function getUserLoaded() {
-  return compose(_getLoaded(), _getUserState());
-}
-
-export function getUserLoading() {
-  return compose(_getLoading(), _getUserState());
-}
-
-export function getUserLoginChecked() {
-  return compose(_getLoginChecked(), _getUserState());
-}
-
-export function getUserLoggedIn() {
-  return compose(_getLoggedIn(), _getUserState());
-}
-
-export function getUserReferredBy() {
-  return compose(_getReferredBy(), _getUserState());
-}
-
-export function getUserSettingPrize() {
-  return compose(_getSettingPrize(), _getUserState());
-}
+export const getUser = (state: State) => state.user;

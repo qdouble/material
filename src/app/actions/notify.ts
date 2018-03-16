@@ -1,25 +1,32 @@
-/* tslint:disable: member-ordering max-line-length */
-import { Injectable } from '@angular/core';
-// import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
 
 import { Notify } from '../models/notify';
 
-@Injectable()
-
-export class NotifyActions {
-  static ADD_NOTIFY = '[Notify] Add Notify';
-  addNotify<T extends Notify>(notify: T ): Action {
-    return {
-      type: NotifyActions.ADD_NOTIFY,
-      payload: notify
-    };
-  }
-  static DELETE_NOTIFY = '[Notify] Delete Notify';
-  deleteNotify(notify: Notify): Action {
-    return {
-      type: NotifyActions.DELETE_NOTIFY,
-      payload: notify
-    };
-  }
+export enum NotifyActionTypes {
+  AddNotify = '[Notify] Add Notify',
+  DeleteNotify = '[Notify] Delete Notify',
+  Select = '[Notify] Select'
 }
+
+export class AddNotify<T extends Notify> implements Action {
+  readonly type = NotifyActionTypes.AddNotify;
+
+  constructor(public payload: T) { }
+}
+
+export class DeleteNotify implements Action {
+  readonly type = NotifyActionTypes.DeleteNotify;
+
+  constructor(public payload: string) { }
+}
+
+export class Select implements Action {
+  readonly type = NotifyActionTypes.Select;
+
+  constructor(public payload: string) { }
+}
+
+export type NotifyActions =
+  | AddNotify<any>
+  | DeleteNotify
+  | Select;

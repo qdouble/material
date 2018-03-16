@@ -1,10 +1,10 @@
 @import './variables.scss';
 
-md-card-title {
+mat-card-title {
   color: $primary-color-x-dark;
 }
 
-md-input-container {
+mat-input-container {
   // color: $primary-color-x-dark;
   width: 100%;
 }
@@ -28,6 +28,6 @@ button {
   box-shadow: none;
 }
 
-:host >>> .md-input-element { 
+:host >>> .mat-input-element { 
  font-size: 16px !important;
 }

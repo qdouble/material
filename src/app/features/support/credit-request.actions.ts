@@ -1,138 +1,138 @@
 /* tslint:disable: member-ordering */
-import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 
-import { CreditRequest } from './credit-request.model';
+import {
+  CreditRequest,
+  GetCreditRequestsResponse,
+  GetCreditRequestResponse
+} from './credit-request.model';
+import { GetOfferClicksResponse } from './offer-click.model';
 
-@Injectable()
-
-export class CreditRequestActions {
-
-  static ADD_CREDIT_REQUEST = '[CreditRequest] Add Credit Request';
-  addCreditRequest(creditRequest: CreditRequest): Action {
-    return {
-      type: CreditRequestActions.ADD_CREDIT_REQUEST,
-      payload: creditRequest
-    };
-  }
-
-  static ADD_CREDIT_REQUEST_FAIL = '[CreditRequest] Add Credit Request Fail';
-  addCreditRequestFail(err: Error): Action {
-    return {
-      type: CreditRequestActions.ADD_CREDIT_REQUEST_FAIL,
-      payload: err
-    };
-  }
-
-  static ADD_CREDIT_REQUEST_SUCCESS = '[CreditRequest] Add Credit Request Success';
-  addCreditRequestSuccess(creditRequest: CreditRequest): Action {
-    return {
-      type: CreditRequestActions.ADD_CREDIT_REQUEST_SUCCESS,
-      payload: creditRequest
-    };
-  }
-
-
-  static EDIT_CREDIT_REQUEST = '[CreditRequest] Edit Credit Request';
-  editCreditRequest(creditRequest: CreditRequest): Action {
-    return {
-      type: CreditRequestActions.EDIT_CREDIT_REQUEST,
-      payload: creditRequest
-    };
-  }
-
-  static EDIT_CREDIT_REQUEST_FAIL = '[CreditRequest] Edit Credit Request Fail';
-  editCreditRequestFail(err: Error): Action {
-    return {
-      type: CreditRequestActions.EDIT_CREDIT_REQUEST_FAIL,
-      payload: err
-    };
-  }
-
-  static EDIT_CREDIT_REQUEST_SUCCESS = '[CreditRequest] Edit Credit Request Success';
-  editCreditRequestSuccess(creditRequest: CreditRequest): Action {
-    return {
-      type: CreditRequestActions.EDIT_CREDIT_REQUEST_SUCCESS,
-      payload: creditRequest
-    };
-  }
-
-  static GET_CREDIT_REQUEST = '[CreditRequest] Get Credit Request';
-  getCreditRequest(id: string): Action {
-    return {
-      type: CreditRequestActions.GET_CREDIT_REQUEST,
-      payload: id
-    };
-  }
-
-  static GET_CREDIT_REQUEST_FAIL = '[CreditRequest] Get Credit Request Fail';
-  getCreditRequestFail(err: Error): Action {
-    return {
-      type: CreditRequestActions.GET_CREDIT_REQUEST_FAIL,
-      payload: err
-    };
-  }
-
-  static GET_CREDIT_REQUEST_SUCCESS = '[CreditRequest] Get Credit Request Success';
-  getCreditRequestSuccess(creditRequest: CreditRequest): Action {
-    return {
-      type: CreditRequestActions.GET_CREDIT_REQUEST_SUCCESS,
-      payload: creditRequest
-    };
-  }
-
-  static GET_CREDIT_REQUESTS = '[CreditRequest] Get Credit Requests';
-  getCreditRequests(): Action {
-    return {
-      type: CreditRequestActions.GET_CREDIT_REQUESTS
-    };
-  }
-
-  static GET_CREDIT_REQUESTS_FAIL = '[CreditRequest] Get Credit Requests Fail';
-  getCreditRequestsFail(err: Error): Action {
-    return {
-      type: CreditRequestActions.GET_CREDIT_REQUESTS_FAIL,
-      payload: err
-    };
-  }
-
-  static GET_CREDIT_REQUESTS_SUCCESS = '[CreditRequest] Get Credit Requests Success';
-  getCreditRequestsSuccess(creditRequests: CreditRequest[]): Action {
-    return {
-      type: CreditRequestActions.GET_CREDIT_REQUESTS_SUCCESS,
-      payload: creditRequests
-    };
-  }
-
-  static GET_OFFER_CLICKS = '[CreditRequest] Get Offer Clicks';
-  getOfferClicks(): Action {
-    return {
-      type: CreditRequestActions.GET_OFFER_CLICKS
-    };
-  }
-
-  static GET_OFFER_CLICKS_FAIL = '[CreditRequest] Get Offer Clicks Fail';
-  getOfferClicksFail(err: Error): Action {
-    return {
-      type: CreditRequestActions.GET_OFFER_CLICKS_FAIL,
-      payload: err
-    };
-  }
-
-  static GET_OFFER_CLICKS_SUCCESS = '[CreditRequest] Get Offer Clicks Success';
-  getOfferClicksSuccess(creditRequests: CreditRequest[]): Action {
-    return {
-      type: CreditRequestActions.GET_OFFER_CLICKS_SUCCESS,
-      payload: creditRequests
-    };
-  }
-
-  static UPDATE_CREDIT_REQUEST = '[CreditRequest] Update Credit Request';
-  updateCreditRequest(creditRequest: CreditRequest): Action {
-    return {
-      type: CreditRequestActions.UPDATE_CREDIT_REQUEST,
-      payload: creditRequest
-    };
-  }
-
+export enum CreditRequestActionTypes {
+  AddCreditRequest = '[CreditRequest] Add Credit Request',
+  AddCreditRequestFail = '[CreditRequest] Add Credit Request Fail',
+  AddCreditRequestSuccess = '[CreditRequest] Add Credit Request Success',
+  EditCreditRequest = '[CreditRequest] Edit Credit Request',
+  EditCreditRequestFail = '[CreditRequest] Edit Credit Request Fail',
+  EditCreditRequestSuccess = '[CreditRequest] Edit Credit Request Success',
+  GetCreditRequest = '[CreditRequest] Get Credit Request',
+  GetCreditRequestFail = '[CreditRequest] Get Credit Request Fail',
+  GetCreditRequestSuccess = '[CreditRequest] Get Credit Request Success',
+  GetCreditRequests = '[CreditRequest] Get Credit Requests',
+  GetCreditRequestsFail = '[CreditRequest] Get Credit Requests Fail',
+  GetCreditRequestsSuccess = '[CreditRequest] Get Credit Requests Success',
+  GetOfferClicks = '[CreditRequest] Get Offer Clicks',
+  GetOfferClicksFail = '[CreditRequest] Offer Clicks Fail',
+  GetOfferClicksSuccess = '[CreditRequest] Offer Clicks Success',
+  UpdateCreditRequest = '[CreditRequest] Update Credit Request'
 }
+
+export class AddCreditRequest implements Action {
+  readonly type = CreditRequestActionTypes.AddCreditRequest;
+
+  constructor(public payload: CreditRequest) { }
+}
+
+export class AddCreditRequestFail implements Action {
+  readonly type = CreditRequestActionTypes.AddCreditRequestFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class AddCreditRequestSuccess implements Action {
+  readonly type = CreditRequestActionTypes.AddCreditRequestSuccess;
+
+  constructor(public payload: GetCreditRequestResponse) { }
+}
+
+export class EditCreditRequest implements Action {
+  readonly type = CreditRequestActionTypes.EditCreditRequest;
+
+  constructor(public payload: CreditRequest) { }
+}
+
+export class EditCreditRequestFail implements Action {
+  readonly type = CreditRequestActionTypes.EditCreditRequestFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class EditCreditRequestSuccess implements Action {
+  readonly type = CreditRequestActionTypes.EditCreditRequestSuccess;
+
+  constructor(public payload: GetCreditRequestResponse) { }
+}
+
+export class GetCreditRequest implements Action {
+  readonly type = CreditRequestActionTypes.GetCreditRequest;
+
+  constructor(public payload: string) { }
+}
+
+export class GetCreditRequestFail implements Action {
+  readonly type = CreditRequestActionTypes.GetCreditRequestFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetCreditRequestSuccess implements Action {
+  readonly type = CreditRequestActionTypes.GetCreditRequestSuccess;
+
+  constructor(public payload: GetCreditRequestResponse) { }
+}
+
+export class GetCreditRequests implements Action {
+  readonly type = CreditRequestActionTypes.GetCreditRequests;
+}
+
+export class GetCreditRequestsFail implements Action {
+  readonly type = CreditRequestActionTypes.GetCreditRequestsFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetCreditRequestsSuccess implements Action {
+  readonly type = CreditRequestActionTypes.GetCreditRequestsSuccess;
+
+  constructor(public payload: GetCreditRequestsResponse) { }
+}
+
+export class GetOfferClicks implements Action {
+  readonly type = CreditRequestActionTypes.GetOfferClicks;
+}
+
+export class GetOfferClicksFail implements Action {
+  readonly type = CreditRequestActionTypes.GetOfferClicksFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetOfferClicksSuccess implements Action {
+  readonly type = CreditRequestActionTypes.GetOfferClicksSuccess;
+
+  constructor(public payload: GetOfferClicksResponse) { }
+}
+
+export class UpdateCreditRequest implements Action {
+  readonly type = CreditRequestActionTypes.UpdateCreditRequest;
+
+  constructor(public payload: { creditRequest: CreditRequest }) { }
+}
+
+export type CreditRequestActions =
+  | AddCreditRequest
+  | AddCreditRequestFail
+  | AddCreditRequestSuccess
+  | EditCreditRequest
+  | EditCreditRequestFail
+  | EditCreditRequestSuccess
+  | GetCreditRequest
+  | GetCreditRequestFail
+  | GetCreditRequestSuccess
+  | GetCreditRequests
+  | GetCreditRequestsFail
+  | GetCreditRequestsSuccess
+  | GetOfferClicks
+  | GetOfferClicksFail
+  | GetOfferClicksSuccess
+  | UpdateCreditRequest;

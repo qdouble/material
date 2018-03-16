@@ -1,30 +1,38 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
+import { concat } from 'rxjs/observable/concat';
+import {
+  map,
+  switchMap,
+  catchError,
+} from 'rxjs/operators';
 
-import { NotifyActions } from '../actions/notify';
+import { AddNotify } from '../actions/notify';
 import { PrizeService } from '../services/prize';
-import { PrizeActions } from '../actions/prize';
+import {
+  GetPrizesFail,
+  GetPrizesSuccess,
+  PrizeActionTypes
+} from '../actions/prize';
 
 @Injectable()
 
 export class PrizeEffects {
   constructor(
     public actions$: Actions,
-    private notifyActions: NotifyActions,
-    private prizeActions: PrizeActions,
     private prizeService: PrizeService
   ) { }
 
-  @Effect() getPrizes$ = this.actions$
-    .ofType(PrizeActions.GET_PRIZES)
-    .map(action => <string>action.payload)
-    .switchMap(email => this.prizeService.getPrizes()
-      .map((res: any) => this.prizeActions.getPrizesSuccess(res))
-      .catch((err) => Observable.of(
-        this.prizeActions.getPrizesFail(err),
-        this.notifyActions.addNotify(err)
+  @Effect() getPrizes$: Observable<Action> = this.actions$.pipe(
+    ofType(PrizeActionTypes.GetPrizes),
+    switchMap(email => this.prizeService.getPrizes().pipe(
+      map((res) => new GetPrizesSuccess(res)),
+      catchError((err) => concat(
+        Observable.of(new GetPrizesFail(err)),
+        Observable.of(new AddNotify(err))
       ))
-    );
+    )));
 }

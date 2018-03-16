@@ -31,14 +31,11 @@
             </ng-container>
           </div>
           <div class="cell last-cell">
-            <button md-icon-button [ngClass]="{'transparent': (!referral?.leveledUp || referral?.hold), 'gray': !referral.currentSponsor, 'primary-background':  (referral.payBeyondLevel < referral.currentLevel && !referral.hold && referral.currentSponsor), 'warn-background': referral?.hold  }"
+            <button mat-icon-button [ngClass]="{'transparent': (!referral?.leveledUp || referral?.hold), 'gray': !referral.currentSponsor, 'primary-background':  (referral.payBeyondLevel < referral.currentLevel && !referral.hold && referral.currentSponsor), 'warn-background': referral?.hold  }"
               (click)="getReferral.emit(referral)">
-              <md-icon>remove_red_eye</md-icon>
+              <mat-icon>remove_red_eye</mat-icon>
             </button>
-            <md-checkbox #select (change)="selectReferral.emit({id: referral.id, checked: select.checked })"></md-checkbox>
-            <!--<button *ngIf="false" md-icon-button md-tooltip="Send Message (Coming Soon)" tooltip-position="before" [ngClass]="{'hide-mail': true, 'transparent': (!referral?.leveledUp || referral?.hold) , 'primary-background':  (referral.payBeyondLevel < referral.currentLevel && !referral.hold), 'warn-background': referral.hold }">
-              <md-icon>email</md-icon>
-            </button>-->
+            <mat-checkbox #select (change)="selectReferral.emit({id: referral.id, checked: select.checked })"></mat-checkbox>
           </div>
         </div>
       </ng-container>

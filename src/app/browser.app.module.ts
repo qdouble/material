@@ -11,7 +11,7 @@ import { BrowserTransferStateModule } from '../modules/transfer-state/browser-tr
   imports: [
     BrowserAnimationsModule,
     BrowserModule.withServerTransition({
-      appId: 'my-app-id'
+      appId: 'my-app'
     }),
     BrowserTransferStateModule,
     AppModule

@@ -1,14 +1,14 @@
 <div *ngIf="notification" class="ntfy-item" [style.background]="notification.read ? 'white' : '#f5f8f1'">
   <span class="ntfy-clickable" [routerLink]="notification.routerLink" (click)="!notification.read ? markNotificationsAsRead.emit({ids: [notification.id], read: true }) : null">
-    <div class="ntfy-image"><md-icon class="ntfy-ico">{{notification.ico}}</md-icon></div>
+    <div class="ntfy-image"><mat-icon class="ntfy-ico">{{notification.ico}}</mat-icon></div>
     <div class="ntfy-message">{{notification?.message}}</div>
     <div class="ntfy-timestamp">{{notification?.createdAt | timeAgo }}</div>
   </span>
-  <md-icon *ngIf="notification.read" class="ntfy-radio" (click)="markNotificationsAsRead.emit({ids: [notification.id], read: false })">
+  <mat-icon *ngIf="notification.read" class="ntfy-radio" (click)="markNotificationsAsRead.emit({ids: [notification.id], read: false })">
     radio_button_checked
-  </md-icon>
-  <md-icon *ngIf="!notification.read" class="ntfy-radio" (click)="markNotificationsAsRead.emit({ids: [notification.id], read: true })">
+  </mat-icon>
+  <mat-icon *ngIf="!notification.read" class="ntfy-radio" (click)="markNotificationsAsRead.emit({ids: [notification.id], read: true })">
     radio_button_unchecked
-  </md-icon>
-  <md-icon class="ntfy-close" (click)="deleteNotifications.emit([notification.id])">close</md-icon>
+  </mat-icon>
+  <mat-icon class="ntfy-close" (click)="deleteNotifications.emit([notification.id])">close</mat-icon>
 </div>

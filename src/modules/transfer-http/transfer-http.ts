@@ -1,11 +1,10 @@
 /* tslint:disable: max-line-length no-shadowed-variable */
 import { Injectable } from '@angular/core';
 import {
-  ConnectionBackend, Http, Request, RequestOptions,
+  Http, Request,
   RequestOptionsArgs, Response
 } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { TransferState } from '../transfer-state/transfer-state';
 
 import 'rxjs/add/operator/map';

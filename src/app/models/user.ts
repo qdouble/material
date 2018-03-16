@@ -1,4 +1,5 @@
 import { Credit } from './credit';
+import { GenericResponse } from './generic-response';
 export interface User {
     readonly id?: string;
     readonly firstName?: string;
@@ -36,7 +37,7 @@ export interface User {
     readonly accountNumber?: string;
     readonly savedAccountNum?: string;
     readonly amountPaid?: number;
-    readonly referrals?: { [id: string]: Referral };
+    readonly referrals?: { [id: string]: UserReferral };
     readonly referralIds?: string[];
     readonly referralCount?: number;
     readonly currentLevel?: number;
@@ -45,14 +46,15 @@ export interface User {
     readonly hasQualifiedReferrals?: boolean;
     readonly hasReferralsBeyondLevel?: boolean;
     readonly orderPending?: boolean;
-    readonly updatedAt?: Date;
-    readonly createdAt?: Date;
+    readonly updatedAt?: string;
+    readonly createdAt?: string;
     // Helpers //
     credits?: Credit[];
     requiresApproval?: true;
+    settingPrize?: boolean;
 }
 
-export interface Referral {
+export interface UserReferral {
     id: string;
     username: string;
     email: string;
@@ -69,4 +71,36 @@ export interface Referral {
     hold: boolean | undefined;
     holdReason: string | undefined;
     removed: boolean | undefined;
+}
+
+export interface HideReferralsResponse extends GenericResponse {
+    ids: string[];
+    hide: boolean;
+}
+
+export interface GetProfileResponse extends GenericResponse {
+    user: User;
+    unreadTotal?: number;
+}
+
+export interface GetReferralResponse extends GenericResponse {
+    referral: User;
+}
+
+export interface RecordClickResponse extends GenericResponse {
+    redirectTo: string;
+    message: string;
+}
+
+export interface RemoveReferralsResponse extends GenericResponse {
+    ids: string[];
+}
+
+export interface SetSponsorResponse extends GenericResponse {
+    currentSponsor: string;
+    currentSponsorEmail: string;
+}
+
+export interface Users extends GenericResponse {
+    users: User[];
 }

@@ -3,28 +3,28 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 import { AppState } from './reducers';
-import { UserActions } from './actions/user';
+import * as userActions from './actions/user';
 
 @Component({
   selector: 'os-admin-login',
   template: `
-    <md-card class="os-page-container-vh">
-    <md-card class="os-login-form-container">
-      <md-card-title>Admin Login</md-card-title>
+    <mat-card class="os-page-container-vh">
+    <mat-card class="os-login-form-container">
+      <mat-card-title>Admin Login</mat-card-title>
         <form [formGroup]="f" (ngSubmit)="submitForm()">
-        <md-input-container>
-          <input mdInput placeholder="Username" formControlName="username">
-        </md-input-container><br>
-        <md-input-container>
-          <input mdInput placeholder="Password" formControlName="password" type="password">
-        </md-input-container>
+        <mat-input-container>
+          <input matInput placeholder="Username" formControlName="username">
+        </mat-input-container><br>
+        <mat-input-container>
+          <input matInput placeholder="Password" formControlName="password" type="password">
+        </mat-input-container>
         <br>
-        <button md-raised-button class="white" color="primary" [disabled]="!f.valid" type="submit">
+        <button mat-raised-button class="white" color="primary" [disabled]="!f.valid" type="submit">
           LOGIN
         </button>
         </form>
-    </md-card>
-  </md-card>
+    </mat-card>
+  </mat-card>
   `,
   styleUrls: ['./admin-login.scss']
 })
@@ -33,18 +33,17 @@ export class AdminLogin implements OnDestroy, OnInit {
   f: FormGroup;
   constructor(
     fb: FormBuilder,
-    private store: Store<AppState>,
-    private userActions: UserActions
+    private store: Store<AppState>
   ) {
     this.f = fb.group({ username: '', password: '' });
   }
   ngOnInit() {
-    this.store.dispatch(this.userActions.setAdminLoginPage(true));
+    this.store.dispatch(new userActions.SetAdminLoginPage(true));
   }
   submitForm() {
-    this.store.dispatch(this.userActions.adminLogin(this.f.value));
+    this.store.dispatch(new userActions.AdminLogin(this.f.value));
   }
   ngOnDestroy() {
-    this.store.dispatch(this.userActions.setAdminLoginPage(false));
+    this.store.dispatch(new userActions.SetAdminLoginPage(false));
   }
 }

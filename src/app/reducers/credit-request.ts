@@ -1,180 +1,137 @@
 /* tslint:disable: no-switch-case-fall-through */
-/* tslint:disable: variable-names */
-import { Observable } from 'rxjs/Observable';
-import { compose } from '@ngrx/core/compose';
-import { Action } from '@ngrx/store';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
-import { AppState } from './';
-import { CreditRequestActions } from '../features/support/credit-request.actions';
-import { CreditRequest, OfferClick } from '../features/support/credit-request.model';
+import {
+  CreditRequestActions,
+  CreditRequestActionTypes
+} from '../features/support/credit-request.actions';
+import { CreditRequest } from '../features/support/credit-request.model';
 
-export interface CreditRequestState {
-  ids: string[];
-  entities: { [id: string]: CreditRequest };
+export const adapter = createEntityAdapter<CreditRequest>({
+  selectId: (creditRequest: CreditRequest) => creditRequest.id
+});
+
+export interface State extends EntityState<CreditRequest> {
   added: boolean;
   adding: boolean;
+  ids: string[];
   loading: boolean;
   loaded: boolean;
   loadingClicks: boolean;
   loadedClicks: boolean;
-  offerIds: string[];
-  offerEntitites: { [id: string]: OfferClick };
+  selectedCreditRequest: string | null;
 }
 
-export const initialState: CreditRequestState = {
-  ids: [],
-  entities: {},
+export const initialState: State = adapter.getInitialState({
   added: false,
   adding: false,
+  ids: [],
   loading: false,
   loaded: false,
   loadingClicks: false,
   loadedClicks: false,
-  offerIds: [],
-  offerEntitites: {}
-};
+  selectedCreditRequest: null
+});
 
-export function creditRequestReducer(state = initialState, action: Action): CreditRequestState {
+export function creditRequestReducer(state = initialState,
+  action: CreditRequestActions): State {
   switch (action.type) {
 
-    case CreditRequestActions.ADD_CREDIT_REQUEST:
-      return Object.assign({}, state, { adding: true, added: false });
-    case CreditRequestActions.ADD_CREDIT_REQUEST_FAIL:
-      return Object.assign({}, state, { adding: true, added: false });
+    case CreditRequestActionTypes.AddCreditRequest:
+      return { ...state, adding: true, added: false };
 
-    case CreditRequestActions.ADD_CREDIT_REQUEST_SUCCESS: {
+    case CreditRequestActionTypes.AddCreditRequestFail:
+      return { ...state, adding: false, added: false };
+
+    case CreditRequestActionTypes.AddCreditRequestSuccess: {
       if (!action.payload.creditRequest || !action.payload.id)
-        return Object.assign({}, state, { adding: false, added: false });
-      const id: string = action.payload.id;
-      const creditRequest = Object.assign({}, action.payload.creditRequest, {
-        id: id
-      });
+        return { ...state, adding: false, added: false };
+      const id = action.payload.id;
+      const creditRequest = { ...action.payload.creditRequest, id: id };
       creditRequest.id = id;
-      return Object.assign({}, state, {
-        ids: [...state.ids, id],
-        entities: Object.assign({}, state.entities, {
-          [creditRequest.id]: creditRequest
-        }),
+      return {
+        ...adapter.addOne(creditRequest, state),
         added: true,
         adding: false
-      });
+      };
     }
 
-    case CreditRequestActions.EDIT_CREDIT_REQUEST:
-      return Object.assign({}, state, { adding: true, added: false });
-    case CreditRequestActions.EDIT_CREDIT_REQUEST_FAIL:
-      return Object.assign({}, state, { adding: true, added: false });
+    case CreditRequestActionTypes.EditCreditRequest:
+      return { ...state, adding: true, added: false };
+    case CreditRequestActionTypes.EditCreditRequestFail:
+      return { ...state, adding: true, added: false };
 
-    case CreditRequestActions.EDIT_CREDIT_REQUEST_SUCCESS: {
+    case CreditRequestActionTypes.EditCreditRequestSuccess: {
       let creditRequest = action.payload.creditRequest;
       if (!action.payload.creditRequest)
-        return Object.assign({}, state, { adding: false, added: false });
-      return Object.assign({}, state, {
-        entities: Object.assign({}, state.entities, {
-          [creditRequest.id]: creditRequest
-        }),
+        return { ...state, adding: false, added: false };
+
+      return {
+        ...adapter.updateOne({ id: creditRequest.id, changes: creditRequest }, state),
         added: true,
         adding: false
-      });
+      };
     }
 
 
-    case CreditRequestActions.GET_CREDIT_REQUEST:
-      return Object.assign({}, state, {
+    case CreditRequestActionTypes.GetCreditRequest:
+      return {
+        ...state,
         loading: true,
-        loaded: false
-      });
+        loaded: false,
+        selectedCreditRequest: action.payload
+      };
 
-    case CreditRequestActions.GET_CREDIT_REQUEST_FAIL:
-      return Object.assign({}, state, { loading: false });
+    case CreditRequestActionTypes.GetCreditRequestFail:
+      return { ...state, loading: false };
 
-    case CreditRequestActions.GET_CREDIT_REQUEST_SUCCESS: {
-      const creditRequest: CreditRequest = action.payload.creditRequest;
+    case CreditRequestActionTypes.GetCreditRequestSuccess: {
+      const creditRequest = action.payload.creditRequest;
       if (!creditRequest || !creditRequest.id)
-        return Object.assign({}, state, { loading: false });
+        return { ...state, loading: false };
 
-      if (state.ids.includes(creditRequest.id)) {
-        return Object.assign({}, state, {
-          entities: Object.assign({}, state.entities, {
-            [creditRequest.id]: creditRequest
-          }),
+      let stateIds = state.ids;
+      if (stateIds.includes(creditRequest.id)) {
+        return {
+          ...state,
+          entities: { ...state.entities, [creditRequest.id]: creditRequest },
           loading: false,
           loaded: true
-        });
+        };
       }
 
-      return Object.assign({}, state, {
-        ids: [...state.ids, creditRequest.id],
-        entities: Object.assign({}, state.entities, {
-          [creditRequest.id]: creditRequest
-        }),
+      return {
+        ...adapter.addOne(creditRequest, state),
         loading: false,
         loaded: true
-      });
+      };
     }
 
-    case CreditRequestActions.GET_CREDIT_REQUESTS:
-      return Object.assign({}, state, { loading: true });
-    case CreditRequestActions.GET_CREDIT_REQUESTS_FAIL:
-      return Object.assign({}, state, { loading: false });
+    case CreditRequestActionTypes.GetCreditRequests:
+      return { ...state, loading: true };
+    case CreditRequestActionTypes.GetCreditRequestsFail:
+      return { ...state, loading: true };
 
-    case CreditRequestActions.GET_CREDIT_REQUESTS_SUCCESS: {
-      const creditRequests: CreditRequest[] = action.payload.creditRequests;
-      if (!Array.isArray(creditRequests)) return Object.assign({}, state, { loading: false });
-      const newCreditRequestIds: string[] = creditRequests.map(
-        creditRequest => creditRequest.id || '');
-      const newCreditRequestEntities = creditRequests.reduce(
-        (entities: { [id: string]: CreditRequest }, creditRequest: CreditRequest) => {
-          if (creditRequest.id)
-            return Object.assign(entities, {
-              [creditRequest.id]: creditRequest
-            });
-        }, {});
+    case CreditRequestActionTypes.GetCreditRequestsSuccess: {
+      const creditRequests = action.payload.creditRequests;
+      if (!Array.isArray(creditRequests)) return { ...state, loading: true };
 
-      return Object.assign({}, state, {
-        ids: newCreditRequestIds,
-        entities: Object.assign({}, state.entities, newCreditRequestEntities),
+      return {
+        ...adapter.addAll(creditRequests, state),
         loading: false,
         loaded: true
-      });
+      };
     }
 
-    case CreditRequestActions.GET_OFFER_CLICKS:
-      return Object.assign({}, state, { loadingClicks: true });
-    case CreditRequestActions.GET_OFFER_CLICKS_FAIL:
-      return Object.assign({}, state, { loadingClicks: false });
-
-    case CreditRequestActions.GET_OFFER_CLICKS_SUCCESS: {
-      const offerClicks: OfferClick[] = action.payload.offerClicks;
-      if (!Array.isArray(offerClicks)) return Object.assign({}, state, { loadingClicks: false });
-      const offerClickIds: string[] = offerClicks.map(offerClick => offerClick.id || '');
-      const offerClickEntities = offerClicks.reduce(
-        (entities: { [id: string]: OfferClick }, offerClick: OfferClick) => {
-          if (offerClick.id)
-            return Object.assign(entities, {
-              [offerClick.id]: offerClick
-            });
-        }, {});
-
-      return Object.assign({}, state, {
-        offerIds: offerClickIds,
-        offerEntitites: offerClickEntities,
-        loadingClicks: false,
-        loadedClicks: true
-      });
-    }
-
-    case CreditRequestActions.UPDATE_CREDIT_REQUEST: {
+    case CreditRequestActionTypes.UpdateCreditRequest: {
       const creditRequest: CreditRequest = action.payload.creditRequest;
       if (!creditRequest) return state;
-      return Object.assign({}, state, {
-        entities: Object.assign({}, state.entities, {
-          [creditRequest.id]: Object.assign({}, state.entities[creditRequest.id], {
-            status: creditRequest.status,
-            userNotes: creditRequest.userNotes
-          })
-        })
-      });
+      return {
+        ...adapter.updateOne({
+          id: creditRequest.id,
+          changes: { status: creditRequest.status, userNotes: creditRequest.userNotes }
+        }, state)
+      };
     }
 
     default: {
@@ -183,84 +140,16 @@ export function creditRequestReducer(state = initialState, action: Action): Cred
   }
 }
 
+export const getAdded = (state: State) => state.added;
 
-function _getCreditRequestEntities() {
-  return (state$: Observable<CreditRequestState>) => state$
-    .select(s => s.entities);
-}
+export const getAdding = (state: State) => state.adding;
 
-function _getCreditRequest(id: string) {
-  return (state$: Observable<CreditRequestState>) => state$
-    .select(s => s.entities[id]);
-}
+export const getLoaded = (state: State) => state.loaded;
 
-function _getCreditRequests(creditRequestIds: string[]) {
-  return (state$: Observable<CreditRequestState>) => state$
-    .let(_getCreditRequestEntities())
-    .map(entities => creditRequestIds.map(id => entities[id]));
-}
+export const getLoading = (state: State) => state.loading;
 
-function _getCreditRequestIds() {
-  return (state$: Observable<CreditRequestState>) => state$
-    .select(s => s.ids);
-}
+export const getLoadedClicks = (state: State) => state.loadedClicks;
 
-function _getCreditRequestCollection() {
-  return (state$: Observable<CreditRequestState>) => state$
-    .let(_getCreditRequestIds())
-    .switchMap((ids) => state$.let(_getCreditRequests(ids))
-    );
-}
+export const getLoadingClicks = (state: State) => state.loadingClicks;
 
-function _getOfferClicksLoaded() {
-  return (state$: Observable<CreditRequestState>) => state$
-    .select(s => s.loadedClicks);
-}
-
-function _getOfferClickEntities() {
-  return (state$: Observable<CreditRequestState>) => state$
-    .select(s => s.offerEntitites);
-}
-
-function _getOfferClicks(offerIds: string[]) {
-  return (state$: Observable<CreditRequestState>) => state$
-    .let(_getOfferClickEntities())
-    .map(entities => offerIds.map(id => entities[id]));
-}
-
-function _getOfferClickIds() {
-  return (state$: Observable<CreditRequestState>) => state$
-    .select(s => s.offerIds);
-}
-
-function _getOfferClickCollection() {
-  return (state$: Observable<CreditRequestState>) => state$
-    .let(_getOfferClickIds())
-    .switchMap((ids) => state$.let(_getOfferClicks(ids))
-    );
-}
-
-function _getCreditRequestState() {
-  return (state$: Observable<AppState>) => state$
-    .select(s => s.creditRequest);
-}
-
-export function getCreditRequest(creditRequestId: string) {
-  return compose(_getCreditRequest(creditRequestId), _getCreditRequestState());
-}
-
-export function getCreditRequests(creditRequestIds: string[]) {
-  return compose(_getCreditRequests(creditRequestIds), _getCreditRequestState());
-}
-
-export function getCreditRequestCollection() {
-  return compose(_getCreditRequestCollection(), _getCreditRequestState());
-}
-
-export function getOfferClicksLoaded() {
-  return compose(_getOfferClicksLoaded(), _getCreditRequestState());
-}
-
-export function getOfferClickCollection() {
-  return compose(_getOfferClickCollection(), _getCreditRequestState());
-}
+export const getSelectedCreditRequest = (state: State) => state.selectedCreditRequest;

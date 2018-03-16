@@ -1,17 +1,15 @@
-<md-card class="os-page-container" *ngIf="loaded$ | async" @fade>
+<mat-card class="os-page-container" *ngIf="loaded$ | async" @fade>
   <div class="os-status-page-section">
-    <md-card *ngIf="user?.hold" class="os-message-card warn-background white">
+    <mat-card *ngIf="user?.hold" class="os-message-card warn-background white">
       <h5>Your Account is on Hold</h5>
       <p>{{user.holdReason}}</p>
       <pre>{{user.holdMessage}}</pre>
-    </md-card>
+    </mat-card>
   </div>
-  <md-card class="os-title-card primary-background">Share your link</md-card>
+  <mat-card class="os-title-card primary-background">Share your link</mat-card>
   <div class="os-status-page-section">
-    <md-card id="referral-link-section">
-      <!-- <md-card-title class="primary">Your Referral Link</md-card-title> -->
-      <!-- <md-card *ngIf="(creditTotal$ | async) < 1" class="accent-background white" style="text-align: justify !important;">You are at Level 0 and are not yet eligible to refer people and earn money. Go to the offers page and complete offers to Level Up.</md-card> -->
-      <md-card-content>
+    <mat-card id="referral-link-section">
+      <mat-card-content>
         <div class="referral-links">
           Landing Page Referral Link:<br>
           <a [href]="'https://levelrewards.com/?ref=' + user?.username" target="_blank">https://levelrewards.com/?ref={{user?.username}}</a><br>
@@ -19,7 +17,7 @@
           <a [href]="'https://levelrewards.com/register?ref=' + user?.username" target="_blank">https://levelrewards.com/register?ref={{user?.username}}</a><br>
         </div>
         <div class="share-buttons">
-          <button id="fb-post-btn" md-raised-button class="white" color="primary"  (click)="fbShare()" class="btn btn-lg btn-primary btn-block">
+          <button id="fb-post-btn" mat-raised-button class="white" color="primary"  (click)="fbShare()" class="btn btn-lg btn-primary btn-block">
               <img src="/assets/svg/facebook-box.svg"> Share
           </button>
         </div>
@@ -33,7 +31,7 @@
           Referrals must sign up immediately after clicking your link for them to be under you. Once they sign up, their account
           will be linked to yours unless referral requests a transfer.
         </p><br>
-        <md-card class="third-party os-title-card primary-background">3rd-Party Landing Pages</md-card>
+        <mat-card class="third-party os-title-card primary-background">3rd-Party Landing Pages</mat-card>
         <div class="landing-disclaimer">
           <p><u>Disclaimer:</u> The following landing pages are not created, managed or necessarily endorsed by Level Rewards. They are simply presented as user created landing page options that may help you promote.</p><br>
           <div class="l-links">
@@ -43,23 +41,23 @@
           <p>If you would like to suggest other landing pages or if there is an issue with us listing a particular landing page, please contact support.</p>
         </div>
         
-      </md-card-content>
-    </md-card>
+      </mat-card-content>
+    </mat-card>
   </div>
   <div *ngIf="(creditTotal$ | async) >= 1" class="os-status-page-section">
-    <md-card id="announcements-section" *ngIf="showAnnouncements">
-      <md-card-title class="primary">Announcements</md-card-title>
-      <md-card-content>
+    <mat-card id="announcements-section" *ngIf="showAnnouncements">
+      <mat-card-title class="primary">Announcements</mat-card-title>
+      <mat-card-content>
         <p><b class="warn">Important Advertising Guideline:</b>
            Do not create a webpage, video or ad directly telling referrals that they should go to Level Rewards, sign up for a particular offer and then cancel. While you can share your experience with your referrals, be sure to make it perfectly clear that they can choose whichever offers they are interested in. 
         </p>
-      </md-card-content>
-    </md-card>
+      </mat-card-content>
+    </mat-card>
   </div>
   <div class="os-status-page-section">
-    <md-card id="current-status-section">
-      <md-card-title class="primary">Your Current Status</md-card-title>
-      <md-card-content *ngIf="loaded$ | async">
+    <mat-card id="current-status-section">
+      <mat-card-title class="primary">Your Current Status</mat-card-title>
+      <mat-card-content *ngIf="loaded$ | async">
         <p>Welcome {{user?.firstName}}!</p>
         <p><b>You are currently on level:</b> {{user?.currentLevel}}</p>
         <p>
@@ -97,24 +95,24 @@
         </ng-container>
         <form *ngIf="!user?.currentSponsor || switchSponsor" [formGroup]="sponsorForm" (ngSubmit)="submitSponsor(); switchSponsor = false">
           <os-form-input class="os-form-input" placeholder="Sponsor username or email" controlName="sponsorUserName" [form]="sponsorForm"></os-form-input>
-          <button md-raised-button color="primary" class="white" style="max-width: 105%" [disabled]="sponsorForm.invalid">Connect My Account to Sponsor</button>
-          <button *ngIf="switchSponsor" type="button" md-raised-button color="warn" class="white" style="max-width: 105%" (click)="switchSponsor = false">Cancel</button>
+          <button mat-raised-button color="primary" class="white" style="max-width: 105%" [disabled]="sponsorForm.invalid">Connect My Account to Sponsor</button>
+          <button *ngIf="switchSponsor" type="button" mat-raised-button color="warn" class="white" style="max-width: 105%" (click)="switchSponsor = false">Cancel</button>
         </form>
-      </md-card-content>
-    </md-card>
+      </mat-card-content>
+    </mat-card>
   </div>
-  <div *ngIf="(creditTotal$ | async) >= 1" class="os-status-page-section">
-    <md-card id="selected-prize-section">
-      <md-card-title class="primary">Your Selected Prize</md-card-title>
+  <div class="os-status-page-section">
+    <mat-card id="selected-prize-section">
+      <mat-card-title class="primary">Your Selected Prize</mat-card-title>
       <os-selected-prize [changePrize]="changePrize" [form]="selectPrizeForm" [prize]="prize$ | async" [prizes]="prizes$ | async"
         [selectedPrizeLabels]="selectedPrizeLabels$ | async" [selectedPrizeValues]="selectedPrizeValues$ | async" (cancelPrizeChange)="cancelPrizeChange()"
         (changeSelectedPrize)="changeSelectedPrize()">
         </os-selected-prize>
-    </md-card>
+    </mat-card>
   </div>
   <div *ngIf="(creditTotal$ | async) >= 1 || (referrals$ | async)?.length" class="os-status-page-section">
-    <md-card id="referrals-table-section">
-      <md-card-title class="primary">Your Referrals</md-card-title>
+    <mat-card id="referrals-table-section">
+      <mat-card-title class="primary">Your Referrals</mat-card-title>
       <ng-container *ngIf="(referrals$ | async)?.length > 0">
         <os-referrals-table
           [referrals]="referrals$ | async"
@@ -124,21 +122,21 @@
           (sortBy)="sortBy($event)">
           </os-referrals-table>
           <div class="ref-select-row">
-            <md-select [formControl]="referralSelect">
-              <md-option value=" ">- CHOOSE OPTION -</md-option>
-              <md-option value="hide">HIDE</md-option>
-              <md-option value="show">SHOW</md-option>
-              <md-option value="remove">REMOVE</md-option>
-            </md-select>
-            <button md-raised-button class="white" color="accent" (click)="applyToChecked()" [disabled]="!selectedReferralIds.length">APPLY</button>
+            <mat-select [formControl]="referralSelect">
+              <mat-option value=" ">- CHOOSE OPTION -</mat-option>
+              <mat-option value="hide">HIDE</mat-option>
+              <mat-option value="show">SHOW</mat-option>
+              <mat-option value="remove">REMOVE</mat-option>
+            </mat-select>
+            <button mat-raised-button class="white" color="accent" (click)="applyToChecked()" [disabled]="!selectedReferralIds.length">APPLY</button>
           </div>
-          <md-slide-toggle [formControl]="showHidden" color="primary">Show Hidden</md-slide-toggle>
+          <mat-slide-toggle [formControl]="showHidden" color="primary">Show Hidden</mat-slide-toggle>
         </ng-container>
-        <md-card-content *ngIf="(referrals$ | async)?.length <= 0">
+        <mat-card-content *ngIf="(referrals$ | async)?.length <= 0">
           You do not have any referrals. Be sure to share your referral link. Tell any missing referrals to enter in your username
           on the 'Your Current Status' section of their Status page if they signed up and are not referred.
-        </md-card-content>
-    </md-card>
+        </mat-card-content>
+    </mat-card>
   </div>
   <os-footer></os-footer>
-</md-card>
+</mat-card>

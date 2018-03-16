@@ -1,11 +1,12 @@
 /* tslint:disable: max-line-length */
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from '../../services/constants';
-import { CreditRequest } from './credit-request.model';
+import { CreditRequest, GetCreditRequestResponse, GetCreditRequestsResponse } from './credit-request.model';
 import { RequestBase } from '../../services/request-base';
+import { GetOfferClicksResponse } from './offer-click.model';
 
 @Injectable()
 export class CreditRequestService extends RequestBase {
@@ -14,27 +15,27 @@ export class CreditRequestService extends RequestBase {
     super(http);
   }
 
-  addCreditRequest(creditRequest: CreditRequest): Observable<Response> {
+  addCreditRequest(creditRequest: CreditRequest): Observable<GetCreditRequestResponse> {
     return this.http.post(`${API_USER_URL}/addCreditRequest`, creditRequest, this.options)
       .map(res => res.json());
   }
 
-  editCreditRequest(creditRequest: CreditRequest): Observable<Response> {
+  editCreditRequest(creditRequest: CreditRequest): Observable<GetCreditRequestResponse> {
     return this.http.post(`${API_USER_URL}/editCreditRequest`, creditRequest, this.options)
       .map(res => res.json());
   }
 
-  getCreditRequest(id: string): Observable<CreditRequest> {
+  getCreditRequest(id: string): Observable<GetCreditRequestResponse> {
     return this.http.get(`${API_USER_URL}/getCreditRequest?id=${id}`, this.optionsNoPre)
       .map(res => res.json());
   }
 
-  getCreditRequests(): Observable<CreditRequest[]> {
+  getCreditRequests(): Observable<GetCreditRequestsResponse> {
     return this.http.get(`${API_USER_URL}/getCreditRequests`, this.optionsNoPre)
       .map(res => res.json());
   }
 
-  getOfferClicks(): Observable<CreditRequest[]> {
+  getOfferClicks(): Observable<GetOfferClicksResponse> {
     return this.http.get(`${API_USER_URL}/getOfferClicks`, this.optionsNoPre)
       .map(res => res.json());
   }

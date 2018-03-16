@@ -1,18 +1,14 @@
 /* tslint:disable: no-switch-case-fall-through */
-import { Observable } from 'rxjs/Observable';
-import { compose } from '@ngrx/core/compose';
-import { Action } from '@ngrx/store';
 
-import { AppState } from './';
-import { UIActions } from '../actions/ui';
+import { UIActions, UIActionTypes } from '../actions/ui';
 import { Offer } from '../models/offer';
 import { Order } from '../models/order';
 import { PushNotification } from '../models/push-notification';
 
-export interface UIState {
-  contactRequestSent: boolean;
+export interface State {
   completedOrderIds: string[];
   completedOrders: { [id: string]: Order };
+  contactRequestSent: boolean;
   creditedOfferIds: string[];
   creditedOffers: { [id: string]: Offer };
   mobile: boolean;
@@ -23,10 +19,10 @@ export interface UIState {
   version: string;
 }
 
-export const initialState: UIState = {
-  contactRequestSent: false,
+export const initialState: State = {
   completedOrderIds: [],
   completedOrders: {},
+  contactRequestSent: false,
   creditedOfferIds: [],
   creditedOffers: {},
   mobile: false,
@@ -37,90 +33,95 @@ export const initialState: UIState = {
   version: '0.4.34'
 };
 
-export function uiReducer(state = initialState, action: Action): UIState {
+export function uiReducer(state = initialState, action: UIActions): State {
   switch (action.type) {
 
-    case UIActions.CONTACT_US:
-      return Object.assign({}, state, {
+    case UIActionTypes.ContactUs:
+      return {
+        ...state,
         contactRequestSent: false,
         sendingContact: true
-      });
+      };
 
-    case UIActions.CONTACT_US:
-      return Object.assign({}, state, { sendingContact: false });
+    case UIActionTypes.ContactUsFail:
+      return { ...state, sendingContact: false };
 
-    case UIActions.CONTACT_US_SUCCESS:
-      if (!action.payload.success) return Object.assign({});
-      return Object.assign({}, state, {
+    case UIActionTypes.ContactUsSuccess:
+      if (!action.payload.success) return { ...state, sendingContact: false };
+      return {
+        ...state,
         contactRequestSent: true,
         sendingContact: false
-      });
+      };
 
-    case UIActions.CREATE_PUSH_NOTIFICATION: {
-      return Object.assign({}, state, {
-        pushNotification: action.payload
-      });
+    case UIActionTypes.CreatePushNotification: {
+      return { ...state, pushNotification: action.payload };
     }
 
-    case UIActions.DISPLAY_COMPLETED_ORDER_DIALOG: {
+    case UIActionTypes.DisplayCompletedOrderDialog: {
       const order = action.payload.order;
       if (!order || state.completedOrderIds.includes(order.id)) return state;
-      return Object.assign({}, state, {
+      return {
+        ...state,
         completedOrderIds: [...state.completedOrderIds, order.id],
-        completedOrders: Object.assign({}, state.completedOrders, {
+        completedOrders: {
+          ...state.completedOrders,
           [order.id]: order
-        })
-      });
+        }
+      };
     }
 
-    case UIActions.DISPLAY_CREDITED_OFFER_DIALOG: {
+    case UIActionTypes.DisplayCreditedOfferDialog: {
       const offer = action.payload.offer;
       if (!offer || state.creditedOfferIds.includes(offer.id)) return state;
-      return Object.assign({}, state, {
+      return {
+        ...state,
         creditedOfferIds: [...state.creditedOfferIds, offer.id],
-        creditedOffers: Object.assign({}, state.creditedOffers, {
+        creditedOffers: {
+          ...state.creditedOffers,
           [offer.id]: offer
-        })
-      });
+        }
+      };
     }
 
-    case UIActions.GET_VERSION_SUCCESS:
+    case UIActionTypes.GetVersionSuccess:
       let version = action.payload.version;
       if (!version || typeof version !== 'string') return state;
-      return Object.assign({}, state, {
-        latestVersion: action.payload.version
-      });
+      return { ...state, latestVersion: action.payload.version };
 
-    case UIActions.MARK_COMPLETED_ORDER_AS_VIEWED: {
-      const id: string = action.payload;
+    case UIActionTypes.MarkCompletedOrderAsViewed: {
+      const id = action.payload;
       if (!id || typeof id !== 'string') return state;
-      return Object.assign({}, state, {
-        creditedOffers: Object.assign({}, state.completedOrders, {
-          [id]: Object.assign({}, state.completedOrderIds[id], { viewed: true })
-        })
-      });
+      return {
+        ...state,
+        creditedOffers: {
+          ...state.completedOrders,
+          [id]: { ...state.completedOrderIds[id], viewed: true }
+        }
+      };
     }
 
-    case UIActions.MARK_CREDITED_OFFER_AS_VIEWED: {
-      const id: string = action.payload;
+    case UIActionTypes.MarkCreditedOfferAsViewed: {
+      const id = action.payload;
       if (!id || typeof id !== 'string') return state;
-      return Object.assign({}, state, {
-        creditedOffers: Object.assign({}, state.creditedOffers, {
-          [id]: Object.assign({}, state.creditedOffers[id], { viewed: true })
-        })
-      });
+      return {
+        ...state,
+        creditedOffers: {
+          ...state.creditedOffers,
+          [id]: { ...state.creditedOffers[id], viewed: true }
+        }
+      };
     }
 
-    case UIActions.SET_MOBILE:
-      return Object.assign({}, state, {
+    case UIActionTypes.SetMobile:
+      return {
+        ...state,
         mobile: action.payload,
         sideNavOpen: !action.payload
-      });
+      };
 
-    case UIActions.TOGGLE_SIDE_NAV_OPEN:
-      return Object.assign({}, state, {
-        sideNavOpen: !state.sideNavOpen,
-      });
+    case UIActionTypes.ToggleSideNavOpen:
+      return { ...state, sideNavOpen: !state.sideNavOpen };
 
     default: {
       return state;
@@ -128,109 +129,24 @@ export function uiReducer(state = initialState, action: Action): UIState {
   }
 }
 
-function _getCompletedOrderEntities() {
-  return (state$: Observable<UIState>) => state$
-    .select(s => s.completedOrders);
-}
+export const getCompletedOrderIds = (state: State) => state.completedOrderIds;
 
-function _getCompletedOrders(orderIds: string[]) {
-  return (state$: Observable<UIState>) => state$
-    .let(_getCompletedOrderEntities())
-    .map(entities => orderIds.map(id => entities[id]));
-}
+export const getCompletedOrders = (state: State) => state.completedOrders;
 
-function _getCompletedOrderIds() {
-  return (state$: Observable<UIState>) => state$
-    .select(s => s.completedOrderIds);
-}
+export const getContactRequestSent = (state: State) => state.contactRequestSent;
 
-function _getCreditedOfferEntities() {
-  return (state$: Observable<UIState>) => state$
-    .select(s => s.creditedOffers);
-}
+export const getCreditedOfferIds = (state: State) => state.creditedOfferIds;
 
-function _getCreditedOffers(offerIds: string[]) {
-  return (state$: Observable<UIState>) => state$
-    .let(_getCreditedOfferEntities())
-    .map(entities => offerIds.map(id => entities[id]));
-}
+export const getCreditedOffers = (state: State) => state.creditedOffers;
 
-function _getCreditedOfferIds() {
-  return (state$: Observable<UIState>) => state$
-    .select(s => s.creditedOfferIds);
-}
+export const getMobile = (state: State) => state.mobile;
 
-function _getLatestVersion() {
-  return (state$: Observable<UIState>) => state$
-    .select(s => s.latestVersion);
-}
+export const getPushNotification = (state: State) => state.pushNotification;
 
-function _getMobile() {
-  return (state$: Observable<UIState>) => state$
-    .select(s => s.mobile);
-}
+export const getSendingContact = (state: State) => state.sendingContact;
 
-function _getSideNavOpen() {
-  return (state$: Observable<UIState>) => state$
-    .select(s => s.sideNavOpen);
-}
+export const getSideNavOpen = (state: State) => state.sideNavOpen;
 
-function _getUIState() {
-  return (state$: Observable<AppState>) => state$
-    .select(s => s.ui);
-}
+export const getLatestVersion = (state: State) => state.latestVersion;
 
-function _getVersion() {
-  return (state$: Observable<UIState>) => state$
-    .select(s => s.version);
-}
-
-export function getCompletedOrders(ids: string[]) {
-  return compose(_getCompletedOrders(ids), _getUIState());
-}
-
-export function getCompletedOrderIds() {
-  return compose(_getCompletedOrderIds(), _getUIState());
-}
-
-export function getOrderEntities() {
-  return compose(_getCompletedOrderEntities(), _getUIState());
-}
-
-export function getCreditedOffers(ids: string[]) {
-  return compose(_getCreditedOffers(ids), _getUIState());
-}
-
-export function getCreditedOfferIds() {
-  return compose(_getCreditedOfferIds(), _getUIState());
-}
-
-export function getCreditEntities() {
-  return compose(_getCreditedOfferEntities(), _getUIState());
-}
-export function getCompletedOrderCollection() {
-  return (state$: Observable<AppState>) => state$
-    .let(getCompletedOrderIds())
-    .switchMap(id => state$.let(getCompletedOrders(id)));
-}
-export function getCreditedOfferCollection() {
-  return (state$: Observable<AppState>) => state$
-    .let(getCreditedOfferIds())
-    .switchMap(id => state$.let(getCreditedOffers(id)));
-}
-
-export function getUILatestVersion() {
-  return compose(_getLatestVersion(), _getUIState());
-}
-
-export function getUIMobile() {
-  return compose(_getMobile(), _getUIState());
-}
-
-export function getUISideNavOpen() {
-  return compose(_getSideNavOpen(), _getUIState());
-}
-
-export function getUIVersion() {
-  return compose(_getVersion(), _getUIState());
-}
+export const getVersion = (state: State) => state.version;

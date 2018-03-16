@@ -3,7 +3,6 @@ import { Request, XHRBackend, RequestOptions, Response, Http,
    RequestOptionsArgs, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
-// import { AuthService } from './auth/auth.service';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/of';

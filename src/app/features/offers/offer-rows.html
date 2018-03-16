@@ -37,7 +37,7 @@
     </span>
     <span class="offer-card-cost" offer-card-cost>
       <span *ngIf="offer?.costToUser > 0 && offer?.costToUser < 1000">
-        {{offer?.costToUser | currency:'USD':true:'1.2-2'}} <span *ngIf="offer?.noCardRequired">(No Credit Card Required)</span>
+        {{offer?.costToUser | currency:'USD':symbol:'1.2-2'}} <span *ngIf="offer?.noCardRequired">(No Credit Card Required)</span>
       </span>
       <span *ngIf="offer?.costToUser === 0">
         <b [ngClass]="{ 'dark-green': offer?.costToUser === 0}">Free <span *ngIf="offer?.noCardRequired">(No Credit Card Required)</span></b>

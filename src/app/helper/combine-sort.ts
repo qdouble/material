@@ -41,6 +41,7 @@ const sortString = function (a, b, sortBy, reverse) {
 };
 
 export function combineSort (sortBy: string | number, obj) {
+  if (!obj) return;
   return obj.sort(function (a, b) {
     if (!a || !b) return obj;
     if (typeof a[sortBy[0]] === 'string') return sortString(a, b, sortBy[0], sortBy[1]);

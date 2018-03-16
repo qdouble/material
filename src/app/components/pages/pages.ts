@@ -6,24 +6,26 @@ import {
 @Component({
   selector: 'os-pages',
   template: `
-  <md-button-toggle-group  #page [(ngModel)]="selectedPage"
+  <!--
+  <mat-button-toggle-group  #page [(ngModel)]="selectedPage"
     (ngModelChange)="pageOffset.emit(selectedPage)">
     <ng-container *ngIf="selectedPage !== 'all' ">
-      <md-button-toggle *ngFor="let page of pages" [value]="page">
+      <mat-button-toggle *ngFor="let page of pages" trackBy: trackById; [value]="page">
         {{page}}
-      </md-button-toggle>
-    <md-button-toggle *ngIf="!hideAll" value="all">
+      </mat-button-toggle>
+    <mat-button-toggle *ngIf="!hideAll" value="all">
       Show All
-    </md-button-toggle>
+    </mat-button-toggle>
     </ng-container>
     <ng-container>
-      <md-button-toggle *ngIf="selectedPage === 'all'" value="1">
+      <mat-button-toggle *ngIf="selectedPage === 'all'" value="1">
         Show Pages
-      </md-button-toggle>
+      </mat-button-toggle>
     </ng-container>
-  </md-button-toggle-group>
+  </mat-button-toggle-group>
+  -->
   `,
-  styles: [`:host >>> .md-button-toggle-label-content {padding: 0 9px;}`]
+  styles: [`:host >>> .mat-button-toggle-label-content {padding: 0 9px;}`]
 })
 
 export class PagesComponent implements OnChanges, OnInit {
@@ -50,6 +52,8 @@ export class PagesComponent implements OnChanges, OnInit {
     if (changes['selectedPage'] && changes['selectedPage'].currentValue !== this.selectedPage ) {
       this.selectedPage = changes['selectedPage'].currentValue;
     }
-
+  }
+  trackById(index: number, page) {
+    return page;
   }
 }

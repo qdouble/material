@@ -1,12 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import { AppState } from '../../reducers';
-import { UIActions } from '../../actions/ui';
+import * as fromStore from '../../reducers';
+import * as uiActions from '../../actions/ui';
 import { RegexValues } from '../../validators';
 
 @Component({
@@ -31,8 +31,7 @@ export class ContactUs implements OnDestroy {
   sent$: Observable<boolean>;
   constructor(
     fb: FormBuilder,
-    private store: Store<AppState>,
-    private uiActions: UIActions
+    private store: Store<fromStore.AppState>
   ) {
     this.f = fb.group({
       email: ['', [Validators.required, Validators.pattern(RegexValues.email)]],
@@ -40,11 +39,11 @@ export class ContactUs implements OnDestroy {
       question: ['', [Validators.required, Validators.maxLength(30000)]]
     });
 
-    this.sending$ = store.select(s => s.ui.sendingContact);
-    this.sent$ = store.select(s => s.ui.contactRequestSent);
+    this.sending$ = store.pipe(select(fromStore.getUISendingContact));
+    this.sent$ = store.pipe(select(fromStore.getUIContactRequestSent));
   }
   submitForm() {
-    this.store.dispatch(this.uiActions.contactUs(this.f.value));
+    this.store.dispatch(new uiActions.ContactUs(this.f.value));
     this.sent$
       .filter(s => s === true)
       .takeUntil(this.destroyed$)

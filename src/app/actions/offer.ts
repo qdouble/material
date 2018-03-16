@@ -1,100 +1,88 @@
-/* tslint:disable: member-ordering */
-import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
 
-import { Offer } from '../models/offer';
+import { GetOffersResponse, GetOfferResponse } from '../models/offer';
 
-@Injectable()
-
-export class OfferActions {
-
-  static CLEAR_OFFERS = '[Offer] Clear Offers';
-  clearOffers(): Action {
-    return {
-      type: OfferActions.CLEAR_OFFERS
-    };
-  }
-
-  static GET_OFFER = '[Offer] Get Offer';
-  getOffer(id: string): Action {
-    return {
-      type: OfferActions.GET_OFFER,
-      payload: id
-    };
-  }
-
-  static GET_OFFER_FAIL = '[Offer] Get Offer Fail';
-  getOfferFail(res: Response): Action {
-    return {
-      type: OfferActions.GET_OFFER_FAIL
-    };
-  }
-
-  static GET_OFFER_SUCCESS = '[Offer] Get Offer Success';
-  getOfferSuccess(offer: Offer): Action {
-    return {
-      type: OfferActions.GET_OFFER_SUCCESS,
-      payload: offer
-    };
-  }
-
-  static GET_OFFERS = '[Offer] Get Offers';
-  getOffers(): Action {
-    return {
-      type: OfferActions.GET_OFFERS
-    };
-  }
-
-  static GET_OFFERS_FAIL = '[Offer] Get Offers Fail';
-  getOffersFail(res: Response): Action {
-    return {
-      type: OfferActions.GET_OFFERS_FAIL
-    };
-  }
-
-  static GET_OFFERS_SUCCESS = '[Offer] Get Offers Success';
-  getOffersSuccess(offers: Offer[]): Action {
-    return {
-      type: OfferActions.GET_OFFERS_SUCCESS,
-      payload: offers
-    };
-  }
-
-  static GET_OFFERS_UPDATED_AT = '[Offer] Get Offers Updated At';
-  getOffersUpdatedAt(): Action {
-    return {
-      type: OfferActions.GET_OFFERS_UPDATED_AT
-    };
-  }
-
-  static GET_OFFERS_UPDATED_AT_FAIL = '[Offer] Get Offers Updated At Fail';
-  getOffersUpdatedAtFail(res: Response): Action {
-    return {
-      type: OfferActions.GET_OFFERS_UPDATED_AT_FAIL
-    };
-  }
-
-  static GET_OFFERS_UPDATED_AT_SUCCESS = '[Offer] Get Offers Updated At Success';
-  getOffersUpdatedAtSuccess(offers: Offer[]): Action {
-    return {
-      type: OfferActions.GET_OFFERS_UPDATED_AT_SUCCESS,
-      payload: offers
-    };
-  }
-
-  static GET_VIEW_OFFERS = '[Offer] Get View Offers';
-  getViewOffers(): Action {
-    return {
-      type: OfferActions.GET_VIEW_OFFERS
-    };
-  }
-
-  static SELECT_OFFER = '[Offer] Select Offer';
-  selectOffer(offer: Offer): Action {
-    return {
-      type: OfferActions.SELECT_OFFER,
-      payload: offer
-    };
-  }
+export enum OfferActionTypes {
+  ClearOffers = '[Offer] Clear Offers',
+  GetOffer = '[Offer] Get Offer',
+  GetOfferFail = '[Offer] Get Offer Fail',
+  GetOfferSuccess = '[Offer] Get Offer Success',
+  GetOffers = '[Offer] Get Offers',
+  GetOffersFail = '[Offer] Get Offers Fail',
+  GetOffersSuccess = '[Offer] Get Offers Success',
+  GetOffersUpdatedAt = '[Offer] Get Offers Updated At',
+  GetOffersUpdatedAtFail = '[Offer] Get Offers Updated At Fail',
+  GetOffersUpdatedAtSuccess = '[Offer] Get Offers Updated At Success',
+  GetViewOffers = '[Offer] Get View Offers'
 }
+
+export class ClearOffers implements Action {
+  readonly type = OfferActionTypes.ClearOffers;
+}
+
+export class GetOffer implements Action {
+  readonly type = OfferActionTypes.GetOffer;
+
+  constructor(public payload: string) { }
+}
+
+export class GetOfferFail implements Action {
+  readonly type = OfferActionTypes.GetOfferFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetOfferSuccess implements Action {
+  readonly type = OfferActionTypes.GetOfferSuccess;
+
+  constructor(public payload: GetOfferResponse) { }
+}
+
+export class GetOffers implements Action {
+  readonly type = OfferActionTypes.GetOffers;
+}
+
+export class GetOffersFail implements Action {
+  readonly type = OfferActionTypes.GetOffersFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetOffersSuccess implements Action {
+  readonly type = OfferActionTypes.GetOffersSuccess;
+
+  constructor(public payload: GetOffersResponse) { }
+}
+
+export class GetOffersUpdatedAt implements Action {
+  readonly type = OfferActionTypes.GetOffersUpdatedAt;
+}
+
+export class GetOffersUpdatedAtFail implements Action {
+  readonly type = OfferActionTypes.GetOffersUpdatedAtFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetOffersUpdatedAtSuccess implements Action {
+  readonly type = OfferActionTypes.GetOffersUpdatedAtSuccess;
+
+  constructor(public payload: { lastUpdatedAt: string }) { }
+}
+
+export class GetViewOffers implements Action {
+  readonly type = OfferActionTypes.GetViewOffers;
+}
+
+export type OfferActions =
+  | ClearOffers
+  | GetOffer
+  | GetOfferFail
+  | GetOfferSuccess
+  | GetOffers
+  | GetOffersFail
+  | GetOffersSuccess
+  | GetOffersUpdatedAt
+  | GetOffersUpdatedAtFail
+  | GetOffersUpdatedAtSuccess
+  | GetViewOffers;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 
 import { Referral } from '../../../../models/referral';
 
@@ -14,7 +14,7 @@ export class ReferralDetailsDialog implements OnInit {
   startedFrom = 0;
   referral: Referral;
 
-  constructor(public dialogRef: MdDialogRef<ReferralDetailsDialog>) { }
+  constructor(public dialogRef: MatDialogRef<ReferralDetailsDialog>) { }
   ngOnInit() {
     if (this.referral.credits && this.referral.credits.length > 0) {
       this.referral.credits.forEach(credit => {

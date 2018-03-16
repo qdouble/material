@@ -1,4 +1,5 @@
 import { Credit } from './credit';
+import { GenericResponse } from './generic-response';
 
 export interface Referral {
   readonly id: string;
@@ -19,4 +20,12 @@ export interface Referral {
   readonly credits: Credit[];
   readonly removed?: boolean;
   readonly hidden?: boolean;
+}
+
+export interface GetReferral extends GenericResponse {
+  referral: Referral;
+}
+
+export interface GetReferrals extends GenericResponse {
+  referrals: Referral[];
 }

@@ -1,153 +1,164 @@
-/* tslint:disable: member-ordering max-line-length */
-import { Injectable } from '@angular/core';
-// import { Response } from '@angular/http';
 import { Action } from '@ngrx/store';
 
-import { Notification } from '../models/notification';
+import {
+  Notification,
+  DeleteNotificationsResponse,
+  GetNotificationsResponse,
+  MarkAllAsReadResponse
+} from '../models/notification';
+import { GetProfileResponse } from '../models/user';
+import { GenericResponse } from '../models/generic-response';
 
-@Injectable()
-
-export class NotificationActions {
-  static ADD_NOTIFICATION = '[Notification] Add Notification';
-  addNotification<T extends Notification>(notification: T): Action {
-    return {
-      type: NotificationActions.ADD_NOTIFICATION,
-      payload: notification
-    };
-  }
-
-  static DELETE_ALL_NOTIFICATIONS = '[Notification] Delete All Notifications';
-  deleteAllNotifications(): Action {
-    return {
-      type: NotificationActions.DELETE_ALL_NOTIFICATIONS
-    };
-  }
-
-  static DELETE_ALL_NOTIFICATIONS_FAIL = '[Notification] Delete All Notifications Fail';
-  deleteAllNotificationsFail(err: Error): Action {
-    return {
-      type: NotificationActions.DELETE_ALL_NOTIFICATIONS_FAIL,
-      payload: err
-    };
-  }
-
-  static DELETE_ALL_NOTIFICATIONS_SUCCESS = '[Notification] Delete All Notifications Success';
-  deleteAllNotificationsSuccess(res: { success: boolean }): Action {
-    return {
-      type: NotificationActions.DELETE_ALL_NOTIFICATIONS_SUCCESS,
-      payload: res
-    };
-  }
-
-  static DELETE_NOTIFICATIONS = '[Notification] Delete Notifications';
-  deleteNotifications(ids: string[]): Action {
-    return {
-      type: NotificationActions.DELETE_NOTIFICATIONS,
-      payload: ids
-    };
-  }
-
-  static DELETE_NOTIFICATIONS_FAIL = '[Notification] Delete Notifications Fail';
-  deleteNotificationsFail(err: Error): Action {
-    return {
-      type: NotificationActions.DELETE_NOTIFICATIONS_FAIL,
-      payload: err
-    };
-  }
-
-  static DELETE_NOTIFICATIONS_SUCCESS = '[Notification] Delete Notifications Success';
-  deleteNotificationsSuccess(res: { ids: string[] }): Action {
-    return {
-      type: NotificationActions.DELETE_NOTIFICATIONS_SUCCESS,
-      payload: res
-    };
-  }
-
-  static GET_NOTIFICATIONS = '[Notification] Get Notifications';
-  getNotifications(query: string): Action {
-    return {
-      type: NotificationActions.GET_NOTIFICATIONS,
-      payload: query
-    };
-  }
-
-  static GET_NOTIFICATIONS_FAIL = '[Notification] Get Notifications Fail';
-  getNotificationsFail(err: Error): Action {
-    return {
-      type: NotificationActions.GET_NOTIFICATIONS_FAIL,
-      payload: err
-    };
-  }
-
-  static GET_NOTIFICATIONS_SUCCESS = '[Notification] Get Notifications Success';
-  getNotificationsSuccess(res: { notifications: Notification[] }): Action {
-    return {
-      type: NotificationActions.GET_NOTIFICATIONS_SUCCESS,
-      payload: res
-    };
-  }
-
-  static INC_PENDING_UNREAD_TOTAL = '[Notification] Inc Pending Unread Total';
-  incPendingUnreadTotal(total: number): Action {
-    return {
-      type: NotificationActions.INC_PENDING_UNREAD_TOTAL,
-      payload: total
-    };
-  }
-
-  static MARK_ALL_AS_READ = '[Notification] Mark All As Read';
-  markAllAsRead(): Action {
-    return {
-      type: NotificationActions.MARK_ALL_AS_READ
-    };
-  }
-
-  static MARK_ALL_AS_READ_FAIL = '[Notification] Mark All As Read Fail';
-  markAllAsReadFail(err: Error): Action {
-    return {
-      type: NotificationActions.MARK_ALL_AS_READ_FAIL,
-      payload: err
-    };
-  }
-
-  static MARK_ALL_AS_READ_SUCCESS = '[Notification] Mark All As Read Success';
-  markAllAsReadSuccess(res: { success: boolean }): Action {
-    return {
-      type: NotificationActions.MARK_ALL_AS_READ_SUCCESS,
-      payload: res
-    };
-  }
-
-  static MARK_NOTIFICATIONS_AS_READ = '[Notification] Mark Notifications As Read';
-  markNotificationsAsRead(mark: { ids: string[], read: boolean }): Action {
-    return {
-      type: NotificationActions.MARK_NOTIFICATIONS_AS_READ,
-      payload: mark
-    };
-  }
-
-  static MARK_NOTIFICATIONS_AS_READ_FAIL = '[Notification] Mark Notifications As Read Fail';
-  markNotificationsAsReadFail(err: Error): Action {
-    return {
-      type: NotificationActions.MARK_NOTIFICATIONS_AS_READ_FAIL,
-      payload: err
-    };
-  }
-
-  static MARK_NOTIFICATIONS_AS_READ_SUCCESS = '[Notification] Mark Notifications As Read Success';
-  markNotificationsAsReadSuccess(res: { ids: string[], read: boolean }): Action {
-    return {
-      type: NotificationActions.MARK_NOTIFICATIONS_AS_READ_SUCCESS,
-      payload: res
-    };
-  }
-
-  static SET_NOTIFICATION_UNREAD_TOTAL = '[Notification] Set Notification Total';
-  setNotificationTotal(total: number): Action {
-    return {
-      type: NotificationActions.SET_NOTIFICATION_UNREAD_TOTAL,
-      payload: total
-    };
-  }
-
+export enum NotificationActionTypes {
+  AddNotification = '[Notification] Add Notification',
+  DeleteAllNotifications = '[Notification] Delete All Notifications',
+  DeleteAllNotificationsFail = '[Notification] Delete All Notifications Fail',
+  DeleteAllNotificationsSuccess = '[Notification] Delete All Notifications Success',
+  DeleteNotifications = '[Notification] Delete Notifications',
+  DeleteNotificationsFail = '[Notification] Delete Notifications Fail',
+  DeleteNotificationsSuccess = '[Notification] Delete Notifications Success',
+  GetNotifications = '[Notification] Get Notifications',
+  GetNotificationsFail = '[Notification] Get Notifications Fail',
+  GetNotificationsSuccess = '[Notification] Get Notifications Success',
+  IncPendingUnreadTotal = '[Notification] Inc Pending Unread Total',
+  MarkAllAsRead = '[Notification] Mark All As Read',
+  MarkAllAsReadFail = '[Notification] Mark All As Read Fail',
+  MarkAllAsReadSuccess = '[Notification] Mark All As Read Success',
+  MarkNotificationsAsRead = '[Notification] Mark Notifications As Read',
+  MarkNotificationsAsReadFail = '[Notification] Mark Notifications As Read Fail',
+  MarkNotificationsAsReadSuccess = '[Notification] Mark Notifications As Read Success',
+  Select = '[Notification] Select',
+  SetNotificationUnreadTotal = '[Notification] Set Notification Unread Total',
 }
+
+export class AddNotification implements Action {
+  readonly type = NotificationActionTypes.AddNotification;
+
+  constructor(public payload: Notification) { }
+}
+
+export class DeleteAllNotifications implements Action {
+  readonly type = NotificationActionTypes.DeleteAllNotifications;
+}
+
+export class DeleteAllNotificationsFail implements Action {
+  readonly type = NotificationActionTypes.DeleteAllNotificationsFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class DeleteAllNotificationsSuccess implements Action {
+  readonly type = NotificationActionTypes.DeleteAllNotificationsSuccess;
+
+  constructor(public payload: GenericResponse) { }
+}
+
+export class DeleteNotifications implements Action {
+  readonly type = NotificationActionTypes.DeleteNotifications;
+
+  constructor(public payload: string[]) { }
+}
+
+export class DeleteNotificationsFail implements Action {
+  readonly type = NotificationActionTypes.DeleteNotificationsFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class DeleteNotificationsSuccess implements Action {
+  readonly type = NotificationActionTypes.DeleteNotificationsSuccess;
+
+  constructor(public payload: DeleteNotificationsResponse) { }
+}
+
+export class GetNotifications implements Action {
+  readonly type = NotificationActionTypes.GetNotifications;
+
+  constructor(public payload: string) { }
+}
+
+export class GetNotificationsFail implements Action {
+  readonly type = NotificationActionTypes.GetNotificationsFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetNotificationsSuccess implements Action {
+  readonly type = NotificationActionTypes.GetNotificationsSuccess;
+
+  constructor(public payload: GetNotificationsResponse) { }
+}
+
+export class IncPendingUnreadTotal implements Action {
+  readonly type = NotificationActionTypes.IncPendingUnreadTotal;
+
+  constructor(public payload: number) { }
+}
+
+export class MarkAllAsRead implements Action {
+  readonly type = NotificationActionTypes.MarkAllAsRead;
+}
+
+export class MarkAllAsReadFail implements Action {
+  readonly type = NotificationActionTypes.MarkAllAsReadFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class MarkAllAsReadSuccess implements Action {
+  readonly type = NotificationActionTypes.MarkAllAsReadSuccess;
+
+  constructor(public payload: MarkAllAsReadResponse) { }
+}
+
+export class MarkNotificationsAsRead implements Action {
+  readonly type = NotificationActionTypes.MarkNotificationsAsRead;
+
+  constructor(public payload: { ids: string[], read: boolean }) { }
+}
+
+export class MarkNotificationsAsReadFail implements Action {
+  readonly type = NotificationActionTypes.MarkNotificationsAsReadFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class MarkNotificationsAsReadSuccess implements Action {
+  readonly type = NotificationActionTypes.MarkNotificationsAsReadSuccess;
+
+  constructor(public payload: { ids: number[], read: boolean }) { }
+}
+
+export class Select implements Action {
+  readonly type = NotificationActionTypes.Select;
+
+  constructor(public payload: number) { }
+}
+
+export class SetNotificationUnreadTotal implements Action {
+  readonly type = NotificationActionTypes.SetNotificationUnreadTotal;
+
+  constructor(public payload: GetProfileResponse) { }
+}
+
+export type NotificationActions =
+  | AddNotification
+  | DeleteAllNotifications
+  | DeleteAllNotificationsFail
+  | DeleteAllNotificationsSuccess
+  | DeleteNotifications
+  | DeleteNotificationsFail
+  | DeleteNotificationsSuccess
+  | GetNotifications
+  | GetNotificationsFail
+  | GetNotificationsSuccess
+  | IncPendingUnreadTotal
+  | MarkAllAsRead
+  | MarkAllAsReadFail
+  | MarkAllAsReadSuccess
+  | MarkNotificationsAsRead
+  | MarkNotificationsAsReadFail
+  | MarkNotificationsAsReadSuccess
+  | Select
+  | SetNotificationUnreadTotal;
+

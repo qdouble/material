@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { CustomValidators } from '../../validators';
 
 import { AppState } from '../../reducers';
-import { UserActions } from '../../actions/user';
+import * as userActions from '../../actions/user';
 import { RegexValues } from '../../validators';
 
 @Component({
@@ -21,8 +21,7 @@ export class PasswordReset implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private store: Store<AppState>,
-    private userActions: UserActions
+    private store: Store<AppState>
   ) { }
 
   ngOnInit() {
@@ -39,6 +38,6 @@ export class PasswordReset implements OnInit {
   }
 
   submitForm() {
-    this.store.dispatch(this.userActions.resetPassword(this.f.value));
+    this.store.dispatch(new userActions.ResetPassword(this.f.value));
   }
 }

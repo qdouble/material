@@ -49,11 +49,11 @@ a:link {
   text-align: left !important;
 }
 
-md-card {
+mat-card {
   margin-bottom: 5px;
 }
 
-md-slide-toggle {
+mat-slide-toggle {
   display:  table;
   margin: 10px auto;
 }
@@ -74,10 +74,15 @@ md-slide-toggle {
 
 .ref-select-row {
   text-align: center;
+  width: 90%;
+  margin-top: 10px;
+  mat-select {
+    margin-bottom: 12px;
+  }
 }
 
 #referral-link-section {
-  md-card-content {
+  mat-card-content {
     :nth-child(1) {
       text-align: center;
     }

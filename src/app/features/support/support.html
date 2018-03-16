@@ -1,37 +1,37 @@
-<md-card class="os-page-container" @fade>
+<mat-card class="os-page-container" @fade>
     <div class="os-support-tickets-table-container">
-      <md-card *ngIf="(openTickets$ | async)?.length > 0" class="os-support-ticket-section">
-        <md-card-title>Open Tickets</md-card-title>
+      <mat-card *ngIf="(openTickets$ | async)?.length > 0" class="os-support-ticket-section">
+        <mat-card-title>Open Tickets</mat-card-title>
         <os-support-ticket-table
           [tickets]="openTickets$ | async"
           (closeTicket)=closeTicket($event)
           (sortBy)=sortBy($event)>
         </os-support-ticket-table>
-      </md-card>
-      <md-card *ngIf="(closedTickets$ | async)?.length > 0" class="os-support-ticket-section">
-        <md-card-title>Closed Tickets</md-card-title>
+      </mat-card>
+      <mat-card *ngIf="(closedTickets$ | async)?.length > 0" class="os-support-ticket-section">
+        <mat-card-title>Closed Tickets</mat-card-title>
           <os-support-ticket-table
             [tickets]="closedTickets$ | async"
             (closeTicket)=closeTicket($event)
             (sortBy)=sortBy($event)>
           </os-support-ticket-table>
-      </md-card>
-       <md-card *ngIf="(creditRequests$ | async)?.length > 0" class="os-support-ticket-section">
-        <md-card-title>Credit Requests</md-card-title>
+      </mat-card>
+       <mat-card *ngIf="(creditRequests$ | async)?.length > 0" class="os-support-ticket-section">
+        <mat-card-title>Credit Requests</mat-card-title>
           <os-credit-request-table
             [creditRequests]="creditRequests$ | async">
           </os-credit-request-table>
-      </md-card>
-      <md-card class="os-new-support-ticket">
-        <md-card-title>New Support Ticket</md-card-title>
+      </mat-card>
+      <mat-card class="os-new-support-ticket">
+        <mat-card-title>New Support Ticket</mat-card-title>
         <os-support-ticket [addedObs]="added$" [ticketSubject]="ticketSubject"></os-support-ticket>
-      </md-card>
+      </mat-card>
       <br>
       <a [routerLink]="['credit-request']">
-        <md-card id="credit-request-tab" class="os-message-card primary-background white">
+        <mat-card id="credit-request-tab" class="os-message-card primary-background white">
           Missing credit for an offer you completed?<br> <b>Click Here to File a Missing Credit Request.</b>
-        </md-card>
+        </mat-card>
       </a>
     </div>
     <!-- <os-footer></os-footer> -->
-</md-card>
+</mat-card>

@@ -1,7 +1,6 @@
 import {
-  ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
+  Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Offer } from '../../../models/offer';
 import { UserAgent } from '../../../models/user-agent';
 

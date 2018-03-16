@@ -1,31 +1,23 @@
 import {
-  AfterViewInit, Component, ChangeDetectionStrategy,
+  AfterViewInit, Component,
   OnDestroy, OnInit, ViewEncapsulation
 } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { UniqueSelectionDispatcher } from '@angular/material';
+import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
 
 const firstBy = require('thenby');
 
-import { AppState } from '../../reducers';
+import * as fromStore from '../../reducers';
 import { Credit } from '../../models/credit';
 import { Offer } from '../../models/offer';
-import {
-  getOfferCollection,
-  getOfferLoaded,
-  getOfferLoadedUserOffers,
-  getOfferRankUpdatedAt
-} from '../../reducers/offer';
-import { getUIMobile, getUISideNavOpen } from '../../reducers/ui';
-import { getCreditCollection, getUserLoggedIn, getCreditTotal, getUser } from '../../reducers/user';
-import { OfferActions } from '../../actions/offer';
-import { UserActions } from '../../actions/user';
+import * as offerActions from '../../actions/offer';
+import * as userActions from '../../actions/user';
 
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { User } from '../../models/user';
@@ -51,8 +43,8 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   checkedOffers: { id: string, creditValue: number, checked: boolean }[] = [];
   checkedOffers$: Subject<{ id: string, creditValue: number, checked: boolean }[]>
   = new Subject<{ id: string, creditValue: number, checked: boolean }[]>();
-  confirmDialogRef: MdDialogRef<ConfirmDialog>;
-  confirmDialogConfig: MdDialogConfig = {
+  confirmDialogRef: MatDialogRef<ConfirmDialog>;
+  confirmDialogConfig: MatDialogConfig = {
     disableClose: false
   };
   credits$: Observable<Credit[]>;
@@ -122,44 +114,43 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     'creditValue'
   ];
   constructor(
-    public dialog: MdDialog,
-    private offerActions: OfferActions,
+    public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<AppState>,
-    private userActions: UserActions
+    private store: Store<fromStore.AppState>
   ) {
-    this.user$ = this.store.let(getUser());
-    this.mobile$ = this.store.let(getUIMobile());
-    this.sideNavOpen$ = this.store.let(getUISideNavOpen());
-    this.loaded$ = this.store.let(getOfferLoaded());
+    this.user$ = this.store.pipe(select(fromStore.getUserProfile));
+    this.mobile$ = this.store.pipe(select(fromStore.getUIMobile));
+    this.sideNavOpen$ = this.store.pipe(select(fromStore.getUISideNavOpen));
+    this.loaded$ = this.store.pipe(select(fromStore.getOfferLoaded));
     this.loaded$
       .takeUntil(this.destroyed$)
       .subscribe(l => this.loaded = l);
-    this.loadedUserOffers$ = this.store.let(getOfferLoadedUserOffers());
+    this.loadedUserOffers$ = this.store.pipe(select(fromStore.getOfferLoadedUserOffers));
     this.loadedUserOffers$
       .takeUntil(this.destroyed$)
       .subscribe(l => this.loadedUserOffers = l);
-    this.loggedIn$ = this.store.let(getUserLoggedIn());
+    this.loggedIn$ = this.store.pipe(select(fromStore.getUserLoggedIn));
     this.loggedIn$
       .takeUntil(this.destroyed$)
       .subscribe(loggedIn => {
         this.loggedIn = loggedIn;
         if (!this.loaded) {
           if (loggedIn) {
-            this.store.dispatch(this.offerActions.getOffers());
+            this.store.dispatch(new offerActions.GetOffers());
           } else {
-            this.store.dispatch(this.offerActions.getViewOffers());
+            this.store.dispatch(new offerActions.GetViewOffers());
             this.sortBy$.next('featured');
           }
         } else if (loggedIn && this.loaded && !this.loadedUserOffers) {
-          this.store.dispatch(this.offerActions.getOffers());
+          this.store.dispatch(new offerActions.GetOffers());
         }
       });
 
-    this.offersUnsorted$ = this.store.let(getOfferCollection());
+    this.offersUnsorted$ = this.store.pipe(select(fromStore.getOfferCollection));
     this.offersUnsorted$
       .takeUntil(this.destroyed$)
+      .filter(o => o !== undefined)
       .subscribe(offers => {
         this.pages = [];
         for (let i = 0; i < offers.length / this.offersPerPage; i++) {
@@ -188,9 +179,10 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
         let completed = (arr: Offer[], offerIds) => {
           return arr.filter(offer => offerIds.includes(offer.id));
         };
-        this.credits$ = this.store.let(getCreditCollection());
+        this.credits$ = this.store.pipe(select(fromStore.getUserCreditCollection));
         this.credits$
           .takeUntil(this.destroyed$)
+          .filter(credits => credits !== undefined)
           .filter(credits => credits.length > 0)
           .subscribe(credits => {
             this.creditedOfferIds = credits.map(credit => credit.offerId);
@@ -199,7 +191,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
           });
       });
 
-    this.creditTotal$ = store.let(getCreditTotal());
+    this.creditTotal$ = store.pipe(select(fromStore.getUserCreditTotal));
     this.creditTotal$.subscribe(total => {
       this.userLevel = Math.floor(Number(Number(total).toFixed(2)));
     });
@@ -221,13 +213,13 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.route.params
       .subscribe(param => {
         if (param['showRefT']) {
-          this.store.dispatch(this.userActions.testShowRefRandom(JSON.parse(param['showRefT'])));
+          this.store.dispatch(new userActions.TestShowRefRandom(JSON.parse(param['showRefT'])));
         }
         if (param['new']) {
-          this.store.dispatch(this.userActions.newEqualTrue(true));
+          this.store.dispatch(new userActions.NewEqualTrue(true));
         }
         if (param['returning']) {
-          this.store.dispatch(this.userActions.returningUser());
+          this.store.dispatch(new userActions.ReturningUser());
         }
       });
     this.firstName$ = this.store.select(s => s.user.user.firstName);
@@ -240,19 +232,19 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
           lastUpdate = l;
         } else if (lastUpdate && lastUpdate !== l) {
           if (this.loggedIn) {
-            this.store.dispatch(this.offerActions.getOffers());
+            this.store.dispatch(new offerActions.GetOffers());
           } else {
-            this.store.dispatch(this.offerActions.getViewOffers());
+            this.store.dispatch(new offerActions.GetViewOffers());
           }
         }
       });
-    this.offerRankUpdatedAt$ = this.store.let(getOfferRankUpdatedAt());
+    this.offerRankUpdatedAt$ = this.store.pipe(select(fromStore.getOfferRankUpdatedAt));
     this.newEqualTrue$ = this.store.select(s => s.user.isNew);
     this.returningUser$ = this.store.select(s => s.user.returningUser);
     this.testShowRef$ = this.store.select(s => s.user.testShowRefRandom);
     this.username$ = this.store.select(s => s.user.user.username);
     this.username$.takeUntil(this.destroyed$).subscribe(u => this.username = u);
-    this.store.dispatch(this.offerActions.getOffersUpdatedAt());
+    this.store.dispatch(new offerActions.GetOffersUpdatedAt());
 
     this.user$
       .filter(user => user.createdAt !== undefined)

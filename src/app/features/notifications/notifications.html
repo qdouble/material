@@ -1,9 +1,9 @@
-<md-card class="os-page-container">
-  <md-card class="os-form-container">
-    <md-card-title class="primary">Notifications</md-card-title>
+<mat-card class="os-page-container">
+  <mat-card class="os-form-container">
+    <mat-card-title class="primary">Notifications</mat-card-title>
     <div class="button-row">
-      <button md-raised-button color="accent" class="white" style="font-size: 13px" (click)="markAllAsRead()">Mark All As Read</button>
-      <button md-raised-button color="warn" class="white" (click)="deleteAllNotifications()"><md-icon>delete_forever</md-icon> Delete All</button>
+      <button mat-raised-button color="accent" class="white" style="font-size: 13px" (click)="markAllAsRead()">Mark All As Read</button>
+      <button mat-raised-button color="warn" class="white" (click)="deleteAllNotifications()"><mat-icon>delete_forever</mat-icon> Delete All</button>
     </div>
     <div class="os-notifications-page-item">
       <os-notifications-page-item *ngFor="let notification of sortedNotifications$ | async" [notification]="notification" (deleteNotifications)="deleteNotifications($event)"
@@ -13,5 +13,5 @@
           -- You Have No Notifications --
         </div>
     </div>
-  </md-card>
-</md-card>
+  </mat-card>
+</mat-card>

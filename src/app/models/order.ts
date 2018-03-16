@@ -1,3 +1,5 @@
+import { GenericResponse } from './generic-response';
+
 export interface Order {
   id?: string;
   firstName?: string;
@@ -17,4 +19,13 @@ export interface Order {
   createdAt: string;
   // Helper properties //
   viewed?: boolean;
+}
+
+export interface GetOrderResponse extends GenericResponse {
+  order: Order;
+}
+
+export interface GetOrdersResponse extends GenericResponse {
+  orders: Order[];
+  failedOrders: Order[];
 }

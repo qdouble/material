@@ -1,18 +1,16 @@
 /* tslint:disable: variable-name */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import { CountryActions } from '../../actions/country';
+import * as fromStore from '../../reducers';
+import * as countryActions from '../../actions/country';
+import * as userActions from '../../actions/user';
 import { Country } from '../../models/country';
-import { getCountryCollection, getCountryLoaded } from '../../reducers/country';
-import { UserActions } from '../../actions/user';
 import { User } from '../../models/user';
-import { AppState } from '../../reducers';
-import { getUser, getUserLoaded } from '../../reducers/user';
 import { CustomValidators, RegexValues } from '../../validators';
 
 @Component({
@@ -45,10 +43,8 @@ export class Profile implements OnDestroy, OnInit {
   viewPending: false;
 
   constructor(
-    private countryActions: CountryActions,
     private fb: FormBuilder,
-    private store: Store<AppState>,
-    private userActions: UserActions
+    private store: Store<fromStore.AppState>
   ) {
     this.f = this.fb.group({
       firstName: ['', [Validators.required, Validators.pattern(RegexValues.nameValue)]],
@@ -78,24 +74,24 @@ export class Profile implements OnDestroy, OnInit {
           CustomValidators.compare('password2', 'confirmPassword', 'comparePassword')
         ])
       });
-    this.countryLoaded$ = store.let(getCountryLoaded());
+    this.countryLoaded$ = store.pipe(select(fromStore.getCountryLoaded));
     this.countryLoaded$
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
-        if (!loaded) this.store.dispatch(this.countryActions.getCountries());
+        if (!loaded) this.store.dispatch(new countryActions.GetCountries());
       });
-    this.user$ = store.let(getUser());
+    this.user$ = store.pipe(select(fromStore.getUserProfile));
     this.user$.take(1).subscribe(u => {
       if (u && u.profilePending) {
-        this.store.dispatch(this.userActions.getProfile());
+        this.store.dispatch(new userActions.GetProfile());
       }
     });
-    this.loaded$ = store.let(getUserLoaded());
+    this.loaded$ = store.pipe(select(fromStore.getUserLoaded));
   }
 
   ngOnInit() {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
-    this.countries$ = this.store.let(getCountryCollection());
+    this.countries$ = this.store.pipe(select(fromStore.getCountryCollection));
     this.countryIds$ = this.countries$.map(countries => countries.map(country => country.id));
     this.countryIds$
       .filter(ids => ids.length > 0)
@@ -136,7 +132,7 @@ export class Profile implements OnDestroy, OnInit {
   }
 
   dismissProfileChanges() {
-    this.store.dispatch(this.userActions.dismissProfileChanges());
+    this.store.dispatch(new userActions.DismissProfileChanges());
   }
 
   submitForm() {
@@ -147,7 +143,7 @@ export class Profile implements OnDestroy, OnInit {
       || f.email !== i.email) {
       requiresApproval = true;
     }
-    this.store.dispatch(this.userActions.updateProfile({
+    this.store.dispatch(new userActions.UpdateProfile({
       ...this.f.value,
       requiresApproval: requiresApproval,
       password: this.f.value.password2

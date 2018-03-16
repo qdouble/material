@@ -1,3 +1,5 @@
+import { GenericResponse } from '../../models/generic-response';
+
 export interface Ticket {
   readonly id: string;
   readonly subject?: string;
@@ -20,4 +22,39 @@ export interface TicketMessage {
   readonly ticketId?: string;
   readonly adminName?: string;
   readonly updatedAt?: Date;
+}
+
+export interface AddMessageResponse extends GenericResponse {
+  ticketMessage: TicketMessage;
+  entries: number;
+  lastEntry: Date;
+  lastEntryBy: string;
+}
+
+export interface AddTicketResponse extends GenericResponse {
+  ticket: Ticket;
+  id: string;
+}
+
+export interface CloseTicketResponse extends GenericResponse {
+  id: string;
+  closed: boolean;
+}
+
+export interface GetTicketResponse extends GenericResponse {
+  ticket: Ticket;
+}
+
+export interface GetTicketsResponse extends GenericResponse {
+  tickets: Ticket[];
+}
+
+export interface MarkTicketAsReadResponse extends GenericResponse {
+  id: string;
+  mark: boolean;
+}
+
+export interface SortByModel {
+  sortBy: string;
+  reverse: boolean;
 }

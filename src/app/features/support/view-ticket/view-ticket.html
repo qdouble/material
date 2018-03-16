@@ -1,4 +1,4 @@
-<md-card class="os-page-container">
+<mat-card class="os-page-container">
   <section>
     <os-support-ticket-form 
       [ticket]="ticket$ | async"
@@ -10,11 +10,11 @@
       (goBack)=goBack($event)
       (markTicketAsRead)=markTicketAsRead($event)
     >
-    <md-card-title class="primary">View Ticket</md-card-title>
-    <button id="os-vt-back-button" md-raised-button [routerLink]="['..']">
-      <md-icon id="os-vt-back-button-arrow">keyboard_arrow_left</md-icon>
+    <mat-card-title class="primary">View Ticket</mat-card-title>
+    <button id="os-vt-back-button" mat-raised-button [routerLink]="['..']">
+      <mat-icon id="os-vt-back-button-arrow">keyboard_arrow_left</mat-icon>
         GO TO SUPPORT PAGE
     </button>
     </os-support-ticket-form>
   </section>
-</md-card>
+</mat-card>

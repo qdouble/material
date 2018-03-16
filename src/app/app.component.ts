@@ -1,42 +1,23 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import {
-  MdDialog, MdDialogRef, MdDialogConfig,
-  MdSnackBar, MdSnackBarConfig
+  MatDialog, MatDialogRef, MatDialogConfig,
+  MatSnackBar, MatSnackBarConfig
 } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Store } from '@ngrx/store';
-import { Action } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
 import { TransferState } from '../modules/transfer-state/transfer-state';
 
-import { AppState } from './reducers';
+import * as fromStore from './reducers';
 import { Credit } from './models/credit';
 import { Notification } from './models/notification';
 import { Notify } from './models/notify';
-import { NotificationActions } from './actions/notification';
-import { PrizeActions } from './actions/prize';
-import { UIActions } from './actions/ui';
-import { UserActions } from './actions/user';
-import {
-  getNotificationCollection,
-  getNoficationPendingTotal,
-  getNotificationUnreadTotal
-} from './reducers/notification';
-import {
-  getCompletedOrderCollection,
-  getCreditedOfferCollection,
-  getUILatestVersion,
-  getUIVersion
-} from './reducers/ui';
-
-import {
-  getAmountPaid, getAskQuestions, getCreditTotal, getReferrerBlocked,
-  getUserOnAdminPage, getUserLoaded, getUserLoading, getUserLoggedIn, getUserReferredBy
-} from './reducers/user';
-import { getCreditCollection, getLevelBadgeNum } from './reducers/user';
-import { getNotifyCollection } from './reducers/notify';
+import * as notificationActions from './actions/notification';
+import * as prizeActions from './actions/prize';
+import * as uiActions from './actions/ui';
+import * as userActions from './actions/user';
 
 import { validateUserName } from './validators';
 
@@ -75,18 +56,18 @@ export class AppComponent implements OnDestroy, OnInit {
   webSocket$: Subject<any>;
   closeConnection$: Subject<any> = new Subject<any>();
   ///// Completed Offer Dialog //////
-  askQuestionsDialogRef: MdDialogRef<AskQuestionsDialog>;
-  askQuestionsDialogConfig: MdDialogConfig = { disableClose: true };
-  completedOrderDialogRef: MdDialogRef<CompletedOrderDialog>;
-  completedOrderDialogConfig: MdDialogConfig = {
+  askQuestionsDialogRef: MatDialogRef<AskQuestionsDialog>;
+  askQuestionsDialogConfig: MatDialogConfig = { disableClose: true };
+  completedOrderDialogRef: MatDialogRef<CompletedOrderDialog>;
+  completedOrderDialogConfig: MatDialogConfig = {
     disableClose: false
   };
-  creditDialogRef: MdDialogRef<CreditedOfferDialog>;
-  creditDialogConfig: MdDialogConfig = {
+  creditDialogRef: MatDialogRef<CreditedOfferDialog>;
+  creditDialogConfig: MatDialogConfig = {
     disableClose: false
   };
-  levelBadgeDialogRef: MdDialogRef<LevelBadgeDialog>;
-  levelBadgeDialogConfig: MdDialogConfig = {
+  levelBadgeDialogRef: MatDialogRef<LevelBadgeDialog>;
+  levelBadgeDialogConfig: MatDialogConfig = {
     disableClose: false
   };
   /////////////
@@ -123,26 +104,22 @@ export class AppComponent implements OnDestroy, OnInit {
   views = views;
   constructor(
     private cache: TransferState,
-    public dialog: MdDialog,
-    private notificationActions: NotificationActions,
+    public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
     private swAndPushService: SWAndPushService,
-    private prizeActions: PrizeActions,
-    public snackBar: MdSnackBar,
-    private store: Store<AppState>,
-    private uiActions: UIActions,
-    private userActions: UserActions
+    public snackBar: MatSnackBar,
+    private store: Store<fromStore.AppState>
   ) {
     let active$ = store.select(s => s.user.user.active);
     active$.takeUntil(this.destroyed$)
       .filter(active => active === false)
       .subscribe(active => {
-        this.store.dispatch(this.userActions.logout());
+        this.store.dispatch(new userActions.Logout());
       });
-    this.version$ = store.let(getUIVersion());
+    this.version$ = store.pipe(select(fromStore.getUIVersion));
     this.version$.subscribe(v => this.version = v);
-    this.latestVersion$ = store.let(getUILatestVersion());
+    this.latestVersion$ = store.pipe(select(fromStore.getUILatestVersion));
     this.latestVersion$
       .filter(v => v !== null)
       .takeUntil(this.destroyed$)
@@ -156,7 +133,7 @@ export class AppComponent implements OnDestroy, OnInit {
     checkServer$
       .takeUntil(this.destroyed$)
       .subscribe(() => {
-        this.store.dispatch(this.uiActions.getVersion());
+        this.store.dispatch(new uiActions.GetVersion());
         if (this.loggedIn) {
         }
       });
@@ -173,11 +150,11 @@ export class AppComponent implements OnDestroy, OnInit {
       .takeUntil(this.destroyed$)
       .subscribe(lastUpdate => {
         if (this.updatedAt && lastUpdate !== this.updatedAt) {
-          store.dispatch(userActions.getProfile());
+          store.dispatch(new userActions.GetProfile());
         }
       });
-    this.onAdminLoginPage$ = store.let(getUserOnAdminPage());
-    this.notifiy$ = store.let(getNotifyCollection());
+    this.onAdminLoginPage$ = store.pipe(select(fromStore.getUserOnAdminPage));
+    this.notifiy$ = store.pipe(select(fromStore.getNotifyCollection));
     this.notifiy$
       .takeUntil(this.destroyed$)
       .filter(notify => notify.length > 0)
@@ -186,31 +163,31 @@ export class AppComponent implements OnDestroy, OnInit {
           notify[0].message === 'Unexpected token U in JSON at position 0') {
           return;
         }
-        let config = new MdSnackBarConfig();
+        let config = new MatSnackBarConfig();
         let index = notify.length - 1;
         this.snackRefs[index] = this.snackBar.open(notify[index].message,
           this.action && this.actionButtonLabel, config);
         setTimeout(() => { this.snackRefs[index].dismiss(); }, 5000);
       });
-    this.userLoaded$ = store.let(getUserLoaded());
+    this.userLoaded$ = store.pipe(select(fromStore.getUserLoaded));
 
-    this.userLoading$ = store.let(getUserLoading());
-    this.userLoggedIn$ = store.let(getUserLoggedIn());
+    this.userLoading$ = store.pipe(select(fromStore.getUserLoading));
+    this.userLoggedIn$ = store.pipe(select(fromStore.getUserLoggedIn));
     this.userLoggedIn$
       .takeUntil(this.destroyed$)
       .subscribe(l => this.loggedIn = l);
-    this.userReferredBy$ = store.let(getUserReferredBy());
+    this.userReferredBy$ = store.pipe(select(fromStore.getUserReferredBy));
     this.route.queryParams
       .filter(param => param['ref'] !== undefined)
       .take(1)
       .subscribe(param => {
         this.referredBy = param['ref'];
         if (validateUserName(this.referredBy)) {
-          this.store.dispatch(this.userActions.setReferredBy(this.referredBy));
-          this.store.dispatch(this.userActions.checkReferrerUsername(this.referredBy));
+          this.store.dispatch(new userActions.SetReferredBy(this.referredBy));
+          this.store.dispatch(new userActions.CheckReferrerUsername(this.referredBy));
         }
       });
-    this.credits$ = store.let(getCreditCollection());
+    this.credits$ = store.pipe(select(fromStore.getUserCreditCollection));
     this.credits$
       .takeUntil(this.destroyed$)
       .subscribe(credits => {
@@ -221,22 +198,22 @@ export class AppComponent implements OnDestroy, OnInit {
           }
         });
         this.creditTotal = Number(Number(this.creditTotal).toFixed(2));
-        this.store.dispatch(this.userActions.setCreditTotal(this.creditTotal));
+        this.store.dispatch(new userActions.SetCreditTotal(this.creditTotal));
       });
-    this.store.dispatch(this.prizeActions.getPrizes());
-    this.store.dispatch(this.userActions.checkLoggedIn());
+    this.store.dispatch(new prizeActions.GetPrizes());
+    this.store.dispatch(new userActions.CheckLoggedIn());
   }
 
   ngOnInit() {
-    this.store.let(getReferrerBlocked())
+    this.store.pipe(select(fromStore.getUserReferrerBlocked))
       .subscribe(blocked => {
         if (blocked) {
           this.router.navigate(['referrer-blocked']);
           this.mobile = true;
         }
       });
-    this.amountPaid$ = this.store.let(getAmountPaid());
-    this.askQuestions$ = this.store.let(getAskQuestions());
+    this.amountPaid$ = this.store.pipe(select(fromStore.getUserAmountPaid));
+    this.askQuestions$ = this.store.pipe(select(fromStore.getUserAskQuestions));
     this.askQuestions$.subscribe(ask => {
       if (ask) {
         setTimeout(() => {
@@ -245,7 +222,7 @@ export class AppComponent implements OnDestroy, OnInit {
       }
     });
     this.cache.set('cached', true);
-    this.creditTotal$ = this.store.let(getCreditTotal());
+    this.creditTotal$ = this.store.pipe(select(fromStore.getUserCreditTotal));
     let firstName = this.store.select(s => s.user.user.firstName);
     firstName.takeUntil(this.destroyed$).subscribe(n => this.firstName = n);
     this.router.events.subscribe((val) => {
@@ -255,10 +232,10 @@ export class AppComponent implements OnDestroy, OnInit {
         this.showNotifications = false;
       }
     });
-    this.store.dispatch(this.uiActions.setMobile(MOBILE));
-    this.notifications$ = this.store.let(getNotificationCollection());
-    this.unreadNotificatonPendingTotal$ = this.store.let(getNoficationPendingTotal());
-    this.unreadNotificationTotal$ = this.store.let(getNotificationUnreadTotal());
+    this.store.dispatch(new uiActions.SetMobile(MOBILE));
+    this.notifications$ = this.store.pipe(select(fromStore.getNotificationCollection));
+    this.unreadNotificatonPendingTotal$ = this.store.pipe(select(fromStore.getNotificationPending));
+    this.unreadNotificationTotal$ = this.store.pipe(select(fromStore.getNotificationUnreadTotal));
     this.userLoaded$.subscribe(loaded => {
       this.loaded = loaded;
       if (loaded && SERVICE_WORKER_SUPPORT) {
@@ -267,7 +244,7 @@ export class AppComponent implements OnDestroy, OnInit {
     });
     this.userLoggedIn$.subscribe(loggedIn => {
       if (loggedIn && !this.loaded) {
-        this.store.dispatch(this.userActions.getProfile());
+        this.store.dispatch(new userActions.GetProfile());
         this.connect();
       }
     });
@@ -285,17 +262,17 @@ export class AppComponent implements OnDestroy, OnInit {
           );
       });
 
-    let completedOrders$ = this.store.let(getCompletedOrderCollection());
+    let completedOrders$ = this.store.pipe(select(fromStore.getUICompletedOrdersCollection));
     completedOrders$
       .subscribe(orders => {
         orders.forEach(order => {
           if (!order.viewed) {
             this.openCompletedOrderDialog(order);
-            this.store.dispatch(this.uiActions.markCompletedOrderAsViewed(order.id));
+            this.store.dispatch(new uiActions.MarkCompletedOrderAsViewed(order.id));
           }
         });
       });
-    let creditedOffer$ = this.store.let(getCreditedOfferCollection());
+    let creditedOffer$ = this.store.pipe(select(fromStore.getUICreditedOfferCollection));
     creditedOffer$
       .filter(offers => offers.length > 0)
       .filter(offers => offers.find(offer => offer.viewed === undefined) !== undefined)
@@ -303,11 +280,11 @@ export class AppComponent implements OnDestroy, OnInit {
         offers.forEach(offer => {
           if (!offer.viewed) {
             this.openCreditedDialog(offer);
-            this.store.dispatch(this.uiActions.markCreditedOfferAsViewed(offer.id));
+            this.store.dispatch(new uiActions.MarkCreditedOfferAsViewed(offer.id));
           }
         });
       });
-    let showLevelBadge = this.store.let(getLevelBadgeNum());
+    let showLevelBadge = this.store.pipe(select(fromStore.getUserShowLevelBadgeNum));
     showLevelBadge.filter(l => l !== undefined && l !== null)
       .subscribe((level) => {
         this.openLevelBadgeDialog(level);
@@ -333,13 +310,13 @@ export class AppComponent implements OnDestroy, OnInit {
       (res: { event?: string, id?: string, type?: string, payload?: any }) => {
         log(`connected: `, res);
         if (res.event === 'CONNECTION') {
-          this.store.dispatch(this.uiActions.addUserIDToSocket(res.id));
+          this.store.dispatch(new uiActions.AddUserIDToSocket(res.id));
         }
         if (res.type) {
           this.store.dispatch({ type: res.type, payload: res.payload });
         }
         if (Array.isArray(res)) {
-          res.forEach((action: Action) => {
+          res.forEach((action) => {
             this.store.dispatch({ type: action.type, payload: action.payload });
           });
         }
@@ -350,11 +327,11 @@ export class AppComponent implements OnDestroy, OnInit {
 
   logout() {
     this.closeConnection();
-    this.store.dispatch(this.userActions.logout());
+    this.store.dispatch(new userActions.Logout());
   }
 
   markAllNotificationsAsRead() {
-    this.store.dispatch(this.notificationActions.markAllAsRead());
+    this.store.dispatch(new notificationActions.MarkAllAsRead());
   }
 
   openAskQuestionsDialog() {
@@ -422,7 +399,7 @@ export class AppComponent implements OnDestroy, OnInit {
   }
 
   toggleMobile() {
-    this.store.dispatch(this.uiActions.toggleSideNavOpen());
+    this.store.dispatch(new uiActions.ToggleSideNavOpen());
   }
 
   ngOnDestroy() {

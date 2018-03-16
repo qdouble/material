@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
-import { Country } from '../models/country';
+import { GetCountriesResponse } from '../models/country';
 import { RequestBase } from './request-base';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class CountryService extends RequestBase {
     super(http);
   }
 
-  getCountries(): Observable<Country[]> {
+  getCountries(): Observable<GetCountriesResponse> {
     return this.http.get(`${API_USER_URL}/getCountries`, this.optionsNoPre)
       .map(res => res.json());
   }

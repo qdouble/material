@@ -1,5 +1,5 @@
-<md-card class="offer-section">
-  <md-card-content class="desc-req">
+<mat-card class="offer-section">
+  <mat-card-content class="desc-req">
     <div>
       <img [src]="publish ? 'https://levelrewards.com/images/offer-images/' + offer?.filename : (offer?.directImageURL?.length > 1 ? offer?.directImageURL : offer?.imageURL)" [alt]="offer?.displayName">
     </div>
@@ -17,8 +17,8 @@
           <div class="dr-text" [innerHTML]="offer?.requirements"></div>
       </div>
     </div>
-  </md-card-content>
-  <md-card-actions>
+  </mat-card-content>
+  <mat-card-actions>
     <ng-container *ngIf="!offer?.tempUnavailable">
       <div *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" class="checkbox-row">
         <span *ngIf="!offer?.noCardRequired"><span class="warn">The use of prepaid cards and giftcards are not allowed.</span> Members are to keep any trial for at least 90% of the trial period or beyond.</span>
@@ -29,15 +29,15 @@
         <span *ngIf="futureLevel > currentLevel">be on Level {{futureLevel}} where you can <em>earn ${{futureLevel * 5}} per referral!</em></span>
         <span *ngIf="futureLevel === currentLevel">you will be {{(currentLevel + 1 - (creditTotal + offer.creditValue)) | number: '1.2-2'}} credits away from Level {{currentLevel + 1}} where you can <em>earn ${{(currentLevel + 1) * 5}} per referral!</em></span>
       </p>
-      <button md-raised-button color="primary" class="white" (click)="continueToOffer.emit(offer?.id)">COMPLETE THIS OFFER</button>
+      <button mat-raised-button color="primary" class="white" (click)="continueToOffer.emit(offer?.id)">COMPLETE THIS OFFER</button>
       
     </ng-container>
     <ng-container *ngIf="offer?.tempUnavailable">
-      <button md-button class="white warn-background">TEMPORARILY UNAVAILABLE</button>
+      <button mat-button class="white warn-background">TEMPORARILY UNAVAILABLE</button>
       <div class="warn">{{offer?.tempUnavailableMessage}}</div>
     </ng-container>
-  </md-card-actions>
-  <md-card-content>
+  </mat-card-actions>
+  <mat-card-content>
     Once you have completed the requirements listed above, credit is usually applied to your account
     <span *ngIf="offer?.minTimeToCredit === 0 && offer?.maxTimeToCredit === 0">
     quickly <b>(within 6 hours)</b>.
@@ -49,10 +49,10 @@
     within {{offer?.minTimeToCredit }} - {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType | singleSafe }} .
   </span> Until the sign up is reported to us, you will not see any indication on your account that you have
     completed the offer.
-  </md-card-content>
-</md-card>
-<md-card class="fine-print">
-  <md-card-subtitle id="please-note-section">
+  </mat-card-content>
+</mat-card>
+<mat-card class="fine-print">
+  <mat-card-subtitle id="please-note-section">
     Please note: Unless otherwise stated, use of anything other than a valid credit card or bank issued debit card is prohibited
     and will invalidate credit. Use of a promotional or coupon code will also invalidate credit. 
     Do not attempt to complete the offer over the phone or by going directly to the advertiser's website outside of our link, it will not credit.
@@ -60,5 +60,5 @@
     Please try the advertisers product or service to its fullest. <b>Lastly, please do not contact the customer service department of an offer if you complete an offer
     and do not receive credit as they will not be able to help. Offer crediting is typically handled by a company's marketing department and customer service reps are not trained or capable in helping you with crediting.</b> Use our missing credit request form if you are missing
     credit for an offer you have completed.
-  </md-card-subtitle>
-</md-card>
+  </mat-card-subtitle>
+</mat-card>

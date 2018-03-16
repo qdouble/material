@@ -3,7 +3,6 @@
  * Try to not make your own edits to this file, use the constants folder instead.
  * If more constants should be added file an issue or create PR.
  */
-import 'ts-helpers';
 
 import {
   DEV_PORT, PROD_PORT, UNIVERSAL_PORT, EXCLUDE_SOURCE_MAPS, HOST,
@@ -35,7 +34,7 @@ const WebpackMd5Hash = require('webpack-md5-hash');
 const { getAotPlugin } = require('./webpack.aot');
 
 
-const { hasProcessFlag, includeClientPackages, root, testDll } = require('./helpers.js');
+const { hasProcessFlag, root, testDll } = require('./helpers.js');
 const EVENT = process.env.npm_lifecycle_event || '';
 const AOT = EVENT.includes('aot');
 const DEV_SERVER = EVENT.includes('webdev');
@@ -93,7 +92,6 @@ const DLL_VENDORS = [
   '@angular/platform-server',
   '@angular/router',
   '@ngrx/core',
-  '@ngrx/core/add/operator/select.js',
   '@ngrx/effects',
   '@ngrx/router-store',
   '@ngrx/store',
@@ -125,6 +123,7 @@ const commonConfig = function webpackConfig(): WebpackConfig {
   config.module = {
     rules: [
       {
+        enforce: 'pre',
         test: /\.js$/,
         loader: 'source-map-loader',
         exclude: [EXCLUDE_SOURCE_MAPS]

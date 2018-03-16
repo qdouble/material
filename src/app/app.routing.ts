@@ -5,7 +5,6 @@ import { NotFound404Component } from './not-found404.component';
 import { ReferrerBlockedComponent } from './referrer-blocked';
 import {
   AuthGuard,
-  AuthRegGuard,
   LoggedInRedirectGuard
 } from './guards';
 

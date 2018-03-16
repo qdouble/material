@@ -1,3 +1,5 @@
+import { GenericResponse } from './generic-response';
+
 export interface IP {
   ip: string;
   city: string;
@@ -9,4 +11,8 @@ export interface IP {
   timezone: string;
   asn: string;
   org: string;
+}
+
+export interface GetIP extends GenericResponse {
+  ip: IP;
 }

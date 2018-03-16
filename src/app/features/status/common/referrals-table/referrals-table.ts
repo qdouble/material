@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy, Component,
   EventEmitter, Input, OnDestroy, Output
 } from '@angular/core';
-import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { Subject } from 'rxjs/Subject';
 
 import { ReferralDetailsDialog } from './referral-details';
@@ -16,10 +16,10 @@ import { User } from '../../../../models/user';
 })
 
 export class ReferralsTable implements OnDestroy {
-  dialogRef: MdDialogRef<ReferralDetailsDialog>;
+  dialogRef: MatDialogRef<ReferralDetailsDialog>;
   destroyed$: Subject<any> = new Subject<any>();
   lastCloseResult: string;
-  config: MdDialogConfig = {
+  config: MatDialogConfig = {
     disableClose: false,
     width: '',
     height: '',
@@ -38,7 +38,7 @@ export class ReferralsTable implements OnDestroy {
   @Output() selectReferral = new EventEmitter();
   @Output() sortBy = new EventEmitter();
   @Output() viewReferral = new EventEmitter();
-  constructor(public dialog: MdDialog) { }
+  constructor(public dialog: MatDialog) { }
 
   open(referral) {
     this.dialogRef = this.dialog.open(ReferralDetailsDialog, this.config);

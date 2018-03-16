@@ -1,78 +1,59 @@
 /* tslint:disable: no-switch-case-fall-through */
-import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { compose } from '@ngrx/core/compose';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
-import { AppState } from '../reducers';
-import { OrderActions } from '../actions/order';
+import { OrderActionTypes, OrderActions } from '../actions/order';
 import { Order } from '../models/order';
 
-export interface OrderState {
+export const adapter = createEntityAdapter<Order>();
+
+export interface State extends EntityState<Order> {
   ids: string[];
-  entities: { [id: string]: Order };
   loading: boolean;
   loaded: boolean;
   placing: boolean;
 }
 
-export const initialState: OrderState = {
+export const initialState: State = adapter.getInitialState({
   ids: [],
-  entities: {},
   loading: false,
   loaded: false,
   placing: false
-};
+});
 
-export function orderReducer(state = initialState, action: Action): OrderState {
+export function orderReducer(state = initialState, action: OrderActions): State {
   switch (action.type) {
 
-    case OrderActions.GET_ORDERS:
-      return Object.assign({}, state, { loading: true });
+    case OrderActionTypes.GetOrders:
+      return { ...state, loading: true };
 
-    case OrderActions.GET_ORDERS_FAIL: {
-      return Object.assign({}, state, { loading: false });
+    case OrderActionTypes.GetOrdersFail: {
+      return { ...state, loading: false };
     }
 
-    case OrderActions.GET_ORDERS_SUCCESS: {
-      const orders: Order[] = action.payload.orders;
-      if (!orders) return Object.assign({}, state, { loading: false });
-        const newOrderIds: string[] = orders.map(order => order.id!);
-        const newOrderEntities = orders.reduce(
-          (entities: { [id: string]: Order }, order: Order) => {
-            if (order.id)
-              return Object.assign(entities, {
-                [order.id]: order
-              });
-          }, {});
+    case OrderActionTypes.GetOrdersSuccess: {
+      const orders = action.payload.orders;
+      if (!orders) return { ...state, loading: false };
 
-        return Object.assign({}, state, {
-          ids: newOrderIds,
-          entities: newOrderEntities,
-          loading: false,
-          loaded: true
-        });
+      return {
+        ...adapter.addAll(orders, state),
+        loading: false,
+        loaded: true
+      };
     }
 
-    case OrderActions.PLACE_ORDER:
-      return Object.assign({}, state, { placing: true });
-    case OrderActions.PLACE_ORDER_FAIL:
-      return Object.assign({}, state, { placing: false });
+    case OrderActionTypes.PlaceOrder:
+      return { ...state, placing: true };
+    case OrderActionTypes.PlaceOrderFail:
+      return { ...state, placing: false };
 
-    case OrderActions.PLACE_ORDER_SUCCESS: {
-      const order: Order = action.payload.order;
-      if (!order) return Object.assign({}, state, { loading: false, placing: false });
-      const newOrderIds = [...state.ids];
-      if (!state.ids.includes(order.id)) {
-        newOrderIds.unshift(order.id);
-      }
-      return Object.assign({}, state, {
-        ids: newOrderIds,
-        entities: Object.assign({}, state.entities, {
-          [order.id]: order
-        }),
+    case OrderActionTypes.PlaceOrderSuccess: {
+      const order = action.payload.order;
+      if (!order) return { ...state, loading: false, placing: false };
+      return {
+        ...adapter.addOne(order, state),
         loading: false,
         placing: false
-      });
+      };
     }
 
     default: {
@@ -81,78 +62,9 @@ export function orderReducer(state = initialState, action: Action): OrderState {
   }
 }
 
-function _getLoaded() {
-  return (state$: Observable<OrderState>) => state$
-    .select(s => s.loaded);
-}
 
-function _getLoading() {
-  return (state$: Observable<OrderState>) => state$
-    .select(s => s.loading);
-}
+export const getLoaded = (state: State) => state.loaded;
 
-function _getPlacing() {
-  return (state$: Observable<OrderState>) => state$
-    .select(s => s.placing);
-}
+export const getLoading = (state: State) => state.loading;
 
-function _getOrderEntities() {
-  return (state$: Observable<OrderState>) => state$
-    .select(s => s.entities);
-}
-
-function _getOrder(id: string) {
-  return (state$: Observable<OrderState>) => state$
-    .select(s => s.entities[id]);
-}
-
-function _getOrders(orderIds: string[]) {
-  return (state$: Observable<OrderState>) => state$
-    .let(_getOrderEntities())
-    .map(entities => orderIds.map(id => entities[id]));
-}
-
-function _getOrderIds() {
-  return (state$: Observable<OrderState>) => state$
-    .select(s => s.ids);
-}
-
-
-function _getOrderState() {
-  return (state$: Observable<AppState>) => state$
-    .select(s => s.order);
-}
-
-export function getOrder(id: string) {
-  return compose(_getOrder(id), _getOrderState());
-}
-
-export function getOrders(orderIds: string[]) {
-  return compose(_getOrders(orderIds), _getOrderState());
-}
-
-export function getOrderIds() {
-  return compose(_getOrderIds(), _getOrderState());
-}
-
-export function getOrderEntities() {
-  return compose(_getOrderEntities(), _getOrderState());
-}
-
-export function getOrderLoaded() {
-  return compose(_getLoaded(), _getOrderState());
-}
-
-export function getOrderLoading() {
-  return compose(_getLoading(), _getOrderState());
-}
-
-export function getOrderPlacing() {
-  return compose(_getPlacing(), _getOrderState());
-}
-
-export function getOrderCollection() {
-  return (state$: Observable<AppState>) => state$
-    .let(getOrderIds())
-    .switchMap(orderId => state$.let(getOrders(orderId)));
-}
+export const getPlacing = (state: State) => state.placing;

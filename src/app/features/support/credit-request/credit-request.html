@@ -1,8 +1,8 @@
-<md-card class="os-page-container">
+<mat-card class="os-page-container">
   <div class="os-support-tickets-table-container">
-    <md-card class="os-new-support-ticket">
-      <button md-button class="back-button" [routerLink]="['..']"><md-icon>navigate_before</md-icon>BACK TO SUPPORT PAGE</button>
-      <md-card-title class="primary">{{ view ? 'Credit Request' : 'New Credit Request' }}</md-card-title>
+    <mat-card class="os-new-support-ticket">
+      <button mat-button class="back-button" [routerLink]="['..']"><mat-icon>navigate_before</mat-icon>BACK TO SUPPORT PAGE</button>
+      <mat-card-title class="primary">{{ view ? 'Credit Request' : 'New Credit Request' }}</mat-card-title>
       
         <div class="credit-request-details" *ngIf="view">
           <p>Offer: {{creditRequest?.offerName}}</p>
@@ -23,11 +23,11 @@
             <p>{{creditRequest?.additionalDetails}}</p>
           </div>
         </div>
-        <md-card *ngIf="!view" class="os-message-card" id="request-card-instructions">
+        <mat-card *ngIf="!view" class="os-message-card" id="request-card-instructions">
           Please include all header information from your confirmation e-mail. E-mail headers typically include information such as
           <b>Return-Path, Received, Date, Message-Id, To, From, Subject, etc.</b> If you're using a web based e-mail client
           you may need to change your configuration in order to see the full header information.
-        </md-card>
+        </mat-card>
         
         <form *ngIf="!view || creditRequest?.status === 'More Information Needed'" [formGroup]="f" (ngSubmit)="submitRequest(f.value)">
           <ng-container *ngIf="!view">
@@ -36,16 +36,16 @@
           </ng-container>
           <ng-container *ngIf="!(offer$ | async) || (offer$ | async).allowCreditRequests">
             <label>Date Completed:</label> <input type="date" id="myDate" formControlName="completedOn">
-            <md-input-container>
-              <textarea mdInput [rows]="6" placeholder="Confirmation Email Headers" formControlName="headers"></textarea>
-            </md-input-container><br>
-            <md-input-container>
-              <textarea mdInput [rows]="6" placeholder="Confirmation Email Body" formControlName="body"></textarea>
-            </md-input-container><br>
-            <md-input-container>
-              <textarea mdInput [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></textarea>
-            </md-input-container><br>
-            <button md-raised-button class="white" color="primary" [disabled]="f.invalid || disableButton">{{ view ? 'UPDATE CREDIT REQUEST' : 'SUBMIT CREDIT REQUEST' }}</button>
+            <mat-input-container>
+              <textarea matInput [rows]="6" placeholder="Confirmation Email Headers" formControlName="headers"></textarea>
+            </mat-input-container><br>
+            <mat-input-container>
+              <textarea matInput [rows]="6" placeholder="Confirmation Email Body" formControlName="body"></textarea>
+            </mat-input-container><br>
+            <mat-input-container>
+              <textarea matInput [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></textarea>
+            </mat-input-container><br>
+            <button mat-raised-button class="white" color="primary" [disabled]="f.invalid || disableButton">{{ view ? 'UPDATE CREDIT REQUEST' : 'SUBMIT CREDIT REQUEST' }}</button>
         </ng-container>
         </form>
       
@@ -59,6 +59,6 @@
           <li>Advertisers only credit what they deem to be a valid lead, so unless there is a tracking issue the offer should credit if you followed the terms and conditons and our crediting guidelines: <a [routerLink]="['/crediting-guidelines']">https://levelrewards/crediting-guidelines</a></li>
         </ul>
       </ng-container>
-    </md-card>
+    </mat-card>
   </div>
-</md-card>
+</mat-card>

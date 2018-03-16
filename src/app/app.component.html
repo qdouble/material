@@ -1,38 +1,38 @@
-<md-sidenav-container id="offer-site" fullscreen>
-  <md-sidenav [opened]="!mobile && !(onAdminLoginPage$ | async)" #sidenav [mode]="sideNavMode">
+<mat-sidenav-container id="offer-site" fullscreen>
+  <mat-sidenav [opened]="!mobile && !(onAdminLoginPage$ | async)" #sidenav [mode]="sideNavMode">
     <div [ngClass]="{'os-sidenav-top': !loggedIn, 'os-sidenav-top-l': loggedIn}"></div>
-    <md-nav-list>
+    <mat-nav-list>
       <ng-template ngFor let-view [ngForOf]="views" let-even="even" let-odd="odd" let-rowIndex="index">
-        <a *ngIf="view.loggedIn === !!loggedIn" md-list-item style="color: #272b27" [routerLink]="view.link" queryParamsHandling="preserve" routerLinkActive="active-link" (click)="mobile ? sidenav.close() : null">
-          <md-icon md-list-icon>{{view.icon}}</md-icon>
-          <span md-line>{{view.name}}</span>
-          <span md-line class="secondary">{{view.description}}</span>
+        <a *ngIf="view.loggedIn === !!loggedIn" mat-list-item style="color: #272b27" [routerLink]="view.link" queryParamsHandling="preserve" routerLinkActive="active-link" (click)="mobile ? sidenav.close() : null">
+          <mat-icon mat-list-icon>{{view.icon}}</mat-icon>
+          <span mat-line>{{view.name}}</span>
+          <span mat-line class="secondary">{{view.description}}</span>
         </a>
       </ng-template>
-      <a md-list-item style="color: #272b27" href="https://www.facebook.com/groups/irproofpics/" target="_blank">
-        <span md-line>
+      <a mat-list-item style="color: #272b27" href="https://www.facebook.com/groups/irproofpics/" target="_blank">
+        <span mat-line>
           <img style="margin-left: 5px;" width="20px" height="20px" id="fb-logo" src="assets/svg/fb-logo.svg">
             <span style="margin-left: 17px; position: relative; top: -4px;">Proof Pic Group</span>
         </span>
       </a>
-      <a *ngIf="loggedIn" md-list-item style="color: #272b27"  queryParamsHandling="preserve" routerLinkActive="active-link" (click)="logout(); mobile ? sidenav.close() : null">
-        <md-icon md-list-icon>close</md-icon>
-        <span md-line>Logout</span>
+      <a *ngIf="loggedIn" mat-list-item style="color: #272b27"  queryParamsHandling="preserve" routerLinkActive="active-link" (click)="logout(); mobile ? sidenav.close() : null">
+        <mat-icon mat-list-icon>close</mat-icon>
+        <span mat-line>Logout</span>
       </a>
-    </md-nav-list>
-  </md-sidenav>
-  <md-toolbar color="primary" id="os-toolbar">
-    <button style="top: 2px;" md-icon-button (click)="sidenav.toggle(); toggleMobile()">
-      <md-icon style="color: white">menu</md-icon>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-toolbar color="primary" id="os-toolbar">
+    <button style="top: 2px;" mat-icon-button (click)="sidenav.toggle(); toggleMobile()">
+      <mat-icon style="color: white">menu</mat-icon>
     </button>
     <img id="level-menu-logo" src="assets/svg/lr-new-logo-1.svg">
     <div *ngIf="!(onAdminLoginPage$ | async)" class="os-toolbar-right">
       <span class="notifications"  osClickOutside (clickOutside)="showNotifications = false">
-        <button *ngIf="loggedIn" md-icon-button color="primary" (click)="showNotifications = !showNotifications">
-          <md-icon style="color: #ffffff;" >notifications</md-icon>
+        <button *ngIf="loggedIn" mat-icon-button color="primary" (click)="showNotifications = !showNotifications">
+          <mat-icon style="color: #ffffff;" >notifications</mat-icon>
         </button>
-        <button *ngIf="loggedIn" md-icon-button color="primary" [routerLink]="['/support', {help_toolbar: true}]">
-          <md-icon style="color: #ffffff;" >help</md-icon>
+        <button *ngIf="loggedIn" mat-icon-button color="primary" [routerLink]="['/support', {help_toolbar: true}]">
+          <mat-icon style="color: #ffffff;" >help</mat-icon>
         </button>
         <div class="ntfy-count-circle" *ngIf="(unreadNotificatonPendingTotal$ | async) || (unreadNotificationTotal$ | async)" (click)="showNotifications = !showNotifications">
           <div class="ntfy-number">{{((unreadNotificatonPendingTotal$ | async) || (unreadNotificationTotal$ | async)) | showMax: 99}}</div>
@@ -49,15 +49,15 @@
         </div>
       </div>
       </span>
-      <button *ngIf="loggedIn && false" md-icon-button color="primary" (click)="null">
-        <md-icon style="color: #ffffff;" >mail</md-icon>
+      <button *ngIf="loggedIn && false" mat-icon-button color="primary" (click)="null">
+        <mat-icon style="color: #ffffff;" >mail</mat-icon>
       </button>
       <div class="ntfy-messages-circle" *ngIf="unreadMessageTotal$ | async">
         <div class="ntfy-number">{{unreadMessageTotal$ | async}}</div>
       </div>
     </div>
-  </md-toolbar>
-  <md-card fxLayout="column" id="my-page-card">
+  </mat-toolbar>
+  <mat-card fxLayout="column" id="my-page-card">
       <div *ngIf="loggedIn && showStatus" fxLayoutAlign='end end' class="status-bar">
         <div id="status-back">
           <div>
@@ -69,6 +69,6 @@
         </div>
       </div>
       <router-outlet (activate)="activateEvent($event)" (deactivate)="deactivateEvent($event)"></router-outlet>
-  </md-card>
-</md-sidenav-container>
+  </mat-card>
+</mat-sidenav-container>
 <os-store-devtools *ngIf="showMonitor"></os-store-devtools>

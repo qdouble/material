@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
-import { Offer } from '../models/offer';
+import { GetOfferResponse, GetOffersResponse, GetOffersUpdatedAtResponse } from '../models/offer';
 import { RequestBase } from './request-base';
 
 @Injectable()
@@ -12,22 +12,22 @@ export class OfferService extends RequestBase {
     super(http);
   }
 
-  getOffer(id: string): Observable<Offer[]> {
+  getOffer(id: string): Observable<GetOfferResponse> {
     return this.http.get(`${API_USER_URL}/getOffer?id=${id}`, this.optionsNoPre)
       .map(res => res.json());
   }
 
-  getOffers(): Observable<Offer[]> {
+  getOffers(): Observable<GetOffersResponse> {
     return this.http.get(`${API_USER_URL}/getOffers`, this.optionsNoPre)
       .map(res => res.json());
   }
 
-  getOffersUpdatedAt(): Observable<{lastUpdatedAt: string}> {
+  getOffersUpdatedAt(): Observable<GetOffersUpdatedAtResponse> {
     return this.http.get(`${API_USER_URL}/getOffersUpdatedAt`, this.optionsNoPre)
       .map(res => res.json());
   }
 
-  getViewOffers(): Observable<Offer[]> {
+  getViewOffers(): Observable<GetOffersResponse> {
     return this.http.get(`${API_USER_URL}/getViewOffers`, this.optionsNoPre)
       .map(res => res.json());
   }

@@ -1,169 +1,178 @@
 /* tslint:disable: member-ordering */
-import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 
-import { Ticket, TicketMessage } from './ticket.model';
+import {
+  Ticket,
+  TicketMessage,
+  AddMessageResponse,
+  AddTicketResponse,
+  CloseTicketResponse,
+  GetTicketResponse,
+  GetTicketsResponse,
+  MarkTicketAsReadResponse,
+  SortByModel
+} from './ticket.model';
 
-@Injectable()
-
-export class TicketActions {
-
-  static ADD_MESSAGE = '[Ticket] Add Message';
-  addMessage(message: TicketMessage): Action {
-    return {
-      type: TicketActions.ADD_MESSAGE,
-      payload: message
-    };
-  }
-
-  static ADD_MESSAGE_FAIL = '[Ticket] Add Message Fail';
-  addMessageFail(err: Error): Action {
-    return {
-      type: TicketActions.ADD_MESSAGE_FAIL,
-      payload: err
-    };
-  }
-
-  static ADD_MESSAGE_SUCCESS = '[Ticket] Add Message Success';
-  addMessageSuccess(message: TicketMessage): Action {
-    return {
-      type: TicketActions.ADD_MESSAGE_SUCCESS,
-      payload: message
-    };
-  }
-
-  static ADD_TICKET = '[Ticket] Add Ticket';
-  addTicket(ticket: Ticket): Action {
-    return {
-      type: TicketActions.ADD_TICKET,
-      payload: ticket
-    };
-  }
-
-  static ADD_TICKET_FAIL = '[Ticket] Add Ticket Fail';
-  addTicketFail(err: Error): Action {
-    return {
-      type: TicketActions.ADD_TICKET_FAIL,
-      payload: err
-    };
-  }
-
-  static ADD_TICKET_SUCCESS = '[Ticket] Add Ticket Success';
-  addTicketSuccess(ticket: Ticket): Action {
-    return {
-      type: TicketActions.ADD_TICKET_SUCCESS,
-      payload: ticket
-    };
-  }
-
-  static CLOSE_TICKET = '[Ticket] Close Ticket';
-  closeTicket(ticket: { id: string, close: boolean }): Action {
-    return {
-      type: TicketActions.CLOSE_TICKET,
-      payload: ticket
-    };
-  }
-
-  static CLOSE_TICKET_FAIL = '[Ticket] Close Ticket Fail';
-  closeTicketFail(err: Error): Action {
-    return {
-      type: TicketActions.CLOSE_TICKET_FAIL,
-      payload: err
-    };
-  }
-
-  static CLOSE_TICKET_SUCCESS = '[Ticket] Close Ticket Success';
-  closeTicketSuccess(ticket: Ticket): Action {
-    return {
-      type: TicketActions.CLOSE_TICKET_SUCCESS,
-      payload: ticket
-    };
-  }
-
-  static GET_TICKET = '[Ticket] Get Ticket';
-  getTicket(id: string): Action {
-    return {
-      type: TicketActions.GET_TICKET,
-      payload: id
-    };
-  }
-
-  static GET_TICKET_FAIL = '[Ticket] Get Ticket Fail';
-  getTicketFail(err: Error): Action {
-    return {
-      type: TicketActions.GET_TICKET_FAIL,
-      payload: err
-    };
-  }
-
-  static GET_TICKET_SUCCESS = '[Ticket] Get Ticket Success';
-  getTicketSuccess(ticket: Ticket): Action {
-    return {
-      type: TicketActions.GET_TICKET_SUCCESS,
-      payload: ticket
-    };
-  }
-
-  static GET_TICKETS = '[Ticket] Get Tickets';
-  getTickets(): Action {
-    return {
-      type: TicketActions.GET_TICKETS
-    };
-  }
-
-  static GET_TICKETS_FAIL = '[Ticket] Get Tickets Fail';
-  getTicketsFail(err: Error): Action {
-    return {
-      type: TicketActions.GET_TICKETS_FAIL,
-      payload: err
-    };
-  }
-
-  static GET_TICKETS_SUCCESS = '[Ticket] Get Tickets Success';
-  getTicketsSuccess(tickets: Ticket[]): Action {
-    return {
-      type: TicketActions.GET_TICKETS_SUCCESS,
-      payload: tickets
-    };
-  }
-
-  static MARK_TICKET_AS_READ = '[Support] Mark Ticket As Read';
-  markTicketAsRead(ticket: { id: string, mark: boolean }): Action {
-    return {
-      type: TicketActions.MARK_TICKET_AS_READ,
-      payload: ticket
-    };
-  }
-
-  static MARK_TICKET_AS_READ_FAIL = '[Support] Mark Ticket As Read Fail';
-  markTicketAsReadFail(err: Error): Action {
-    return {
-      type: TicketActions.MARK_TICKET_AS_READ_FAIL,
-      payload: err
-    };
-  }
-
-  static MARK_TICKET_AS_READ_SUCCESS = '[Support] Mark Ticket As Read Success';
-  markTicketAsReadSuccess(ticket: Ticket): Action {
-    return {
-      type: TicketActions.MARK_TICKET_AS_READ_SUCCESS,
-      payload: ticket
-    };
-  }
-
-  static SORT_BY = '[Offer] Sort Tickets By';
-  sortBy(sort: { sortBy: string, reverse: boolean }): Action {
-    return {
-      type: TicketActions.SORT_BY,
-      payload: sort
-    };
-  }
-
-  static UPDATE_TICKET = '[Ticket] Update Ticket';
-  updateTicket(ticket: Ticket): Action {
-    return {
-      type: TicketActions.UPDATE_TICKET,
-      payload: ticket
-    };
-  }
+export enum TicketActionTypes {
+  AddMessage = '[Ticket] Add Message',
+  AddMessageFail = '[Ticket] Add Message Fail',
+  AddMessageSuccess = '[Ticket] Add Message Success',
+  AddTicket = '[Ticket] Add Ticket',
+  AddTicketFail = '[Ticket] Add Ticket Fail',
+  AddTicketSuccess = '[Ticket] Add Ticket Success',
+  CloseTicket = '[Ticket] Close Ticket',
+  CloseTicketFail = '[Ticket] Close Ticket Fail',
+  CloseTicketSuccess = '[Ticket] Close Ticket Success',
+  GetTicket = '[Ticket] Get Ticket',
+  GetTicketFail = '[Ticket] Get Ticket Fail',
+  GetTicketSuccess = '[Ticket] Get Ticket Success',
+  GetTickets = '[Tickets] Get Tickets',
+  GetTicketsFail = '[Tickets] Get Tickets Fail',
+  GetTicketsSuccess = '[Tickets] Get Tickets Success',
+  MarkTicketAsRead = '[Tickets] Mark Ticket As Read',
+  MarkTicketAsReadFail = '[Tickets] Mark Ticket As Read Fail',
+  MarkTicketAsReadSuccess = '[Tickets] Mark Ticket As Read Success',
+  SortBy = '[Tickets] Sort By',
+  UpdateTicket = '[Ticket] Update Ticket',
 }
+
+export class AddMessage implements Action {
+  readonly type = TicketActionTypes.AddMessage;
+
+  constructor(public payload: TicketMessage) { }
+}
+
+export class AddMessageFail implements Action {
+  readonly type = TicketActionTypes.AddMessageFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class AddMessageSuccess implements Action {
+  readonly type = TicketActionTypes.AddMessageSuccess;
+
+  constructor(public payload: AddMessageResponse) { }
+}
+
+export class AddTicket implements Action {
+  readonly type = TicketActionTypes.AddTicket;
+
+  constructor(public payload: Ticket) { }
+}
+
+export class AddTicketFail implements Action {
+  readonly type = TicketActionTypes.AddTicketFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class AddTicketSuccess implements Action {
+  readonly type = TicketActionTypes.AddTicketSuccess;
+
+  constructor(public payload: AddTicketResponse) { }
+}
+
+export class CloseTicket implements Action {
+  readonly type = TicketActionTypes.CloseTicket;
+
+  constructor(public payload: { id: string, close: boolean }) { }
+}
+
+export class CloseTicketFail implements Action {
+  readonly type = TicketActionTypes.CloseTicketFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class CloseTicketSuccess implements Action {
+  readonly type = TicketActionTypes.CloseTicketSuccess;
+
+  constructor(public payload: CloseTicketResponse) { }
+}
+
+export class GetTicket implements Action {
+  readonly type = TicketActionTypes.GetTicket;
+
+  constructor(public payload: string) { }
+}
+
+export class GetTicketFail implements Action {
+  readonly type = TicketActionTypes.GetTicketFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetTicketSuccess implements Action {
+  readonly type = TicketActionTypes.GetTicketSuccess;
+
+  constructor(public payload: GetTicketResponse) { }
+}
+
+export class GetTickets implements Action {
+  readonly type = TicketActionTypes.GetTickets;
+}
+
+export class GetTicketsFail implements Action {
+  readonly type = TicketActionTypes.GetTicketsFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetTicketsSuccess implements Action {
+  readonly type = TicketActionTypes.GetTicketsSuccess;
+
+  constructor(public payload: GetTicketsResponse) { }
+}
+
+export class MarkTicketAsRead implements Action {
+  readonly type = TicketActionTypes.MarkTicketAsRead;
+
+  constructor(public payload: { id: string, mark: boolean }) { }
+}
+
+export class MarkTicketAsReadFail implements Action {
+  readonly type = TicketActionTypes.MarkTicketAsReadFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class MarkTicketAsReadSuccess implements Action {
+  readonly type = TicketActionTypes.MarkTicketAsReadSuccess;
+
+  constructor(public payload: MarkTicketAsReadResponse) { }
+}
+
+export class SortBy implements Action {
+  readonly type = TicketActionTypes.SortBy;
+
+  constructor(public payload: SortByModel) { }
+}
+
+export class UpdateTicket implements Action {
+  readonly type = TicketActionTypes.UpdateTicket;
+
+  constructor(public payload: { ticket: Ticket }) { }
+}
+
+
+export type TicketActions =
+  | AddMessage
+  | AddMessageFail
+  | AddMessageSuccess
+  | AddTicket
+  | AddTicketFail
+  | AddTicketSuccess
+  | CloseTicket
+  | CloseTicketFail
+  | CloseTicketSuccess
+  | GetTicket
+  | GetTicketFail
+  | GetTicketSuccess
+  | GetTickets
+  | GetTicketsFail
+  | GetTicketsSuccess
+  | MarkTicketAsRead
+  | MarkTicketAsReadFail
+  | MarkTicketAsReadSuccess
+  | SortBy
+  | UpdateTicket;

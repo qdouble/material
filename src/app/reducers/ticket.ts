@@ -1,215 +1,190 @@
 /* tslint:disable: no-switch-case-fall-through */
-/* tslint:disable: variable-names */
-import { Observable } from 'rxjs/Observable';
-import { compose } from '@ngrx/core/compose';
-import { Action } from '@ngrx/store';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
-import { AppState } from './';
-import { TicketActions } from '../features/support/ticket.actions';
-import { Ticket, TicketMessage } from '../features/support/ticket.model';
+import { TicketActions, TicketActionTypes } from '../features/support/ticket.actions';
+import { Ticket } from '../features/support/ticket.model';
 
-export interface TicketState {
+export const adapter = createEntityAdapter<Ticket>({
+  selectId: (ticket: Ticket) => ticket.id
+});
+
+export interface State extends EntityState<Ticket> {
   ids: string[];
-  entities: { [id: string]: Ticket };
   added: boolean;
   adding: boolean;
   addedMessage: boolean;
   addingMessage: boolean;
   loading: boolean;
   loaded: boolean;
-  loadingTicket: boolean;
+  selectedTicket: string | null;
   sortBy: { sortBy: string, reverse: boolean };
 }
 
-export const initialState: TicketState = {
+export const initialState: State = adapter.getInitialState({
   ids: [],
-  entities: {},
   added: false,
   adding: false,
   addedMessage: false,
   addingMessage: false,
   loading: false,
   loaded: false,
-  loadingTicket: false,
+  selectedTicket: null,
   sortBy: { sortBy: 'createdAt', reverse: true }
-};
+});
 
-export function ticketReducer(state = initialState, action: Action): TicketState {
+export function ticketReducer(state = initialState, action: TicketActions): State {
   switch (action.type) {
 
-    case TicketActions.ADD_TICKET:
-      return Object.assign({}, state, { adding: true, added: false });
-    case TicketActions.ADD_TICKET_FAIL:
-      return Object.assign({}, state, { adding: true, added: false });
+    case TicketActionTypes.AddMessage:
+      return { ...state, addingMessage: true, addedMessage: false };
+    case TicketActionTypes.AddMessageFail:
+      return { ...state, addingMessage: false, addedMessage: false };
 
-    case TicketActions.ADD_TICKET_SUCCESS: {
-      if (!action.payload.ticket || !action.payload.id)
-        return Object.assign({}, state, { adding: true, added: false });
-      const id: string = action.payload.id;
-      const ticket = Object.assign({}, action.payload.ticket, {
-        id: id
-      });
-      ticket.id = id;
-      return Object.assign({}, state, {
-        ids: [...state.ids, id],
-        entities: Object.assign({}, state.entities, {
-          [ticket.id]: ticket
-        }),
-        added: true,
-        adding: false
-      });
-    }
-
-    case TicketActions.ADD_MESSAGE:
-      return Object.assign({}, state, { addingMessage: true, addedMessage: false });
-    case TicketActions.ADD_MESSAGE_FAIL:
-      return Object.assign({}, state, { addingMessage: false, addedMessage: false });
-
-    case TicketActions.ADD_MESSAGE_SUCCESS: {
-      const ticketMessage: TicketMessage = action.payload.ticketMessage;
-      const entries: number = action.payload.entries;
-      const lastEntry: Date = action.payload.lastEntry;
-      const lastEntryBy: string = action.payload.lastEntryBy;
+    case TicketActionTypes.AddMessageSuccess: {
+      const ticketMessage = action.payload.ticketMessage;
+      const entries = action.payload.entries;
+      const lastEntry = action.payload.lastEntry;
+      const lastEntryBy = action.payload.lastEntryBy;
       if (!ticketMessage || !entries || !lastEntry || !lastEntryBy) {
-        return Object.assign({}, state, { addingMessage: false, addedMessage: false });
+        return { ...state, addingMessage: false, addedMessage: false };
       }
-      const ticketsMod = Object.assign({}, state.entities);
-      ticketsMod[ticketMessage.ticketId] = Object.assign({}, ticketsMod[ticketMessage.ticketId],
-        {
-          addedMessage: true,
-          addingMessage: false,
-          messages: [...ticketsMod[ticketMessage.ticketId].messages, ticketMessage],
-          entries: entries,
-          lastEntry: lastEntry,
-          lastEntryBy: lastEntryBy,
-          updatedAt: lastEntry
-        }
-      );
 
-
-      return Object.assign({}, state, {
-        entities: ticketsMod,
-        loadingTicket: false,
+      return {
+        ...adapter.updateOne({
+          id: ticketMessage.ticketId,
+          changes: {
+            messages: [...state.entities[ticketMessage.ticketId].messages, ticketMessage],
+            entries: entries,
+            lastEntry: lastEntry,
+            lastEntryBy: lastEntryBy,
+            updatedAt: lastEntry
+          }
+        }, state),
+        loading: false,
         addedMessage: true,
         addingMessage: false
-      });
+      };
     }
 
+    case TicketActionTypes.AddTicket:
+      return { ...state, adding: true, added: false };
+    case TicketActionTypes.AddTicketFail:
+      return { ...state, adding: true, added: false };
 
-    case TicketActions.CLOSE_TICKET:
-      return Object.assign({}, state, { loading: true });
-    case TicketActions.CLOSE_TICKET_FAIL:
-      return Object.assign({}, state, { loading: false });
+    case TicketActionTypes.AddTicketSuccess: {
+      if (!action.payload.ticket || !action.payload.id)
+        return { ...state, adding: true, added: false };
+      const id = action.payload.id;
+      const ticket = { ...action.payload.ticket, id: id };
+      ticket.id = id;
+      return {
+        ...state,
+        ids: [...state.ids, id],
+        entities: { ...state.entities, [ticket.id]: ticket },
+        added: true,
+        adding: false
+      };
+    }
 
-    case TicketActions.CLOSE_TICKET_SUCCESS: {
-      const ticketId: string = action.payload.id;
-      const ticketClosed: string = action.payload.closed;
-      if (!ticketId) return Object.assign({}, state, { loading: false });
+    case TicketActionTypes.CloseTicket:
+      return { ...state, loading: true };
+    case TicketActionTypes.CloseTicketFail:
+      return { ...state, loading: false };
 
-      const ticketsMod = Object.assign({}, state.entities);
-      ticketsMod[ticketId] = Object.assign({}, ticketsMod[ticketId],
-        { closed: JSON.parse(ticketClosed) });
+    case TicketActionTypes.CloseTicketSuccess: {
+      const ticketId = action.payload.id;
+      const ticketClosed = action.payload.closed;
+      if (!ticketId) return { ...state, loading: false };
 
-      return Object.assign({}, state, {
+      const ticketsMod = { ...state.entities };
+      ticketsMod[ticketId] = {
+        ...ticketsMod[ticketId],
+        closed: ticketClosed
+      };
+
+      return {
+        ...state,
         entities: ticketsMod,
         loading: false
-      });
+      };
     }
 
-    case TicketActions.GET_TICKET:
-      return Object.assign({}, state, {
+    case TicketActionTypes.GetTicket: {
+      return {
+        ...state,
+        selectedTicket: action.payload,
         loading: true,
         loaded: false
-      });
+      };
+    }
 
-    case TicketActions.GET_TICKET_FAIL:
-      return Object.assign({}, state, { loading: false });
+    case TicketActionTypes.GetTicketFail:
+      return { ...state, loading: false };
 
-    case TicketActions.GET_TICKET_SUCCESS: {
-      const ticket: Ticket = action.payload.ticket;
+    case TicketActionTypes.GetTicketSuccess: {
+      const ticket = action.payload.ticket;
       if (!ticket || !ticket.id)
-        return Object.assign({}, state, { loading: false });
+        return { ...state, loading: false };
 
-      if (state.ids.includes(ticket.id)) {
-        return Object.assign({}, state, {
-          entities: Object.assign({}, state.entities, {
-            [ticket.id]: ticket
-          }),
-          loading: false,
-          loaded: true
-        });
-      }
-
-      return Object.assign({}, state, {
-        ids: [...state.ids, ticket.id],
-        entities: Object.assign({}, state.entities, {
-          [ticket.id]: ticket
-        }),
+      return {
+        ...adapter.upsertOne({
+          id: ticket.id,
+          changes: ticket
+        }, state),
         loading: false,
         loaded: true
-      });
+      };
     }
 
-    case TicketActions.GET_TICKETS:
-      return Object.assign({}, state, { loading: true });
-    case TicketActions.GET_TICKETS_FAIL:
-      return Object.assign({}, state, { loading: false });
+    case TicketActionTypes.GetTickets:
+      return { ...state, loading: true };
+    case TicketActionTypes.GetTicketsFail:
+      return { ...state, loading: false };
 
-    case TicketActions.GET_TICKETS_SUCCESS: {
-      const tickets: Ticket[] = action.payload.tickets;
-      if (!Array.isArray(tickets)) return Object.assign({}, state, { loading: false });
-      const newTicketIds: string[] = tickets.map(ticket => ticket.id || '');
-      const newTicketEntities = tickets.reduce(
-        (entities: { [id: string]: Ticket }, ticket: Ticket) => {
-          if (ticket.id)
-            return Object.assign(entities, {
-              [ticket.id]: ticket
-            });
-        }, {});
+    case TicketActionTypes.GetTicketsSuccess: {
+      const tickets = action.payload.tickets;
+      if (!Array.isArray(tickets)) return { ...state, loading: false };
 
-      return Object.assign({}, state, {
-        ids: newTicketIds,
-        entities: Object.assign({}, state.entities, newTicketEntities),
+      return {
+        ...adapter.addAll(tickets, state),
         loading: false,
         loaded: true
-      });
+      };
     }
 
-    case TicketActions.MARK_TICKET_AS_READ:
-      return Object.assign({}, state, { loadingTicket: true });
-    case TicketActions.MARK_TICKET_AS_READ_FAIL:
-      return Object.assign({}, state, { loadingTicket: false });
+    case TicketActionTypes.MarkTicketAsRead:
+      return { ...state, loading: true };
+    case TicketActionTypes.MarkTicketAsReadFail:
+      return { ...state, loading: false };
 
-    case TicketActions.MARK_TICKET_AS_READ_SUCCESS: {
-      const ticketId: string = action.payload.id;
-      const mark: string = action.payload.mark;
-      if (!ticketId) return Object.assign({}, state, { loadingTicket: false });
+    case TicketActionTypes.MarkTicketAsReadSuccess: {
+      const ticketId = action.payload.id;
+      const mark = action.payload.mark;
+      if (!ticketId) return { ...state, loading: false };
 
-      const ticketsMod = Object.assign({}, state.entities);
-      ticketsMod[ticketId] = Object.assign({}, ticketsMod[ticketId],
-        { readByUser: JSON.parse(mark) });
-
-      return Object.assign({}, state, {
-        entities: ticketsMod,
-        loadingTicket: false
-      });
+      return {
+        ...adapter.updateOne({
+          id: ticketId,
+          changes: { readByUser: mark }
+        }, state),
+        loading: false
+      };
     }
 
-    case TicketActions.SORT_BY:
-      const sortBy: [string, boolean] = action.payload;
-      return Object.assign({}, state, {
-        sortBy: sortBy
-      });
+    case TicketActionTypes.SortBy:
+      const sortBy = action.payload;
+      return { ...state, sortBy: sortBy };
 
-      case TicketActions.UPDATE_TICKET: {
-        const ticket: Ticket = action.payload.ticket;
-        if (!ticket) return state;
-        return Object.assign({}, state, {
-          entities: Object.assign({}, state.entities, {
-            [ticket.id]: ticket
-          })
-        });
-      }
+    case TicketActionTypes.UpdateTicket: {
+      const ticket: Ticket = action.payload.ticket;
+      if (!ticket) return state;
+      return {
+        ...adapter.updateOne({
+          id: ticket.id,
+          changes: ticket
+        }, state)
+      };
+    }
 
     default: {
       return state;
@@ -217,66 +192,18 @@ export function ticketReducer(state = initialState, action: Action): TicketState
   }
 }
 
-function _getAddedMessage() {
-  return (state$: Observable<TicketState>) => state$
-    .select(s => s.addedMessage);
-}
+export const getAdded = (state: State) => state.added;
 
-function _getAddingMessage() {
-  return (state$: Observable<TicketState>) => state$
-    .select(s => s.addingMessage);
-}
+export const getAddedMessage = (state: State) => state.addedMessage;
 
-function _getTicketEntities() {
-  return (state$: Observable<TicketState>) => state$
-    .select(s => s.entities);
-}
+export const getAdding = (state: State) => state.adding;
 
-function _getTicket(id: string) {
-  return (state$: Observable<TicketState>) => state$
-    .select(s => s.entities[id]);
-}
+export const getAddingMessage = (state: State) => state.addingMessage;
 
-function _getTickets(ticketIds: string[]) {
-  return (state$: Observable<TicketState>) => state$
-    .let(_getTicketEntities())
-    .map(entities => ticketIds.map(id => entities[id]));
-}
+export const getLoaded = (state: State) => state.loaded;
 
-function _getTicketIds() {
-  return (state$: Observable<TicketState>) => state$
-    .select(s => s.ids);
-}
+export const getLoading = (state: State) => state.loading;
 
-function _getTicketCollection() {
-  return (state$: Observable<TicketState>) => state$
-    .let(_getTicketIds())
-    .switchMap((userId) => state$.let(_getTickets(userId))
-    );
-}
+export const getSelectedTicket = (state: State) => state.selectedTicket;
 
-function _getTicketState() {
-  return (state$: Observable<AppState>) => state$
-    .select(s => s.ticket);
-}
-
-export function getTicketAddedMessage() {
-  return compose(_getAddedMessage(), _getTicketState());
-}
-
-export function getTicketAddingMessage() {
-  return compose(_getAddingMessage(), _getTicketState());
-}
-
-export function getTicket(ticketId: string) {
-  return compose(_getTicket(ticketId), _getTicketState());
-}
-
-export function getTickets(ticketIds: string[]) {
-  return compose(_getTickets(ticketIds), _getTicketState());
-}
-
-export function getTicketCollection() {
-  return compose(_getTicketCollection(), _getTicketState());
-}
-
+export const getSortBy = (state: State) => state.sortBy;

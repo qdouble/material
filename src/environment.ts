@@ -1,5 +1,8 @@
 // Angular 2
-import { enableDebugTools, disableDebugTools } from '@angular/platform-browser';
+import {
+  enableDebugTools,
+  // disableDebugTools
+} from '@angular/platform-browser';
 import { enableProdMode, ApplicationRef } from '@angular/core';
 
 // Angular debug tools in the dev console
