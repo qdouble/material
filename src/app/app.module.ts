@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Http, HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { IdlePreload } from '@angularclass/idle-preload';
+import { IdlePreload } from 'angular-idle-preload';
 import { ExtendedHttpService } from './services/extended-http-service';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
