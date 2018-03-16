@@ -35,7 +35,7 @@
     "ci:testall": "npm run e2e:testall && npm run test:once:ci",
     "tslint": "tslint --project tsconfig.json",
     "lint": "npm run tslint \"src/app/**/*.ts\" ",
-    "clean": "npm cache clean && npm run clean:compile && npm run rimraf -- node_modules doc typings coverage dist .awcache dll",
+    "clean": "npm run clean:compile && npm run rimraf -- node_modules doc typings coverage dist .awcache dll",
     "clean:dist": "npm run rimraf -- dist .awcache",
     "clean:dll": "npm run rimraf -- dll",
     "clean:compile": "npm run rimraf -- \"compiled\" ",
