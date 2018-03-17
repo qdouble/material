@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
@@ -8,27 +8,27 @@ import { RequestBase } from './request-base';
 
 @Injectable()
 export class OfferService extends RequestBase {
-  constructor(public http: Http) {
+  constructor(public http: HttpClient) {
     super(http);
   }
 
-  getOffer(id: string): Observable<GetOfferResponse> {
-    return this.http.get(`${API_USER_URL}/getOffer?id=${id}`, this.optionsNoPre)
-      .map(res => res.json());
+  getOffer(id: string) {
+    return this.http.get<GetOfferResponse>
+      (`${API_USER_URL}/getOffer?id=${id}`, this.optionsNoPre);
   }
 
-  getOffers(): Observable<GetOffersResponse> {
-    return this.http.get(`${API_USER_URL}/getOffers`, this.optionsNoPre)
-      .map(res => res.json());
+  getOffers() {
+    return this.http.get<GetOffersResponse>
+      (`${API_USER_URL}/getOffers`, this.optionsNoPre);
   }
 
-  getOffersUpdatedAt(): Observable<GetOffersUpdatedAtResponse> {
-    return this.http.get(`${API_USER_URL}/getOffersUpdatedAt`, this.optionsNoPre)
-      .map(res => res.json());
+  getOffersUpdatedAt() {
+    return this.http.get<GetOffersUpdatedAtResponse>
+      (`${API_USER_URL}/getOffersUpdatedAt`, this.optionsNoPre);
   }
 
-  getViewOffers(): Observable<GetOffersResponse> {
-    return this.http.get(`${API_USER_URL}/getViewOffers`, this.optionsNoPre)
-      .map(res => res.json());
+  getViewOffers() {
+    return this.http.get<GetOffersResponse>
+      (`${API_USER_URL}/getViewOffers`, this.optionsNoPre);
   }
 }

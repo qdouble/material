@@ -1,6 +1,7 @@
 import { Actions } from '@ngrx/effects';
 import { RouterStateSerializer } from '@ngrx/router-store';
 import { CustomRouterStateSerializer } from './reducers/index';
+import { TransferState } from '@angular/platform-browser';
 
 import { CreditRequestService } from './features/support/credit-request.service';
 import { TicketService } from './features/support/ticket.service';
@@ -28,5 +29,6 @@ export const APP_PROVIDERS = [
   ...RESOLVE_DATA,
   services,
   TEMP_IMPORTS,
+  TransferState,
   { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer }
 ];

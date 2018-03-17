@@ -1,6 +1,6 @@
 /* tslint:disable: max-line-length */
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { API_ADMIN_URL, API_USER_URL } from './constants';
@@ -12,108 +12,108 @@ import { GenericResponse } from '../models/generic-response';
 @Injectable()
 export class UserService extends RequestBase {
 
-  constructor(public http: Http) {
+  constructor(public http: HttpClient) {
     super(http);
   }
 
-  changeSelectedPrize(id: string): Observable<ChangeSelectedPrizeResponse> {
-    return this.http.get(`${API_USER_URL}/changeSelectedPrize?id=${id}`, this.optionsNoPre)
-      .map(res => res.json());
+  changeSelectedPrize(id: string) {
+    return this.http.get<ChangeSelectedPrizeResponse>
+      (`${API_USER_URL}/changeSelectedPrize?id=${id}`, this.optionsNoPre);
   }
 
-  checkEmail(email: string): Observable<GenericResponse> {
-    return this.http.get(`${API_USER_URL}/checkUserEmail?email=${email}`, this.optionsNoPre)
-      .map(res => res.json());
+  checkEmail(email: string) {
+    return this.http.get<GenericResponse>
+      (`${API_USER_URL}/checkUserEmail?email=${email}`, this.optionsNoPre);
   }
 
-  checkIfUserUpdated(): Observable<CheckIfUserUpdatedAtResponse> {
-    return this.http.get(`${API_USER_URL}/checkIfUserUpdated`, this.optionsNoPre)
-      .map(res => res.json());
+  checkIfUserUpdated() {
+    return this.http.get<CheckIfUserUpdatedAtResponse>
+      (`${API_USER_URL}/checkIfUserUpdated`, this.optionsNoPre);
   }
 
-  checkIPMatch(sponsor: string): Observable<CheckIPMatchResponse> {
-    return this.http.get(`${API_USER_URL}/checkIPMatch?referredBy=${sponsor}`, this.optionsNoPre)
-      .map(res => res.json());
+  checkIPMatch(sponsor: string) {
+    return this.http.get<CheckIPMatchResponse>
+      (`${API_USER_URL}/checkIPMatch?referredBy=${sponsor}`, this.optionsNoPre);
   }
 
-  checkLoggedIn(): Observable<string> {
-    return this.http.get(`${API_USER_URL}/loggedIn`, this.optionsNoPre)
-      .map(res => res.text());
+  checkLoggedIn() {
+    return this.http.get
+      (`${API_USER_URL}/loggedIn`, { ...this.optionsNoPre, responseType: 'text' });
   }
 
-  checkReferrerUsername(username: string): Observable<CheckReferrerUsernameResponse> {
-    return this.http.get(`${API_USER_URL}/checkReferrerUsername?username=${username}`, this.optionsNoPre)
-      .map(res => res.json());
+  checkReferrerUsername(username: string) {
+    return this.http.get<CheckReferrerUsernameResponse>
+      (`${API_USER_URL}/checkReferrerUsername?username=${username}`, this.optionsNoPre);
   }
 
-  dismissProfileChanges(): Observable<DismissProfileChangesResponse> {
-    return this.http.get(`${API_USER_URL}/dismissProfileChanges`, this.optionsNoPre)
-      .map(res => res.json());
+  dismissProfileChanges() {
+    return this.http.get<DismissProfileChangesResponse>
+      (`${API_USER_URL}/dismissProfileChanges`, this.optionsNoPre);
   }
 
-  forgotPassword(email: string): Observable<GenericResponse> {
-    return this.http.post(`${API_USER_URL}/forgotPassword`, { email: email }, this.options)
-      .map(res => res.json());
+  forgotPassword(email: string) {
+    return this.http.post<GenericResponse>
+      (`${API_USER_URL}/forgotPassword`, { email: email }, this.options);
   }
 
-  hideReferrals(hideRefs: { ids: string[], hide: boolean }): Observable<HideReferralsResponse> {
-    return this.http.post(`${API_USER_URL}/hideReferrals`, hideRefs, this.options)
-      .map(res => res.json());
+  hideReferrals(hideRefs: { ids: string[], hide: boolean }) {
+    return this.http.post<HideReferralsResponse>
+      (`${API_USER_URL}/hideReferrals`, hideRefs, this.options);
   }
 
-  getProfile(): Observable<GetProfileResponse> {
-    return this.http.get(`${API_USER_URL}/getProfile`, this.optionsNoPre)
-      .map(res => res.json());
+  getProfile() {
+    return this.http.get<GetProfileResponse>
+      (`${API_USER_URL}/getProfile`, this.optionsNoPre);
   }
 
-  getReferral(id: string): Observable<GetReferralResponse> {
-    return this.http.get(`${API_USER_URL}/getReferral?id=${id}`, this.optionsNoPre)
-      .map(res => res.json());
+  getReferral(id: string) {
+    return this.http.get<GetReferralResponse>
+      (`${API_USER_URL}/getReferral?id=${id}`, this.optionsNoPre);
   }
 
-  loginAdmin(user: User): Observable<GenericResponse> {
-    return this.http.post(`${API_ADMIN_URL}/login`, user, this.options)
-      .map(res => res.json());
+  loginAdmin(user: User) {
+    return this.http.post<GenericResponse>
+      (`${API_ADMIN_URL}/login`, user, this.options);
   }
 
-  loginUser(user: User): Observable<GenericResponse> {
-    return this.http.post(`${API_USER_URL}/login`, user, this.options)
-      .map(res => res.json());
+  loginUser(user: User) {
+    return this.http.post<GenericResponse>
+      (`${API_USER_URL}/login`, user, this.options);
   }
 
-  logout(): Observable<string> {
-    return this.http.get(`${API_USER_URL}/logout`, this.optionsNoPre)
-      .map(res => res.text());
+  logout() {
+    return this.http.get
+      (`${API_USER_URL}/logout`, { ...this.optionsNoPre, responseType: 'text' });
   }
 
-  recordClick(offerId: string): Observable<RecordClickResponse> {
-    return this.http.post(`${API_USER_URL}/recordClick`, { 'id': offerId }, this.options)
-      .retry()
-      .map(res => res.json());
+  recordClick(offerId: string) {
+    return this.http.post<RecordClickResponse>
+      (`${API_USER_URL}/recordClick`, { 'id': offerId }, this.options)
+      .retry();
   }
 
-  registerUser(user: User): Observable<GenericResponse> {
-    return this.http.post(`${API_USER_URL}/registerUser`, user, this.options)
-      .map(res => res.json());
+  registerUser(user: User) {
+    return this.http.post<GenericResponse>
+      (`${API_USER_URL}/registerUser`, user, this.options);
   }
 
-  removeReferrals(ids: string[]): Observable<RemoveReferralsResponse> {
-    return this.http.post(`${API_USER_URL}/removeReferrals`, ids, this.options)
-      .map(res => res.json());
+  removeReferrals(ids: string[]) {
+    return this.http.post<RemoveReferralsResponse>
+      (`${API_USER_URL}/removeReferrals`, ids, this.options);
   }
 
-  resetPassword(reset: { email: string, code: string, password: string }): Observable<GenericResponse> {
-    return this.http.post(`${API_USER_URL}/resetPassword`, reset, this.options)
-      .map(res => res.json());
+  resetPassword(reset: { email: string, code: string, password: string }) {
+    return this.http.post<GenericResponse>
+      (`${API_USER_URL}/resetPassword`, reset, this.options);
   }
 
-  setSponsor(sponsorUsername: string): Observable<SetSponsorResponse> {
-    return this.http.post(`${API_USER_URL}/setSponsor`, { sponsorUsername: sponsorUsername }, this.options)
-      .map(res => res.json());
+  setSponsor(sponsorUsername: string) {
+    return this.http.post<SetSponsorResponse>
+      (`${API_USER_URL}/setSponsor`, { sponsorUsername: sponsorUsername }, this.options);
   }
 
-  updateProfile(user: User): Observable<GetProfileResponse> {
-    return this.http.post(`${API_USER_URL}/updateProfile`, user, this.options)
-      .map(res => res.json());
+  updateProfile(user: User) {
+    return this.http.post<GetProfileResponse>
+      (`${API_USER_URL}/updateProfile`, user, this.options);
   }
 }

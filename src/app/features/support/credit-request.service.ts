@@ -1,6 +1,6 @@
 /* tslint:disable: max-line-length */
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from '../../services/constants';
@@ -8,36 +8,37 @@ import { CreditRequest, GetCreditRequestResponse, GetCreditRequestsResponse } fr
 import { RequestBase } from '../../services/request-base';
 import { GetOfferClicksResponse } from './offer-click.model';
 
+
 @Injectable()
 export class CreditRequestService extends RequestBase {
 
-  constructor(public http: Http) {
+  constructor(public http: HttpClient) {
     super(http);
   }
 
-  addCreditRequest(creditRequest: CreditRequest): Observable<GetCreditRequestResponse> {
-    return this.http.post(`${API_USER_URL}/addCreditRequest`, creditRequest, this.options)
-      .map(res => res.json());
+  addCreditRequest(creditRequest: CreditRequest) {
+    return this.http.post<GetCreditRequestResponse>
+      (`${API_USER_URL}/addCreditRequest`, creditRequest, this.options);
   }
 
-  editCreditRequest(creditRequest: CreditRequest): Observable<GetCreditRequestResponse> {
-    return this.http.post(`${API_USER_URL}/editCreditRequest`, creditRequest, this.options)
-      .map(res => res.json());
+  editCreditRequest(creditRequest: CreditRequest) {
+    return this.http.post<GetCreditRequestResponse>
+      (`${API_USER_URL}/editCreditRequest`, creditRequest, this.options);
   }
 
-  getCreditRequest(id: string): Observable<GetCreditRequestResponse> {
-    return this.http.get(`${API_USER_URL}/getCreditRequest?id=${id}`, this.optionsNoPre)
-      .map(res => res.json());
+  getCreditRequest(id: string) {
+    return this.http.get<GetCreditRequestResponse>
+      (`${API_USER_URL}/getCreditRequest?id=${id}`, this.optionsNoPre);
   }
 
-  getCreditRequests(): Observable<GetCreditRequestsResponse> {
-    return this.http.get(`${API_USER_URL}/getCreditRequests`, this.optionsNoPre)
-      .map(res => res.json());
+  getCreditRequests() {
+    return this.http.get<GetCreditRequestsResponse>
+      (`${API_USER_URL}/getCreditRequests`, this.optionsNoPre);
   }
 
-  getOfferClicks(): Observable<GetOfferClicksResponse> {
-    return this.http.get(`${API_USER_URL}/getOfferClicks`, this.optionsNoPre)
-      .map(res => res.json());
+  getOfferClicks() {
+    return this.http.get<GetOfferClicksResponse>
+      (`${API_USER_URL}/getOfferClicks`, this.optionsNoPre);
   }
 
 }

@@ -1,6 +1,6 @@
 /* tslint:disable max-line-length */
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
@@ -10,31 +10,31 @@ import { GenericResponse } from '../models/generic-response';
 
 @Injectable()
 export class NotificationService extends RequestBase {
-  constructor(public http: Http) {
+  constructor(public http: HttpClient) {
     super(http);
   }
 
-  deleteAllNotifications(): Observable<GenericResponse> {
-    return this.http.delete(`${API_USER_URL}/deleteAllNotifications`, this.options)
-      .map(res => res.json());
+  deleteAllNotifications() {
+    return this.http.delete<GenericResponse>
+      (`${API_USER_URL}/deleteAllNotifications`, this.options);
   }
 
-  deleteNotifications(ids: string[]): Observable<DeleteNotificationsResponse> {
-    return this.http.post(`${API_USER_URL}/deleteNotifications`, ids, this.options)
-      .map(res => res.json());
+  deleteNotifications(ids: string[]) {
+    return this.http.post<DeleteNotificationsResponse>
+      (`${API_USER_URL}/deleteNotifications`, ids, this.options);
   }
 
-  getNotifications(query?: string): Observable<GetNotificationsResponse> {
-    return this.http.get(`${API_USER_URL}/getNotifications?${query}`, this.optionsNoPre)
-      .map(res => res.json());
+  getNotifications(query?: string) {
+    return this.http.get<GetNotificationsResponse>
+      (`${API_USER_URL}/getNotifications?${query}`, this.optionsNoPre);
   }
 
-  markAllAsRead(): Observable<MarkAllAsReadResponse> {
-    return this.http.get(`${API_USER_URL}/markAllNotificationsAsRead`, this.optionsNoPre)
-      .map(res => res.json());
+  markAllAsRead() {
+    return this.http.get<MarkAllAsReadResponse>
+      (`${API_USER_URL}/markAllNotificationsAsRead`, this.optionsNoPre);
   }
-  markNotificationsAsRead(mark: { ids: string[], read: boolean }): Observable<MarkNotificationAsReadResponse> {
-    return this.http.post(`${API_USER_URL}/markNotificationsAsRead`, mark, this.options)
-      .map(res => res.json());
+  markNotificationsAsRead(mark: { ids: string[], read: boolean }) {
+    return this.http.post<MarkNotificationAsReadResponse>
+      (`${API_USER_URL}/markNotificationsAsRead`, mark, this.options);
   }
 }

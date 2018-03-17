@@ -6,13 +6,12 @@
  * there is something that is specific to the environment.
  */
 
-import { ApplicationRef, NgModule } from '@angular/core';
+import { ApplicationRef, NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Http, HttpModule } from '@angular/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { IdlePreload } from 'angular-idle-preload';
-import { ExtendedHttpService } from './services/extended-http-service';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
@@ -32,6 +31,7 @@ import { routes } from './app.routing';
 import { AppComponent } from './app.component';
 
 import { AppState } from './reducers';
+import { HttpErrorInterceptor } from './services/http-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,7 @@ import { AppState } from './reducers';
   imports: [
     CommonModule,
     DEV_SERVER ? [BrowserAnimationsModule, BrowserTransferStateModule] : [],
-    HttpModule,
+    HttpClientModule,
     APP_IMPORTS,
     RouterModule.forRoot(routes, { useHash: false, preloadingStrategy: IdlePreload }),
   ],
@@ -50,13 +50,21 @@ import { AppState } from './reducers';
   exports: [AppComponent],
   providers: [
     APP_PROVIDERS,
-    { provide: Http, useClass: ExtendedHttpService }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true,
+    }
+    // { provide: HttpClient, useClass: ExtendedHttpService }
   ]
 })
 
 export class AppModule {
+  static injector: Injector;
   constructor(public appRef: ApplicationRef,
-    private _store: Store<AppState>) { }
+    private _store: Store<AppState>, injector: Injector) {
+    AppModule.injector = injector;
+  }
 
   hmrOnInit(store) {
     if (!store || !store.rootState) return;

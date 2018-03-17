@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
@@ -8,18 +8,17 @@ import { RequestBase } from './request-base';
 
 @Injectable()
 export class OrderService extends RequestBase {
-  constructor(public http: Http) {
+  constructor(public http: HttpClient) {
     super(http);
   }
 
-  getOrders(): Observable<GetOrdersResponse> {
-    return this.http.get(`${API_USER_URL}/getOrders`, this.optionsNoPre)
-      .map(res => res.json());
+  getOrders() {
+    return this.http.get<GetOrdersResponse>
+      (`${API_USER_URL}/getOrders`, this.optionsNoPre);
   }
 
-  placeOrder(order: Order): Observable<GetOrderResponse> {
-    return this.http.post(`${API_USER_URL}/placeOrder`, order, this.options)
-      .map(res => res.json());
+  placeOrder(order: Order) {
+    return this.http.post<GetOrderResponse>
+      (`${API_USER_URL}/placeOrder`, order, this.options);
   }
-
 }
