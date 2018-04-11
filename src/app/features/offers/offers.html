@@ -42,21 +42,21 @@
       <b [ngClass]="{'accent': (testShowRef$ | async)}">Get to Level 5 On Your First Day and Receive a Bonus Level Up!</b>
     </mat-card-title>
     <div>
-      <p style="color: #446f15">Get to Level 5 Before Time Expires to Recieve Bonus</p>
       <div class="time-container">
         <div class="container-label">Hours</div>
         <div class="container-number">{{timeRemaining.hours | number: '2.0-0'}}</div>
       </div>
-      :
+      <span class="accent">:</span>
       <div class="time-container">
         <div class="container-label">Mins.</div>
         <div class="container-number">{{timeRemaining.minutes | number: '2.0-0'}}</div>
       </div>
-      :
+      <span class="accent">:</span>
       <div class="time-container">
         <div class="container-label">Sec.</div>
         <div class="container-number">{{timeRemaining.seconds | number: '2.0-0'}}</div>
       </div>
+      <p style="color: #446f15; margin-top: 6px;">Get to Level 5 Before Time Expires to Recieve 1 Bonus Level!</p>
     </div>
   </div>
   <div *ngIf="userLevel >= 1 && !(newEqualTrue$ | async)" class="referral-link">
