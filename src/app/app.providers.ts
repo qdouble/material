@@ -10,7 +10,7 @@ import {
   AuthGuard,
   AuthRegGuard,
   LoggedInRedirectGuard
-} from '../app/guards';
+} from './guards';
 import { RESOLVE_DATA } from './resolve';
 import { services } from './services';
 
