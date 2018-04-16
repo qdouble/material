@@ -19,7 +19,7 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <ng-container *ngIf="!offer?.tempUnavailable">
+    <ng-container *ngIf="!offer?.tempUnavailable && !ageRestrictUser">
       <div *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" class="checkbox-row">
         <span *ngIf="!offer?.noCardRequired"><span class="warn">The use of prepaid cards and giftcards are not allowed.</span> Members are to keep any trial for at least 90% of the trial period or beyond.</span>
         <span *ngIf="!offer?.allowCreditRequests">This advertiser does not accept missing credit requests. Please be sure to <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a>.</span>
@@ -30,12 +30,16 @@
         <span *ngIf="futureLevel === currentLevel">you will be {{(currentLevel + 1 - (creditTotal + offer.creditValue)) | number: '1.2-2'}} credits away from Level {{currentLevel + 1}} where you can <em>earn ${{(currentLevel + 1) * 5}} per referral!</em></span>
       </p>
       <button mat-raised-button color="primary" class="white" (click)="continueToOffer.emit(offer?.id)">COMPLETE THIS OFFER</button>
-      
     </ng-container>
     <ng-container *ngIf="offer?.tempUnavailable">
       <button mat-button class="white warn-background">TEMPORARILY UNAVAILABLE</button>
       <div class="warn">{{offer?.tempUnavailableMessage}}</div>
     </ng-container>
+    <div class="age-restricted" *ngIf="ageRestrictUser">
+        <button mat-button class="white accent-background">AGE RESTRICTED</button>
+        <h5 class="accent"><b>{{offer?.displayName}} is restricting traffic from members under the age of {{offer.minUserAge}}.</b></h5>
+        <h6 class="accent"><b>According to your account information, you are {{userAge}} years old.</b></h6>
+    </div>
   </mat-card-actions>
   <mat-card-content>
     Once you have completed the requirements listed above, credit is usually applied to your account

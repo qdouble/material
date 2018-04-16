@@ -5,6 +5,6 @@
     <mat-card *ngIf="(creditTotal$ | async) > 1" id="important-review" class="accent-background">
       <mat-card-subtitle class="white">Important: Please review the following information before continuing with the offer!</mat-card-subtitle>
     </mat-card>
-    <os-offer-details-card *ngIf="offer$ | async" [alreadyCompleted]="alreadyCompleted" [creditTotal]="creditTotal$ | async" [offer]="offer$ | async" [publish]="publish" [userAgent]="userAgent$ | async" (continueToOffer)="continueToOffer($event)"></os-offer-details-card>
+    <os-offer-details-card *ngIf="offer$ | async" [ageRestrictUser]="ageRestrictUser" [alreadyCompleted]="alreadyCompleted" [creditTotal]="creditTotal$ | async" [offer]="offer$ | async" [publish]="publish" [userAge]="userAge" [userAgent]="userAgent$ | async" (continueToOffer)="continueToOffer($event)"></os-offer-details-card>
   </div>
 </mat-card>

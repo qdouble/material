@@ -11,6 +11,15 @@ img {
   max-width: 200px;
 }
 
+.age-restricted {
+  h5 {
+    margin-bottom: 0 !important;
+  }
+  h6 {
+    margin-top: 0 !important; 
+  }
+}
+
 .back-button {
   margin-bottom: 6px;
 }

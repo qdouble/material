@@ -16,11 +16,13 @@ export class OfferDetailsCard implements OnChanges, OnInit {
   currentLevel: number;
   flash: string;
   futureLevel: number;
+  @Input() ageRestrictUser: boolean;
   @Input() alreadyCompleted: boolean;
   @Input() creditTotal: number;
-  @Input() offer: Offer;
-  @Input() userAgent: UserAgent;
   @Input() publish: boolean;
+  @Input() offer: Offer;
+  @Input() userAge: number;
+  @Input() userAgent: UserAgent;
   @Output() continueToOffer = new EventEmitter();
   ngOnChanges(changes: SimpleChanges) {
     this.setLevels();

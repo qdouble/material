@@ -16,6 +16,8 @@ export interface Offer {
   offerOrder?: number;
   hideToUnQualifiedUsers?: boolean;
   qualificationLevel?: number;
+  ageRestrict?: boolean;
+  minUserAge?: number;
   varies?: boolean;
   versions?: OfferVersion[];
   alternateVersions?: string[];

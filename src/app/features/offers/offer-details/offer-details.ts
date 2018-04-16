@@ -12,9 +12,12 @@ import * as fromStore from '../../../reducers';
 import { Credit } from '../../../models/credit';
 import { Offer } from '../../../models/offer';
 import * as offerActions from '../../../actions/offer';
+import { User } from '../../../models/user';
 import { UserAgent } from '../../../models/user-agent';
 
 import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
+import { getAge } from '../../../utilities/get-age';
+
 
 @Component({
   selector: 'os-offer-details',
@@ -30,6 +33,7 @@ import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
   ]
 })
 export class OfferDetailsComponent implements OnDestroy, OnInit {
+  ageRestrictUser: boolean;
   alreadyCompleted: boolean;
   confirmDialogRef: MatDialogRef<ConfirmDialog>;
   confirmDialogConfig: MatDialogConfig = {
@@ -45,6 +49,8 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
   publish = PUBLISH;
   offer$: Observable<Offer>;
   offer: Offer;
+  user$: Observable<User>;
+  userAge: number;
 
   constructor(
     public dialog: MatDialog,
@@ -60,11 +66,22 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
       this.store.dispatch(new offerActions.GetOffer(id));
       this.userAgent$ = this.store.select(s => s.offer.userAgent);
       this.userAgent$.takeUntil(this.destroyed$).subscribe(u => this.userAgent = u);
+      this.user$ = this.store.pipe(select(fromStore.getUserProfile));
       this.offer$ = this.store.pipe(select(fromStore.getSelectedOffer));
       this.offer$
         .takeUntil(this.destroyed$)
         .subscribe(o => {
           this.offer = o;
+          this.user$
+            .takeUntil(this.destroyed$)
+            .subscribe(user => {
+              this.userAge = getAge(user.birthday);
+              if (o && o.ageRestrict && o.minUserAge && o.minUserAge > this.userAge) {
+                this.ageRestrictUser = true;
+              } else {
+                this.ageRestrictUser = false;
+              }
+            });
           this.credits$
             .takeUntil(this.destroyed$)
             .filter(c => c !== null && c !== undefined)
