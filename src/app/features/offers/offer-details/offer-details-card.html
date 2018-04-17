@@ -21,7 +21,7 @@
   <mat-card-actions>
     <ng-container *ngIf="!offer?.tempUnavailable && !ageRestrictUser">
       <div *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" class="checkbox-row">
-        <span *ngIf="!offer?.noCardRequired"><span class="warn">The use of prepaid cards and giftcards are not allowed.</span> Members are to keep any trial for at least 90% of the trial period or beyond.</span>
+        <span *ngIf="!offer?.noCardRequired && !offer.requiresConfirmation"><span class="warn">The use of prepaid cards and giftcards are not allowed.</span> Members are to keep any trial for at least 90% of the trial period or beyond.</span>
         <span *ngIf="!offer?.allowCreditRequests">This advertiser does not accept missing credit requests. Please be sure to <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a>.</span>
       </div>
       <p class="complete center primary">
