@@ -17,6 +17,9 @@ export interface Offer {
   hideToUnQualifiedUsers?: boolean;
   qualificationLevel?: number;
   ageRestrict?: boolean;
+  requiresConfirmation: boolean;
+  confirmationDirections: string;
+  unconfirmed?: boolean;
   minUserAge?: number;
   varies?: boolean;
   versions?: OfferVersion[];

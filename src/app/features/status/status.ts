@@ -41,7 +41,7 @@ export class Status implements OnDestroy, OnInit {
     disableClose: false
   };
   credits$: Observable<Credit[]>;
-  creditsShown: boolean;
+  creditsShown: boolean = true;
   creditTotal$: Observable<number>;
   destroyed$: Subject<any> = new Subject<any>();
   loaded$: Observable<boolean>;

@@ -17,6 +17,7 @@ export enum UIActionTypes {
   CreatePushNotificationSuccess = '[UI] Create Push Notification Success',
   DisplayCompletedOrderDialog = '[UI] Display Completed Order Dialog',
   DisplayCreditedOfferDialog = '[UI] Display Credited Offer Dialog',
+  DisplayUnconfirmedCreditDialog = '[UI] Display Unconfirmed Credit Dialog',
   GetVersion = '[UI] Get Version',
   GetVersionFail = '[UI] Get Version Fail',
   GetVersionSuccess = '[UI] Get Version Success',
@@ -80,6 +81,12 @@ export class DisplayCreditedOfferDialog implements Action {
   constructor(public payload: { offer: Offer }) { }
 }
 
+export class DisplayUnconfirmedCreditDialog implements Action {
+  readonly type = UIActionTypes.DisplayUnconfirmedCreditDialog;
+
+  constructor(public payload: { offer: Offer }) { }
+}
+
 export class GetVersion implements Action {
   readonly type = UIActionTypes.GetVersion;
 }
@@ -128,6 +135,7 @@ export type UIActions =
   | CreatePushNotification
   | DisplayCompletedOrderDialog
   | DisplayCreditedOfferDialog
+  | DisplayUnconfirmedCreditDialog
   | GetVersion
   | GetVersionFail
   | GetVersionSuccess

@@ -18,7 +18,7 @@ export class ReferralDetailsDialog implements OnInit {
   ngOnInit() {
     if (this.referral.credits && this.referral.credits.length > 0) {
       this.referral.credits.forEach(credit => {
-        if (credit.active) {
+        if (credit.active && !credit.unconfirmed) {
           this.creditTotal += credit.creditValue;
         }
         this.creditTotal = Number(Number(this.creditTotal).toFixed(2));

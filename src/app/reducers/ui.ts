@@ -71,6 +71,7 @@ export function uiReducer(state = initialState, action: UIActions): State {
       };
     }
 
+    case UIActionTypes.DisplayUnconfirmedCreditDialog:
     case UIActionTypes.DisplayCreditedOfferDialog: {
       const offer = action.payload.offer;
       if (!offer || state.creditedOfferIds.includes(offer.id)) return state;

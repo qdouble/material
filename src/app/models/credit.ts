@@ -6,6 +6,7 @@ export interface Credit {
   offerId: string;
   creditValue: number;
   active: boolean;
+  unconfirmed?: boolean;
 }
 
 export interface GetCreditResponse extends GenericResponse {

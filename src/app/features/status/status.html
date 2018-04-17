@@ -66,25 +66,25 @@
           {{creditsShown ? 'Hide' : 'Show'}}
           </span>
         </p>
+        <ng-container *ngIf="creditsShown">
+            <div class="table">
+              <ng-container *ngFor="let credit of (credits$ | async)">
+                <div class="row">
+                  <div class="cell name-col">
+                    {{ credit.offerName | slice:0:18 }}
+                  </div>
+                  <div class="cell value-col" [ngClass]="{'accent': credit.unconfirmed,'warn': !credit.active}">
+                    {{ credit.active ? ( credit.unconfirmed ? 'Unconfirmed' : (credit.creditValue | number:'1.2-2')) : 'Revoked'}}
+                  </div>
+                  <div class="cell credited-col">
+                    {{ credit.createdAt | date:'shortDate'}}
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
         <p><b>You can currently earn up to <em>${{user?.currentLevel * 5 | number:'1.2-2'}}</em> per referral</b></p>
         <p><b>Get {{(user?.currentLevel + 1) - (creditTotal$ | async) | number:'1.2-2' }}  more credit(s) and reach level {{user?.currentLevel + 1}} and earn up to ${{(user?.currentLevel + 1) * 5}} per referral.  </b></p>
-        <ng-container *ngIf="creditsShown">
-          <div class="table">
-            <ng-container *ngFor="let credit of (credits$ | async)">
-              <div class="row">
-                <div class="cell name-col">
-                  {{ credit.offerName | slice:0:18 }}
-                </div>
-                <div class="cell value-col" [ngClass]="{'warn': !credit.active}">
-                  {{ credit.active ? (credit.creditValue | number:'1.2-2') : 'Revoked'}}
-                </div>
-                <div class="cell credited-col">
-                  {{ credit.createdAt | date:'shortDate'}}
-                </div>
-              </div>
-            </ng-container>
-          </div>
-        </ng-container>
         <ng-container *ngIf="user?.currentSponsor">
           <p><b>Your Sponsor is <u class="switch-sponsor" *ngIf="!user?.hold" (click)="switchSponsor = !switchSponsor">(Switch Sponsor?)</u>: </b></p>
           <p *ngIf="!switchSponsor">{{user?.currentSponsor}} &#60;{{user?.currentSponsorEmail}}&#62;</p>

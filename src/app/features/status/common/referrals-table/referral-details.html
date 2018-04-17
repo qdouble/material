@@ -21,8 +21,8 @@
               <div class="cell name-col">
                 {{ credit.offerName | slice:0:18 }}
               </div>
-              <div class="cell value-col" [ngClass]="{'warn': !credit.active}">
-                {{ credit.active ? (credit.creditValue | number:'1.2-2') : 'Revoked'}}
+              <div class="cell value-col" [ngClass]="{'accent': credit.unconfirmed,'warn': !credit.active}">
+                {{ credit.active ? ( credit.unconfirmed ? 'Unconfirmed' : (credit.creditValue | number:'1.2-2'))  : 'Revoked'}}
               </div>
             </div>
           </ng-container>
