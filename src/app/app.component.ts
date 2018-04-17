@@ -193,7 +193,6 @@ export class AppComponent implements OnDestroy, OnInit {
       .subscribe(credits => {
         this.creditTotal = 0;
         credits.forEach(credit => {
-          console.log(credit);
           if (credit.active && !credit.unconfirmed) {
             this.creditTotal += credit.creditValue;
           }
