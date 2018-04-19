@@ -4,6 +4,7 @@ import { UIActions, UIActionTypes } from '../actions/ui';
 import { Offer } from '../models/offer';
 import { Order } from '../models/order';
 import { PushNotification } from '../models/push-notification';
+import { GetScriptsToLoadResponse, Script } from '../models/ui';
 
 export interface State {
   completedOrderIds: string[];
@@ -13,6 +14,7 @@ export interface State {
   creditedOffers: { [id: string]: Offer };
   mobile: boolean;
   pushNotification: PushNotification;
+  scripts: Script[];
   sendingContact: boolean;
   sideNavOpen: boolean;
   latestVersion: string;
@@ -27,6 +29,7 @@ export const initialState: State = {
   creditedOffers: {},
   mobile: false,
   pushNotification: null,
+  scripts: null,
   sendingContact: false,
   sideNavOpen: false,
   latestVersion: null,
@@ -85,10 +88,18 @@ export function uiReducer(state = initialState, action: UIActions): State {
       };
     }
 
-    case UIActionTypes.GetVersionSuccess:
+    case UIActionTypes.GetScriptsToLoadSuccess: {
+      let scripts = action.payload.scripts;
+      if (!scripts || !Array.isArray(scripts)) return state;
+      return { ...state, scripts: scripts };
+    }
+
+    case UIActionTypes.GetVersionSuccess: {
       let version = action.payload.version;
       if (!version || typeof version !== 'string') return state;
-      return { ...state, latestVersion: action.payload.version };
+      return { ...state, latestVersion: version };
+    }
+
 
     case UIActionTypes.MarkCompletedOrderAsViewed: {
       const id = action.payload;
@@ -143,6 +154,8 @@ export const getCreditedOffers = (state: State) => state.creditedOffers;
 export const getMobile = (state: State) => state.mobile;
 
 export const getPushNotification = (state: State) => state.pushNotification;
+
+export const getScripts = (state: State) => state.scripts;
 
 export const getSendingContact = (state: State) => state.sendingContact;
 

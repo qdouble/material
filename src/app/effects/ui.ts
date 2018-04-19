@@ -20,7 +20,9 @@ import {
   ContactUsSuccess,
   GetVersionFail,
   GetVersionSuccess,
-  UIActionTypes
+  UIActionTypes,
+  GetScriptsToLoadSuccess,
+  GetScriptsToLoadFail
 } from '../actions/ui';
 import { UIService } from '../services/ui';
 import { AddNotify } from '../actions/notify';
@@ -69,4 +71,14 @@ export class UIEffects {
         Observable.of(new AddNotify(err))
       ))
     )));
+
+    @Effect() getScriptsToLoad$: Observable<Action> = this.actions$.pipe(
+      ofType(UIActionTypes.GetScriptsToLoad),
+      switchMap(() => this.uiService.getScriptsToLoad().pipe(
+        map((res) => new GetScriptsToLoadSuccess(res)),
+        catchError((err) => concat(
+          Observable.of(new GetScriptsToLoadFail(err)),
+          Observable.of(new AddNotify(err))
+        ))
+      )));
 }

@@ -32,6 +32,8 @@ import { CreditedOfferDialog } from './dialogs/credited-offer.dialog';
 import { LevelBadgeDialog } from './dialogs/level-badge.dialog';
 import { Offer } from './models/offer';
 import { Order } from './models/order';
+import { ScriptService } from './script.service';
+import { Script } from './models/ui';
 
 @Component({
   selector: 'my-app',
@@ -87,6 +89,7 @@ export class AppComponent implements OnDestroy, OnInit {
   notifiy$: Observable<Notify[]>;
   openLevelAfterClose = 0;
   referredBy: string;
+  scripts$: Observable<Script[]>;
   showNotifications = false;
   showStatus: boolean;
   snackRefs = [];
@@ -107,6 +110,7 @@ export class AppComponent implements OnDestroy, OnInit {
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
+    private script: ScriptService,
     private swAndPushService: SWAndPushService,
     public snackBar: MatSnackBar,
     private store: Store<fromStore.AppState>
@@ -247,6 +251,9 @@ export class AppComponent implements OnDestroy, OnInit {
         this.store.dispatch(new userActions.GetProfile());
         this.connect();
       }
+      if (loggedIn !== null) {
+        this.store.dispatch(new uiActions.GetScriptsToLoad());
+      }
     });
     if (SERVICE_WORKER_SUPPORT && ENV !== 'development') {
       this.swAndPushService.registerServiceWorker();
@@ -289,6 +296,10 @@ export class AppComponent implements OnDestroy, OnInit {
       .subscribe((level) => {
         this.openLevelBadgeDialog(level);
       });
+    this.scripts$ = this.store.pipe(select(fromStore.getUIScripts));
+    this.scripts$
+      .filter(s => s && s.length > 0)
+      .subscribe(scripts => this.loadScripts(scripts));
   }
 
   activateEvent(event) {
@@ -323,6 +334,22 @@ export class AppComponent implements OnDestroy, OnInit {
       },
       (err) => { log(err); this.connect(); },
       () => log('complete'));
+  }
+
+  loadScripts(scripts: Script[]) {
+    scripts = scripts.filter(s =>
+      s.loadOn === (this.loggedIn ? 'loggedIn' : 'loggedOut') || s.loadOn === 'both');
+    if (!scripts.length) {
+      if (ENV === 'development') {
+        console.log('All Scripts were filtered out');
+      }
+      return;
+    }
+    this.script.load(scripts).then(data => {
+      if (ENV === 'development') {
+        console.log('script loaded ', data);
+      }
+    }).catch(error => console.log(error));
   }
 
   logout() {

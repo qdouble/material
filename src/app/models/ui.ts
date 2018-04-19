@@ -9,3 +9,14 @@ export interface ContactUsResponse extends GenericResponse {
 export interface GetVersionResponse {
   version: string;
 }
+
+export interface GetScriptsToLoadResponse {
+  scripts: Script[];
+}
+
+export interface Script {
+  name: string;
+  loaded?: boolean;
+  loadOn: 'loggedIn' | 'loggedOut' | 'both';
+  src: string;
+}

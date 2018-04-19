@@ -13,6 +13,7 @@ import {
 } from './guards';
 import { RESOLVE_DATA } from './resolve';
 import { services } from './services';
+import { ScriptService } from './script.service';
 
 const TEMP_IMPORTS = [
   CreditRequestService,
@@ -28,6 +29,7 @@ export const APP_PROVIDERS = [
   LoggedInRedirectGuard,
   ...RESOLVE_DATA,
   services,
+  ScriptService,
   TEMP_IMPORTS,
   TransferState,
   { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer }

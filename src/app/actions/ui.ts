@@ -3,7 +3,7 @@ import { Action } from '@ngrx/store';
 import { Offer } from '../models/offer';
 import { Order } from '../models/order';
 import { PushNotification } from '../models/push-notification';
-import { ContactUsResponse, GetVersionResponse } from '../models/ui';
+import { ContactUsResponse, GetVersionResponse, GetScriptsToLoadResponse } from '../models/ui';
 
 export enum UIActionTypes {
   AddUserIDToSocket = '[UI] Add User ID to Socket',
@@ -18,6 +18,9 @@ export enum UIActionTypes {
   DisplayCompletedOrderDialog = '[UI] Display Completed Order Dialog',
   DisplayCreditedOfferDialog = '[UI] Display Credited Offer Dialog',
   DisplayUnconfirmedCreditDialog = '[UI] Display Unconfirmed Credit Dialog',
+  GetScriptsToLoad = '[UI] Get Scripts To Load',
+  GetScriptsToLoadFail = '[UI] Get Scripts To Load Fail',
+  GetScriptsToLoadSuccess = '[UI] Get Scripts To Load Success',
   GetVersion = '[UI] Get Version',
   GetVersionFail = '[UI] Get Version Fail',
   GetVersionSuccess = '[UI] Get Version Success',
@@ -87,6 +90,22 @@ export class DisplayUnconfirmedCreditDialog implements Action {
   constructor(public payload: { offer: Offer }) { }
 }
 
+export class GetScriptsToLoad implements Action {
+  readonly type = UIActionTypes.GetScriptsToLoad;
+}
+
+export class GetScriptsToLoadFail implements Action {
+  readonly type = UIActionTypes.GetScriptsToLoadFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetScriptsToLoadSuccess implements Action {
+  readonly type = UIActionTypes.GetScriptsToLoadSuccess;
+
+  constructor(public payload: GetScriptsToLoadResponse) { }
+}
+
 export class GetVersion implements Action {
   readonly type = UIActionTypes.GetVersion;
 }
@@ -136,6 +155,9 @@ export type UIActions =
   | DisplayCompletedOrderDialog
   | DisplayCreditedOfferDialog
   | DisplayUnconfirmedCreditDialog
+  | GetScriptsToLoad
+  | GetScriptsToLoadFail
+  | GetScriptsToLoadSuccess
   | GetVersion
   | GetVersionFail
   | GetVersionSuccess

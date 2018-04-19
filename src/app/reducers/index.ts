@@ -527,6 +527,11 @@ export const getUIPushNotification = createSelector(
   fromUI.getPushNotification
 );
 
+export const getUIScripts = createSelector(
+  getUIState,
+  fromUI.getScripts
+);
+
 export const getUISendingContact = createSelector(
   getUIState,
   fromUI.getSendingContact
