@@ -49,14 +49,16 @@ export class Register implements OnDestroy, OnInit {
   f: FormGroup;
   flash: string;
   entryEmail$: Observable<string | null>;
+  invalidCountry$: Observable<boolean>;
   ip$: Observable<string>;
   ipJson$: Observable<IP>;
+  loading$: Observable<boolean>;
   prizes$: Observable<Prize[]>;
   prizeIds$: Observable<(string | undefined)[]>;
   prizeNames$: Observable<(string | undefined)[]>;
   prizeLoaded$: Observable<boolean>;
   RANDOM_NUM = Math.floor((Math.random() * 1000000) + 1);
-  RANDOM_EMAIL = `new${this.RANDOM_NUM}@user.com`;
+  RANDOM_EMAIL = `mockuser${this.RANDOM_NUM}@gmail.com`;
   referredBy$: Observable<string | null>;
   selectedPrize$: Observable<string | null>;
   selectedPrize: string | null;
@@ -109,6 +111,8 @@ export class Register implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    this.loading$ = this.store.pipe(select(fromStore.getUserLoading));
+    this.invalidCountry$ = this.store.pipe(select(fromStore.getUIInvalidCountry));
     this.countryLoaded$ = this.store.pipe(select(fromStore.getCountryLoaded));
     this.countryLoaded$
       .takeUntil(this.destroyed$)

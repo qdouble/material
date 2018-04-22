@@ -9,7 +9,12 @@
 import { ApplicationRef, NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  HttpClientJsonpModule,
+  HttpClient,
+  HttpClientModule,
+  HTTP_INTERCEPTORS
+} from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { IdlePreload } from 'angular-idle-preload';
 
@@ -43,6 +48,7 @@ import { HttpErrorInterceptor } from './services/http-error.interceptor';
     CommonModule,
     DEV_SERVER ? [BrowserAnimationsModule, BrowserTransferStateModule] : [],
     HttpClientModule,
+    HttpClientJsonpModule,
     APP_IMPORTS,
     RouterModule.forRoot(routes, { useHash: false, preloadingStrategy: IdlePreload }),
   ],

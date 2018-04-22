@@ -4,7 +4,8 @@ import { UIActions, UIActionTypes } from '../actions/ui';
 import { Offer } from '../models/offer';
 import { Order } from '../models/order';
 import { PushNotification } from '../models/push-notification';
-import { GetScriptsToLoadResponse, Script } from '../models/ui';
+import { GetScriptsToLoadResponse, Script, GetIPInfoResponse } from '../models/ui';
+import { validateCountry } from '../validators/validate-country';
 
 export interface State {
   completedOrderIds: string[];
@@ -12,6 +13,9 @@ export interface State {
   contactRequestSent: boolean;
   creditedOfferIds: string[];
   creditedOffers: { [id: string]: Offer };
+  invalidCountry: boolean;
+  ip: string;
+  ipInfo: GetIPInfoResponse;
   mobile: boolean;
   pushNotification: PushNotification;
   scripts: Script[];
@@ -27,6 +31,9 @@ export const initialState: State = {
   contactRequestSent: false,
   creditedOfferIds: [],
   creditedOffers: {},
+  invalidCountry: false,
+  ip: null,
+  ipInfo: null,
   mobile: false,
   pushNotification: null,
   scripts: null,
@@ -85,6 +92,16 @@ export function uiReducer(state = initialState, action: UIActions): State {
           ...state.creditedOffers,
           [offer.id]: offer
         }
+      };
+    }
+
+    case UIActionTypes.GetIPInfoSuccess: {
+      let countryCode = action.payload.countryCode;
+      if (!countryCode || countryCode === '') return state;
+      return {
+        ...state,
+        invalidCountry: !validateCountry(countryCode),
+        ipInfo: action.payload
       };
     }
 
@@ -150,6 +167,10 @@ export const getContactRequestSent = (state: State) => state.contactRequestSent;
 export const getCreditedOfferIds = (state: State) => state.creditedOfferIds;
 
 export const getCreditedOffers = (state: State) => state.creditedOffers;
+
+export const getInvalidCountry = (state: State) => state.invalidCountry;
+
+export const getIPInfo = (state: State) => state.ipInfo;
 
 export const getMobile = (state: State) => state.mobile;
 

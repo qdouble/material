@@ -4,7 +4,7 @@
   <mat-card class="os-title-card primary-background">Register</mat-card>
   <mat-card class="os-form-container">
     <form [formGroup]="f" (ngSubmit)="submitForm()">
-      <div [hidden]="step === 2" @fade>
+      <div [hidden]="step === 2" *ngIf="!(invalidCountry$ | async)" @fade>
         <mat-card-subtitle><b>Only accepting residents of the USA, Canada, UK and Australia.</b></mat-card-subtitle>
         <mat-card-subtitle>Step 1: Enter Account Information</mat-card-subtitle>
         <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
@@ -35,7 +35,7 @@
         </select-input>
         <os-form-input class="os-form-input" type="text" controlName="phone" placeholder="Phone Number" [form]="f"></os-form-input>
         <div class="form-group">
-          <label>Birthday</label>
+          <label>Date of Birth</label>
           <input type="date" formControlName="birthday" class="form-control">
         </div>
         <div>
@@ -52,8 +52,15 @@
           <mat-checkbox color="primary" formControlName="agree2" type="checkbox">I am aware that only one account per household is allowed</mat-checkbox>
         </div>
       </div>
-      <button *ngIf="step === 1" class="white" mat-raised-button color="primary" type="button" (click)="step = 2">Next</button>
-      <button *ngIf="step === 2" class="white" mat-raised-button color="primary" type="submit" [disabled]="!f.valid">Register</button>
+      <ng-container *ngIf="!(invalidCountry$ | async)">
+        <button *ngIf="step === 1" class="white" mat-raised-button color="primary" type="button" [disabled]="(invalidCountry$ | async)" (click)="step = 2">Next</button>
+        <button *ngIf="step === 2" class="white" mat-raised-button color="primary" type="submit" [disabled]="!f.valid || (loading$ | async) || (invalidCountry$ | async)">Register</button>
+      </ng-container>
+      <div class="warn invalid-country-text" *ngIf="(invalidCountry$ | async)">
+        <p>Your country is not supported</p>
+        <p>Available to US, UK, Canada and Australia residents only.</p>
+        <p class="proxy-warn">Please note that attempting to get around country restrictions by using a VPN or proxy to register or complete offers will lead to your account being placed on hold or closed after account verification.</p>
+      </div>
       <p class="go-back" *ngIf="step === 2" (click)="step = 1"><a>Go Back to Step 1</a></p>
       <p id="referred-by" *ngIf="f.get('referredBy').value">
         You are being referred by: {{f.get('referredBy').value}}

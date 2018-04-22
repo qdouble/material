@@ -1,4 +1,13 @@
 <mat-card id="offers-page" class="os-page-container" @fade>
+  <ng-container *ngIf="user$ | async; let user">
+      <div *ngIf="user.hold" class="hold-container">
+        <mat-card class="os-message-card warn-background white">
+          <h5>Your Account is on Hold</h5>
+          <h6><em>{{user.holdReason}}</em></h6>
+          <pre>{{user.holdMessage}}</pre>
+        </mat-card>
+      </div>
+  </ng-container>
   <div *ngIf="loggedIn && (newEqualTrue$ | async)" class="referral-link">
     <mat-card-title *ngIf="!(returningUser$ | async) && userLevel < 1" >
       <div [ngClass]="{'accent': (testShowRef$ | async)}">Welcome to Level Rewards, {{firstName$ | async}}!</div>

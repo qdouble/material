@@ -16,6 +16,25 @@
   }
 }
 
+.invalid-country-text{
+  max-width: 600px;
+  margin: 20px auto 50px;
+  :first-child {
+    font-size: 16px;
+    margin-bottom: -2px !important;
+  }
+  p {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .proxy-warn {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: normal;
+  }
+}
+
 #my-page-card {
   padding: 0;
   box-shadow: none;

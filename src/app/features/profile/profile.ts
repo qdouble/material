@@ -8,6 +8,7 @@ import { Subject } from 'rxjs/Subject';
 
 import * as fromStore from '../../reducers';
 import * as countryActions from '../../actions/country';
+import * as offerActions from '../../actions/offer';
 import * as userActions from '../../actions/user';
 import { Country } from '../../models/country';
 import { User } from '../../models/user';
@@ -35,11 +36,13 @@ export class Profile implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
   initialFormValue: User;
-  previousEmailValue: string;
-  pendingProfile: User;
-  user$: Observable<User>;
   loaded$: Observable<boolean>;
   loading$: Observable<boolean>;
+  pendingProfile: User;
+  previousEmailValue: string;
+  previousUserCountry: string;
+  user: User;
+  user$: Observable<User>;
   viewPending: false;
 
   constructor(
@@ -74,30 +77,25 @@ export class Profile implements OnDestroy, OnInit {
           CustomValidators.compare('password2', 'confirmPassword', 'comparePassword')
         ])
       });
-    this.countryLoaded$ = store.pipe(select(fromStore.getCountryLoaded));
+  }
+
+  ngOnInit() {
+    this.countryLoaded$ = this.store.pipe(select(fromStore.getCountryLoaded));
     this.countryLoaded$
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
         if (!loaded) this.store.dispatch(new countryActions.GetCountries());
       });
-    this.user$ = store.pipe(select(fromStore.getUserProfile));
+    this.user$ = this.store.pipe(select(fromStore.getUserProfile));
     this.user$.take(1).subscribe(u => {
       if (u && u.profilePending) {
         this.store.dispatch(new userActions.GetProfile());
       }
     });
-    this.loaded$ = store.pipe(select(fromStore.getUserLoaded));
-  }
-
-  ngOnInit() {
+    this.loaded$ = this.store.pipe(select(fromStore.getUserLoaded));
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.countries$ = this.store.pipe(select(fromStore.getCountryCollection));
     this.countryIds$ = this.countries$.map(countries => countries.map(country => country.id));
-    this.countryIds$
-      .filter(ids => ids.length > 0)
-      .take(1)
-      .takeUntil(this.destroyed$)
-      .subscribe(ids => this.f.get('country').setValue(ids[0]));
     this.countryNames$ = this.countries$
       .map(countries => countries.map(country => country.displayName));
     this.user$
@@ -112,8 +110,12 @@ export class Profile implements OnDestroy, OnInit {
           confirmEmail: user.email
         });
         this.f.patchValue(loadedUser);
+        if (this.previousUserCountry && user.country !== this.previousUserCountry) {
+          this.store.dispatch(new offerActions.GetOffers());
+        }
         this.initialFormValue = this.f.value;
         this.previousEmailValue = user.email;
+        this.previousUserCountry = user.country;
       });
 
     this.f.get('email').valueChanges

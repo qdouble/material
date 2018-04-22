@@ -22,7 +22,10 @@ import {
   GetVersionSuccess,
   UIActionTypes,
   GetScriptsToLoadSuccess,
-  GetScriptsToLoadFail
+  GetScriptsToLoadFail,
+  GetIPInfoSuccess,
+  GetIPInfoFail,
+  GetIPInfo,
 } from '../actions/ui';
 import { UIService } from '../services/ui';
 import { AddNotify } from '../actions/notify';
@@ -62,6 +65,17 @@ export class UIEffects {
       ))
     )));
 
+  @Effect() getIPInfo$: Observable<Action> = this.actions$.pipe(
+    ofType(UIActionTypes.GetIPInfo),
+    map((action: GetIPInfo) => action.payload),
+    switchMap((ip) => this.uiService.getIPInfo(ip).pipe(
+      map((res) => new GetIPInfoSuccess(res)),
+      catchError((err) => concat(
+        Observable.of(new GetIPInfoFail(err)),
+        Observable.of(new AddNotify(err))
+      ))
+    )));
+
   @Effect() getProfile$: Observable<Action> = this.actions$.pipe(
     ofType(UIActionTypes.GetVersion),
     switchMap(() => this.uiService.getVersion().pipe(
@@ -72,13 +86,13 @@ export class UIEffects {
       ))
     )));
 
-    @Effect() getScriptsToLoad$: Observable<Action> = this.actions$.pipe(
-      ofType(UIActionTypes.GetScriptsToLoad),
-      switchMap(() => this.uiService.getScriptsToLoad().pipe(
-        map((res) => new GetScriptsToLoadSuccess(res)),
-        catchError((err) => concat(
-          Observable.of(new GetScriptsToLoadFail(err)),
-          Observable.of(new AddNotify(err))
-        ))
-      )));
+  @Effect() getScriptsToLoad$: Observable<Action> = this.actions$.pipe(
+    ofType(UIActionTypes.GetScriptsToLoad),
+    switchMap(() => this.uiService.getScriptsToLoad().pipe(
+      map((res) => new GetScriptsToLoadSuccess(res)),
+      catchError((err) => concat(
+        Observable.of(new GetScriptsToLoadFail(err)),
+        Observable.of(new AddNotify(err))
+      ))
+    )));
 }

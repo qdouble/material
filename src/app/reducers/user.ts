@@ -283,7 +283,7 @@ export function userReducer(state = initialState, action: UserActions): State {
       return { ...state, loggedIn: false };
 
     case UserActionTypes.Register:
-      return { ...state, loading: false };
+      return { ...state, loading: true };
 
     case UserActionTypes.RegisterFail:
       return { ...state, loading: false };

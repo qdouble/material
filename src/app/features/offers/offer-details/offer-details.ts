@@ -17,6 +17,7 @@ import { UserAgent } from '../../../models/user-agent';
 
 import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
 import { getAge } from '../../../utilities/get-age';
+import { GetIPInfoResponse } from '../../../models/ui';
 
 
 @Component({
@@ -43,6 +44,8 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
   creditTotal$: Observable<number>;
   destroyed$: Subject<any> = new Subject<any>();
   id: string;
+  invalidCountry$: Observable<boolean>;
+  ipInfo$: Observable<GetIPInfoResponse>;
   userAgent: UserAgent;
   userAgent$: Observable<UserAgent>;
   userLevel: number;
@@ -105,6 +108,8 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
       .subscribe(total => {
         this.userLevel = Math.floor(Number(Number(total).toFixed(2)));
       });
+    this.ipInfo$ = this.store.pipe(select(fromStore.getUIIPInfo));
+    this.invalidCountry$ = this.store.pipe(select(fromStore.getUIInvalidCountry));
   }
 
   continueToOffer(offerId) {

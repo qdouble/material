@@ -3,7 +3,13 @@ import { Action } from '@ngrx/store';
 import { Offer } from '../models/offer';
 import { Order } from '../models/order';
 import { PushNotification } from '../models/push-notification';
-import { ContactUsResponse, GetVersionResponse, GetScriptsToLoadResponse } from '../models/ui';
+import {
+  ContactUsResponse,
+  GetVersionResponse,
+  GetScriptsToLoadResponse,
+  GetIPInfoResponse,
+  GetIPResponse
+} from '../models/ui';
 
 export enum UIActionTypes {
   AddUserIDToSocket = '[UI] Add User ID to Socket',
@@ -18,6 +24,9 @@ export enum UIActionTypes {
   DisplayCompletedOrderDialog = '[UI] Display Completed Order Dialog',
   DisplayCreditedOfferDialog = '[UI] Display Credited Offer Dialog',
   DisplayUnconfirmedCreditDialog = '[UI] Display Unconfirmed Credit Dialog',
+  GetIPInfo = '[UI] Get IP Info',
+  GetIPInfoFail = '[UI] Get IP Info Fail',
+  GetIPInfoSuccess = '[UI] Get IP Info Success',
   GetScriptsToLoad = '[UI] Get Scripts To Load',
   GetScriptsToLoadFail = '[UI] Get Scripts To Load Fail',
   GetScriptsToLoadSuccess = '[UI] Get Scripts To Load Success',
@@ -90,6 +99,24 @@ export class DisplayUnconfirmedCreditDialog implements Action {
   constructor(public payload: { offer: Offer }) { }
 }
 
+export class GetIPInfo implements Action {
+  readonly type = UIActionTypes.GetIPInfo;
+
+  constructor(public payload: string) { }
+}
+
+export class GetIPInfoFail implements Action {
+  readonly type = UIActionTypes.GetIPInfoFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetIPInfoSuccess implements Action {
+  readonly type = UIActionTypes.GetIPInfoSuccess;
+
+  constructor(public payload: GetIPInfoResponse) { }
+}
+
 export class GetScriptsToLoad implements Action {
   readonly type = UIActionTypes.GetScriptsToLoad;
 }
@@ -155,6 +182,9 @@ export type UIActions =
   | DisplayCompletedOrderDialog
   | DisplayCreditedOfferDialog
   | DisplayUnconfirmedCreditDialog
+  | GetIPInfo
+  | GetIPInfoFail
+  | GetIPInfoSuccess
   | GetScriptsToLoad
   | GetScriptsToLoadFail
   | GetScriptsToLoadSuccess

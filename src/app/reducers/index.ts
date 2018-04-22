@@ -517,6 +517,16 @@ export const getUICreditedOfferCollection = createSelector(
   (offers, ids: string[]) => ids.map(id => offers[id])
 );
 
+export const getUIInvalidCountry = createSelector(
+  getUIState,
+  fromUI.getInvalidCountry
+);
+
+export const getUIIPInfo = createSelector(
+  getUIState,
+  fromUI.getIPInfo
+);
+
 export const getUIMobile = createSelector(
   getUIState,
   fromUI.getMobile

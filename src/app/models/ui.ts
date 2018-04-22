@@ -6,6 +6,29 @@ export interface ContactUsResponse extends GenericResponse {
   question: string;
 }
 
+export interface GetIPResponse {
+  ip: string;
+}
+
+export interface GetIPInfoResponse {
+  query: string;
+  ipType: string;
+  businessName: string;
+  businessWebsite: string;
+  continent: string;
+  countryCode: string;
+  country: string;
+  region: string;
+  city: string;
+  lat: string;
+  lon: string;
+  ipName: string;
+  org: string;
+  isp: string;
+  status: string;
+  message: string;
+}
+
 export interface GetVersionResponse {
   version: string;
 }

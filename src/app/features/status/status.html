@@ -2,7 +2,7 @@
   <div class="os-status-page-section">
     <mat-card *ngIf="user?.hold" class="os-message-card warn-background white">
       <h5>Your Account is on Hold</h5>
-      <p>{{user.holdReason}}</p>
+      <h6><em>{{user.holdReason}}</em></h6>
       <pre>{{user.holdMessage}}</pre>
     </mat-card>
   </div>

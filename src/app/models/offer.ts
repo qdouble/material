@@ -47,6 +47,8 @@ export interface Offer {
   mac?: boolean;
   popularityRank?: number;
   popularityRank2?: number;
+  availableCountryCodes?: string[];
+  availableCountryNames?: string[];
   createdAt?: string;
   updatedAt?: string;
   // Helper Properties //

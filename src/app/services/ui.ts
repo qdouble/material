@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
 import { RequestBase } from './request-base';
-import { ContactUsResponse, GetVersionResponse, GetScriptsToLoadResponse } from '../models/ui';
+import { ContactUsResponse, GetVersionResponse, GetScriptsToLoadResponse, GetIPInfoResponse } from '../models/ui';
 
 @Injectable()
 export class UIService extends RequestBase {
@@ -22,6 +22,11 @@ export class UIService extends RequestBase {
   contactUs(contact: { email: string, subject: string, question: string }) {
     return this.http.post<ContactUsResponse>
       (`${API_USER_URL}/contactUs`, contact, this.options);
+  }
+
+  getIPInfo(ip: string) {
+    return this.http.jsonp<GetIPInfoResponse>
+      (`https://extreme-ip-lookup.com/json/`, 'callback');
   }
 
   getVersion() {

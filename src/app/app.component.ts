@@ -33,7 +33,8 @@ import { LevelBadgeDialog } from './dialogs/level-badge.dialog';
 import { Offer } from './models/offer';
 import { Order } from './models/order';
 import { ScriptService } from './script.service';
-import { Script } from './models/ui';
+import { Script, GetIPInfoResponse } from './models/ui';
+import { validateCountry } from './validators/validate-country';
 
 @Component({
   selector: 'my-app',
@@ -90,6 +91,7 @@ export class AppComponent implements OnDestroy, OnInit {
   openLevelAfterClose = 0;
   referredBy: string;
   scripts$: Observable<Script[]>;
+  scriptsRequested: boolean;
   showNotifications = false;
   showStatus: boolean;
   snackRefs = [];
@@ -115,6 +117,7 @@ export class AppComponent implements OnDestroy, OnInit {
     public snackBar: MatSnackBar,
     private store: Store<fromStore.AppState>
   ) {
+    this.store.dispatch(new uiActions.GetIPInfo(''));
     let active$ = store.select(s => s.user.user.active);
     active$.takeUntil(this.destroyed$)
       .filter(active => active === false)
@@ -251,8 +254,9 @@ export class AppComponent implements OnDestroy, OnInit {
         this.store.dispatch(new userActions.GetProfile());
         this.connect();
       }
-      if (loggedIn !== null) {
+      if (loggedIn !== null && !this.scriptsRequested) {
         this.store.dispatch(new uiActions.GetScriptsToLoad());
+        this.scriptsRequested = true;
       }
     });
     if (SERVICE_WORKER_SUPPORT && ENV !== 'development') {
