@@ -61,10 +61,12 @@
         <p>Available to US, UK, Canada and Australia residents only.</p>
         <p class="proxy-warn">Please note that attempting to get around country restrictions by using a VPN or proxy to register or complete offers will lead to your account being placed on hold or closed after account verification.</p>
       </div>
-      <p class="go-back" *ngIf="step === 2" (click)="step = 1"><a>Go Back to Step 1</a></p>
-      <p id="referred-by" *ngIf="f.get('referredBy').value">
-        You are being referred by: {{f.get('referredBy').value}}
-      </p>
+      <ng-container *ngIf="!(invalidCountry$ | async)">
+          <p class="go-back" *ngIf="step === 2" (click)="step = 1"><a>Go Back to Step 1</a></p>
+          <p id="referred-by" *ngIf="f.get('referredBy').value">
+            You are being referred by: {{f.get('referredBy').value}}
+          </p>
+      </ng-container>
     </form>
   </mat-card>
   <os-footer></os-footer>
