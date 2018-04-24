@@ -99,7 +99,7 @@ export class Register implements OnDestroy, OnInit {
       phone: new FormControl(PUBLISH ? '' : '305-837-2832',
         [Validators.required, Validators.pattern(RegexValues.phone)]),
       birthday: new FormControl(PUBLISH ? '' : '1999-01-01', Validators.required),
-      paypal: new FormControl(PUBLISH ? '' : 'new@user.com',
+      paypal: new FormControl(PUBLISH ? '' : `new${this.RANDOM_NUM}@user.com`,
         Validators.pattern(RegexValues.email)),
       agree: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
       agree2: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
