@@ -68,7 +68,7 @@ export const initialState: State = {
   selectedReferralIds: [],
   settingPrize: false,
   showLevelBadgeNum: null,
-  sortReferralBy: { sortBy: 'addedOn', reverse: false },
+  sortReferralBy: { sortBy: 'addedOn', reverse: true },
   testShowRefRandom: null,
   updatedAt: null,
   user: {}
