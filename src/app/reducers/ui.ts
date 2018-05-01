@@ -101,7 +101,10 @@ export function uiReducer(state = initialState, action: UIActions): State {
       return {
         ...state,
         invalidCountry: !validateCountry(countryCode),
-        ipInfo: action.payload
+        ipInfo: {
+          ...action.payload,
+          countryCode: countryCode === 'GB' ? 'UK' : countryCode
+        }
       };
     }
 
