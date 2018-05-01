@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Offer } from '../../models/offer';
 
 @Component({
   selector: 'os-offer-rows',
   templateUrl: './offer-rows.html',
-  styleUrls: ['./offer-rows.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./offer-rows.scss']
 })
 
 export class OfferRows {

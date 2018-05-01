@@ -42,7 +42,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   addUp: boolean;
   checkedOffers: { id: string, creditValue: number, checked: boolean }[] = [];
   checkedOffers$: Subject<{ id: string, creditValue: number, checked: boolean }[]>
-  = new Subject<{ id: string, creditValue: number, checked: boolean }[]>();
+    = new Subject<{ id: string, creditValue: number, checked: boolean }[]>();
   confirmDialogRef: MatDialogRef<ConfirmDialog>;
   confirmDialogConfig: MatDialogConfig = {
     disableClose: false
@@ -118,7 +118,9 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<fromStore.AppState>
-  ) {
+  ) { }
+
+  ngOnInit() {
     this.user$ = this.store.pipe(select(fromStore.getUserProfile));
     this.mobile$ = this.store.pipe(select(fromStore.getUIMobile));
     this.sideNavOpen$ = this.store.pipe(select(fromStore.getUISideNavOpen));
@@ -160,7 +162,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.sortBy$
       .takeUntil(this.destroyed$)
       .subscribe((sortBy: string) => {
-        if (sortBy === 'feature') {
+        if (sortBy === 'featured') {
           this.offersSorted$ = this.offersUnsorted$
             .map(arr => arr.sort(
               firstBy(sortBy, { direction: - 1 })
@@ -191,7 +193,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
           });
       });
 
-    this.creditTotal$ = store.pipe(select(fromStore.getUserCreditTotal));
+    this.creditTotal$ = this.store.pipe(select(fromStore.getUserCreditTotal));
     this.creditTotal$.subscribe(total => {
       this.userLevel = Math.floor(Number(Number(total).toFixed(2)));
     });
@@ -206,9 +208,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
       this.offersSelected = selected;
       this.offersSelectedCreditValue = creditValue;
     });
-  }
 
-  ngOnInit() {
     (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
     this.route.params
       .subscribe(param => {
