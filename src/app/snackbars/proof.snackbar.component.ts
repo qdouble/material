@@ -5,7 +5,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material';
 @Component({
     selector: 'os-proof-snackbar',
     template: `
-    <img *ngIf="data.map" src="/assets/images/google-static-maps/{{data?.map}}">
+    <img *ngIf="data.map" src="{{dev ? '/assets/images/' : '/images/'}}google-static-maps/{{data?.map}}">
     <div class="proof-text-box">
         <div>{{data?.firstName}} from {{data?.location}}</div>
         <div>Just Joined Level Rewards!!</div>
@@ -15,6 +15,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material';
     ` // You may also use a HTML file
 })
 export class ProofSnackbarComponent {
+    dev = ENV === 'development';
     constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any, @Inject(MatSnackBarRef) public ref: MatSnackBarRef<any>) {
      }
  }
