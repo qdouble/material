@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
 import { RequestBase } from './request-base';
-import { ContactUsResponse, GetVersionResponse, GetScriptsToLoadResponse, GetIPInfoResponse } from '../models/ui';
+import { ContactUsResponse, GetVersionResponse, GetScriptsToLoadResponse, GetIPInfoResponse, GetSocialProofResponse, SocialProofSettings } from '../models/ui';
 
 @Injectable()
 export class UIService extends RequestBase {
@@ -39,4 +39,12 @@ export class UIService extends RequestBase {
       (`${API_USER_URL}/getScriptsToLoad`, this.optionsNoPre);
   }
 
+  getSocialProof() {
+    return this.http.get<GetSocialProofResponse>
+      (`${API_USER_URL}/getSocialProof`, this.optionsNoPre);
+  }
+  getSocialProofSettings() {
+    return this.http.get<SocialProofSettings>
+      (`${API_USER_URL}/getSocialProofSettings`, this.optionsNoPre);
+  }
 }

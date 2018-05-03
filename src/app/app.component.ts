@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import {
   MatDialog, MatDialogRef, MatDialogConfig,
-  MatSnackBar, MatSnackBarConfig
+  MatSnackBar, MatSnackBarConfig, MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition, MatSnackBarRef
 } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -33,8 +34,10 @@ import { LevelBadgeDialog } from './dialogs/level-badge.dialog';
 import { Offer } from './models/offer';
 import { Order } from './models/order';
 import { ScriptService } from './script.service';
-import { Script, GetIPInfoResponse } from './models/ui';
+import { Script, GetIPInfoResponse, SocialProof, SocialProofSettings } from './models/ui';
 import { validateCountry } from './validators/validate-country';
+import { ProofSnackbarComponent } from './snackbars/proof.snackbar.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'my-app',
@@ -82,6 +85,7 @@ export class AppComponent implements OnDestroy, OnInit {
   creditTotal$: Observable<number>;
   firstName: string;
   onAdminLoginPage$: Observable<boolean>;
+  onAdminLoginPage: boolean;
   HMR = HMR;
   latestVersion$: Observable<string>;
   loaded: boolean;
@@ -89,12 +93,19 @@ export class AppComponent implements OnDestroy, OnInit {
   notifications$: Observable<Notification[]>;
   notifiy$: Observable<Notify[]>;
   openLevelAfterClose = 0;
+  proofCount = 0;
+  proofDissmissedWithAction: boolean;
+  proofSnackBar: MatSnackBarRef<ProofSnackbarComponent>;
   referredBy: string;
   scripts$: Observable<Script[]>;
   scriptsRequested: boolean;
   showNotifications = false;
   showStatus: boolean;
   snackRefs = [];
+  socialProofStopRepeat: boolean;
+  socialProofs$: Observable<SocialProof[]>;
+  socialProofSettings$: Observable<SocialProofSettings>;
+  socialProofSettings: SocialProofSettings;
   unreadMessageTotal$: Observable<number>;
   unreadNotificatonPendingTotal$: Observable<number>;
   unreadNotificationTotal$: Observable<number>;
@@ -104,6 +115,7 @@ export class AppComponent implements OnDestroy, OnInit {
   userLoaded$: Observable<boolean>;
   userLoggedIn$: Observable<boolean>;
   userReferredBy$: Observable<string | null>;
+  userId = '';
   version: string;
   version$: Observable<string>;
   views = views;
@@ -161,6 +173,9 @@ export class AppComponent implements OnDestroy, OnInit {
         }
       });
     this.onAdminLoginPage$ = store.pipe(select(fromStore.getUserOnAdminPage));
+    this.onAdminLoginPage$.subscribe(on => {
+      this.onAdminLoginPage = on;
+    });
     this.notifiy$ = store.pipe(select(fromStore.getNotifyCollection));
     this.notifiy$
       .takeUntil(this.destroyed$)
@@ -258,6 +273,16 @@ export class AppComponent implements OnDestroy, OnInit {
         this.store.dispatch(new uiActions.GetScriptsToLoad());
         this.scriptsRequested = true;
       }
+      if (loggedIn === false && !this.onAdminLoginPage
+        && !this.proofDissmissedWithAction && !this.socialProofStopRepeat) {
+        this.proofCount = 0;
+        setTimeout(() => {
+          this.store.dispatch(new uiActions.GetSocialProofSettings());
+        }, 1000);
+      } else if (loggedIn && this.proofSnackBar) {
+        this.proofSnackBar.dismiss();
+        this.proofSnackBar = undefined;
+      }
     });
     if (SERVICE_WORKER_SUPPORT && ENV !== 'development') {
       this.swAndPushService.registerServiceWorker();
@@ -268,8 +293,8 @@ export class AppComponent implements OnDestroy, OnInit {
       .subscribe((push: PushNotification) => {
         this.swAndPushService.create(push)
           .subscribe(
-          () => log('success'),
-          (err) => log(err)
+            () => log('success'),
+            (err) => log(err)
           );
       });
 
@@ -304,7 +329,28 @@ export class AppComponent implements OnDestroy, OnInit {
     this.scripts$
       .filter(s => s && s.length > 0)
       .subscribe(scripts => this.loadScripts(scripts));
+
+    if (this.version === '0.6.3') {
+      this.socialProofs$ = this.store.pipe(select(fromStore.getUISocialProofCollection));
+      this.socialProofSettings$ = this.store.pipe(select(fromStore.getUISocialProofSettings));
+
+      this.socialProofSettings$
+        .filter(s => s !== undefined && s !== null)
+        .subscribe(settings => {
+          this.socialProofSettings = settings;
+          if (settings.active) {
+            this.store.dispatch(new uiActions.GetSocialProof());
+          }
+        });
+
+      this.socialProofs$
+        .filter(p => p.length > 2)
+        .subscribe(proofs => {
+          this.openProofSnackBar(proofs, this.socialProofSettings);
+        });
+    }
   }
+
 
   activateEvent(event) {
     log('Activate Event:', event);
@@ -322,22 +368,22 @@ export class AppComponent implements OnDestroy, OnInit {
       .retry()
       .takeUntil(this.closeConnection$)
       .subscribe(
-      (res: { event?: string, id?: string, type?: string, payload?: any }) => {
-        log(`connected: `, res);
-        if (res.event === 'CONNECTION') {
-          this.store.dispatch(new uiActions.AddUserIDToSocket(res.id));
-        }
-        if (res.type) {
-          this.store.dispatch({ type: res.type, payload: res.payload });
-        }
-        if (Array.isArray(res)) {
-          res.forEach((action) => {
-            this.store.dispatch({ type: action.type, payload: action.payload });
-          });
-        }
-      },
-      (err) => { log(err); this.connect(); },
-      () => log('complete'));
+        (res: { event?: string, id?: string, type?: string, payload?: any }) => {
+          log(`connected: `, res);
+          if (res.event === 'CONNECTION') {
+            this.store.dispatch(new uiActions.AddUserIDToSocket(res.id));
+          }
+          if (res.type) {
+            this.store.dispatch({ type: res.type, payload: res.payload });
+          }
+          if (Array.isArray(res)) {
+            res.forEach((action) => {
+              this.store.dispatch({ type: action.type, payload: action.payload });
+            });
+          }
+        },
+        (err) => { log(err); this.connect(); },
+        () => log('complete'));
   }
 
   loadScripts(scripts: Script[]) {
@@ -379,6 +425,45 @@ export class AppComponent implements OnDestroy, OnInit {
           }
           this.askQuestionsDialogRef = null;
         });
+    }
+  }
+
+  openProofSnackBar(proofs: SocialProof[], settings: SocialProofSettings) {
+    let horizontalPosition: MatSnackBarHorizontalPosition = 'start';
+    let verticalPosition: MatSnackBarVerticalPosition = this.mobile ? 'top' : 'bottom';
+    if (this.proofSnackBar) {
+      this.proofSnackBar.dismiss();
+      this.proofSnackBar = undefined;
+    }
+    if (!this.loggedIn) {
+      this.proofSnackBar = this.snackBar.openFromComponent(ProofSnackbarComponent,
+        {
+          data: proofs[this.proofCount],
+          duration: settings.duration,
+          panelClass: 'os-snackbar',
+          horizontalPosition: horizontalPosition,
+          verticalPosition: verticalPosition
+        });
+      if (this.proofCount < proofs.length - 1) {
+        this.proofCount++;
+      } else {
+        if (settings.repeat) {
+          this.proofCount = 0;
+        } else {
+          this.socialProofStopRepeat = true;
+        }
+      }
+    }
+    if (this.proofSnackBar && !this.loggedIn && !this.socialProofStopRepeat) {
+      this.proofSnackBar.afterDismissed().subscribe((d) => {
+        if (d.dismissedByAction) {
+          this.proofDissmissedWithAction = true;
+        } else {
+          setTimeout(() => {
+            this.openProofSnackBar(proofs, settings);
+          }, settings.delay);
+        }
+      });
     }
   }
 

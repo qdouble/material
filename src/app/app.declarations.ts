@@ -7,6 +7,7 @@ import { PROJECT_COMPONENT_DIRECTIVES } from './components';
 import { PROJECT_DIRECTIVES } from './directives';
 import { ReferrerBlockedComponent } from './referrer-blocked';
 import { ReferralDetailsDialog } from './features/status/common/referrals-table/referral-details';
+import { SNACKBARS } from './snackbars';
 
 export const APP_DECLARATIONS = [
   AdminLogin,
@@ -17,5 +18,6 @@ export const APP_DECLARATIONS = [
   PROJECT_DIRECTIVES,
   PAGES_COMPONENTS,
   ReferralDetailsDialog,
-  ReferrerBlockedComponent
+  ReferrerBlockedComponent,
+  SNACKBARS
 ];

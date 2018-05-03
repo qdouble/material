@@ -29,17 +29,53 @@ export interface GetIPInfoResponse {
   message: string;
 }
 
+export interface GetScriptsToLoadResponse {
+  scripts: Script[];
+}
+
+export interface GetSocialProofResponse {
+  proofs: SocialProof[];
+}
+
+
 export interface GetVersionResponse {
   version: string;
 }
 
-export interface GetScriptsToLoadResponse {
-  scripts: Script[];
-}
 
 export interface Script {
   name: string;
   loaded?: boolean;
   loadOn: 'loggedIn' | 'loggedOut' | 'both';
   src: string;
+}
+
+export interface SocialProof {
+  id: string;
+  type: 'join' | 'level' | 'paid' | 'offer';
+  userId: string;
+  milliseconds: number;
+  firstName: string;
+  location: string;
+  map?: string;
+  gravatar?: string;
+  level?: number;
+  paidAmount?: number;
+  offerName?: string;
+  offerCredits?: number;
+  // Time Stamps //
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface SocialProofSettings {
+  id: string;
+  duration: number;
+  delay: number;
+  showSignupGravatar?: boolean;
+  repeat: boolean;
+  active: boolean;
+  // Time Stamps //
+  createdAt?: Date;
+  updatedAt?: Date;
 }

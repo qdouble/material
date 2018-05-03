@@ -552,6 +552,27 @@ export const getUISideNavOpen = createSelector(
   fromUI.getSideNavOpen
 );
 
+export const getUISocialProofIds = createSelector(
+  getUIState,
+  fromUI.getSocialProofIds
+);
+
+export const getUISocialProofs = createSelector(
+  getUIState,
+  fromUI.getSocialProofs
+);
+
+export const getUISocialProofCollection = createSelector(
+  getUISocialProofs,
+  getUISocialProofIds,
+  (proofs, ids: string[]) => ids.map(id => proofs[id])
+);
+
+export const getUISocialProofSettings = createSelector(
+  getUIState,
+  fromUI.getSocialProofSettings
+);
+
 export const getUILatestVersion = createSelector(
   getUIState,
   fromUI.getLatestVersion

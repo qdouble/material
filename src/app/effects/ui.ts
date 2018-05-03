@@ -21,11 +21,14 @@ import {
   GetVersionFail,
   GetVersionSuccess,
   UIActionTypes,
-  GetScriptsToLoadSuccess,
-  GetScriptsToLoadFail,
+  GetSocialProofSuccess,
+  GetSocialProofFail,
   GetIPInfoSuccess,
   GetIPInfoFail,
   GetIPInfo,
+  GetScriptsToLoadSuccess,
+  GetSocialProofSettingsSuccess,
+  GetSocialProofSettingsFail,
 } from '../actions/ui';
 import { UIService } from '../services/ui';
 import { AddNotify } from '../actions/notify';
@@ -87,11 +90,31 @@ export class UIEffects {
     )));
 
   @Effect() getScriptsToLoad$: Observable<Action> = this.actions$.pipe(
-    ofType(UIActionTypes.GetScriptsToLoad),
+    ofType(UIActionTypes.GetSocialProof),
     switchMap(() => this.uiService.getScriptsToLoad().pipe(
       map((res) => new GetScriptsToLoadSuccess(res)),
       catchError((err) => concat(
-        Observable.of(new GetScriptsToLoadFail(err)),
+        Observable.of(new GetSocialProofFail(err)),
+        Observable.of(new AddNotify(err))
+      ))
+    )));
+
+  @Effect() getSocialProof$: Observable<Action> = this.actions$.pipe(
+    ofType(UIActionTypes.GetSocialProof),
+    switchMap(() => this.uiService.getSocialProof().pipe(
+      map((res) => new GetSocialProofSuccess(res)),
+      catchError((err) => concat(
+        Observable.of(new GetSocialProofFail(err)),
+        Observable.of(new AddNotify(err))
+      ))
+    )));
+
+  @Effect() getSocialProofSettings$: Observable<Action> = this.actions$.pipe(
+    ofType(UIActionTypes.GetSocialProofSettings),
+    switchMap(() => this.uiService.getSocialProofSettings().pipe(
+      map((res) => new GetSocialProofSettingsSuccess(res)),
+      catchError((err) => concat(
+        Observable.of(new GetSocialProofSettingsFail(err)),
         Observable.of(new AddNotify(err))
       ))
     )));

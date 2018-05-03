@@ -33,3 +33,4 @@ ts-node
 /**/*.css.ts
 /**/*.css.shim.ts
 dll/
+/src/assets/images

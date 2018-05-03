@@ -8,7 +8,9 @@ import {
   GetVersionResponse,
   GetScriptsToLoadResponse,
   GetIPInfoResponse,
-  GetIPResponse
+  GetIPResponse,
+  GetSocialProofResponse,
+  SocialProofSettings
 } from '../models/ui';
 
 export enum UIActionTypes {
@@ -30,6 +32,12 @@ export enum UIActionTypes {
   GetScriptsToLoad = '[UI] Get Scripts To Load',
   GetScriptsToLoadFail = '[UI] Get Scripts To Load Fail',
   GetScriptsToLoadSuccess = '[UI] Get Scripts To Load Success',
+  GetSocialProof = '[UI] Get Social Proof',
+  GetSocialProofFail = '[UI] Get Social Proof Fail',
+  GetSocialProofSuccess = '[UI] Get Social Proof Success',
+  GetSocialProofSettings = '[UI] Get Social Proof Settings',
+  GetSocialProofSettingsFail = '[UI] Get Social Proof Settings Fail',
+  GetSocialProofSettingsSuccess = '[UI] Get Social Proof Settings Success',
   GetVersion = '[UI] Get Version',
   GetVersionFail = '[UI] Get Version Fail',
   GetVersionSuccess = '[UI] Get Version Success',
@@ -133,6 +141,42 @@ export class GetScriptsToLoadSuccess implements Action {
   constructor(public payload: GetScriptsToLoadResponse) { }
 }
 
+export class GetSocialProof implements Action {
+  readonly type = UIActionTypes.GetSocialProof;
+
+  constructor() { }
+}
+
+export class GetSocialProofFail implements Action {
+  readonly type = UIActionTypes.GetSocialProofFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetSocialProofSuccess implements Action {
+  readonly type = UIActionTypes.GetSocialProofSuccess;
+
+  constructor(public payload: GetSocialProofResponse) { }
+}
+
+export class GetSocialProofSettings implements Action {
+  readonly type = UIActionTypes.GetSocialProofSettings;
+
+  constructor() { }
+}
+
+export class GetSocialProofSettingsFail implements Action {
+  readonly type = UIActionTypes.GetSocialProofSettingsFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class GetSocialProofSettingsSuccess implements Action {
+  readonly type = UIActionTypes.GetSocialProofSettingsSuccess;
+
+  constructor(public payload: SocialProofSettings) { }
+}
+
 export class GetVersion implements Action {
   readonly type = UIActionTypes.GetVersion;
 }
@@ -188,6 +232,12 @@ export type UIActions =
   | GetScriptsToLoad
   | GetScriptsToLoadFail
   | GetScriptsToLoadSuccess
+  | GetSocialProof
+  | GetSocialProofFail
+  | GetSocialProofSuccess
+  | GetSocialProofSettings
+  | GetSocialProofSettingsFail
+  | GetSocialProofSettingsSuccess
   | GetVersion
   | GetVersionFail
   | GetVersionSuccess
