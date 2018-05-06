@@ -1,5 +1,5 @@
 export function validateCountry(country: string) {
-  let validCountries = ['US', 'CA', 'AU', 'UK'];
+  let validCountries = ['US', 'CA', 'AU', 'UK', 'GB'];
   if (validCountries.includes(country)) {
     return true;
   }
