@@ -31,7 +31,7 @@ export class UIService extends RequestBase {
 
   getIPInfo(ip: string) {
     return this.http.jsonp<GetIPInfoResponse>
-      (`https://extreme-ip-lookup.com/json/81.156.82.116`, 'callback');
+      (`https://extreme-ip-lookup.com/json/`, 'callback');
   }
 
   getVersion() {
