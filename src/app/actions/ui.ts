@@ -14,6 +14,9 @@ import {
 } from '../models/ui';
 
 export enum UIActionTypes {
+  AddInvalidCountry = '[UI] Add Invalid Country',
+  AddInvalidCountryFail = '[UI] Add Invalid Country Fail',
+  AddInvalidCountrySuccess = '[UI] Add Invalid Country Success',
   AddUserIDToSocket = '[UI] Add User ID to Socket',
   AddUserIDToSocketFail = '[UI] Add User ID to Socket Fail',
   AddUserIDToSocketSuccess = '[UI] Add User ID to Socket Success',
@@ -43,8 +46,27 @@ export enum UIActionTypes {
   GetVersionSuccess = '[UI] Get Version Success',
   MarkCompletedOrderAsViewed = '[UI] Mark Completed Order As Viewed',
   MarkCreditedOfferAsViewed = '[UI] Mark Credited Offer As Viewed',
+  OverrideInvalidCountry = '[UI] Override Invalid Country',
   SetMobile = '[UI] Set Mobile',
   ToggleSideNavOpen = '[UI] Toggle SideNav Open'
+}
+
+export class AddInvalidCountry implements Action {
+  readonly type = UIActionTypes.AddInvalidCountry;
+
+  constructor(public payload: GetIPInfoResponse) { }
+}
+
+export class AddInvalidCountryFail implements Action {
+  readonly type = UIActionTypes.AddInvalidCountryFail;
+
+  constructor(public payload: Error) { }
+}
+
+export class AddInvalidCountrySuccess implements Action {
+  readonly type = UIActionTypes.AddInvalidCountrySuccess;
+
+  constructor(public payload: { override?: string }) { }
 }
 
 export class AddUserIDToSocket implements Action {
@@ -205,6 +227,12 @@ export class MarkCreditedOfferAsViewed implements Action {
   constructor(public payload: string) { }
 }
 
+export class OverrideInvalidCountry implements Action {
+  readonly type = UIActionTypes.OverrideInvalidCountry;
+
+  constructor(public payload: string) { }
+}
+
 export class SetMobile implements Action {
   readonly type = UIActionTypes.SetMobile;
 
@@ -216,6 +244,9 @@ export class ToggleSideNavOpen implements Action {
 }
 
 export type UIActions =
+  | AddInvalidCountry
+  | AddInvalidCountryFail
+  | AddInvalidCountrySuccess
   | AddUserIDToSocket
   | AddUserIDToSocketFail
   | AddUserIDToSocketSuccess
@@ -243,5 +274,6 @@ export type UIActions =
   | GetVersionSuccess
   | MarkCompletedOrderAsViewed
   | MarkCreditedOfferAsViewed
+  | OverrideInvalidCountry
   | SetMobile
   | ToggleSideNavOpen;

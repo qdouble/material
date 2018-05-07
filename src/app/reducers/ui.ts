@@ -23,6 +23,7 @@ export interface State {
   ip: string;
   ipInfo: GetIPInfoResponse;
   mobile: boolean;
+  overrideInvalidIP: string;
   pushNotification: PushNotification;
   scripts: Script[];
   sendingContact: boolean;
@@ -44,6 +45,7 @@ export const initialState: State = {
   ip: null,
   ipInfo: null,
   mobile: false,
+  overrideInvalidIP: null,
   pushNotification: null,
   scripts: null,
   sendingContact: false,
@@ -57,6 +59,14 @@ export const initialState: State = {
 
 export function uiReducer(state = initialState, action: UIActions): State {
   switch (action.type) {
+
+    case UIActionTypes.AddInvalidCountrySuccess: {
+      const override = action.payload.override;
+      return {
+        ...state,
+        overrideInvalidIP: override || ''
+      };
+    }
 
     case UIActionTypes.ContactUs:
       return {
@@ -183,6 +193,14 @@ export function uiReducer(state = initialState, action: UIActions): State {
       };
     }
 
+    case UIActionTypes.OverrideInvalidCountry: {
+      return {
+        ...state,
+        invalidCountry: false,
+        ipInfo: { ...state.ipInfo, countryCode: action.payload }
+      };
+    }
+
     case UIActionTypes.SetMobile:
       return {
         ...state,
@@ -216,6 +234,8 @@ export const getIPInfo = (state: State) => state.ipInfo;
 export const getLatestVersion = (state: State) => state.latestVersion;
 
 export const getMobile = (state: State) => state.mobile;
+
+export const getOverrideInvalidIp = (state: State) => state.overrideInvalidIP;
 
 export const getPushNotification = (state: State) => state.pushNotification;
 

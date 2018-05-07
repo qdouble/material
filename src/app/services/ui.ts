@@ -14,6 +14,11 @@ export class UIService extends RequestBase {
     super(http);
   }
 
+  addInvalidCountry(ipInfo: GetIPInfoResponse) {
+    return this.http.post<{ override?: string }>
+      (`${API_USER_URL}/addInvalidCountry`, ipInfo, this.options);
+  }
+
   addUserIDToSocket(id: string) {
     return this.http.get
       (`${API_USER_URL}/socket/addUserIDToSocket?id=${id}`, { ...this.optionsNoPre, responseType: 'text' });
@@ -26,7 +31,7 @@ export class UIService extends RequestBase {
 
   getIPInfo(ip: string) {
     return this.http.jsonp<GetIPInfoResponse>
-      (`https://extreme-ip-lookup.com/json/`, 'callback');
+      (`https://extreme-ip-lookup.com/json/81.156.82.116`, 'callback');
   }
 
   getVersion() {

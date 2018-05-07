@@ -537,6 +537,11 @@ export const getUIPushNotification = createSelector(
   fromUI.getPushNotification
 );
 
+export const getUIOverrideInvalidIp = createSelector(
+  getUIState,
+  fromUI.getOverrideInvalidIp
+);
+
 export const getUIScripts = createSelector(
   getUIState,
   fromUI.getScripts

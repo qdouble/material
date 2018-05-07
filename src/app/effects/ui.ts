@@ -12,6 +12,9 @@ import {
 } from 'rxjs/operators';
 
 import {
+  AddInvalidCountry,
+  AddInvalidCountrySuccess,
+  AddInvalidCountryFail,
   AddUserIDToSocket,
   AddUserIDToSocketFail,
   AddUserIDToSocketSuccess,
@@ -41,6 +44,17 @@ export class UIEffects {
     private uiService: UIService
   ) { }
 
+  @Effect() addInvalidCountry$: Observable<Action> = this.actions$.pipe(
+    ofType(UIActionTypes.AddInvalidCountry),
+    map((action: AddInvalidCountry) => action.payload),
+    switchMap((ipInfo) => this.uiService.addInvalidCountry(ipInfo).pipe(
+      map((res) => new AddInvalidCountrySuccess(res)),
+      catchError((err) => concat(
+        Observable.of(new AddInvalidCountryFail(err)),
+        Observable.of(new AddNotify(err))
+      ))
+    ))
+  );
 
   @Effect() addUserIDToSocket$: Observable<Action> = this.actions$.pipe(
     ofType(UIActionTypes.AddUserIDToSocket),

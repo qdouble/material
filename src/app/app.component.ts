@@ -87,6 +87,9 @@ export class AppComponent implements OnDestroy, OnInit {
   onAdminLoginPage$: Observable<boolean>;
   onAdminLoginPage: boolean;
   HMR = HMR;
+  invalidCountry$: Observable<boolean>;
+  ipInfo: GetIPInfoResponse;
+  ipInfo$: Observable<GetIPInfoResponse>;
   latestVersion$: Observable<string>;
   loaded: boolean;
   loggedIn: boolean;
@@ -130,6 +133,21 @@ export class AppComponent implements OnDestroy, OnInit {
     private store: Store<fromStore.AppState>
   ) {
     this.store.dispatch(new uiActions.GetIPInfo(''));
+    this.ipInfo$ = store.pipe(select(fromStore.getUIIPInfo));
+    this.ipInfo$.subscribe(i => this.ipInfo = i);
+    this.invalidCountry$ = store.pipe(select(fromStore.getUIInvalidCountry));
+    this.invalidCountry$
+      .filter(i => i === true)
+      .subscribe(i => {
+        this.store.dispatch(new uiActions.AddInvalidCountry(this.ipInfo));
+        const override = store.pipe(select(fromStore.getUIOverrideInvalidIp));
+        override.filter(o => typeof o === 'string')
+          .subscribe(o => {
+            setTimeout(() => {
+              this.store.dispatch(new uiActions.OverrideInvalidCountry(o));
+            });
+          });
+      });
     let active$ = store.select(s => s.user.user.active);
     active$.takeUntil(this.destroyed$)
       .filter(active => active === false)

@@ -49,10 +49,12 @@ export class Register implements OnDestroy, OnInit {
   f: FormGroup;
   flash: string;
   entryEmail$: Observable<string | null>;
+  invalidCountry: boolean;
   invalidCountry$: Observable<boolean>;
   ip$: Observable<string>;
   ipJson$: Observable<IP>;
   loading$: Observable<boolean>;
+  overrideInvalid$: Observable<string>;
   prizes$: Observable<Prize[]>;
   prizeIds$: Observable<(string | undefined)[]>;
   prizeNames$: Observable<(string | undefined)[]>;
@@ -107,12 +109,23 @@ export class Register implements OnDestroy, OnInit {
       selectedPrize: new FormControl(null),
     }, Validators.compose(
       [CustomValidators.compare('password', 'confirmPassword', 'comparePassword')
-    ]));
+      ]));
   }
 
   ngOnInit() {
     this.loading$ = this.store.pipe(select(fromStore.getUserLoading));
     this.invalidCountry$ = this.store.pipe(select(fromStore.getUIInvalidCountry));
+    this.overrideInvalid$ = this.store.pipe(select(fromStore.getUIOverrideInvalidIp));
+    this.invalidCountry$
+      .takeUntil(this.destroyed$)
+      .subscribe(invalid => {
+        if (invalid) {
+          this.overrideInvalid$
+            .takeUntil(this.destroyed$)
+            .filter(o => o === '')
+            .subscribe(() => this.invalidCountry = true);
+        }
+      });
     this.countryLoaded$ = this.store.pipe(select(fromStore.getCountryLoaded));
     this.countryLoaded$
       .takeUntil(this.destroyed$)
