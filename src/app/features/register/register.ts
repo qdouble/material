@@ -18,6 +18,7 @@ import * as fromStore from '../../reducers';
 import { CustomValidators, RegexValues, UsernameValidator } from '../../validators';
 
 import { IPMatchFoundDialog } from './ip-match-found.dialog';
+import { GetIPInfoResponse } from '../../models/ui';
 
 @Component({
   selector: 'os-register',
@@ -53,6 +54,8 @@ export class Register implements OnDestroy, OnInit {
   invalidCountry$: Observable<boolean>;
   ip$: Observable<string>;
   ipJson$: Observable<IP>;
+  ipInfo: GetIPInfoResponse;
+  ipInfo$: Observable<GetIPInfoResponse>;
   loading$: Observable<boolean>;
   overrideInvalid$: Observable<string>;
   prizes$: Observable<Prize[]>;
@@ -126,6 +129,8 @@ export class Register implements OnDestroy, OnInit {
             .subscribe(() => this.invalidCountry = true);
         }
       });
+    this.ipInfo$ = this.store.pipe(select(fromStore.getUIIPInfo));
+    this.ipInfo$.takeUntil(this.destroyed$).subscribe(i => this.ipInfo = i);
     this.countryLoaded$ = this.store.pipe(select(fromStore.getCountryLoaded));
     this.countryLoaded$
       .takeUntil(this.destroyed$)
@@ -252,7 +257,11 @@ export class Register implements OnDestroy, OnInit {
         if (match) {
           this.openIPMatchDialog();
         } else {
-          this.store.dispatch(new userActions.Register(this.f.value));
+          this.store.dispatch(new userActions.Register(
+            {
+              ...this.f.value,
+              ipInfo: this.ipInfo
+            }));
         }
       });
     this.store.dispatch(new userActions.CheckIPMatch(this.f.get('referredBy').value));
