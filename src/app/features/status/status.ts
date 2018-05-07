@@ -44,6 +44,7 @@ export class Status implements OnDestroy, OnInit {
   creditsShown: boolean = true;
   creditTotal$: Observable<number>;
   destroyed$: Subject<any> = new Subject<any>();
+  hideStatus: boolean;
   loaded$: Observable<boolean>;
   loading$: Observable<boolean>;
   prize$: Observable<Prize>;
@@ -102,6 +103,9 @@ export class Status implements OnDestroy, OnInit {
       .takeUntil(this.destroyed$)
       .subscribe(user => {
         this.user = user;
+        if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
+          this.hideStatus = true;
+        }
         this.store.dispatch(new prizeActions.SelectPrize(user.selectedPrize));
         this.prize$ = this.store.pipe(select(fromStore.getSelectedPrize));
         this.prizes$ = this.store.pipe(select(fromStore.getPrizeCollection));

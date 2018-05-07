@@ -30,6 +30,11 @@ a {
   }
 }
 
+.hold-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 .order-status, #congrats-card, #please-be-sure-card {
   text-align: center;
   padding: 10px;

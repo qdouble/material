@@ -51,6 +51,7 @@ export class OrderComponent implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
   flash: string;
+  hideOrders: boolean;
   loaded$: Observable<boolean>;
   orders$: Observable<Order[]>;
   ordersLoaded$: Observable<boolean>;
@@ -110,6 +111,10 @@ export class OrderComponent implements OnDestroy, OnInit {
       .takeUntil(this.destroyed$)
       .subscribe(user => {
         this.user = user;
+        if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
+          this.hideOrders = true;
+          this.user = user;
+        }
         this.f.patchValue(user);
         if (this.user.savedAccountNum) {
           this.f.get('useSavedBank').setValue(true);

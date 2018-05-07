@@ -1,4 +1,13 @@
-<mat-card class="os-page-container" @fade>
+<mat-card *ngIf="hideOrders" class="os-page-container">
+  <div  class="hold-container">
+    <mat-card class="os-message-card warn-background white">
+      <h5>Your Account is on Hold</h5>
+      <h6><em>{{user.holdReason}}</em></h6>
+      <pre>{{user.holdMessage}}</pre>
+    </mat-card>
+  </div>
+</mat-card>
+<mat-card *ngIf="!hideOrders" class="os-page-container" @fade>
   <mat-card class="step-title os-title-card primary-background">Request Payment</mat-card>
   <mat-card id="place-order" class="os-form-container">
     <ng-container *ngIf="user?.orderPending">

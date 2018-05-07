@@ -279,6 +279,8 @@ export class UserEffects {
         let redirectTo = res.payload.redirectTo;
         if (redirectTo === '/crediting-guidelines') {
           this.store.dispatch(new Go({ path: [redirectTo, { match: true }] }));
+        } else if (redirectTo === '/offers') {
+          window.close();
         } else if (redirectTo) {
           window.location.replace(redirectTo);
         }

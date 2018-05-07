@@ -53,6 +53,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject();
   flash: string;
   firstName$: Observable<string>;
+  hideOffers: boolean;
   lastCloseResult: string;
   loaded$: Observable<boolean>;
   loaded: boolean;
@@ -250,6 +251,10 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
       .filter(user => user.createdAt !== undefined)
       .takeUntil(this.destroyed$)
       .subscribe(user => {
+
+        if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
+          this.hideOffers = true;
+        }
 
         let createdAt = Date.parse(<any>user.createdAt);
         let deadline = new Date(createdAt + 24 * 60 * 60 * 1000);

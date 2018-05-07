@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -58,6 +58,7 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
+    private router: Router,
     private store: Store<fromStore.AppState>
   ) { }
 
@@ -78,6 +79,9 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
           this.user$
             .takeUntil(this.destroyed$)
             .subscribe(user => {
+              if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
+                this.router.navigate(['..']);
+              }
               this.userAge = getAge(user.birthday);
               if (o && o.ageRestrict && o.minUserAge && o.minUserAge > this.userAge) {
                 this.ageRestrictUser = true;

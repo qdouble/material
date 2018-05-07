@@ -35,6 +35,7 @@ export class Profile implements OnDestroy, OnInit {
   countryLoaded$: Observable<boolean>;
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
+  hideProfile: boolean;
   initialFormValue: User;
   loaded$: Observable<boolean>;
   loading$: Observable<boolean>;
@@ -104,6 +105,10 @@ export class Profile implements OnDestroy, OnInit {
       .subscribe((user: User) => {
         if (user.profilePending) {
           this.pendingProfile = user.pendingProfile;
+        }
+        if (user.holdReason === 'Identification Hold - Suspicious Activity') {
+          this.hideProfile = true;
+          this.user = user;
         }
         let loadedUser = Object.assign({}, user, {
           birthday: (user.birthday || '').substring(0, 10),

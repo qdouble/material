@@ -1,4 +1,13 @@
-<mat-card class="os-page-container" *ngIf="loaded$ | async" @fade>
+<mat-card *ngIf="hideStatus" class="os-page-container">
+  <div  class="hold-container hide-status">
+    <mat-card class="os-message-card warn-background white">
+      <h5>Your Account is on Hold</h5>
+      <h6><em>{{user.holdReason}}</em></h6>
+      <pre>{{user.holdMessage}}</pre>
+    </mat-card>
+  </div>
+</mat-card>
+<mat-card class="os-page-container" *ngIf="(loaded$ | async) && !hideStatus" @fade>
   <div class="os-status-page-section">
     <mat-card *ngIf="user?.hold" class="os-message-card warn-background white">
       <h5>Your Account is on Hold</h5>

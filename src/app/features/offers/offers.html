@@ -8,6 +8,7 @@
         </mat-card>
       </div>
   </ng-container>
+  <ng-container *ngIf="!hideOffers">
   <div *ngIf="loggedIn && (newEqualTrue$ | async)" class="referral-link">
     <mat-card-title *ngIf="!(returningUser$ | async) && userLevel < 1" >
       <div [ngClass]="{'accent': (testShowRef$ | async)}">Welcome to Level Rewards, {{firstName$ | async}}!</div>
@@ -129,4 +130,5 @@
       and abide by our terms and conditions. </p>
   </mat-card>
   <os-footer></os-footer>
+</ng-container>
 </mat-card>
