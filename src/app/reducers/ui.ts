@@ -148,7 +148,7 @@ export function uiReducer(state = initialState, action: UIActions): State {
         }, {});
       return {
         ...state,
-        socialProofIds: [...state.socialProofIds, ...proofs.map(p => p.id)],
+        socialProofIds: [...proofs.map(p => p.id)],
         socialProofs: proofEntities
       };
     }

@@ -80,6 +80,7 @@ export class AppComponent implements OnDestroy, OnInit {
   amountPaid$: Observable<number>;
   askQuestions$: Observable<boolean>;
   destroyed$: Subject<any> = new Subject<any>();
+  destroyProofTimer$: Subject<any> = new Subject<any>();
   credits$: Observable<Credit[]>;
   creditTotal: number;
   creditTotal$: Observable<number>;
@@ -99,6 +100,7 @@ export class AppComponent implements OnDestroy, OnInit {
   proofCount = 0;
   proofDissmissedWithAction: boolean;
   proofSnackBar: MatSnackBarRef<ProofSnackbarComponent>;
+  proofs: SocialProof[];
   referredBy: string;
   scripts$: Observable<Script[]>;
   scriptsRequested: boolean;
@@ -294,12 +296,15 @@ export class AppComponent implements OnDestroy, OnInit {
       if (loggedIn === false && !this.onAdminLoginPage
         && !this.proofDissmissedWithAction && !this.socialProofStopRepeat) {
         this.proofCount = 0;
-        setTimeout(() => {
-          this.store.dispatch(new uiActions.GetSocialProofSettings());
-        }, 1000);
       } else if (loggedIn && this.proofSnackBar) {
         this.proofSnackBar.dismiss();
         this.proofSnackBar = undefined;
+      }
+      if (loggedIn !== null && !this.socialProofSettings ||
+        loggedIn && this.socialProofSettings || !loggedIn && this.socialProofSettings) {
+        setTimeout(() => {
+          this.store.dispatch(new uiActions.GetSocialProofSettings());
+        });
       }
     });
     if (SERVICE_WORKER_SUPPORT && ENV !== 'development') {
@@ -357,14 +362,23 @@ export class AppComponent implements OnDestroy, OnInit {
         .subscribe(settings => {
           this.socialProofSettings = settings;
           if (settings.active) {
-            this.store.dispatch(new uiActions.GetSocialProof());
+            this.proofCount = 0;
+            this.destroyProofTimer$.next();
+            if (this.loggedIn) {
+              setTimeout(() => {
+                this.store.dispatch(new uiActions.GetSocialProof('level'));
+              }, 2000);
+            } else {
+              this.store.dispatch(new uiActions.GetSocialProof('join'));
+            }
           }
         });
 
       this.socialProofs$
-        .filter(p => p.length > 2)
+        .filter(p => p.length >= 1)
         .subscribe(proofs => {
-          this.openProofSnackBar(proofs, this.socialProofSettings);
+          this.proofs = proofs;
+          this.openProofSnackBar(this.loggedIn);
         });
     }
   }
@@ -446,40 +460,43 @@ export class AppComponent implements OnDestroy, OnInit {
     }
   }
 
-  openProofSnackBar(proofs: SocialProof[], settings: SocialProofSettings) {
+  openProofSnackBar(showLoggedIn = false) {
+    if (this.proofDissmissedWithAction) return;
     let horizontalPosition: MatSnackBarHorizontalPosition = 'start';
     let verticalPosition: MatSnackBarVerticalPosition = this.mobile ? 'top' : 'bottom';
     if (this.proofSnackBar) {
       this.proofSnackBar.dismiss();
       this.proofSnackBar = undefined;
     }
-    if (!this.loggedIn) {
+    if (this.loggedIn === showLoggedIn && this.proofs[this.proofCount]) {
       this.proofSnackBar = this.snackBar.openFromComponent(ProofSnackbarComponent,
         {
-          data: proofs[this.proofCount],
-          duration: settings.duration,
+          data: this.proofs[this.proofCount],
+          duration: this.socialProofSettings.duration,
           panelClass: 'os-snackbar',
           horizontalPosition: horizontalPosition,
           verticalPosition: verticalPosition
         });
-      if (this.proofCount < proofs.length - 1) {
+      if (this.proofCount < this.proofs.length - 1) {
         this.proofCount++;
       } else {
-        if (settings.repeat) {
+        if (this.socialProofSettings.repeat) {
           this.proofCount = 0;
         } else {
           this.socialProofStopRepeat = true;
         }
       }
     }
-    if (this.proofSnackBar && !this.loggedIn && !this.socialProofStopRepeat) {
+    if (this.proofSnackBar && !this.socialProofStopRepeat) {
       this.proofSnackBar.afterDismissed().subscribe((d) => {
         if (d.dismissedByAction) {
           this.proofDissmissedWithAction = true;
         } else {
-          setTimeout(() => {
-            this.openProofSnackBar(proofs, settings);
-          }, settings.delay);
+          Observable.timer(this.socialProofSettings.delay)
+            .takeUntil(this.destroyProofTimer$)
+            .subscribe(() => {
+              this.openProofSnackBar(this.loggedIn);
+            });
         }
       });
     }

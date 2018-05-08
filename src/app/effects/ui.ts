@@ -32,6 +32,7 @@ import {
   GetScriptsToLoadSuccess,
   GetSocialProofSettingsSuccess,
   GetSocialProofSettingsFail,
+  GetSocialProof,
 } from '../actions/ui';
 import { UIService } from '../services/ui';
 import { AddNotify } from '../actions/notify';
@@ -115,7 +116,8 @@ export class UIEffects {
 
   @Effect() getSocialProof$: Observable<Action> = this.actions$.pipe(
     ofType(UIActionTypes.GetSocialProof),
-    switchMap(() => this.uiService.getSocialProof().pipe(
+    map((action: GetSocialProof) => action.payload),
+    switchMap((type) => this.uiService.getSocialProof(type).pipe(
       map((res) => new GetSocialProofSuccess(res)),
       catchError((err) => concat(
         Observable.of(new GetSocialProofFail(err)),

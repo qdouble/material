@@ -44,9 +44,9 @@ export class UIService extends RequestBase {
       (`${API_USER_URL}/getScriptsToLoad`, this.optionsNoPre);
   }
 
-  getSocialProof() {
+  getSocialProof(type: string) {
     return this.http.get<GetSocialProofResponse>
-      (`${API_USER_URL}/getSocialProof`, this.optionsNoPre);
+      (`${API_USER_URL}/getSocialProof?type=${type}`, this.optionsNoPre);
   }
   getSocialProofSettings() {
     return this.http.get<SocialProofSettings>

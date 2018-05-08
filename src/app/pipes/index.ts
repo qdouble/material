@@ -9,6 +9,7 @@ import { SafeUrlPipe } from './safe-url';
 import { SingleSafePipe } from './single-safe';
 import { ShowMaxPipe } from './show-max';
 import { TimeAgoPipe } from './time-ago';
+import { TimeAgoRecentPipe } from './time-ago-recent';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { TimeAgoPipe } from './time-ago';
     SafeUrlPipe,
     SingleSafePipe,
     ShowMaxPipe,
-    TimeAgoPipe
+    TimeAgoPipe,
+    TimeAgoRecentPipe
   ],
   exports: [
     CostToUserPipe,
@@ -32,7 +34,8 @@ import { TimeAgoPipe } from './time-ago';
     SafeUrlPipe,
     SingleSafePipe,
     ShowMaxPipe,
-    TimeAgoPipe
+    TimeAgoPipe,
+    TimeAgoRecentPipe
   ]
 })
 

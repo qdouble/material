@@ -64,8 +64,8 @@ export interface SocialProof {
   offerName?: string;
   offerCredits?: number;
   // Time Stamps //
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 }
 
 export interface SocialProofSettings {

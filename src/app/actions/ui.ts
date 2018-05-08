@@ -166,7 +166,7 @@ export class GetScriptsToLoadSuccess implements Action {
 export class GetSocialProof implements Action {
   readonly type = UIActionTypes.GetSocialProof;
 
-  constructor() { }
+  constructor(public payload: string) { }
 }
 
 export class GetSocialProofFail implements Action {
