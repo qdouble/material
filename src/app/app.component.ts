@@ -353,7 +353,7 @@ export class AppComponent implements OnDestroy, OnInit {
       .filter(s => s && s.length > 0)
       .subscribe(scripts => this.loadScripts(scripts));
 
-    if (this.version === '0.6.3') {
+    if (this.version === '0.6.4') {
       this.socialProofs$ = this.store.pipe(select(fromStore.getUISocialProofCollection));
       this.socialProofSettings$ = this.store.pipe(select(fromStore.getUISocialProofSettings));
 
