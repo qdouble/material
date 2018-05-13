@@ -26,9 +26,6 @@ import {
   ChangeSelectedPrize,
   ChangeSelectedPrizeFail,
   ChangeSelectedPrizeSuccess,
-  CheckEmail,
-  CheckEmailFail,
-  CheckEmailSuccess,
   CheckIfUserUpdatedFail,
   CheckIfUserUpdatedSuccess,
   CheckIPMatch,
@@ -118,18 +115,6 @@ export class UserEffects {
         Observable.of(new ChangeSelectedPrizeFail(err)),
         Observable.of(new AddNotify(err)))
       )
-    )));
-
-  @Effect() checkEmail$: Observable<Action> = this.actions$.pipe(
-    ofType(UserActionTypes.CheckEmail),
-    map((action: CheckEmail) => action.payload),
-    switchMap(email => this.userService.checkEmail(email).pipe(
-      map((res) => new CheckEmailSuccess(res)),
-      tap((res) => res.payload.redirectTo ?
-        this.store.dispatch(
-          new Go({ path: [res.payload.redirectTo], extras: { preserveQueryParams: true } }))
-        : null),
-      catchError((err) => Observable.of(new CheckEmailFail(err)))
     )));
 
   @Effect() checkIfUserUpdated$: Observable<Action> = this.actions$.pipe(

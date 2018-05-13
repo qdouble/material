@@ -119,21 +119,6 @@ export function userReducer(state = initialState, action: UserActions): State {
       };
     }
 
-    case UserActionTypes.CheckEmail:
-      return {
-        ...state,
-        entryEmail: action.payload,
-        loading: true
-      };
-
-    case UserActionTypes.CheckEmailFail: {
-      return { ...state, loading: false };
-    }
-
-    case UserActionTypes.CheckEmailSuccess: {
-      return { ...state, loading: false };
-    }
-
     case UserActionTypes.CheckReferrerUsernameSuccess: {
       if (action.payload.blocked) {
         return { ...state, referrerBlocked: true };

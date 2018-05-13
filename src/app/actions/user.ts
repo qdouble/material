@@ -25,9 +25,6 @@ export enum UserActionTypes {
   ChangeSelectedPrize = '[User] Change Selected Prize',
   ChangeSelectedPrizeFail = '[User] Change Selected Prize Fail',
   ChangeSelectedPrizeSuccess = '[User] Change Selected Prize Success',
-  CheckEmail = '[User] Check Email',
-  CheckEmailFail = '[User] Change Check Email Fail',
-  CheckEmailSuccess = '[User] Check Email Success',
   CheckIfUserUpdated = '[User] Check If User Updated',
   CheckIfUserUpdatedFail = '[User] Check If User Updated Fail',
   CheckIfUserUpdatedSuccess = '[User] Check If User Updated Success',
@@ -151,24 +148,6 @@ export class ChangeSelectedPrizeSuccess implements Action {
   readonly type = UserActionTypes.ChangeSelectedPrizeSuccess;
 
   constructor(public payload: { message: string, message_type: string, id: string }) { }
-}
-
-export class CheckEmail implements Action {
-  readonly type = UserActionTypes.CheckEmail;
-
-  constructor(public payload: string) { }
-}
-
-export class CheckEmailFail implements Action {
-  readonly type = UserActionTypes.CheckEmailFail;
-
-  constructor(public payload: Error) { }
-}
-
-export class CheckEmailSuccess implements Action {
-  readonly type = UserActionTypes.CheckEmailSuccess;
-
-  constructor(public payload: GenericResponse) { }
 }
 
 export class CheckIfUserUpdated implements Action {
@@ -590,9 +569,6 @@ export type UserActions =
   | ChangeSelectedPrize
   | ChangeSelectedPrizeFail
   | ChangeSelectedPrizeSuccess
-  | CheckEmail
-  | CheckEmailFail
-  | CheckEmailSuccess
   | CheckIfUserUpdated
   | CheckIfUserUpdatedFail
   | CheckIfUserUpdatedSuccess

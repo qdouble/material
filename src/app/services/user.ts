@@ -21,11 +21,6 @@ export class UserService extends RequestBase {
       (`${API_USER_URL}/changeSelectedPrize?id=${id}`, this.optionsNoPre);
   }
 
-  checkEmail(email: string) {
-    return this.http.get<GenericResponse>
-      (`${API_USER_URL}/checkUserEmail?email=${email}`, this.optionsNoPre);
-  }
-
   checkIfUserUpdated() {
     return this.http.get<CheckIfUserUpdatedAtResponse>
       (`${API_USER_URL}/checkIfUserUpdated`, this.optionsNoPre);
