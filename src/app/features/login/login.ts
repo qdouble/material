@@ -7,6 +7,7 @@ import { Subject } from 'rxjs/Subject';
 
 import * as fromStore from '../../reducers';
 import * as userActions from '../../actions/user';
+import { RegexValues } from '../../validators';
 
 @Component({
   selector: 'os-login',
@@ -31,7 +32,10 @@ export class Login implements OnDestroy {
   resetEmailSent$: Observable<boolean>;
 
   f = new FormGroup({
-    email: new FormControl('', [Validators.required]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.pattern(RegexValues.usernameOrEmail)
+    ]),
     password: new FormControl(PUBLISH ? '' : 'password', Validators.required)
   });
 
@@ -58,8 +62,13 @@ export class Login implements OnDestroy {
   }
 
   submitForm() {
+    this.f.setValue({
+      email: this.f.value['email'].replace(/\s/g, ''),
+      password: this.f.value['password'].replace(/\s/g, '')
+    });
+    this.f.setValue({email: this.f.value['email'].replace(/\s/g, '')});
     if (this.forgotPassword) {
-      this.store.dispatch(new userActions.ForgotPassword(this.f.value['email']));
+      this.store.dispatch(new userActions.ForgotPassword(this.f.value['email'].trim()));
       this.resetEmailSent$
         .filter(sent => sent === true)
         .take(1)

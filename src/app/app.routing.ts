@@ -12,7 +12,6 @@ import { AdminLogin } from './admin-login';
 
 import {
   AboutUs,
-  ForgotPassword,
   Homepage,
   HowItWorks,
   Login,
@@ -57,11 +56,6 @@ export const routes: Routes = [
   {
     path: 'faq',
     loadChildren: './features/faq/index#FAQModule'
-  },
-  {
-    path: 'forgot-password',
-    component: ForgotPassword,
-    canActivate: [LoggedInRedirectGuard]
   },
   {
     path: 'how-it-works',

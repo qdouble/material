@@ -1,5 +1,4 @@
 import { AboutUs } from './about-us';
-import { ForgotPassword } from './forgot-password';
 import { FooterModule } from './footer';
 import { Homepage } from './home';
 import { HowItWorks } from './how-it-works';
@@ -21,7 +20,6 @@ import { ReportSpam } from './report-spam';
 
 export {
   AboutUs,
-  ForgotPassword,
   Homepage,
   HowItWorks,
   IPMatchFoundDialog,
@@ -45,7 +43,6 @@ export const FEATURE_MODULES = [
 
 export const PAGES_COMPONENTS = [
   AboutUs,
-  ForgotPassword,
   Homepage,
   HowItWorks,
   IPMatchFoundDialog,

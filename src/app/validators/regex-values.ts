@@ -9,4 +9,5 @@ export class RegexValues {
     static phone = '^([0-9Xx ()+.-]){7,30}$';
     static username = '^([^<>\\/\\\*$;&\'?!{}|=.@, :_#"~%^()+-]){3,30}$';
     static zipCode = '^([-A-z0-9!@#$%^&*. ]){3,13}$';
+    static usernameOrEmail = '^([^<>\\/\\\*$;&\'?!{}|=,:_#"~%^()+-]){3,99}$';
 }
