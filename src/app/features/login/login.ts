@@ -66,9 +66,10 @@ export class Login implements OnDestroy {
       email: this.f.value['email'].replace(/\s/g, ''),
       password: this.f.value['password'].replace(/\s/g, '')
     });
-    this.f.setValue({email: this.f.value['email'].replace(/\s/g, '')});
+    this.f.setValue({email: this.f.value['email'].replace(/\s/g, ''),
+     password: this.f.value['password'].replace(/\s/g, '')});
     if (this.forgotPassword) {
-      this.store.dispatch(new userActions.ForgotPassword(this.f.value['email'].trim()));
+      this.store.dispatch(new userActions.ForgotPassword(this.f.value['email']));
       this.resetEmailSent$
         .filter(sent => sent === true)
         .take(1)
