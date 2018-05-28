@@ -1,8 +1,10 @@
 <mat-card *ngIf="hideStatus" class="os-page-container">
-  <div  class="hold-container hide-status">
+  <div class="hold-container hide-status">
     <mat-card class="os-message-card warn-background white">
       <h5>Your Account is on Hold</h5>
-      <h6><em>{{user.holdReason}}</em></h6>
+      <h6>
+        <em>{{user.holdReason}}</em>
+      </h6>
       <pre>{{user.holdMessage}}</pre>
     </mat-card>
   </div>
@@ -11,7 +13,9 @@
   <div class="os-status-page-section">
     <mat-card *ngIf="user?.hold" class="os-message-card warn-background white">
       <h5>Your Account is on Hold</h5>
-      <h6><em>{{user.holdReason}}</em></h6>
+      <h6>
+        <em>{{user.holdReason}}</em>
+      </h6>
       <pre>{{user.holdMessage}}</pre>
     </mat-card>
   </div>
@@ -20,36 +24,55 @@
     <mat-card id="referral-link-section">
       <mat-card-content>
         <div class="referral-links">
-          Landing Page Referral Link:<br>
-          <a [href]="'https://levelrewards.com/?ref=' + user?.username" target="_blank">https://levelrewards.com/?ref={{user?.username}}</a><br>
-          Registration Page Referral:<br>
-          <a [href]="'https://levelrewards.com/register?ref=' + user?.username" target="_blank">https://levelrewards.com/register?ref={{user?.username}}</a><br>
+          Landing Page Referral Link:
+          <br>
+          <a [href]="'https://levelrewards.com/?ref=' + user?.username" target="_blank">https://levelrewards.com/?ref={{user?.username}}</a>
+          <br> Registration Page Referral:
+          <br>
+          <a [href]="'https://levelrewards.com/register?ref=' + user?.username" target="_blank">https://levelrewards.com/register?ref={{user?.username}}</a>
+          <br>
         </div>
         <div class="share-buttons">
-          <button id="fb-post-btn" mat-raised-button class="white" color="primary"  (click)="fbShare()" class="btn btn-lg btn-primary btn-block">
-              <img src="/assets/svg/facebook-box.svg"> Share
+          <button id="fb-post-btn" mat-raised-button class="white" color="primary" (click)="fbShare()" class="btn btn-lg btn-primary btn-block">
+            <img src="/assets/svg/facebook-box.svg"> Share
           </button>
         </div>
         <ul class="link-rule">
-          <li class="warn" style="text-align: left"><b>Do Not Spam Your Link</b></li>
-          <li class="warn" style="text-align: left"><b>Do Not Sign up Anyone In Your Household</b></li>
-          <li class="warn" style="text-align: left"><b>Do Not Share Internet Connection With Your Signups</b></li>
-          <li class="warn" style="text-align: left"><b>Do Not Create Multiple Accounts</b></li>
+          <li class="warn" style="text-align: left">
+            <b>Do Not Spam Your Link</b>
+          </li>
+          <li class="warn" style="text-align: left">
+            <b>Do Not Sign up Anyone In Your Household</b>
+          </li>
+          <li class="warn" style="text-align: left">
+            <b>Do Not Share Internet Connection With Your Signups</b>
+          </li>
+          <li class="warn" style="text-align: left">
+            <b>Do Not Create Multiple Accounts</b>
+          </li>
         </ul>
         <p>
-          Referrals must sign up immediately after clicking your link for them to be under you. Once they sign up, their account
-          will be linked to yours unless referral requests a transfer.
-        </p><br>
+          Referrals must sign up immediately after clicking your link for them to be under you. Once they sign up, their account will
+          be linked to yours unless referral requests a transfer.
+        </p>
+        <br>
         <mat-card class="third-party os-title-card primary-background">3rd-Party Landing Pages</mat-card>
         <div class="landing-disclaimer">
-          <p><u>Disclaimer:</u> The following landing pages are not created, managed or necessarily endorsed by Level Rewards. They are simply presented as user created landing page options that may help you promote.</p><br>
+          <p>
+            <u>Disclaimer:</u> The following landing pages are not created, managed or necessarily endorsed by Level Rewards.
+            They are simply presented as user created landing page options that may help you promote.</p>
+          <br>
           <div class="l-links">
-            <a [href]="'http://' + user?.username + '.checksonchecks.com/levelup'" target="_blank">{{'http://' + user?.username}}.checksonchecks.com/levelup</a><br>
-            <a [href]="'http://www.startthenprofit.net/m/?ref=' + user?.username" target="_blank">{{'http://www.startthenprofit.net/m/?ref=' + user?.username}}</a><br><br>
+            <a [href]="'http://' + user?.username + '.checksonchecks.com/levelup'" target="_blank">{{'http://' + user?.username}}.checksonchecks.com/levelup</a>
+            <br>
+            <a [href]="'http://www.startthenprofit.net/m/?ref=' + user?.username" target="_blank">{{'http://www.startthenprofit.net/m/?ref=' + user?.username}}</a>
+            <br>
+            <br>
           </div>
-          <p>If you would like to suggest other landing pages or if there is an issue with us listing a particular landing page, please contact support.</p>
+          <p>If you would like to suggest other landing pages or if there is an issue with us listing a particular landing page,
+            please contact support.</p>
         </div>
-        
+
       </mat-card-content>
     </mat-card>
   </div>
@@ -57,8 +80,11 @@
     <mat-card id="announcements-section" *ngIf="showAnnouncements">
       <mat-card-title class="primary">Announcements</mat-card-title>
       <mat-card-content>
-        <p><b class="warn">Important Advertising Guideline:</b>
-           Do not create a webpage, video or ad directly telling referrals that they should go to Level Rewards, sign up for a particular offer and then cancel. While you can share your experience with your referrals, be sure to make it perfectly clear that they can choose whichever offers they are interested in. 
+        <p>
+          <b class="warn">Important Advertising Guideline:</b>
+          Do not create a webpage, video or ad directly telling referrals that they should go to Level Rewards, sign up for a particular
+          offer and then cancel. While you can share your experience with your referrals, be sure to make it perfectly clear
+          that they can choose whichever offers they are interested in.
         </p>
       </mat-card-content>
     </mat-card>
@@ -68,38 +94,50 @@
       <mat-card-title class="primary">Your Current Status</mat-card-title>
       <mat-card-content *ngIf="loaded$ | async">
         <p>Welcome {{user?.firstName}}!</p>
-        <p><b>You are currently on level:</b> {{user?.currentLevel}}</p>
+        <p>
+          <b>You are currently on level:</b> {{user?.currentLevel}}</p>
         <p>
           <b>You have:</b> {{(creditTotal$ | async) | number:'1.2-2'}} credits
           <span *ngIf="(credits$ | async).length > 0" style="text-decoration: underline; cursor: pointer" (click)="creditsShown ? creditsShown = false : creditsShown = true">
-          {{creditsShown ? 'Hide' : 'Show'}}
+            {{creditsShown ? 'Hide' : 'Show'}}
           </span>
         </p>
         <ng-container *ngIf="creditsShown">
-            <div class="table">
-              <ng-container *ngFor="let credit of (credits$ | async)">
-                <div class="row">
-                  <div class="cell name-col">
-                    {{ credit.offerName | slice:0:18 }}
-                  </div>
-                  <div class="cell value-col" [ngClass]="{'accent': credit.unconfirmed,'warn': !credit.active}">
-                    {{ credit.active ? ( credit.unconfirmed ? 'Unconfirmed' : (credit.creditValue | number:'1.2-2')) : 'Revoked'}}
-                  </div>
-                  <div class="cell credited-col">
-                    {{ credit.createdAt | date:'shortDate'}}
-                  </div>
+          <div class="table">
+            <ng-container *ngFor="let credit of (credits$ | async)">
+              <div class="row">
+                <div class="cell name-col">
+                  {{ credit.offerName | slice:0:18 }}
                 </div>
-              </ng-container>
-            </div>
-          </ng-container>
-        <p><b>You can currently earn up to <em>${{user?.currentLevel * 5 | number:'1.2-2'}}</em> per referral</b></p>
-        <p><b>Get {{(user?.currentLevel + 1) - (creditTotal$ | async) | number:'1.2-2' }}  more credit(s) and reach level {{user?.currentLevel + 1}} and earn up to ${{(user?.currentLevel + 1) * 5}} per referral.  </b></p>
+                <div class="cell value-col" [ngClass]="{'accent': credit.unconfirmed,'warn': !credit.active}">
+                  {{ credit.active ? ( credit.unconfirmed ? 'Unconfirmed' : (credit.creditValue | number:'1.2-2')) : 'Revoked'}}
+                </div>
+                <div class="cell credited-col">
+                  {{ credit.createdAt | date:'shortDate'}}
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+        <p>
+          <b>You can currently earn up to
+            <em>${{user?.currentLevel * 5 | number:'1.2-2'}}</em> per referral</b>
+        </p>
+        <p>
+          <b>Get {{(user?.currentLevel + 1) - (creditTotal$ | async) | number:'1.2-2' }} more credit(s) and reach level {{user?.currentLevel
+            + 1}} and earn up to ${{(user?.currentLevel + 1) * 5}} per referral. </b>
+        </p>
         <ng-container *ngIf="user?.currentSponsor">
-          <p><b>Your Sponsor is <u class="switch-sponsor" *ngIf="!user?.hold" (click)="switchSponsor = !switchSponsor">(Switch Sponsor?)</u>: </b></p>
+          <p>
+            <b>Your Sponsor is
+              <u class="switch-sponsor" *ngIf="!user?.hold" (click)="switchSponsor = !switchSponsor">(Switch Sponsor?)</u>: </b>
+          </p>
           <p *ngIf="!switchSponsor">{{user?.currentSponsor}} &#60;{{user?.currentSponsorEmail}}&#62;</p>
         </ng-container>
         <ng-container *ngIf="!user?.currentSponsor">
-          <p><b>You have no sponsor</b></p>
+          <p>
+            <b>You have no sponsor</b>
+          </p>
           <p>If you do have sponsor and you know their username, enter it below to connect your accounts</p>
         </ng-container>
         <form *ngIf="!user?.currentSponsor || switchSponsor" [formGroup]="sponsorForm" (ngSubmit)="submitSponsor(); switchSponsor = false">
@@ -116,35 +154,31 @@
       <os-selected-prize [changePrize]="changePrize" [form]="selectPrizeForm" [prize]="prize$ | async" [prizes]="prizes$ | async"
         [selectedPrizeLabels]="selectedPrizeLabels$ | async" [selectedPrizeValues]="selectedPrizeValues$ | async" (cancelPrizeChange)="cancelPrizeChange()"
         (changeSelectedPrize)="changeSelectedPrize()">
-        </os-selected-prize>
+      </os-selected-prize>
     </mat-card>
   </div>
   <div *ngIf="(creditTotal$ | async) >= 1 || (referrals$ | async)?.length" class="os-status-page-section">
     <mat-card id="referrals-table-section">
       <mat-card-title class="primary">Your Referrals</mat-card-title>
       <ng-container *ngIf="(referrals$ | async)?.length > 0">
-        <os-referrals-table
-          [referrals]="referrals$ | async"
-          [showHidden]="showHidden.value"
-          (getReferral)="getReferral($event)"
-          (selectReferral)="selectReferral($event)"
-          (sortBy)="sortBy($event)">
-          </os-referrals-table>
-          <div class="ref-select-row">
-            <mat-select [formControl]="referralSelect">
-              <mat-option value=" ">- CHOOSE OPTION -</mat-option>
-              <mat-option value="hide">HIDE</mat-option>
-              <mat-option value="show">SHOW</mat-option>
-              <mat-option value="remove">REMOVE</mat-option>
-            </mat-select>
-            <button mat-raised-button class="white" color="accent" (click)="applyToChecked()" [disabled]="!selectedReferralIds.length">APPLY</button>
-          </div>
-          <mat-slide-toggle [formControl]="showHidden" color="primary">Show Hidden</mat-slide-toggle>
-        </ng-container>
-        <mat-card-content *ngIf="(referrals$ | async)?.length <= 0">
-          You do not have any referrals. Be sure to share your referral link. Tell any missing referrals to enter in your username
-          on the 'Your Current Status' section of their Status page if they signed up and are not referred.
-        </mat-card-content>
+        <os-referrals-table [referrals]="referrals$ | async" [showHidden]="showHidden.value" (getReferral)="getReferral($event)"
+          (selectReferral)="selectReferral($event)" (sortBy)="sortBy($event)">
+        </os-referrals-table>
+        <div class="ref-select-row">
+          <mat-select [formControl]="referralSelect">
+            <mat-option value=" ">- CHOOSE OPTION -</mat-option>
+            <mat-option value="hide">HIDE</mat-option>
+            <mat-option value="show">SHOW</mat-option>
+            <mat-option value="remove">REMOVE</mat-option>
+          </mat-select>
+          <button mat-raised-button class="white" color="accent" (click)="applyToChecked()" [disabled]="!selectedReferralIds.length">APPLY</button>
+        </div>
+        <mat-slide-toggle [formControl]="showHidden" color="primary">Show Hidden</mat-slide-toggle>
+      </ng-container>
+      <mat-card-content *ngIf="(referrals$ | async)?.length <= 0">
+        You do not have any referrals. Be sure to share your referral link. Tell any missing referrals to enter in your username
+        on the 'Your Current Status' section of their Status page if they signed up and are not referred.
+      </mat-card-content>
     </mat-card>
   </div>
   <os-footer></os-footer>

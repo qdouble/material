@@ -40,9 +40,7 @@ import { Offer } from './models/offer';
 import { Order } from './models/order';
 import { ScriptService } from './script.service';
 import { Script, GetIPInfoResponse, SocialProof, SocialProofSettings } from './models/ui';
-import { validateCountry } from './validators/validate-country';
 import { ProofSnackbarComponent } from './snackbars/proof.snackbar.component';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'my-app',
@@ -50,7 +48,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements OnDestroy, OnInit {
+export class AppComponent implements OnInit {
   showMonitor = ENV === 'development' && !AOT && ['monitor', 'both'].includes(STORE_DEV_TOOLS);
   // Nav menu related //
   initView = true;
@@ -81,7 +79,6 @@ export class AppComponent implements OnDestroy, OnInit {
   /////////////
   amountPaid$: Observable<number>;
   askQuestions$: Observable<boolean>;
-  destroyed$: Subject<any> = new Subject<any>();
   destroyProofTimer$: Subject<any> = new Subject<any>();
   credits$: Observable<Credit[]>;
   creditTotal: number;
@@ -96,6 +93,7 @@ export class AppComponent implements OnDestroy, OnInit {
   latestVersion$: Observable<string>;
   loaded: boolean;
   loggedIn: boolean;
+  loginChecked: boolean;
   notifications$: Observable<Notification[]>;
   notify$: Observable<Notify[]>;
   openLevelAfterClose = 0;
@@ -117,15 +115,25 @@ export class AppComponent implements OnDestroy, OnInit {
   unreadNotificationPendingTotal$: Observable<number>;
   unreadNotificationTotal$: Observable<number>;
   updatedAt: string;
-  updatedAt$: Observable<string>;
+  userUpdatedAt$: Observable<string>;
+  userActive$: Observable<boolean>;
   userLoading$: Observable<boolean>;
   userLoaded$: Observable<boolean>;
   userLoggedIn$: Observable<boolean>;
+  userLoginChecked$: Observable<boolean>;
   userReferredBy$: Observable<string | null>;
   userId = '';
   version: string;
   version$: Observable<string>;
   views = views;
+  userReferrerBlocked$: Observable<boolean>;
+  showLevelBadge$: Observable<number>;
+  completedOrders$: Observable<Order[]>;
+  creditedOffer$: Observable<Offer[]>;
+  userFirstName$: Store<string>;
+  userLastUpdate$: Store<string>;
+  pushNotifications$: Store<PushNotification>;
+  checkVersionInterval$: Observable<number>;
   constructor(
     private cache: TransferState,
     public dialog: MatDialog,
@@ -136,156 +144,63 @@ export class AppComponent implements OnDestroy, OnInit {
     public snackBar: MatSnackBar,
     private store: Store<fromStore.AppState>
   ) {
-    this.store.dispatch(new uiActions.GetIPInfo(''));
-    this.ipInfo$ = store.pipe(select(fromStore.getUIIPInfo));
-    this.ipInfo$.subscribe(i => (this.ipInfo = i));
-    this.invalidCountry$ = store.pipe(select(fromStore.getUIInvalidCountry));
-    this.invalidCountry$.filter(i => i === true).subscribe(i => {
-      this.store.dispatch(new uiActions.AddInvalidCountry(this.ipInfo));
-      const override = store.pipe(select(fromStore.getUIOverrideInvalidIp));
-      override.filter(o => typeof o === 'string').subscribe(o => {
-        setTimeout(() => {
-          this.store.dispatch(new uiActions.OverrideInvalidCountry(o));
-        });
-      });
-    });
-    let active$ = store.select(s => s.user.user.active);
-    active$
-      .takeUntil(this.destroyed$)
-      .filter(active => active === false)
-      .subscribe(active => {
-        this.store.dispatch(new userActions.Logout());
-      });
-    this.version$ = store.pipe(select(fromStore.getUIVersion));
-    this.version$.subscribe(v => (this.version = v));
-    this.latestVersion$ = store.pipe(select(fromStore.getUILatestVersion));
-    this.latestVersion$
-      .filter(v => v !== null)
-      .takeUntil(this.destroyed$)
-      .subscribe(latestVersion => {
-        if (latestVersion !== this.version) {
-          log(`${latestVersion} <-> ${this.version}`);
-          window.location.reload();
-        }
-      });
-    let checkServer$ = Observable.interval(600000);
-    checkServer$.takeUntil(this.destroyed$).subscribe(() => {
-      this.store.dispatch(new uiActions.GetVersion());
-      if (this.loggedIn) {
-      }
-    });
-
-    this.updatedAt$ = store.select(s => s.user.updatedAt);
-    this.updatedAt$.takeUntil(this.destroyed$).subscribe(updatedAt => {
-      this.updatedAt = updatedAt;
-    });
-    let lastUpdate$ = store.select(s => s.user.lastUpdate);
-    lastUpdate$
-      .filter(l => l !== null && l !== undefined)
-      .takeUntil(this.destroyed$)
-      .subscribe(lastUpdate => {
-        if (this.updatedAt && lastUpdate !== this.updatedAt) {
-          store.dispatch(new userActions.GetProfile());
-        }
-      });
-    this.onAdminLoginPage$ = store.pipe(select(fromStore.getUserOnAdminPage));
-    this.onAdminLoginPage$.subscribe(on => {
-      this.onAdminLoginPage = on;
-    });
-    this.notify$ = store.pipe(select(fromStore.getNotifyCollection));
-    this.notify$
-      .takeUntil(this.destroyed$)
-      .filter(notify => notify.length > 0)
-      .subscribe(notify => {
-        if (
-          notify &&
-          notify[0] &&
-          notify[0].message === 'Unexpected token U in JSON at position 0'
-        ) {
-          return;
-        }
-        let config = new MatSnackBarConfig();
-        let index = notify.length - 1;
-        this.snackRefs[index] = this.snackBar.open(
-          notify[index].message,
-          this.action && this.actionButtonLabel,
-          config
-        );
-        setTimeout(() => {
-          this.snackRefs[index].dismiss();
-        }, 5000);
-      });
-    this.userLoaded$ = store.pipe(select(fromStore.getUserLoaded));
-
-    this.userLoading$ = store.pipe(select(fromStore.getUserLoading));
-    this.userLoggedIn$ = store.pipe(select(fromStore.getUserLoggedIn));
-    this.userLoggedIn$.takeUntil(this.destroyed$).subscribe(l => (this.loggedIn = l));
-    this.userReferredBy$ = store.pipe(select(fromStore.getUserReferredBy));
-    this.route.queryParams
-      .filter(param => param['ref'] !== undefined)
-      .take(1)
-      .subscribe(param => {
-        this.referredBy = param['ref'];
-        if (validateUserName(this.referredBy)) {
-          this.store.dispatch(new userActions.SetReferredBy(this.referredBy));
-          this.store.dispatch(new userActions.CheckReferrerUsername(this.referredBy));
-        }
-      });
-    this.credits$ = store.pipe(select(fromStore.getUserCreditCollection));
-    this.credits$.takeUntil(this.destroyed$).subscribe(credits => {
-      this.creditTotal = 0;
-      credits.forEach(credit => {
-        if (credit.active && !credit.unconfirmed) {
-          this.creditTotal += credit.creditValue;
-        }
-      });
-      this.creditTotal = Number(Number(this.creditTotal).toFixed(2));
-      this.store.dispatch(new userActions.SetCreditTotal(this.creditTotal));
-    });
-    this.store.dispatch(new prizeActions.GetPrizes());
-    this.store.dispatch(new userActions.CheckLoggedIn());
-  }
-
-  ngOnInit() {
-    this.store.pipe(select(fromStore.getUserReferrerBlocked)).subscribe(blocked => {
-      if (blocked) {
-        this.router.navigate(['referrer-blocked']);
-        this.mobile = true;
-      }
-    });
+    this.version$ = this.store.pipe(select(fromStore.getUIVersion));
+    this.latestVersion$ = this.store.pipe(select(fromStore.getUILatestVersion));
+    this.userLoginChecked$ = this.store.pipe(select(fromStore.getUserLoginChecked));
+    this.userLoggedIn$ = this.store.pipe(select(fromStore.getUserLoggedIn));
+    this.userLoaded$ = this.store.pipe(select(fromStore.getUserLoaded));
+    this.userLoading$ = this.store.pipe(select(fromStore.getUserLoading));
+    this.userActive$ = this.store.select(s => s.user.user.active);
+    this.userUpdatedAt$ = this.store.select(s => s.user.updatedAt);
+    this.userLastUpdate$ = this.store.select(s => s.user.lastUpdate);
+    this.userFirstName$ = this.store.select(s => s.user.user.firstName);
+    this.pushNotifications$ = this.store.select(s => s.ui.pushNotification);
+    this.ipInfo$ = this.store.pipe(select(fromStore.getUIIPInfo));
+    this.invalidCountry$ = this.store.pipe(select(fromStore.getUIInvalidCountry));
+    this.onAdminLoginPage$ = this.store.pipe(select(fromStore.getUserOnAdminPage));
+    this.notify$ = this.store.pipe(select(fromStore.getNotifyCollection));
+    this.userReferredBy$ = this.store.pipe(select(fromStore.getUserReferredBy));
+    this.credits$ = this.store.pipe(select(fromStore.getUserCreditCollection));
+    this.userReferrerBlocked$ = this.store.pipe(select(fromStore.getUserReferrerBlocked));
     this.amountPaid$ = this.store.pipe(select(fromStore.getUserAmountPaid));
     this.askQuestions$ = this.store.pipe(select(fromStore.getUserAskQuestions));
-    this.askQuestions$.subscribe(ask => {
-      if (ask) {
-        setTimeout(() => {
-          this.openAskQuestionsDialog();
-        }, 1);
-      }
-    });
-    this.cache.set('cached', true);
     this.creditTotal$ = this.store.pipe(select(fromStore.getUserCreditTotal));
-    let firstName = this.store.select(s => s.user.user.firstName);
-    firstName.takeUntil(this.destroyed$).subscribe(n => (this.firstName = n));
-    this.router.events.subscribe(val => {
-      if (val instanceof NavigationEnd) {
-        log('ROUTER EVENTS', val.url);
-        this.showStatus = val.url.startsWith('/offers');
-        this.showNotifications = false;
-      }
-    });
-    this.store.dispatch(new uiActions.SetMobile(MOBILE));
     this.notifications$ = this.store.pipe(select(fromStore.getNotificationCollection));
     this.unreadNotificationPendingTotal$ = this.store.pipe(
       select(fromStore.getNotificationPending)
     );
     this.unreadNotificationTotal$ = this.store.pipe(select(fromStore.getNotificationUnreadTotal));
-    this.userLoaded$.subscribe(loaded => {
-      this.loaded = loaded;
-      if (loaded && SERVICE_WORKER_SUPPORT) {
-        this.swAndPushService.requestPermission();
+    this.showLevelBadge$ = this.store.pipe(select(fromStore.getUserShowLevelBadgeNum));
+    this.scripts$ = this.store.pipe(select(fromStore.getUIScripts));
+    this.completedOrders$ = this.store.pipe(select(fromStore.getUICompletedOrdersCollection));
+    this.creditedOffer$ = this.store.pipe(select(fromStore.getUICreditedOfferCollection));
+    this.socialProofs$ = this.store.pipe(select(fromStore.getUISocialProofCollection));
+    this.socialProofSettings$ = this.store.pipe(select(fromStore.getUISocialProofSettings));
+    this.checkVersionInterval$ = Observable.interval(600000);
+  }
+
+  ngOnInit() {
+    this.initDispatches();
+    this.cache.set('cached', true);
+    if (SERVICE_WORKER_SUPPORT && ENV !== 'development') {
+      this.swAndPushService.registerServiceWorker();
+    }
+
+    this.version$.subscribe(v => (this.version = v));
+
+    this.latestVersion$.filter(v => v !== null).subscribe(latestVersion => {
+      if (latestVersion !== this.version) {
+        log(`${latestVersion} <-> ${this.version}`);
+        window.location.reload();
       }
     });
+
+    this.checkVersionInterval$.subscribe(() => {
+      this.store.dispatch(new uiActions.GetVersion());
+    });
+
     this.userLoggedIn$.subscribe(loggedIn => {
+      this.loggedIn = loggedIn;
       if (loggedIn && !this.loaded) {
         this.store.dispatch(new userActions.GetProfile());
         this.connect();
@@ -315,16 +230,118 @@ export class AppComponent implements OnDestroy, OnInit {
         });
       }
     });
-    if (SERVICE_WORKER_SUPPORT && ENV !== 'development') {
-      this.swAndPushService.registerServiceWorker();
-    }
-    let pushSub$ = this.store.select(s => s.ui.pushNotification);
-    pushSub$.filter(push => push !== null).subscribe((push: PushNotification) => {
+
+    this.userLoginChecked$.subscribe(checked => {
+      if (checked === false && this.loggedIn === false) {
+        this.initDispatches();
+      }
+    });
+
+    this.userLoaded$.subscribe(loaded => {
+      this.loaded = loaded;
+      if (loaded && SERVICE_WORKER_SUPPORT) {
+        this.swAndPushService.requestPermission();
+      }
+    });
+
+    this.userActive$.filter(active => active === false).subscribe(() => {
+      this.store.dispatch(new userActions.Logout());
+    });
+
+    this.userUpdatedAt$.subscribe(updatedAt => {
+      this.updatedAt = updatedAt;
+    });
+
+    this.userLastUpdate$.filter(l => l !== null && l !== undefined).subscribe(lastUpdate => {
+      if (this.updatedAt && lastUpdate !== this.updatedAt) {
+        this.store.dispatch(new userActions.GetProfile());
+      }
+    });
+
+    this.ipInfo$.subscribe(i => (this.ipInfo = i));
+
+    this.invalidCountry$.filter(i => i === true).subscribe(i => {
+      this.store.dispatch(new uiActions.AddInvalidCountry(this.ipInfo));
+      const override = this.store.pipe(select(fromStore.getUIOverrideInvalidIp));
+      override.filter(o => typeof o === 'string').subscribe(o => {
+        setTimeout(() => {
+          this.store.dispatch(new uiActions.OverrideInvalidCountry(o));
+        });
+      });
+    });
+
+    this.notify$.filter(notify => notify.length > 0).subscribe(notify => {
+      if (notify && notify[0] && notify[0].message === 'Unexpected token U in JSON at position 0') {
+        return;
+      }
+      let config = new MatSnackBarConfig();
+      let index = notify.length - 1;
+      this.snackRefs[index] = this.snackBar.open(
+        notify[index].message,
+        this.action && this.actionButtonLabel,
+        config
+      );
+      setTimeout(() => {
+        this.snackRefs[index].dismiss();
+      }, 5000);
+    });
+
+    this.route.queryParams
+      .filter(param => param['ref'] !== undefined)
+      .take(1)
+      .subscribe(param => {
+        this.referredBy = param['ref'];
+        if (validateUserName(this.referredBy)) {
+          this.store.dispatch(new userActions.SetReferredBy(this.referredBy));
+          this.store.dispatch(new userActions.CheckReferrerUsername(this.referredBy));
+        }
+      });
+
+    this.onAdminLoginPage$.subscribe(on => {
+      this.onAdminLoginPage = on;
+    });
+
+    this.credits$.subscribe(credits => {
+      this.creditTotal = 0;
+      credits.forEach(credit => {
+        if (credit.active && !credit.unconfirmed) {
+          this.creditTotal += credit.creditValue;
+        }
+      });
+      this.creditTotal = Number(Number(this.creditTotal).toFixed(2));
+      this.store.dispatch(new userActions.SetCreditTotal(this.creditTotal));
+    });
+
+    this.userReferrerBlocked$.subscribe(blocked => {
+      if (blocked) {
+        this.router.navigate(['referrer-blocked']);
+        this.mobile = true;
+      }
+    });
+
+    this.askQuestions$.subscribe(ask => {
+      if (ask) {
+        setTimeout(() => {
+          this.openAskQuestionsDialog();
+        }, 1);
+      }
+    });
+
+    this.userFirstName$.subscribe(n => (this.firstName = n));
+
+    this.router.events.subscribe(val => {
+      if (val instanceof NavigationEnd) {
+        log('ROUTER EVENTS', val.url);
+        this.showStatus = val.url.startsWith('/offers');
+        this.showNotifications = false;
+      }
+    });
+
+    this.pushNotifications$.filter(push => push !== null).subscribe((push: PushNotification) => {
       this.swAndPushService.create(push).subscribe(() => log('success'), err => log(err));
     });
 
-    let completedOrders$ = this.store.pipe(select(fromStore.getUICompletedOrdersCollection));
-    completedOrders$.subscribe(orders => {
+    this.completedOrders$.subscribe(orders => {
       orders.forEach(order => {
         if (!order.viewed) {
           this.openCompletedOrderDialog(order);
@@ -332,8 +349,8 @@ export class AppComponent implements OnDestroy, OnInit {
         }
       });
     });
-    let creditedOffer$ = this.store.pipe(select(fromStore.getUICreditedOfferCollection));
-    creditedOffer$
+
+    this.creditedOffer$
       .filter(offers => offers.length > 0)
       .filter(offers => offers.find(offer => offer.viewed === undefined) !== undefined)
       .subscribe(offers => {
@@ -344,17 +361,14 @@ export class AppComponent implements OnDestroy, OnInit {
           }
         });
       });
-    let showLevelBadge = this.store.pipe(select(fromStore.getUserShowLevelBadgeNum));
-    showLevelBadge.filter(l => l !== undefined && l !== null).subscribe(level => {
+
+    this.showLevelBadge$.filter(l => l !== undefined && l !== null).subscribe(level => {
       this.openLevelBadgeDialog(level);
     });
-    this.scripts$ = this.store.pipe(select(fromStore.getUIScripts));
+
     this.scripts$.filter(s => s && s.length > 0).subscribe(scripts => this.loadScripts(scripts));
 
     if (this.version === '0.6.5') {
-      this.socialProofs$ = this.store.pipe(select(fromStore.getUISocialProofCollection));
-      this.socialProofSettings$ = this.store.pipe(select(fromStore.getUISocialProofSettings));
-
       this.socialProofSettings$.filter(s => s !== undefined && s !== null).subscribe(settings => {
         this.socialProofSettings = settings;
         if (settings.active) {
@@ -369,12 +383,18 @@ export class AppComponent implements OnDestroy, OnInit {
           }
         }
       });
-
       this.socialProofs$.filter(p => p.length >= 1).subscribe(proofs => {
         this.proofs = proofs;
         this.openProofSnackBar(this.loggedIn);
       });
     }
+  }
+
+  initDispatches() {
+    this.store.dispatch(new uiActions.GetIPInfo(''));
+    this.store.dispatch(new prizeActions.GetPrizes());
+    this.store.dispatch(new userActions.CheckLoggedIn());
+    this.store.dispatch(new uiActions.SetMobile(MOBILE));
   }
 
   activateEvent(event) {
@@ -454,15 +474,12 @@ export class AppComponent implements OnDestroy, OnInit {
     this.askQuestionsDialogRef.componentInstance.firstName = this.firstName;
 
     if (this.askQuestionsDialogRef) {
-      this.askQuestionsDialogRef
-        .afterClosed()
-        .takeUntil(this.destroyed$)
-        .subscribe(result => {
-          if (result) {
-            this.router.navigate(['/support', { askQ: true }]);
-          }
-          this.askQuestionsDialogRef = null;
-        });
+      this.askQuestionsDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.router.navigate(['/support', { askQ: true }]);
+        }
+        this.askQuestionsDialogRef = null;
+      });
     }
   }
 
@@ -518,12 +535,9 @@ export class AppComponent implements OnDestroy, OnInit {
     this.completedOrderDialogRef.componentInstance.order = order;
 
     if (this.completedOrderDialogRef) {
-      this.completedOrderDialogRef
-        .afterClosed()
-        .takeUntil(this.destroyed$)
-        .subscribe(result => {
-          this.completedOrderDialogRef = null;
-        });
+      this.completedOrderDialogRef.afterClosed().subscribe(() => {
+        this.completedOrderDialogRef = null;
+      });
     }
   }
   openCreditedDialog(offer: Offer) {
@@ -532,16 +546,13 @@ export class AppComponent implements OnDestroy, OnInit {
     this.creditDialogRef.componentInstance.creditsTotal = this.creditTotal;
     this.creditDialogRef.componentInstance.offer = offer;
     if (this.creditDialogRef) {
-      this.creditDialogRef
-        .afterClosed()
-        .takeUntil(this.destroyed$)
-        .subscribe(result => {
-          if (this.openLevelAfterClose) {
-            this.openLevelBadgeDialog(this.openLevelAfterClose);
-            this.openLevelAfterClose = 0;
-          }
-          this.creditDialogRef = null;
-        });
+      this.creditDialogRef.afterClosed().subscribe(() => {
+        if (this.openLevelAfterClose) {
+          this.openLevelBadgeDialog(this.openLevelAfterClose);
+          this.openLevelAfterClose = 0;
+        }
+        this.creditDialogRef = null;
+      });
     }
   }
 
@@ -553,20 +564,13 @@ export class AppComponent implements OnDestroy, OnInit {
     this.levelBadgeDialogRef = this.dialog.open(LevelBadgeDialog, this.levelBadgeDialogConfig);
     this.levelBadgeDialogRef.componentInstance.level = ('0' + String(level)).slice(-2);
     if (this.creditDialogRef) {
-      this.creditDialogRef
-        .afterClosed()
-        .takeUntil(this.destroyed$)
-        .subscribe(result => {
-          // this.creditDialogRef = null;
-        });
+      this.creditDialogRef.afterClosed().subscribe(() => {
+        // this.creditDialogRef = null;
+      });
     }
   }
 
   toggleMobile() {
     this.store.dispatch(new uiActions.ToggleSideNavOpen());
-  }
-
-  ngOnDestroy() {
-    this.destroyed$.next();
   }
 }

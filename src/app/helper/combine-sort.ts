@@ -1,4 +1,4 @@
-const sortOther = function (a, b, sortBy, reverse) {
+const sortOther = function(a, b, sortBy, reverse) {
   let nameA = a[sortBy];
   let nameB = b[sortBy];
   if (reverse) {
@@ -20,14 +20,14 @@ const sortOther = function (a, b, sortBy, reverse) {
   return 0;
 };
 
-const sortString = function (a, b, sortBy, reverse) {
+const sortString = function(a, b, sortBy, reverse) {
   let nameA;
   let nameB;
-  a[sortBy] ? nameA = a[sortBy].toUpperCase() : nameA = a[sortBy];
-  b[sortBy] ? nameB = b[sortBy].toUpperCase() : nameB = b[sortBy];
+  a[sortBy] ? (nameA = a[sortBy].toUpperCase()) : (nameA = a[sortBy]);
+  b[sortBy] ? (nameB = b[sortBy].toUpperCase()) : (nameB = b[sortBy]);
   if (reverse) {
-    b[sortBy] ? nameA = b[sortBy].toUpperCase() : nameA = b[sortBy];
-    a[sortBy] ? nameB = a[sortBy].toUpperCase() : nameB = a[sortBy];
+    b[sortBy] ? (nameA = b[sortBy].toUpperCase()) : (nameA = b[sortBy]);
+    a[sortBy] ? (nameB = a[sortBy].toUpperCase()) : (nameB = a[sortBy]);
   }
   if (nameA < nameB) {
     return -1;
@@ -40,9 +40,9 @@ const sortString = function (a, b, sortBy, reverse) {
   return 0;
 };
 
-export function combineSort (sortBy: string | number, obj) {
-  if (!obj) return;
-  return obj.sort(function (a, b) {
+export function combineSort(sortBy: string | number, obj) {
+  if (!obj || !obj.sort) return;
+  return obj.sort(function(a, b) {
     if (!a || !b) return obj;
     if (typeof a[sortBy[0]] === 'string') return sortString(a, b, sortBy[0], sortBy[1]);
     return sortOther(a, b, sortBy[0], sortBy[1]);
