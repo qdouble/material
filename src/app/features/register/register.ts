@@ -26,16 +26,8 @@ import { GetIPInfoResponse } from '../../models/ui';
   templateUrl: './register.html',
   styleUrls: ['./register.scss'],
   encapsulation: ViewEncapsulation.Emulated,
-  animations: [
-    trigger('fade', [
-      transition('void => *', [
-        style({ opacity: 0 }),
-        animate(250)
-      ])
-    ])
-  ]
+  animations: [trigger('fade', [transition('void => *', [style({ opacity: 0 }), animate(250)])])]
 })
-
 export class Register implements OnDestroy, OnInit {
   blocked: true;
   config: MatDialogConfig = {
@@ -62,8 +54,8 @@ export class Register implements OnDestroy, OnInit {
   prizeIds$: Observable<(string | undefined)[]>;
   prizeNames$: Observable<(string | undefined)[]>;
   prizeLoaded$: Observable<boolean>;
-  RANDOM_NUM = Math.floor((Math.random() * 1000000) + 1);
-  RANDOM_EMAIL = `mockuser${this.RANDOM_NUM}@gmail.com`;
+  RANDOM_NUM = Math.floor(Math.random() * 1000000 + 1);
+  RANDOM_EMAIL = `mockUser${this.RANDOM_NUM}@gmail.com`;
   referredBy$: Observable<string | null>;
   selectedPrize$: Observable<string | null>;
   selectedPrize: string | null;
@@ -75,85 +67,107 @@ export class Register implements OnDestroy, OnInit {
     private store: Store<fromStore.AppState>,
     private userValidator: UsernameValidator
   ) {
-
-    this.f = new FormGroup({
-      referredBy: new FormControl(),
-      email: new FormControl(PUBLISH ? '' : `${this.RANDOM_EMAIL}`,
-        [Validators.required, Validators.pattern(RegexValues.email)]),
-      username: new FormControl(PUBLISH ? '' : `myUserName${this.RANDOM_NUM}`,
-        [Validators.required, Validators.pattern(RegexValues.username)],
-        <any>this.userValidator.usernameTaken),
-      password: new FormControl(PUBLISH ? '' : 'password',
-        [Validators.required, Validators.pattern(RegexValues.password)]),
-      confirmPassword: new FormControl(PUBLISH ? '' : 'password',
-        [Validators.required, Validators.pattern(RegexValues.password)]),
-      firstName: new FormControl(PUBLISH ? '' : 'John',
-        [Validators.required, Validators.pattern(RegexValues.nameValue)]),
-      lastName: new FormControl(PUBLISH ? '' : 'Doe',
-        [Validators.required, Validators.pattern(RegexValues.nameValue)]),
-      address: new FormControl(PUBLISH ? '' : '123 Street',
-        [Validators.required, Validators.pattern(RegexValues.address)]),
-      city: new FormControl(PUBLISH ? '' : 'myCity',
-        [Validators.required, Validators.pattern(RegexValues.address)]),
-      State: new FormControl(PUBLISH ? '' : 'Nevada',
-        [Validators.required, Validators.pattern(RegexValues.address)]),
-      zipCode: new FormControl(PUBLISH ? '' : '12345',
-        [Validators.required, Validators.pattern(RegexValues.zipCode)]),
-      country: new FormControl(PUBLISH ? '' : 'USA',
-        [Validators.required, Validators.pattern(RegexValues.address)]),
-      phone: new FormControl(PUBLISH ? '' : '305-837-2832',
-        [Validators.required, Validators.pattern(RegexValues.phone)]),
-      birthday: new FormControl(PUBLISH ? '' : '1999-01-01', Validators.required),
-      paypal: new FormControl(PUBLISH ? '' : `new${this.RANDOM_NUM}@user.com`,
-        Validators.pattern(RegexValues.email)),
-      agree: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
-      agree2: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
-      hidden: new FormControl(true),
-      selectedPrize: new FormControl(null),
-    }, Validators.compose(
-      [CustomValidators.compare('password', 'confirmPassword', 'comparePassword')
-      ]));
+    this.f = new FormGroup(
+      {
+        referredBy: new FormControl(),
+        email: new FormControl(PUBLISH ? '' : `${this.RANDOM_EMAIL}`, [
+          Validators.required,
+          Validators.pattern(RegexValues.email)
+        ]),
+        username: new FormControl(
+          PUBLISH ? '' : `myUserName${this.RANDOM_NUM}`,
+          [Validators.required, Validators.pattern(RegexValues.username)],
+          <any>this.userValidator.usernameTaken
+        ),
+        password: new FormControl(PUBLISH ? '' : 'password', [
+          Validators.required,
+          Validators.pattern(RegexValues.password)
+        ]),
+        confirmPassword: new FormControl(PUBLISH ? '' : 'password', [
+          Validators.required,
+          Validators.pattern(RegexValues.password)
+        ]),
+        firstName: new FormControl(PUBLISH ? '' : 'John', [
+          Validators.required,
+          Validators.pattern(RegexValues.nameValue)
+        ]),
+        lastName: new FormControl(PUBLISH ? '' : 'Doe', [
+          Validators.required,
+          Validators.pattern(RegexValues.nameValue)
+        ]),
+        address: new FormControl(PUBLISH ? '' : '123 Street', [
+          Validators.required,
+          Validators.pattern(RegexValues.address)
+        ]),
+        city: new FormControl(PUBLISH ? '' : 'myCity', [
+          Validators.required,
+          Validators.pattern(RegexValues.address)
+        ]),
+        State: new FormControl(PUBLISH ? '' : 'Nevada', [
+          Validators.required,
+          Validators.pattern(RegexValues.address)
+        ]),
+        zipCode: new FormControl(PUBLISH ? '' : '12345', [
+          Validators.required,
+          Validators.pattern(RegexValues.zipCode)
+        ]),
+        country: new FormControl(PUBLISH ? '' : 'USA', [
+          Validators.required,
+          Validators.pattern(RegexValues.address)
+        ]),
+        phone: new FormControl(PUBLISH ? '' : '305-837-2832', [
+          Validators.required,
+          Validators.pattern(RegexValues.phone)
+        ]),
+        birthday: new FormControl(PUBLISH ? '' : '1999-01-01', Validators.required),
+        paypal: new FormControl(
+          PUBLISH ? '' : `new${this.RANDOM_NUM}@user.com`,
+          Validators.pattern(RegexValues.email)
+        ),
+        agree: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
+        agree2: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
+        hidden: new FormControl(true),
+        selectedPrize: new FormControl(null)
+      },
+      Validators.compose([
+        CustomValidators.compare('password', 'confirmPassword', 'comparePassword')
+      ])
+    );
   }
 
   ngOnInit() {
     this.loading$ = this.store.pipe(select(fromStore.getUserLoading));
     this.invalidCountry$ = this.store.pipe(select(fromStore.getUIInvalidCountry));
     this.overrideInvalid$ = this.store.pipe(select(fromStore.getUIOverrideInvalidIp));
-    this.invalidCountry$
-      .takeUntil(this.destroyed$)
-      .subscribe(invalid => {
-        if (invalid) {
-          this.overrideInvalid$
-            .takeUntil(this.destroyed$)
-            .filter(o => o === '')
-            .subscribe(() => this.invalidCountry = true);
-        }
-      });
+    this.invalidCountry$.takeUntil(this.destroyed$).subscribe(invalid => {
+      if (invalid) {
+        this.overrideInvalid$
+          .takeUntil(this.destroyed$)
+          .filter(o => o === '')
+          .subscribe(() => (this.invalidCountry = true));
+      }
+    });
     this.ipInfo$ = this.store.pipe(select(fromStore.getUIIPInfo));
-    this.ipInfo$.takeUntil(this.destroyed$).subscribe(i => this.ipInfo = i);
+    this.ipInfo$.takeUntil(this.destroyed$).subscribe(i => (this.ipInfo = i));
     this.countryLoaded$ = this.store.pipe(select(fromStore.getCountryLoaded));
-    this.countryLoaded$
-      .takeUntil(this.destroyed$)
-      .subscribe(loaded => {
-        if (!loaded) this.store.dispatch(new countryActions.GetCountries());
-      });
+    this.countryLoaded$.takeUntil(this.destroyed$).subscribe(loaded => {
+      if (!loaded) this.store.dispatch(new countryActions.GetCountries());
+    });
     this.prizeLoaded$ = this.store.pipe(select(fromStore.getPrizeLoaded));
-    this.prizeLoaded$
-      .takeUntil(this.destroyed$)
-      .subscribe(loaded => {
-        if (!loaded) {
-          this.store.dispatch(new prizeActions.GetPrizes());
-        }
-      });
+    this.prizeLoaded$.takeUntil(this.destroyed$).subscribe(loaded => {
+      if (!loaded) {
+        this.store.dispatch(new prizeActions.GetPrizes());
+      }
+    });
     this.countryLoaded$ = this.store.pipe(select(fromStore.getCountryLoaded));
-    this.countryLoaded$
+    this.countryLoaded$.takeUntil(this.destroyed$).subscribe(loaded => {
+      if (!loaded) {
+        this.store.dispatch(new countryActions.GetCountries());
+      }
+    });
+    this.store
+      .pipe(select(fromStore.getUserReferrerBlocked))
       .takeUntil(this.destroyed$)
-      .subscribe(loaded => {
-        if (!loaded) {
-          this.store.dispatch(new countryActions.GetCountries());
-        }
-      });
-    this.store.pipe(select(fromStore.getUserReferrerBlocked)).takeUntil(this.destroyed$)
       .subscribe(blocked => {
         if (blocked) {
           this.blocked = true;
@@ -166,8 +180,9 @@ export class Register implements OnDestroy, OnInit {
       .take(1)
       .takeUntil(this.destroyed$)
       .subscribe(ids => this.f.get('country').setValue(ids[0]));
-    this.countryNames$ = this.countries$
-      .map(countries => countries.map(country => country.displayName));
+    this.countryNames$ = this.countries$.map(countries =>
+      countries.map(country => country.displayName)
+    );
     this.entryEmail$ = this.store.pipe(select(fromStore.getUserEntryEmail));
     this.entryEmail$
       .takeUntil(this.destroyed$)
@@ -205,11 +220,9 @@ export class Register implements OnDestroy, OnInit {
       }
     });
     this.selectedPrize$ = this.store.pipe(select(fromStore.getSelectedPrizeId));
-    this.selectedPrize$
-      .takeUntil(this.destroyed$)
-      .subscribe(id => {
-        if (id === null) this.showPrizes = true;
-      });
+    this.selectedPrize$.takeUntil(this.destroyed$).subscribe(id => {
+      if (id === null) this.showPrizes = true;
+    });
     this.prizeIds$
       .filter(ids => ids.length > 0)
       .takeUntil(this.destroyed$)
@@ -244,7 +257,6 @@ export class Register implements OnDestroy, OnInit {
         this.dialogRef = null;
       });
     }
-
   }
 
   submitForm() {
@@ -257,11 +269,12 @@ export class Register implements OnDestroy, OnInit {
         if (match) {
           this.openIPMatchDialog();
         } else {
-          this.store.dispatch(new userActions.Register(
-            {
+          this.store.dispatch(
+            new userActions.Register({
               ...this.f.value,
               ipInfo: this.ipInfo
-            }));
+            })
+          );
         }
       });
     this.store.dispatch(new userActions.CheckIPMatch(this.f.get('referredBy').value));

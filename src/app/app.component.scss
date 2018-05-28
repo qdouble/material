@@ -43,7 +43,7 @@
   background: #ffffff;
 }
 
-.ntfy-count-circle {
+.notify-count-circle {
   z-index: 1;
   position: absolute;
   top: 8px;
@@ -57,7 +57,7 @@
   cursor: pointer;
 }
 
-.ntfy-messages-circle {
+.notify-messages-circle {
   z-index: 1;
   position: absolute;
   top: 8px;
@@ -70,7 +70,7 @@
   border-radius: 9px;
 }
 
-.ntfy-number {
+.notify-number {
   color: white;
   font-weight: bold;
   font-size: 11.5px;
@@ -79,7 +79,7 @@
   margin-top: -7.5px;
 }
 
-.ntfy-nub {
+.notify-nub {
   position: absolute;
   left: 8px;
   top: 35px;
@@ -91,7 +91,7 @@
   border-bottom: 17px solid white;
 }
 
-.ntfy-drop {
+.notify-drop {
   position: absolute;
   z-index: 9999;
   width: 400px;
@@ -109,17 +109,17 @@
   }
 }
 
-.ntfy-drop-top {
+.notify-drop-top {
   width: 100%;
   height: 50px;
   background: white;
   font-size: 14px;
-  .ntfy-label {
+  .notify-label {
     position: relative;
     top: 15px;
     left: 14px;
   }
-  .ntfy-options {
+  .notify-options {
     position: relative;
     left: 290px;
     top: -5px;
@@ -132,7 +132,7 @@
   }
 }
 
-.ntfy-drop-bottom {
+.notify-drop-bottom {
   position: absolute;
   top: 370px;
   width: 100%;
@@ -143,7 +143,7 @@
   @media screen and (max-width: 500px) {
     top: 270px;
   }
-  .ntfy-see-all {
+  .notify-see-all {
     position: relative;
     top: 4px;
     font-weight: 600;
