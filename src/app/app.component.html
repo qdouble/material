@@ -1,5 +1,5 @@
 <mat-sidenav-container id="offer-site" fullscreen>
-  <mat-sidenav [opened]="!mobile && !(onAdminLoginPage$ | async)" #sidenav [mode]="sideNavMode">
+  <mat-sidenav [opened]="!mobile && !onAdminLoginPage" #sidenav [mode]="sideNavMode">
     <div [ngClass]="{'os-sidenav-top': !loggedIn, 'os-sidenav-top-l': loggedIn}"></div>
     <mat-nav-list>
       <ng-template ngFor let-view [ngForOf]="views" let-even="even" let-odd="odd" let-rowIndex="index">

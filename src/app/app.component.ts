@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -46,7 +46,8 @@ import { ProofSnackbarComponent } from './snackbars/proof.snackbar.component';
   selector: 'my-app',
   styleUrls: ['main.scss', './app.component.scss'],
   templateUrl: './app.component.html',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
   showMonitor = ENV === 'development' && !AOT && ['monitor', 'both'].includes(STORE_DEV_TOOLS);
