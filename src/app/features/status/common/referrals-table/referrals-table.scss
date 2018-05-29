@@ -3,6 +3,11 @@
   margin: 0 auto;
 }
 
+.primary-bold {
+  color: #8bc34a;
+  font-weight: bold;
+}
+
 #green-key {
   background: green;
   width: 14px;
@@ -63,4 +68,12 @@
   .short-username {
     display: none
   }
+}
+
+.mat-cell, .mat-header-cell { 
+  text-align: center; 
+}
+
+.highlight{
+  background: #f3f3f3;
 }
