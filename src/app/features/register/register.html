@@ -5,7 +5,9 @@
   <mat-card class="os-form-container">
     <form [formGroup]="f" (ngSubmit)="submitForm()">
       <div [hidden]="step === 2" *ngIf="!invalidCountry" @fade>
-        <mat-card-subtitle><b>Only accepting residents of the USA, Canada, UK and Australia.</b></mat-card-subtitle>
+        <mat-card-subtitle>
+          <b>Only accepting residents of the USA, Canada, UK and Australia.</b>
+        </mat-card-subtitle>
         <mat-card-subtitle>Step 1: Enter Account Information</mat-card-subtitle>
         <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
         <os-form-input class="os-form-input" type="text" controlName="username" placeholder="Username" [form]="f"></os-form-input>
@@ -39,7 +41,7 @@
           <input type="date" formControlName="birthday" class="form-control">
         </div>
         <div>
-          <label>How would you like to recieve your prize?</label>
+          <label>How would you like to receive your prize?</label>
           <select-input *ngIf="showPrizes" class="receive-prize" fullWidth="true" [optionValues]="prizeIds$ | async" [optionLabels]="prizeNames$ | async"
             [controlName]="'selectedPrize'" [form]="f">
           </select-input>
@@ -48,7 +50,9 @@
           [form]="f">
         </os-form-input>
         <div class="os-agree-checkbox">
-          <mat-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the <a routerLink="../terms-and-conditions">Terms and Conditions</a></mat-checkbox>
+          <mat-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the
+            <a routerLink="../terms-and-conditions">Terms and Conditions</a>
+          </mat-checkbox>
           <mat-checkbox color="primary" formControlName="agree2" type="checkbox">I am aware that only one account per household is allowed</mat-checkbox>
         </div>
       </div>
@@ -59,13 +63,16 @@
       <div class="warn invalid-country-text" *ngIf="invalidCountry">
         <p>Your country is not supported</p>
         <p>Available to US, UK, Canada and Australia residents only.</p>
-        <p class="proxy-warn">Please note that attempting to get around country restrictions by using a VPN or proxy to register or complete offers will lead to your account being placed on hold or closed after account verification.</p>
+        <p class="proxy-warn">Please note that attempting to get around country restrictions by using a VPN or proxy to register or complete offers
+          will lead to your account being placed on hold or closed after account verification.</p>
       </div>
       <ng-container *ngIf="!invalidCountry">
-          <p class="go-back" *ngIf="step === 2" (click)="step = 1"><a>Go Back to Step 1</a></p>
-          <p id="referred-by" *ngIf="f.get('referredBy').value">
-            You are being referred by: {{f.get('referredBy').value}}
-          </p>
+        <p class="go-back" *ngIf="step === 2" (click)="step = 1">
+          <a>Go Back to Step 1</a>
+        </p>
+        <p id="referred-by" *ngIf="f.get('referredBy').value">
+          You are being referred by: {{f.get('referredBy').value}}
+        </p>
       </ng-container>
     </form>
   </mat-card>

@@ -5,7 +5,7 @@ import {
   MatCardModule,
   MatCheckboxModule,
   // MatChipsModule,
-  // MatDatepickerModule,
+  MatDatepickerModule,
   MatDialogModule,
   MatFormFieldModule,
   // MatGridListModule,
@@ -25,7 +25,7 @@ import {
   MatSnackBarModule,
   // MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule,
+  MatTooltipModule
   // MatNativeDateModule,
 } from '@angular/material';
 export const MATERIAL_MODULES = [
@@ -35,7 +35,7 @@ export const MATERIAL_MODULES = [
   MatCardModule,
   MatCheckboxModule,
   // MatChipsModule,
-  // MatDatepickerModule,
+  MatDatepickerModule,
   MatDialogModule,
   MatFormFieldModule,
   // MatGridListModule,
@@ -55,6 +55,6 @@ export const MATERIAL_MODULES = [
   MatSnackBarModule,
   // MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule,
+  MatTooltipModule
   // MatNativeDateModule,
 ];
