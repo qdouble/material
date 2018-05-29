@@ -4,11 +4,12 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'select-input',
   templateUrl: './select-input.html',
-  styles: [` mat-select { position: relative; top: -6px; }
-  mat-select { overflow: hidden; } .form-group { display: flex; }
-  .full-width { width: 100% }`]
+  styles: [
+    `
+  mat-select { position: relative; top: 4px; }
+  .full-width { width: 100% }`
+  ]
 })
-
 export class SelectInput implements OnInit {
   @Input() center: boolean;
   @Input() form: FormGroup;
@@ -17,7 +18,7 @@ export class SelectInput implements OnInit {
   @Input() optionValues: (string | number)[];
   @Input() optionLabels: string[];
   @Input() help: string;
-  @Input() label: string;
+  @Input() placeholder: string;
   @Input() submit: string;
   @Input() width: string;
   dynamicControl: AbstractControl;
@@ -25,5 +26,4 @@ export class SelectInput implements OnInit {
   ngOnInit() {
     this.dynamicControl = this.form.get(this.controlName);
   }
-  sayHello() { }
 }

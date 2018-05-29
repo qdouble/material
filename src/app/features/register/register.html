@@ -32,18 +32,18 @@
         <os-form-input class="os-form-input" type="text" controlName="city" placeholder="City" [form]="f"></os-form-input>
         <os-form-input class="os-form-input" type="text" controlName="State" placeholder="State" [form]="f"></os-form-input>
         <os-form-input class="os-form-input" type="text" controlName="zipCode" placeholder="Zip Code" [form]="f"></os-form-input>
-        <select-input [label]="'Country'" [optionValues]="countryIds$ | async" [optionLabels]="countryNames$ | async" [controlName]="'country'"
-          [form]="f">
+        <select-input [optionValues]="countryIds$ | async" [optionLabels]="countryNames$ | async" [controlName]="'country'" [form]="f"
+          fullWidth="true" [placeholder]="'Select Country'">
         </select-input>
         <os-form-input class="os-form-input" type="text" controlName="phone" placeholder="Phone Number" [form]="f"></os-form-input>
-        <div class="form-group">
-          <label>Date of Birth</label>
-          <input type="date" formControlName="birthday" class="form-control">
-        </div>
+        <mat-form-field style="width: 100%">
+          <input matInput formControlName="birthday" [matDatepicker]="picker" [min]="minDate" [max]="maxDate" placeholder="Date of Birth: MM/DD/YYYY">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker touchUi="true" #picker></mat-datepicker>
+        </mat-form-field>
         <div>
-          <label>How would you like to receive your prize?</label>
           <select-input *ngIf="showPrizes" class="receive-prize" fullWidth="true" [optionValues]="prizeIds$ | async" [optionLabels]="prizeNames$ | async"
-            [controlName]="'selectedPrize'" [form]="f">
+            placeholder="How would you like to receive your prize?" [controlName]="'selectedPrize'" [form]="f">
           </select-input>
         </div>
         <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address'" [controlName]="'paypal'"

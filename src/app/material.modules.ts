@@ -25,8 +25,8 @@ import {
   MatSnackBarModule,
   // MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule
-  // MatNativeDateModule,
+  MatTooltipModule,
+  MatNativeDateModule
 } from '@angular/material';
 export const MATERIAL_MODULES = [
   // MatAutocompleteModule,
@@ -55,6 +55,6 @@ export const MATERIAL_MODULES = [
   MatSnackBarModule,
   // MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule
-  // MatNativeDateModule,
+  MatTooltipModule,
+  MatNativeDateModule
 ];

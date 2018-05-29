@@ -49,6 +49,12 @@ export class Register implements OnDestroy, OnInit {
   ipInfo: GetIPInfoResponse;
   ipInfo$: Observable<GetIPInfoResponse>;
   loading$: Observable<boolean>;
+  now = new Date();
+  year = this.now.getFullYear();
+  month = this.now.getMonth();
+  day = this.now.getDate();
+  minDate = new Date(this.year - 130, this.month, this.day);
+  maxDate = new Date(this.year - 16, this.month, this.day);
   overrideInvalid$: Observable<string>;
   prizes$: Observable<Prize[]>;
   prizeIds$: Observable<(string | undefined)[]>;

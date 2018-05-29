@@ -1,22 +1,17 @@
-import {
-  Component, Input, OnInit,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'os-form-input',
   templateUrl: './form-input.html',
-  styles: [` mat-input-container { width: 100% } `],
+  styles: [` mat-form-field { width: 100% } `],
   encapsulation: ViewEncapsulation.Emulated
 })
-
 export class FormInput implements OnInit {
   @Input() autofocus: boolean;
   @Input() autocomplete: 'off' | null = null;
   @Input() form: FormGroup;
   @Input() controlName: string;
-  @Input() label: string;
   @Input() error: string;
   @Input() name: string;
   @Input() placeholder: string;

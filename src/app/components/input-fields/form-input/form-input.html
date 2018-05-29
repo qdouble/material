@@ -1,15 +1,7 @@
-<div class="form-group mat-input-container">
-  <label *ngIf="label">{{label}}</label>
-  <mat-input-container [color]="dynamicControl.valid ? 'primary' : 'warn'" >
-    <input matInput (keyup.enter)="$event.target.blur()" 
-    [type]="type" 
-    [autocomplete]="autocomplete"
-    [placeholder]=[placeholder] 
-    [formControl]="dynamicControl"
-    [autofocus]="autofocus ? true : null"
-    >
-    <mat-hint *ngIf="dynamicControl.touched && dynamicControl.hasError('required')" class="warn" align="start">{{ name || placeholder }} is required</mat-hint>
-    <mat-hint *ngIf="dynamicControl.touched && dynamicControl.invalid && !dynamicControl.hasError('required')" class="warn" align="start">{{ name || placeholder }} is invalid</mat-hint>
-  </mat-input-container>
-  <button mat-raised-button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
-</div>
+<mat-form-field [color]="dynamicControl.valid ? 'primary' : 'warn'">
+  <input matInput (keyup.enter)="$event.target.blur()" [type]="type" [autocomplete]="autocomplete" [placeholder]=[placeholder]
+    [formControl]="dynamicControl" [autofocus]="autofocus ? true : null">
+  <mat-hint *ngIf="dynamicControl.touched && dynamicControl.hasError('required')" class="warn" align="start">{{ name || placeholder }} is required</mat-hint>
+  <mat-hint *ngIf="dynamicControl.touched && dynamicControl.invalid && !dynamicControl.hasError('required')" class="warn" align="start">{{ name || placeholder }} is invalid</mat-hint>
+</mat-form-field>
+<button mat-raised-button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>

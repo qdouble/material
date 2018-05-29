@@ -1,16 +1,11 @@
 @import '../../variables';
-
-.form-group, .os-form-input { 
-  margin-bottom: 6px; 
+.form-group,
+.os-form-input {
+  margin-bottom: 6px;
 }
 
 .os-form-container {
   border-top: 5px solid $primary-color;
-}
-
-mat-checkbox {
-  display: block;
-  margin: 8px auto 6px;
 }
 
 #pending-changes {

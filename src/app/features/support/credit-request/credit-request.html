@@ -31,7 +31,7 @@
         
         <form *ngIf="!view || creditRequest?.status === 'More Information Needed'" [formGroup]="f" (ngSubmit)="submitRequest(f.value)">
           <ng-container *ngIf="!view">
-            <select-input controlName="offerId" label="Completed Offer: " [fullWidth]="true" [optionValues]="offerIds$ | async" [optionLabels]="offerNames$ | async"
+            <select-input controlName="offerId" placeholder="Completed Offer: " [fullWidth]="true" [optionValues]="offerIds$ | async" [optionLabels]="offerNames$ | async"
               [form]="f"></select-input>   
           </ng-container>
           <ng-container *ngIf="!(offer$ | async) || (offer$ | async).allowCreditRequests">
