@@ -1,4 +1,4 @@
-// Routes with html5pushstate
+// Routes with html5 push state
 // ensure routes match client-side-app
 export const routes: string[] = [
   '',

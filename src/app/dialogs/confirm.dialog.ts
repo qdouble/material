@@ -18,7 +18,8 @@ import { openInNewTab } from '../helper/open-in-new-tab';
       <button type="button" class="white" mat-raised-button color="primary" (click)="dialogRef.close(true)">OK</button>
     </div>
   </div>`,
-  styles: [`.confirm-dialog{ text-align: center; max-width: 400px; }
+  styles: [
+    `.confirm-dialog{ text-align: center; max-width: 400px; }
   .confirm-dialog h5 { margin: 0 0 10px !important; word-wrap:break-word; font-size: 18px; }
   .button-row { margin-top: 5px; }
   `
@@ -31,7 +32,7 @@ export class ConfirmDialog {
   subtext: string;
   subtextColor = 'black';
   url: string;
-  constructor(public dialogRef: MatDialogRef<ConfirmDialog>) { }
+  constructor(public dialogRef: MatDialogRef<ConfirmDialog>) {}
   openLink() {
     openInNewTab(this.url);
   }

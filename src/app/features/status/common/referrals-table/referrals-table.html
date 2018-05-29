@@ -21,7 +21,9 @@
               <ng-container *ngIf="!referral?.hold">
                 <span>{{referral?.currentLevel}}</span>
                 <ng-container *ngIf="referral?.payBeyondLevel < referral?.currentLevel">
-                  <span><b>({{ referral?.currentLevel - referral?.payBeyondLevel }})</b></span>
+                  <span>
+                    <b>({{ referral?.currentLevel - referral?.payBeyondLevel }})</b>
+                  </span>
                 </ng-container>
               </ng-container>
               <ng-container *ngIf="referral.hold">Hold</ng-container>

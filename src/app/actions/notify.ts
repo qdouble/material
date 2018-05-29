@@ -11,22 +11,19 @@ export enum NotifyActionTypes {
 export class AddNotify<T extends Notify> implements Action {
   readonly type = NotifyActionTypes.AddNotify;
 
-  constructor(public payload: T) { }
+  constructor(public payload: T) {}
 }
 
 export class DeleteNotify implements Action {
   readonly type = NotifyActionTypes.DeleteNotify;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class Select implements Action {
   readonly type = NotifyActionTypes.Select;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
-export type NotifyActions =
-  | AddNotify<any>
-  | DeleteNotify
-  | Select;
+export type NotifyActions = AddNotify<any> | DeleteNotify | Select;

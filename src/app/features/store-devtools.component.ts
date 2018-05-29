@@ -4,11 +4,12 @@ import { Component, ViewEncapsulation } from '@angular/core';
   selector: 'os-store-devtools',
   templateUrl: './store-devtools.component.html',
   encapsulation: ViewEncapsulation.None,
-  styles: [`
+  styles: [
+    `
   mat-sidenav-container {
     width: 70% !important;
   }
-  `]
+  `
+  ]
 })
-
 export class StoreDevToolsComponent {}

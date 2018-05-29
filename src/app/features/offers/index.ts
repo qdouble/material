@@ -34,5 +34,4 @@ import { routes } from './offers.routing';
     Offers
   ]
 })
-
-export class OffersModule { }
+export class OffersModule {}

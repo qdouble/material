@@ -14,25 +14,26 @@ import { RegexValues } from '../../validators';
   templateUrl: './password-reset.html',
   styleUrls: ['./password-reset.scss']
 })
-
 export class PasswordReset implements OnInit {
   f: FormGroup;
   loading$: Observable<boolean>;
 
-  constructor(
-    private route: ActivatedRoute,
-    private store: Store<AppState>
-  ) { }
+  constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
 
   ngOnInit() {
     this.route.queryParams.forEach(params => {
-      this.f = new FormGroup({
-        email: new FormControl(params['email'], [Validators.required,
-        Validators.pattern(RegexValues.email)]),
-        code: new FormControl(params['code'], [Validators.required]),
-        password: new FormControl(PUBLISH ? '' : 'password', Validators.required),
-        confirmPassword: new FormControl(PUBLISH ? '' : 'password', Validators.required)
-      }, CustomValidators.compare('password', 'confirmPassword', 'comparePassword'));
+      this.f = new FormGroup(
+        {
+          email: new FormControl(params['email'], [
+            Validators.required,
+            Validators.pattern(RegexValues.email)
+          ]),
+          code: new FormControl(params['code'], [Validators.required]),
+          password: new FormControl(PUBLISH ? '' : 'password', Validators.required),
+          confirmPassword: new FormControl(PUBLISH ? '' : 'password', Validators.required)
+        },
+        CustomValidators.compare('password', 'confirmPassword', 'comparePassword')
+      );
     });
     this.loading$ = this.store.select(s => s.user.loading);
   }

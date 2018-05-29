@@ -1,5 +1,3 @@
 import { ProofSnackbarComponent } from './proof.snackbar.component';
 
-export const SNACKBARS = [
-  ProofSnackbarComponent
-];
+export const SNACKBARS = [ProofSnackbarComponent];

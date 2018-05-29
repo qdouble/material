@@ -12,7 +12,6 @@ import { SelectedPrizeModule } from '../status/common/selected-prize';
 import { OrderComponent } from './order';
 import { OrderFormComponent, OrderTableComponent } from './common';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -24,11 +23,6 @@ import { OrderFormComponent, OrderTableComponent } from './common';
     SelectInputModule,
     SelectedPrizeModule
   ],
-  declarations: [
-    OrderComponent,
-    OrderFormComponent,
-    OrderTableComponent
-  ]
+  declarations: [OrderComponent, OrderFormComponent, OrderTableComponent]
 })
-
-export class OrderModule { }
+export class OrderModule {}

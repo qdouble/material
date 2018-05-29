@@ -18,9 +18,15 @@
       <ng-content select="[offer-card-image]" mat-card-image></ng-content>
     </div>
     <mat-card-content style="height: 60px;">
-      <div>Credit Value: <ng-content select="[offer-card-value]"></ng-content></div>
-      <div>Cost: <ng-content select="[offer-card-cost]"></ng-content></div>
-      <div>Credits: <ng-content select="[offer-card-credits]"></ng-content></div>
+      <div>Credit Value:
+        <ng-content select="[offer-card-value]"></ng-content>
+      </div>
+      <div>Cost:
+        <ng-content select="[offer-card-cost]"></ng-content>
+      </div>
+      <div>Credits:
+        <ng-content select="[offer-card-credits]"></ng-content>
+      </div>
     </mat-card-content>
-</div>
+  </div>
 </mat-card>

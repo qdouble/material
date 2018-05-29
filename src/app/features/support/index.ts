@@ -42,5 +42,4 @@ import { routes } from './support.routing';
     ViewTicket
   ]
 })
-
-export class SupportModule { }
+export class SupportModule {}

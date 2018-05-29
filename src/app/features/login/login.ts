@@ -14,16 +14,8 @@ import { RegexValues } from '../../validators';
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
   encapsulation: ViewEncapsulation.Emulated,
-  animations: [
-    trigger('fade', [
-      transition('void => *', [
-        style({ opacity: 0 }),
-        animate(250)
-      ])
-    ])
-  ]
+  animations: [trigger('fade', [transition('void => *', [style({ opacity: 0 }), animate(250)])])]
 })
-
 export class Login implements OnDestroy {
   destroyed$: Subject<any> = new Subject<any>();
   entryEmail$: Observable<string | null>;
@@ -39,9 +31,7 @@ export class Login implements OnDestroy {
     password: new FormControl(PUBLISH ? '' : 'password', Validators.required)
   });
 
-  constructor(
-    private store: Store<fromStore.AppState>
-  ) {
+  constructor(private store: Store<fromStore.AppState>) {
     this.entryEmail$ = store.pipe(select(fromStore.getUserEntryEmail));
     this.entryEmail$.take(1).subscribe(email => {
       if (email) this.f.get('email').setValue(email);
@@ -66,8 +56,10 @@ export class Login implements OnDestroy {
       email: this.f.value['email'].replace(/\s/g, ''),
       password: this.f.value['password'].replace(/\s/g, '')
     });
-    this.f.setValue({email: this.f.value['email'].replace(/\s/g, ''),
-     password: this.f.value['password'].replace(/\s/g, '')});
+    this.f.setValue({
+      email: this.f.value['email'].replace(/\s/g, ''),
+      password: this.f.value['password'].replace(/\s/g, '')
+    });
     if (this.forgotPassword) {
       this.store.dispatch(new userActions.ForgotPassword(this.f.value['email']));
       this.resetEmailSent$

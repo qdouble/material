@@ -1,6 +1,11 @@
 import {
-  Component, EventEmitter, Input, OnChanges, OnInit,
-  Output, SimpleChanges
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
 } from '@angular/core';
 
 @Component({
@@ -27,7 +32,6 @@ import {
   `,
   styles: [`:host >>> .mat-button-toggle-label-content {padding: 0 9px;}`]
 })
-
 export class PagesComponent implements OnChanges, OnInit {
   pages: number[] = [];
   @Input() hideAll: boolean;
@@ -49,7 +53,7 @@ export class PagesComponent implements OnChanges, OnInit {
         this.pages.push(i + 1);
       }
     }
-    if (changes['selectedPage'] && changes['selectedPage'].currentValue !== this.selectedPage ) {
+    if (changes['selectedPage'] && changes['selectedPage'].currentValue !== this.selectedPage) {
       this.selectedPage = changes['selectedPage'].currentValue;
     }
   }

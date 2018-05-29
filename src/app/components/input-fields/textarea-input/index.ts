@@ -7,13 +7,8 @@ import { MATERIAL_MODULES } from '../../../material.modules';
 import { TextareaInput } from './textarea-input';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MATERIAL_MODULES
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MATERIAL_MODULES],
   declarations: [TextareaInput],
   exports: [TextareaInput]
 })
-
-export class TextareaInputModule { }
+export class TextareaInputModule {}

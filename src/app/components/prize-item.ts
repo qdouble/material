@@ -1,6 +1,11 @@
 import {
-  ChangeDetectionStrategy, Component, EventEmitter,
-  Input, OnChanges, Output, SimpleChanges
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
@@ -9,7 +14,8 @@ import { Prize } from '../models/prize';
 @Component({
   selector: 'prize-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [`
+  styles: [
+    `
   .prize-item {
     display: inline-block;
     text-align: center;
@@ -18,7 +24,6 @@ import { Prize } from '../models/prize';
   ],
   templateUrl: './prize-item.html'
 })
-
 export class PrizeItem implements OnChanges {
   @Input() currentPrize;
   @Input() form: FormGroup;

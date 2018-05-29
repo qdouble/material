@@ -13,5 +13,4 @@ export class SanityComp {
   imports: [CommonModule],
   declarations: [SanityComp]
 })
-
 export class SanityModule {}

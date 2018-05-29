@@ -1,62 +1,80 @@
 <mat-card class="os-page-container">
   <div class="os-support-tickets-table-container">
     <mat-card class="os-new-support-ticket">
-      <button mat-button class="back-button" [routerLink]="['..']"><mat-icon>navigate_before</mat-icon>BACK TO SUPPORT PAGE</button>
+      <button mat-button class="back-button" [routerLink]="['..']">
+        <mat-icon>navigate_before</mat-icon>BACK TO SUPPORT PAGE</button>
       <mat-card-title class="primary">{{ view ? 'Credit Request' : 'New Credit Request' }}</mat-card-title>
-      
-        <div class="credit-request-details" *ngIf="view">
-          <p>Offer: {{creditRequest?.offerName}}</p>
-          <p>Completed On: {{creditRequest?.completedOn | slice: 0:10}}</p>
-          <p>Status: {{creditRequest?.status}}</p>
-          <p *ngIf="creditRequest?.userNotes && creditRequest?.status === 'More Information Needed'">Message from Admin:</p>
-          <pre>{{creditRequest?.userNotes}}</pre>
 
-          <div *ngIf="creditRequest?.status !== 'More Information Needed'">
-            <p class="p2">&nbsp;</p>
-            <p class="underline">Confirmation Email Headers</p>
-            <p>{{creditRequest?.headers}}</p>
-            <p class="p2">&nbsp;</p>
-            <p class="underline">Confirmation Email Body</p>
-            <p>{{creditRequest?.body}}</p>
-            <p class="p2">&nbsp;</p>
-            <p class="underline">Additional Details</p>
-            <p>{{creditRequest?.additionalDetails}}</p>
-          </div>
+      <div class="credit-request-details" *ngIf="view">
+        <p>Offer: {{creditRequest?.offerName}}</p>
+        <p>Completed On: {{creditRequest?.completedOn | slice: 0:10}}</p>
+        <p>Status: {{creditRequest?.status}}</p>
+        <p *ngIf="creditRequest?.userNotes && creditRequest?.status === 'More Information Needed'">Message from Admin:</p>
+        <pre>{{creditRequest?.userNotes}}</pre>
+
+        <div *ngIf="creditRequest?.status !== 'More Information Needed'">
+          <p class="p2">&nbsp;</p>
+          <p class="underline">Confirmation Email Headers</p>
+          <p>{{creditRequest?.headers}}</p>
+          <p class="p2">&nbsp;</p>
+          <p class="underline">Confirmation Email Body</p>
+          <p>{{creditRequest?.body}}</p>
+          <p class="p2">&nbsp;</p>
+          <p class="underline">Additional Details</p>
+          <p>{{creditRequest?.additionalDetails}}</p>
         </div>
-        <mat-card *ngIf="!view" class="os-message-card" id="request-card-instructions">
-          Please include all header information from your confirmation e-mail. E-mail headers typically include information such as
-          <b>Return-Path, Received, Date, Message-Id, To, From, Subject, etc.</b> If you're using a web based e-mail client
-          you may need to change your configuration in order to see the full header information.
-        </mat-card>
-        
-        <form *ngIf="!view || creditRequest?.status === 'More Information Needed'" [formGroup]="f" (ngSubmit)="submitRequest(f.value)">
-          <ng-container *ngIf="!view">
-            <select-input controlName="offerId" placeholder="Completed Offer: " [fullWidth]="true" [optionValues]="offerIds$ | async" [optionLabels]="offerNames$ | async"
-              [form]="f"></select-input>   
-          </ng-container>
-          <ng-container *ngIf="!(offer$ | async) || (offer$ | async).allowCreditRequests">
-            <label>Date Completed:</label> <input type="date" id="myDate" formControlName="completedOn">
-            <mat-input-container>
-              <textarea matInput [rows]="6" placeholder="Confirmation Email Headers" formControlName="headers"></textarea>
-            </mat-input-container><br>
-            <mat-input-container>
-              <textarea matInput [rows]="6" placeholder="Confirmation Email Body" formControlName="body"></textarea>
-            </mat-input-container><br>
-            <mat-input-container>
-              <textarea matInput [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></textarea>
-            </mat-input-container><br>
-            <button mat-raised-button class="white" color="primary" [disabled]="f.invalid || disableButton">{{ view ? 'UPDATE CREDIT REQUEST' : 'SUBMIT CREDIT REQUEST' }}</button>
+      </div>
+      <mat-card *ngIf="!view" class="os-message-card" id="request-card-instructions">
+        Please include all header information from your confirmation e-mail. E-mail headers typically include information such as
+        <b>Return-Path, Received, Date, Message-Id, To, From, Subject, etc.</b> If you're using a web based e-mail client you
+        may need to change your configuration in order to see the full header information.
+      </mat-card>
+
+      <form *ngIf="!view || creditRequest?.status === 'More Information Needed'" [formGroup]="f" (ngSubmit)="submitRequest(f.value)">
+        <ng-container *ngIf="!view">
+          <select-input controlName="offerId" placeholder="Completed Offer: " [fullWidth]="true" [optionValues]="offerIds$ | async"
+            [optionLabels]="offerNames$ | async" [form]="f"></select-input>
         </ng-container>
-        </form>
-      
+        <ng-container *ngIf="!(offer$ | async) || (offer$ | async).allowCreditRequests">
+          <label>Date Completed:</label>
+          <input type="date" id="myDate" formControlName="completedOn">
+          <mat-input-container>
+            <textarea matInput [rows]="6" placeholder="Confirmation Email Headers" formControlName="headers"></textarea>
+          </mat-input-container>
+          <br>
+          <mat-input-container>
+            <textarea matInput [rows]="6" placeholder="Confirmation Email Body" formControlName="body"></textarea>
+          </mat-input-container>
+          <br>
+          <mat-input-container>
+            <textarea matInput [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></textarea>
+          </mat-input-container>
+          <br>
+          <button mat-raised-button class="white" color="primary" [disabled]="f.invalid || disableButton">{{ view ? 'UPDATE CREDIT REQUEST' : 'SUBMIT CREDIT REQUEST' }}</button>
+        </ng-container>
+      </form>
+
       <ng-container *ngIf="(offer$ | async) && !(offer$ | async).allowCreditRequests">
-        <h6>As stated on the checkbox members check before clicking "CONTINUE WITH THIS OFFER", <b>missing credit requests are not accepted/allowed for <u>{{(offer$ | async).displayName}}.</u></b></h6>
+        <h6>As stated on the checkbox members check before clicking "CONTINUE WITH THIS OFFER",
+          <b>missing credit requests are not accepted/allowed for
+            <u>{{(offer$ | async).displayName}}.</u>
+          </b>
+        </h6>
         <ul>
-          <li>Check the crediting time of the offer on the offers page. Even if it says quickly, still allow up to six hours before it credits.</li>
-          <li>Make sure that you have fully read and completed the offer according to the offer's requirements including, but not limited to, creating your profile with the offer and fully trying the service. Also check if there are any confirmation emails with links or anything else that you need to confirm.</li>
-          <li>If you have done all those things and the offer has still not credited, then the best thing to do is to cancel the offer if you don't want to keep it and try something else.</li>
-          <li>We do not get paid when a user does not receive credit and do not want our members to experience crediting issues, but as the offers are done on the advertiser's website and members have to be deemed valid leads, we have no control over it and can not know the exact reason why it did not credit.</li>
-          <li>Advertisers only credit what they deem to be a valid lead, so unless there is a tracking issue the offer should credit if you followed the terms and conditons and our crediting guidelines: <a [routerLink]="['/crediting-guidelines']">https://levelrewards/crediting-guidelines</a></li>
+          <li>Check the crediting time of the offer on the offers page. Even if it says quickly, still allow up to six hours
+            before it credits.</li>
+          <li>Make sure that you have fully read and completed the offer according to the offer's requirements including, but
+            not limited to, creating your profile with the offer and fully trying the service. Also check if there are any
+            confirmation emails with links or anything else that you need to confirm.</li>
+          <li>If you have done all those things and the offer has still not credited, then the best thing to do is to cancel
+            the offer if you don't want to keep it and try something else.</li>
+          <li>We do not get paid when a user does not receive credit and do not want our members to experience crediting issues,
+            but as the offers are done on the advertiser's website and members have to be deemed valid leads, we have no
+            control over it and can not know the exact reason why it did not credit.</li>
+          <li>Advertisers only credit what they deem to be a valid lead, so unless there is a tracking issue the offer should
+            credit if you followed the terms and conditions and our crediting guidelines:
+            <a [routerLink]="['/crediting-guidelines']">https://levelrewards/crediting-guidelines</a>
+          </li>
         </ul>
       </ng-container>
     </mat-card>

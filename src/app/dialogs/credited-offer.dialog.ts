@@ -8,12 +8,12 @@ import { Offer } from '../models/offer';
   selector: 'os-credited-offer-dialog',
   template: `
   <div class="credited-offer-dialog">
-    <h5><b>{{offer.unconfirmed ? 'Confirmaton Required' : 'Congratulations!'}}</b></h5>
+    <h5><b>{{offer.unconfirmed ? 'Confirmation Required' : 'Congratulations!'}}</b></h5>
     <h6 class="offer-details" *ngIf="!offer.unconfirmed">
       You've Received {{offer.creditValue | number: '1.2-2'}} Credits for {{offer.displayName}}!
     </h6>
     <h6 class="offer-details" *ngIf="offer.unconfirmed">
-      {{offer.displayName}} requires confirmation for you to fully recieve credit.
+      {{offer.displayName}} requires confirmation for you to fully receive credit.
     </h6>
     <div><img class="os-offer-card-image" [src]="publish ? 'https://levelrewards.com/images/offer-images/' + offer.filename : (offer.directImageURL?.length > 1 ? offer.directImageURL : offer.imageURL)" [alt]="offer.displayName"></div>
     <div *ngIf="offer.unconfirmed">
@@ -33,13 +33,15 @@ import { Offer } from '../models/offer';
       <pre class="main-text" *ngIf="offer.reminder">{{offer.reminder}}</pre>
     </ng-container>
   </div>`,
-  styles: [`.credited-offer-dialog{ text-align: center; max-width: 460px; }
+  styles: [
+    `.credited-offer-dialog{ text-align: center; max-width: 460px; }
   .os-offer-card-image { max-height: 100px; max-width: 200px; } h5, h6 { margin: 0 } h5 { color: #638b35 }
   .main-text{ font-weight: bold; font-size: 13px; margin-top: 10px; }
   .credited-offer-dialog button { margin-top: 5px; width: 100%; }
   .need-credits, .offer-unconfirmed {font-size: 15px;}
   .confirmation-directions {font-size: 14px; text-align: justify; margin-top: 4px; }
-  `]
+  `
+  ]
 })
 export class CreditedOfferDialog implements OnInit {
   creditsTotal = 0;
@@ -47,7 +49,7 @@ export class CreditedOfferDialog implements OnInit {
   publish = PUBLISH;
   needCredits = 0;
   nextLevel = 0;
-  constructor(public dialogRef: MatDialogRef<CreditedOfferDialog>) { }
+  constructor(public dialogRef: MatDialogRef<CreditedOfferDialog>) {}
   ngOnInit() {
     this.nextLevel = Math.ceil(this.creditsTotal);
     this.needCredits = Math.ceil(this.creditsTotal) - this.creditsTotal;

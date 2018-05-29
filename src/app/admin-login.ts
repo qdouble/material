@@ -28,13 +28,9 @@ import * as userActions from './actions/user';
   `,
   styleUrls: ['./admin-login.scss']
 })
-
 export class AdminLogin implements OnDestroy, OnInit {
   f: FormGroup;
-  constructor(
-    fb: FormBuilder,
-    private store: Store<AppState>
-  ) {
+  constructor(fb: FormBuilder, private store: Store<AppState>) {
     this.f = fb.group({ username: '', password: '' });
   }
   ngOnInit() {

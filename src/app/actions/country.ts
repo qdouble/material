@@ -12,19 +12,19 @@ export enum CountryActionTypes {
 export class GetCountries implements Action {
   readonly type = CountryActionTypes.GetCountries;
 
-  constructor() { }
+  constructor() {}
 }
 
 export class GetCountriesFail implements Action {
   readonly type = CountryActionTypes.GetCountriesFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetCountriesSuccess implements Action {
   readonly type = CountryActionTypes.GetCountriesSuccess;
 
-  constructor(public payload: GetCountriesResponse) { }
+  constructor(public payload: GetCountriesResponse) {}
 }
 
 export class Select implements Action {
@@ -33,8 +33,4 @@ export class Select implements Action {
   constructor(public payload: string) {}
 }
 
-export type CountryActions =
-  | GetCountries
-  | GetCountriesFail
-  | GetCountriesSuccess
-  | Select;
+export type CountryActions = GetCountries | GetCountriesFail | GetCountriesSuccess | Select;

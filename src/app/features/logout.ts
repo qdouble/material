@@ -8,11 +8,8 @@ import { AppState } from '../reducers';
   selector: 'os-logout',
   template: ''
 })
-
 export class Logout {
-  constructor(
-    private store: Store<AppState>
-  ) {
+  constructor(private store: Store<AppState>) {
     this.store.dispatch(new userActions.Logout());
   }
 }

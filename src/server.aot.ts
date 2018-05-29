@@ -5,7 +5,6 @@ import './polyfills.server';
 import './rxjs.imports';
 import * as express from 'express';
 import * as path from 'path';
-import { platformServer, renderModuleFactory } from '@angular/platform-server';
 import { ServerAppModuleNgFactory } from './ngfactory/app/server.app.module.ngfactory';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { routes } from './server.routes';
@@ -17,9 +16,12 @@ const app = express();
 const api = new App();
 const baseUrl = `http://localhost:${UNIVERSAL_PORT}`;
 
-app.engine('html', ngExpressEngine({
-  bootstrap: ServerAppModuleNgFactory
-}));
+app.engine(
+  'html',
+  ngExpressEngine({
+    bootstrap: ServerAppModuleNgFactory
+  })
+);
 
 app.set('view engine', 'html');
 app.set('views', 'src');

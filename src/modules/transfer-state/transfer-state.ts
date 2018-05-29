@@ -20,18 +20,16 @@ export class TransferState {
 
   toJson(): any {
     const obj = {};
-    Array.from(this.keys())
-      .forEach(key => {
-        obj[key] = this.get(key);
-      });
+    Array.from(this.keys()).forEach(key => {
+      obj[key] = this.get(key);
+    });
     return obj;
   }
 
   initialize(obj: any): void {
-    Object.keys(obj)
-      .forEach(key => {
-        this.set(key, obj[key]);
-      });
+    Object.keys(obj).forEach(key => {
+      this.set(key, obj[key]);
+    });
   }
 
   inject(): void {}

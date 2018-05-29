@@ -80,7 +80,7 @@ export enum UserActionTypes {
   SetAdminLoginPage = '[User] Set Admin Login Page',
   SetAmountPaid = '[User] Set Amount Paid',
   SetCreditTotal = '[User] Set Credit Total',
-  SetHasQaulifiedReferrals = '[User] Set Has Qaulified Referrals',
+  SetHasQualifiedReferrals = '[User] Set Has Qualified Referrals',
   SetOrderPending = '[User] Set Order Pending',
   SetReferredBy = '[User] Set Referred By',
   SetSponsor = '[User] Set Sponsor',
@@ -101,31 +101,31 @@ export enum UserActionTypes {
 export class AddCredit implements Action {
   readonly type = UserActionTypes.AddCredit;
 
-  constructor(public payload: { credit: Credit }) { }
+  constructor(public payload: { credit: Credit }) {}
 }
 
 export class AddReferral implements Action {
   readonly type = UserActionTypes.AddReferral;
 
-  constructor(public payload: { referral: Referral }) { }
+  constructor(public payload: { referral: Referral }) {}
 }
 
 export class AdminLogin implements Action {
   readonly type = UserActionTypes.AdminLogin;
 
-  constructor(public payload: User) { }
+  constructor(public payload: User) {}
 }
 
 export class AdminLoginFail implements Action {
   readonly type = UserActionTypes.AdminLoginFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class AdminLoginSuccess implements Action {
   readonly type = UserActionTypes.AdminLoginSuccess;
 
-  constructor(public payload: GenericResponse) { }
+  constructor(public payload: GenericResponse) {}
 }
 
 export class AskQuestions implements Action {
@@ -135,19 +135,19 @@ export class AskQuestions implements Action {
 export class ChangeSelectedPrize implements Action {
   readonly type = UserActionTypes.ChangeSelectedPrize;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class ChangeSelectedPrizeFail implements Action {
   readonly type = UserActionTypes.ChangeSelectedPrizeFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class ChangeSelectedPrizeSuccess implements Action {
   readonly type = UserActionTypes.ChangeSelectedPrizeSuccess;
 
-  constructor(public payload: { message: string, message_type: string, id: string }) { }
+  constructor(public payload: { message: string; message_type: string; id: string }) {}
 }
 
 export class CheckIfUserUpdated implements Action {
@@ -157,30 +157,30 @@ export class CheckIfUserUpdated implements Action {
 export class CheckIfUserUpdatedFail implements Action {
   readonly type = UserActionTypes.CheckIfUserUpdatedFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class CheckIfUserUpdatedSuccess implements Action {
   readonly type = UserActionTypes.CheckIfUserUpdatedSuccess;
 
-  constructor(public payload: { updatedAt: string, message: string }) { }
+  constructor(public payload: { updatedAt: string; message: string }) {}
 }
 
 export class CheckIPMatch implements Action {
   readonly type = UserActionTypes.CheckIPMatch;
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class CheckIPMatchFail implements Action {
   readonly type = UserActionTypes.CheckIPMatchFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class CheckIPMatchSuccess implements Action {
   readonly type = UserActionTypes.CheckIPMatchSuccess;
 
-  constructor(public payload: { matches: boolean, 'ip': string, 'ipJson': any }) { }
+  constructor(public payload: { matches: boolean; ip: string; ipJson: any }) {}
 }
 
 export class CheckLoggedIn implements Action {
@@ -190,30 +190,30 @@ export class CheckLoggedIn implements Action {
 export class CheckLoggedInFail implements Action {
   readonly type = UserActionTypes.CheckLoggedInFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class CheckLoggedInSuccess implements Action {
   readonly type = UserActionTypes.CheckLoggedInSuccess;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class CheckReferrerUsername implements Action {
   readonly type = UserActionTypes.CheckReferrerUsername;
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class CheckReferrerUsernameFail implements Action {
   readonly type = UserActionTypes.CheckReferrerUsernameFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class CheckReferrerUsernameSuccess implements Action {
   readonly type = UserActionTypes.CheckReferrerUsernameSuccess;
 
-  constructor(public payload: CheckReferrerUsernameResponse) { }
+  constructor(public payload: CheckReferrerUsernameResponse) {}
 }
 
 export class DeselectAllReferrals implements Action {
@@ -222,7 +222,7 @@ export class DeselectAllReferrals implements Action {
 
 export class DeselectReferrals implements Action {
   readonly type = UserActionTypes.DeselectReferrals;
-  constructor(public payload: string[]) { }
+  constructor(public payload: string[]) {}
 }
 
 export class DismissProfileChanges implements Action {
@@ -232,31 +232,31 @@ export class DismissProfileChanges implements Action {
 export class DismissProfileChangesFail implements Action {
   readonly type = UserActionTypes.DismissProfileChangesFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class DismissProfileChangesSuccess implements Action {
   readonly type = UserActionTypes.DismissProfileChangesSuccess;
 
-  constructor(public payload: DismissProfileChangesResponse) { }
+  constructor(public payload: DismissProfileChangesResponse) {}
 }
 
 export class ForgotPassword implements Action {
   readonly type = UserActionTypes.ForgotPassword;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class ForgotPasswordFail implements Action {
   readonly type = UserActionTypes.ForgotPasswordFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class ForgotPasswordSuccess implements Action {
   readonly type = UserActionTypes.ForgotPasswordSuccess;
 
-  constructor(public payload: GenericResponse) { }
+  constructor(public payload: GenericResponse) {}
 }
 
 export class GetProfile implements Action {
@@ -266,73 +266,73 @@ export class GetProfile implements Action {
 export class GetProfileFail implements Action {
   readonly type = UserActionTypes.GetProfileFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetProfileSuccess implements Action {
   readonly type = UserActionTypes.GetProfileSuccess;
 
-  constructor(public payload: GetProfileResponse) { }
+  constructor(public payload: GetProfileResponse) {}
 }
 
 export class GetReferral implements Action {
   readonly type = UserActionTypes.GetReferral;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class GetReferralFail implements Action {
   readonly type = UserActionTypes.GetReferralFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetReferralSuccess implements Action {
   readonly type = UserActionTypes.GetReferralSuccess;
 
-  constructor(public payload: GetReferralResponse) { }
+  constructor(public payload: GetReferralResponse) {}
 }
 
 export class HideReferrals implements Action {
   readonly type = UserActionTypes.HideReferrals;
 
-  constructor(public payload: { ids: string[], hide: boolean }) { }
+  constructor(public payload: { ids: string[]; hide: boolean }) {}
 }
 
 export class HideReferralsFail implements Action {
   readonly type = UserActionTypes.HideReferralsFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class HideReferralsSuccess implements Action {
   readonly type = UserActionTypes.HideReferralsSuccess;
 
-  constructor(public payload: HideReferralsResponse) { }
+  constructor(public payload: HideReferralsResponse) {}
 }
 
 export class Login implements Action {
   readonly type = UserActionTypes.Login;
 
-  constructor(public payload: User) { }
+  constructor(public payload: User) {}
 }
 
 export class LoginFail implements Action {
   readonly type = UserActionTypes.LoginFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class LoginSuccess implements Action {
   readonly type = UserActionTypes.LoginSuccess;
 
-  constructor(public payload: GenericResponse) { }
+  constructor(public payload: GenericResponse) {}
 }
 
 export class LogMessage implements Action {
   readonly type = UserActionTypes.LogMessage;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class Logout implements Action {
@@ -342,7 +342,7 @@ export class Logout implements Action {
 export class LogoutFail implements Action {
   readonly type = UserActionTypes.LogoutFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class LogoutSuccess implements Action {
@@ -352,79 +352,79 @@ export class LogoutSuccess implements Action {
 export class NewEqualTrue implements Action {
   readonly type = UserActionTypes.NewEqualTrue;
 
-  constructor(public payload: boolean) { }
+  constructor(public payload: boolean) {}
 }
 
 export class RecordClick implements Action {
   readonly type = UserActionTypes.RecordClick;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class RecordClickFail implements Action {
   readonly type = UserActionTypes.RecordClickFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class RecordClickSuccess implements Action {
   readonly type = UserActionTypes.RecordClickSuccess;
 
-  constructor(public payload: RecordClickResponse) { }
+  constructor(public payload: RecordClickResponse) {}
 }
 
 export class Register implements Action {
   readonly type = UserActionTypes.Register;
 
-  constructor(public payload: User) { }
+  constructor(public payload: User) {}
 }
 
 export class RegisterFail implements Action {
   readonly type = UserActionTypes.RegisterFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class RegisterSuccess implements Action {
   readonly type = UserActionTypes.RegisterSuccess;
 
-  constructor(public payload: GenericResponse) { }
+  constructor(public payload: GenericResponse) {}
 }
 
 export class RemoveReferrals implements Action {
   readonly type = UserActionTypes.RemoveReferrals;
 
-  constructor(public payload: string[]) { }
+  constructor(public payload: string[]) {}
 }
 
 export class RemoveReferralsFail implements Action {
   readonly type = UserActionTypes.RemoveReferralsFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class RemoveReferralsSuccess implements Action {
   readonly type = UserActionTypes.RemoveReferralsSuccess;
 
-  constructor(public payload: RemoveReferralsResponse) { }
+  constructor(public payload: RemoveReferralsResponse) {}
 }
 
 export class ResetPassword implements Action {
   readonly type = UserActionTypes.ResetPassword;
 
-  constructor(public payload: { email: string, code: string, password: string }) { }
+  constructor(public payload: { email: string; code: string; password: string }) {}
 }
 
 export class ResetPasswordFail implements Action {
   readonly type = UserActionTypes.ResetPasswordFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class ResetPasswordSuccess implements Action {
   readonly type = UserActionTypes.ResetPasswordSuccess;
 
-  constructor(public payload: GenericResponse) { }
+  constructor(public payload: GenericResponse) {}
 }
 
 export class ReturningUser implements Action {
@@ -434,129 +434,129 @@ export class ReturningUser implements Action {
 export class SelectPrize implements Action {
   readonly type = UserActionTypes.SelectPrize;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class SelectReferrals implements Action {
   readonly type = UserActionTypes.SelectReferrals;
 
-  constructor(public payload: string[]) { }
+  constructor(public payload: string[]) {}
 }
 
 export class SetAdminLoginPage implements Action {
   readonly type = UserActionTypes.SetAdminLoginPage;
 
-  constructor(public payload: boolean) { }
+  constructor(public payload: boolean) {}
 }
 
 export class SetAmountPaid implements Action {
   readonly type = UserActionTypes.SetAmountPaid;
 
-  constructor(public payload: number) { }
+  constructor(public payload: number) {}
 }
 
 export class SetCreditTotal implements Action {
   readonly type = UserActionTypes.SetCreditTotal;
 
-  constructor(public payload: number) { }
+  constructor(public payload: number) {}
 }
 
-export class SetHasQaulifiedReferrals implements Action {
-  readonly type = UserActionTypes.SetHasQaulifiedReferrals;
+export class SetHasQualifiedReferrals implements Action {
+  readonly type = UserActionTypes.SetHasQualifiedReferrals;
 
-  constructor(public payload: boolean) { }
+  constructor(public payload: boolean) {}
 }
 
 export class SetOrderPending implements Action {
   readonly type = UserActionTypes.SetOrderPending;
 
-  constructor(public payload: boolean) { }
+  constructor(public payload: boolean) {}
 }
 
 export class SetReferredBy implements Action {
   readonly type = UserActionTypes.SetReferredBy;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class SetSponsor implements Action {
   readonly type = UserActionTypes.SetSponsor;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class SetSponsorFail implements Action {
   readonly type = UserActionTypes.SetSponsorFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class SetSponsorSuccess implements Action {
   readonly type = UserActionTypes.SetSponsorSuccess;
 
-  constructor(public payload: SetSponsorResponse) { }
+  constructor(public payload: SetSponsorResponse) {}
 }
 
 export class ShowLevelBadge implements Action {
   readonly type = UserActionTypes.ShowLevelBadge;
 
-  constructor(public payload: number) { }
+  constructor(public payload: number) {}
 }
 
 export class SortReferralsBy implements Action {
   readonly type = UserActionTypes.SortReferralsBy;
 
-  constructor(public payload: { sortBy: string, reverse: boolean }) { }
+  constructor(public payload: { sortBy: string; reverse: boolean }) {}
 }
 
 export class TestShowRefRandom implements Action {
   readonly type = UserActionTypes.TestShowRefRandom;
 
-  constructor(public payload: number) { }
+  constructor(public payload: number) {}
 }
 
 export class UpdateCurrentLevel implements Action {
   readonly type = UserActionTypes.UpdateCurrentLevel;
 
-  constructor(public payload: { currentLevel: number, leveledUp: boolean }) { }
+  constructor(public payload: { currentLevel: number; leveledUp: boolean }) {}
 }
 
 export class UpdateHasQualifiedReferrals implements Action {
   readonly type = UserActionTypes.UpdateHasQualifiedReferrals;
 
   constructor(
-    public payload: { hasQualifiedReferrals: boolean, hasReferralsBeyondLevel: boolean }
-  ) { }
+    public payload: { hasQualifiedReferrals: boolean; hasReferralsBeyondLevel: boolean }
+  ) {}
 }
 
 export class UpdateOrderPending implements Action {
   readonly type = UserActionTypes.UpdateOrderPending;
 
-  constructor(public payload: boolean) { }
+  constructor(public payload: boolean) {}
 }
 
 export class UpdateProfile implements Action {
   readonly type = UserActionTypes.UpdateProfile;
 
-  constructor(public payload: User) { }
+  constructor(public payload: User) {}
 }
 
 export class UpdateProfileFail implements Action {
   readonly type = UserActionTypes.UpdateProfileFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class UpdateProfileSuccess implements Action {
   readonly type = UserActionTypes.UpdateProfileSuccess;
 
-  constructor(public payload: GetProfileResponse) { }
+  constructor(public payload: GetProfileResponse) {}
 }
 
 export class UpdateReferral implements Action {
   readonly type = UserActionTypes.UpdateReferral;
 
-  constructor(public payload: { referral: Referral }) { }
+  constructor(public payload: { referral: Referral }) {}
 }
 
 export type UserActions =
@@ -624,7 +624,7 @@ export type UserActions =
   | SetAdminLoginPage
   | SetAmountPaid
   | SetCreditTotal
-  | SetHasQaulifiedReferrals
+  | SetHasQualifiedReferrals
   | SetOrderPending
   | SetReferredBy
   | SetSponsor

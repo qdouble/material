@@ -1,33 +1,22 @@
-/* tslint:disable: max-line-length */
 import { Routes } from '@angular/router';
 
 import { NotFound404Component } from './not-found404.component';
 import { ReferrerBlockedComponent } from './referrer-blocked';
-import {
-  AuthGuard,
-  LoggedInRedirectGuard
-} from './guards';
+import { AuthGuard, LoggedInRedirectGuard } from './guards';
 
 import { AdminLogin } from './admin-login';
 
 import {
-  AboutUs,
   Homepage,
-  HowItWorks,
   Login,
   Logout,
   NotificationsComponent,
   PasswordReset,
   Profile,
-  Promotions,
-  ProofPicGallery,
-  Register,
-  ReportSpam
-}  from './features';
+  Register
+} from './features';
 
-import {
-  GetUserProfile
-} from './resolve';
+import { GetUserProfile } from './resolve';
 
 export const routes: Routes = [
   {
@@ -39,10 +28,6 @@ export const routes: Routes = [
     pathMatch: 'full',
     canActivate: [LoggedInRedirectGuard],
     component: Homepage
-  },
-  {
-    path: 'about-us',
-    component: AboutUs
   },
   {
     path: 'contact-us',
@@ -58,11 +43,6 @@ export const routes: Routes = [
     loadChildren: './features/faq/index#FAQModule'
   },
   {
-    path: 'how-it-works',
-    component: HowItWorks,
-    canActivate: [LoggedInRedirectGuard]
-  },
-  {
     path: 'login',
     component: Login,
     canActivate: [LoggedInRedirectGuard]
@@ -71,26 +51,15 @@ export const routes: Routes = [
     path: 'logout',
     component: Logout
   },
-   {
+  {
     path: 'notifications',
     component: NotificationsComponent
   },
-  // {
-  //   path: 'offer-details',
-  //   component: OfferDetailsComponent,
-  //   canActivate: [AuthGuard]
-  // },
   {
     path: 'offers',
     loadChildren: './features/offers/index#OffersModule'
-    // component: Offers,
-    // canActivate: [AuthGuard]
   },
-  // {
-  //   path: 'offer-redirect',
-  //   component: OfferRedirect
-  // },
-    {
+  {
     path: 'referrer-blocked',
     component: ReferrerBlockedComponent
   },
@@ -115,21 +84,8 @@ export const routes: Routes = [
     resolve: [GetUserProfile]
   },
   {
-    path: 'promotions',
-    component: Promotions
-  },
-  {
-    path: 'proof-pic-gallery',
-    component: ProofPicGallery
-  },
-  {
     path: 'register',
-    component: Register,
-    // canActivate: [LoggedInRedirectGuard]
-  },
-  {
-    path: 'report-spam',
-    component: ReportSpam
+    component: Register
   },
   {
     path: 'status',
@@ -145,10 +101,5 @@ export const routes: Routes = [
     path: 'terms-and-conditions',
     loadChildren: './features/terms-and-conditions/index#TermsAndConditionsModule'
   },
-  // {
-  //   path: 'view-offers',
-  //   component: Offers,
-  //   canActivate: [LoggedInRedirectGuard]
-  // },
   { path: '**', component: NotFound404Component }
 ];

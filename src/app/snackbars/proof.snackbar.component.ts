@@ -3,8 +3,8 @@ import { Component, Inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material';
 
 @Component({
-    selector: 'os-proof-snackbar',
-    template: `
+  selector: 'os-proof-snackbar',
+  template: `
     <img *ngIf="data.type === 'join' " src="{{dev ? '/assets/images/' : '/images/'}}google-static-maps/{{data?.map}}">
     <div *ngIf="data.type === 'level'" class="level-image" [style.background]="'url(' + levelImage + ')'"></div>
     <div *ngIf=" data.type === 'join' " class="proof-text-box">
@@ -21,15 +21,16 @@ import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material';
     ` // You may also use a HTML file
 })
 export class ProofSnackbarComponent {
-    dev = ENV === 'development';
-    levelImage: string;
-    constructor(
-        @Inject(MAT_SNACK_BAR_DATA) public data: any,
-        @Inject(MatSnackBarRef) public ref: MatSnackBarRef<any>
-    ) {
-        if (data.level) {
-            this.levelImage = `/assets/png/small-level-badges/level-${data.level > 10 ? data.level : '0' + data.level}-badge-01.svg.png`;
-            // this.levelImage = `/assets/png/small-level-badges/level-' + ${data.level < 10 ? '0' + data.level : data.level} + '-badge-01.svg.png`;
-        }
+  dev = ENV === 'development';
+  levelImage: string;
+  constructor(
+    @Inject(MAT_SNACK_BAR_DATA) public data: any,
+    @Inject(MatSnackBarRef) public ref: MatSnackBarRef<any>
+  ) {
+    if (data.level) {
+      this.levelImage = `/assets/png/small-level-badges/level-${
+        data.level > 10 ? data.level : '0' + data.level
+      }-badge-01.svg.png`;
     }
+  }
 }

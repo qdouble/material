@@ -8,7 +8,6 @@ import {
   GetVersionResponse,
   GetScriptsToLoadResponse,
   GetIPInfoResponse,
-  GetIPResponse,
   GetSocialProofResponse,
   SocialProofSettings
 } from '../models/ui';
@@ -54,97 +53,97 @@ export enum UIActionTypes {
 export class AddInvalidCountry implements Action {
   readonly type = UIActionTypes.AddInvalidCountry;
 
-  constructor(public payload: GetIPInfoResponse) { }
+  constructor(public payload: GetIPInfoResponse) {}
 }
 
 export class AddInvalidCountryFail implements Action {
   readonly type = UIActionTypes.AddInvalidCountryFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class AddInvalidCountrySuccess implements Action {
   readonly type = UIActionTypes.AddInvalidCountrySuccess;
 
-  constructor(public payload: { override?: string }) { }
+  constructor(public payload: { override?: string }) {}
 }
 
 export class AddUserIDToSocket implements Action {
   readonly type = UIActionTypes.AddUserIDToSocket;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class AddUserIDToSocketFail implements Action {
   readonly type = UIActionTypes.AddUserIDToSocketFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class AddUserIDToSocketSuccess implements Action {
   readonly type = UIActionTypes.AddUserIDToSocketSuccess;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class ContactUs implements Action {
   readonly type = UIActionTypes.ContactUs;
 
-  constructor(public payload: { email: string, subject: string, question: string }) { }
+  constructor(public payload: { email: string; subject: string; question: string }) {}
 }
 
 export class ContactUsFail implements Action {
   readonly type = UIActionTypes.ContactUsFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class ContactUsSuccess implements Action {
   readonly type = UIActionTypes.ContactUsSuccess;
 
-  constructor(public payload: ContactUsResponse) { }
+  constructor(public payload: ContactUsResponse) {}
 }
 
 export class CreatePushNotification implements Action {
   readonly type = UIActionTypes.CreatePushNotification;
 
-  constructor(public payload: PushNotification) { }
+  constructor(public payload: PushNotification) {}
 }
 
 export class DisplayCompletedOrderDialog implements Action {
   readonly type = UIActionTypes.DisplayCompletedOrderDialog;
 
-  constructor(public payload: { order: Order }) { }
+  constructor(public payload: { order: Order }) {}
 }
 
 export class DisplayCreditedOfferDialog implements Action {
   readonly type = UIActionTypes.DisplayCreditedOfferDialog;
 
-  constructor(public payload: { offer: Offer }) { }
+  constructor(public payload: { offer: Offer }) {}
 }
 
 export class DisplayUnconfirmedCreditDialog implements Action {
   readonly type = UIActionTypes.DisplayUnconfirmedCreditDialog;
 
-  constructor(public payload: { offer: Offer }) { }
+  constructor(public payload: { offer: Offer }) {}
 }
 
 export class GetIPInfo implements Action {
   readonly type = UIActionTypes.GetIPInfo;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class GetIPInfoFail implements Action {
   readonly type = UIActionTypes.GetIPInfoFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetIPInfoSuccess implements Action {
   readonly type = UIActionTypes.GetIPInfoSuccess;
 
-  constructor(public payload: GetIPInfoResponse) { }
+  constructor(public payload: GetIPInfoResponse) {}
 }
 
 export class GetScriptsToLoad implements Action {
@@ -154,49 +153,49 @@ export class GetScriptsToLoad implements Action {
 export class GetScriptsToLoadFail implements Action {
   readonly type = UIActionTypes.GetScriptsToLoadFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetScriptsToLoadSuccess implements Action {
   readonly type = UIActionTypes.GetScriptsToLoadSuccess;
 
-  constructor(public payload: GetScriptsToLoadResponse) { }
+  constructor(public payload: GetScriptsToLoadResponse) {}
 }
 
 export class GetSocialProof implements Action {
   readonly type = UIActionTypes.GetSocialProof;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class GetSocialProofFail implements Action {
   readonly type = UIActionTypes.GetSocialProofFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetSocialProofSuccess implements Action {
   readonly type = UIActionTypes.GetSocialProofSuccess;
 
-  constructor(public payload: GetSocialProofResponse) { }
+  constructor(public payload: GetSocialProofResponse) {}
 }
 
 export class GetSocialProofSettings implements Action {
   readonly type = UIActionTypes.GetSocialProofSettings;
 
-  constructor() { }
+  constructor() {}
 }
 
 export class GetSocialProofSettingsFail implements Action {
   readonly type = UIActionTypes.GetSocialProofSettingsFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetSocialProofSettingsSuccess implements Action {
   readonly type = UIActionTypes.GetSocialProofSettingsSuccess;
 
-  constructor(public payload: SocialProofSettings) { }
+  constructor(public payload: SocialProofSettings) {}
 }
 
 export class GetVersion implements Action {
@@ -206,37 +205,37 @@ export class GetVersion implements Action {
 export class GetVersionFail implements Action {
   readonly type = UIActionTypes.GetVersionFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetVersionSuccess implements Action {
   readonly type = UIActionTypes.GetVersionSuccess;
 
-  constructor(public payload: GetVersionResponse) { }
+  constructor(public payload: GetVersionResponse) {}
 }
 
 export class MarkCompletedOrderAsViewed implements Action {
   readonly type = UIActionTypes.MarkCompletedOrderAsViewed;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class MarkCreditedOfferAsViewed implements Action {
   readonly type = UIActionTypes.MarkCreditedOfferAsViewed;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class OverrideInvalidCountry implements Action {
   readonly type = UIActionTypes.OverrideInvalidCountry;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class SetMobile implements Action {
   readonly type = UIActionTypes.SetMobile;
 
-  constructor(public payload: boolean) { }
+  constructor(public payload: boolean) {}
 }
 
 export class ToggleSideNavOpen implements Action {

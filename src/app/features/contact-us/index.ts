@@ -8,7 +8,6 @@ import { MATERIAL_MODULES } from '../../material.modules';
 import { routes } from './contact-us.routing';
 import { ContactUs } from './contact-us';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -20,5 +19,4 @@ import { ContactUs } from './contact-us';
   declarations: [ContactUs],
   exports: [ContactUs]
 })
-
 export class ContactUsModule {}

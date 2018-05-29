@@ -5,13 +5,8 @@ import { RouterModule } from '@angular/router';
 import { routes } from './privacy-policy.routing';
 import { PrivacyPolicy } from './privacy-policy';
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
+  imports: [CommonModule, RouterModule.forChild(routes)],
   declarations: [PrivacyPolicy]
 })
-
-export class PrivacyPolicyModule { }
+export class PrivacyPolicyModule {}

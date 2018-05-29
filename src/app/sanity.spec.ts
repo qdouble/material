@@ -17,6 +17,8 @@ describe('SanityComp', () => {
   it('should have an url', () => {
     let fixture = TestBed.createComponent(SanityComp);
     fixture.detectChanges();
-    expect(fixture.debugElement.componentInstance.url).toEqual('https://github.com/preboot/angular2-webpack');
+    expect(fixture.debugElement.componentInstance.url).toEqual(
+      'https://github.com/preboot/angular2-webpack'
+    );
   });
 });

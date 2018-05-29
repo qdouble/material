@@ -13,16 +13,15 @@ import { combineSort } from '../../helper/combine-sort';
   templateUrl: './notifications.html',
   styleUrls: ['./notifications.scss']
 })
-
 export class NotificationsComponent implements OnInit {
   notifications$: Observable<Notification[]>;
   sortedNotifications$: Observable<Notification[]>;
-  constructor(
-    private store: Store<fromStore.AppState>,
-  ) {
+  constructor(private store: Store<fromStore.AppState>) {
     this.notifications$ = store.pipe(select(fromStore.getNotificationCollection));
     this.sortedNotifications$ = Observable.combineLatest(
-      Observable.of(['createdAt', true]), this.notifications$, combineSort
+      Observable.of(['createdAt', true]),
+      this.notifications$,
+      combineSort
     );
   }
   ngOnInit() {
@@ -34,7 +33,7 @@ export class NotificationsComponent implements OnInit {
   deleteNotifications(ids: string[]) {
     this.store.dispatch(new notificationActions.DeleteNotifications(ids));
   }
-  markNotificationsAsRead(mark: { ids: string[], read: boolean }) {
+  markNotificationsAsRead(mark: { ids: string[]; read: boolean }) {
     this.store.dispatch(new notificationActions.MarkNotificationsAsRead(mark));
   }
   markAllAsRead() {

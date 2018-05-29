@@ -24,13 +24,12 @@ import * as ticketActions from '../../ticket.actions';
     </form>
     <b class="primary" *ngIf="hide">
     Support ticket sent successfully!
-    You should receive an email notfication after your ticket is responded to.
+    You should receive an email notification after your ticket is responded to.
     </b>
   </section>
   `,
   styles: [`mat-input-container { width: 99%; }`]
 })
-
 export class SupportTicket implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
   f = new FormGroup({
@@ -40,9 +39,7 @@ export class SupportTicket implements OnDestroy, OnInit {
   hide: boolean;
   @Input() addedObs: Observable<boolean>;
   @Input() ticketSubject: string;
-  constructor(
-    private store: Store<AppState>
-  ) { }
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
     this.f.get('subject').setValue(this.ticketSubject);

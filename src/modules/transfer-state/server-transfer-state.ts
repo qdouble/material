@@ -3,9 +3,9 @@ import { TransferState } from './transfer-state';
 import { PlatformState } from '@angular/platform-server';
 @Injectable()
 export class ServerTransferState extends TransferState {
-    constructor( private state: PlatformState, private rendererFactory: RendererFactory2) {
-        super();
-    }
+  constructor(private state: PlatformState, private rendererFactory: RendererFactory2) {
+    super();
+  }
 
   /**
    * Inject the State into the bottom of the <head>
@@ -33,6 +33,4 @@ export class ServerTransferState extends TransferState {
       console.error(e);
     }
   }
-
-
 }

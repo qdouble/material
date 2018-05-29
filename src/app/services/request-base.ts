@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers } from '@angular/http';
-import { HttpClient, HttpHeaders, HttpInterceptor } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class RequestBase {

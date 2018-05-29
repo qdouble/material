@@ -25,26 +25,23 @@ module.exports = {
     moduleDirectories: ['node_modules']
   },
   module: {
-    preloaders: [
-      {
-        test: /\.js$/,
-        loader: 'source-map-loader',
-        exclude: [
-          // these packages have problems with their sourcemaps
-          helpers.root('node_modules/rxjs'),
-          helpers.root('node_modules/@angular'),
-          helpers.root('node_modules/@ngrx'),
-          helpers.root('node_modules/@angular2-material')
-        ]
-      }
-    ],
-    loaders: [
-      {
+    preloaders: [{
+      test: /\.js$/,
+      loader: 'source-map-loader',
+      exclude: [
+        // these packages have problems with their sourcemaps
+        helpers.root('node_modules/rxjs'),
+        helpers.root('node_modules/@angular'),
+        helpers.root('node_modules/@ngrx'),
+        helpers.root('node_modules/@angular2-material')
+      ]
+    }],
+    loaders: [{
         test: /\.ts$/,
         loaders: [
-          'awesome-typescript-loader', 
-          'angular2-template-loader', 
-          ],
+          'awesome-typescript-loader',
+          'angular2-template-loader',
+        ],
         exclude: [/\.(spec|e2e|d)\.ts$/]
       },
       {
@@ -60,7 +57,10 @@ module.exports = {
         exclude: /node_modules/,
         loaders: ['raw-loader', 'sass-loader'] // sass-loader not scss-loader
       },
-      {test: /\.svg/, loader: 'svg-url-loader'},
+      {
+        test: /\.svg/,
+        loader: 'svg-url-loader'
+      },
       {
         test: /\.html$/,
         loader: 'raw-loader',
@@ -73,31 +73,31 @@ module.exports = {
     new NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(true),
-    new webpack.optimize.CommonsChunkPlugin({ 
-      name: ['main', 'polyfills'], minChunks: Infinity 
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ['main', 'polyfills'],
+      minChunks: Infinity
     }),
     new CopyWebpackPlugin([{
       from: 'src/assets',
       to: 'assets'
-    },{
+    }, {
       from: 'src/images',
       to: 'images'
-    }
-    ]),
+    }]),
     new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     })
   ],
   node: {
-      global: 'window',
-      process: true,
-      Buffer: false,
-      crypto: 'empty',
-      module: false,
-      clearImmediate: false,
-      setImmediate: false,
-      clearTimeout: true,
-      setTimeout: true
-    }
+    global: 'window',
+    process: true,
+    Buffer: false,
+    crypto: 'empty',
+    module: false,
+    clearImmediate: false,
+    setImmediate: false,
+    clearTimeout: true,
+    setTimeout: true
+  }
 }

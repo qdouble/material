@@ -90,8 +90,7 @@ exports.MY_TEST_PLUGINS = [
  * cache as fallback. Must use https if not local.
  * For more details on options, see: https://github.com/GoogleChrome/sw-precache#runtimecaching-arrayobject
  */
-exports.SW_RUNTIME_CACHING = [
-  {
+exports.SW_RUNTIME_CACHING = [{
     handler: 'cacheFirst',
     urlPattern: /[.]mp3$/,
   },

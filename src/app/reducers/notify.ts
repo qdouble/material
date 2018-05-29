@@ -18,12 +18,11 @@ export const initialState: State = adapter.getInitialState({
   selectedNotify: null
 });
 
-export function notifyReducer (state = initialState, action: NotifyActions): State {
+export function notifyReducer(state = initialState, action: NotifyActions): State {
   switch (action.type) {
-
     case NotifyActionTypes.AddNotify: {
-      let message: (string | undefined);
-      let type: (string | undefined);
+      let message: string | undefined;
+      let type: string | undefined;
       const response = action.payload;
       const id = state.ids.length + 1;
       if (response.message) message = response.message;
@@ -59,7 +58,7 @@ export function notifyReducer (state = initialState, action: NotifyActions): Sta
 
       return {
         ...state,
-        ids: (state.ids).filter(id => id !== notifyId),
+        ids: state.ids.filter(id => id !== notifyId),
         entities: entitiesMod
       };
     }

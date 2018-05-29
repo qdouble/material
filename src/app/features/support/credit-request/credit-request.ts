@@ -19,7 +19,6 @@ import { Back } from '../../../actions/router';
   templateUrl: './credit-request.html',
   styleUrls: ['./credit-request.scss']
 })
-
 export class CreditRequestComponent implements OnDestroy, OnInit {
   disableButton: boolean;
   creditRequest: CreditRequest;
@@ -74,43 +73,49 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
 
     this.offerClicks$ = store.pipe(select(fromStore.getOfferClickCollection));
     this.offerIds$ = this.offerClicks$.map(clicks => clicks.map(click => click.id));
-    this.offerIds$
-      .takeUntil(this.destroyed$)
-      .subscribe(ids => this.offerIds = ids);
+    this.offerIds$.takeUntil(this.destroyed$).subscribe(ids => (this.offerIds = ids));
     this.offerNames$ = this.offerClicks$.map(clicks => clicks.map(click => click.name));
-    this.offerNames$
-      .takeUntil(this.destroyed$)
-      .subscribe(names => this.offerNames = names);
+    this.offerNames$.takeUntil(this.destroyed$).subscribe(names => (this.offerNames = names));
     this.loadedClicks$ = store.pipe(select(fromStore.getOfferClicksLoaded));
   }
   ngOnInit() {
-    this.f.valueChanges
-      .takeUntil(this.destroyed$)
-      .subscribe((f: CreditRequest) => {
-        if (this.view && f.headers === this.creditRequest.headers &&
-          f.body === this.creditRequest.body &&
-          f.additionalDetails === this.creditRequest.additionalDetails) {
-          this.disableButton = true;
-        } else if (this.view) {
-          this.disableButton = false;
-        }
-      });
-    this.f.get('offerId').valueChanges
-      .takeUntil(this.destroyed$)
+    this.f.valueChanges.takeUntil(this.destroyed$).subscribe((f: CreditRequest) => {
+      if (
+        this.view &&
+        f.headers === this.creditRequest.headers &&
+        f.body === this.creditRequest.body &&
+        f.additionalDetails === this.creditRequest.additionalDetails
+      ) {
+        this.disableButton = true;
+      } else if (this.view) {
+        this.disableButton = false;
+      }
+    });
+    this.f
+      .get('offerId')
+      .valueChanges.takeUntil(this.destroyed$)
       .subscribe(id => {
         this.store.dispatch(new offerActions.GetOffer(id));
         this.offer$ = this.store.pipe(select(fromStore.getSelectedOffer));
       });
   }
   addRequest(request: CreditRequest) {
-    this.store.dispatch(new creditRequestActions.AddCreditRequest(Object.assign({}, request, {
-      offerName: this.offerNames[this.offerIds.indexOf(request.offerId)]
-    })));
+    this.store.dispatch(
+      new creditRequestActions.AddCreditRequest(
+        Object.assign({}, request, {
+          offerName: this.offerNames[this.offerIds.indexOf(request.offerId)]
+        })
+      )
+    );
   }
   editRequest(request: CreditRequest) {
-    this.store.dispatch(new creditRequestActions.EditCreditRequest(Object.assign({}, request, {
-      id: this.creditRequest.id
-    })));
+    this.store.dispatch(
+      new creditRequestActions.EditCreditRequest(
+        Object.assign({}, request, {
+          id: this.creditRequest.id
+        })
+      )
+    );
   }
 
   submitRequest(request) {

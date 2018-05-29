@@ -21,10 +21,6 @@ import { Status } from './status';
     RouterModule.forChild([{ path: '', component: Status }]),
     SelectedPrizeModule
   ],
-  declarations: [
-    ReferralsTable,
-    Status
-  ]
+  declarations: [ReferralsTable, Status]
 })
-
-export class StatusModule { }
+export class StatusModule {}

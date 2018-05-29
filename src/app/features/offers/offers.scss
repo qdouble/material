@@ -53,7 +53,6 @@ a:link {
   p {
     font-size: 12px;
   }
-  
   #fb-post-btn {
     text-align: center;
     background: #3B5998;
@@ -67,7 +66,6 @@ a:link {
   margin: 0 auto 25px;
 }
 
-
 #no-completed-card {
   max-width: 600px;
   margin-top: 10px;
@@ -78,7 +76,7 @@ mat-button-toggle-group {
   margin-bottom: 10px;
 }
 
-mat-slide-toggle { 
+mat-slide-toggle {
   margin: 4px 0;
 }
 
@@ -86,8 +84,8 @@ mat-slide-toggle {
   overflow: hidden;
 }
 
-.os-offer-page-header { 
-  min-height: 140px; 
+.os-offer-page-header {
+  min-height: 140px;
   margin: 0 auto;
   @media screen and (min-width: 1416px) {
     width: 1162px;
@@ -109,7 +107,7 @@ mat-slide-toggle {
   }
 }
 
-.os-offer-page-header-s-closed { 
+.os-offer-page-header-s-closed {
   margin: 0 auto;
   @media screen and (max-width: 655px) {
     width: 90%;
@@ -126,7 +124,8 @@ mat-slide-toggle {
   }
 }
 
-.os-inner-offer-header, .os-inner-offer-header-s-closed {
+.os-inner-offer-header,
+.os-inner-offer-header-s-closed {
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: row;
@@ -152,7 +151,8 @@ mat-slide-toggle {
   @media screen and (max-width: 1111px) {
     height: 328px;
   }
-  :nth-child(1), :nth-child(2) {
+  :nth-child(1),
+  :nth-child(2) {
     @media screen and (max-width: 807px) {
       width: 98%;
     }
@@ -161,14 +161,15 @@ mat-slide-toggle {
     }
   }
   :nth-child(3) {
-   @media screen and (max-width: 1111px) {
+    @media screen and (max-width: 1111px) {
       width: 98%;
     }
   }
 }
 
 .os-inner-offer-header-s-closed {
-  :nth-child(1), :nth-child(2) {
+  :nth-child(1),
+  :nth-child(2) {
     @media screen and (max-width: 655px) {
       width: 100%;
     }
@@ -177,7 +178,7 @@ mat-slide-toggle {
     }
   }
   :nth-child(3) {
-   @media screen and (max-width: 960px) {
+    @media screen and (max-width: 960px) {
       width: 100%;
     }
   }
@@ -186,7 +187,6 @@ mat-slide-toggle {
 .os-offer-header-col {
   height: 188px;
 }
-
 
 .os-offer-display-options {
   display: flex;
@@ -230,7 +230,10 @@ os-offer-rows {
 #title-card-container {
   max-width: 954px;
   margin: 0 auto;
-  a:link, a:visited, a:hover, a:active {
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
     color: white;
   }
 }

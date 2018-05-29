@@ -11,7 +11,6 @@ export const adapter = createEntityAdapter<Country>({
   sortComparer: compareOrder
 });
 
-
 export interface State extends EntityState<Country> {
   loading: boolean;
   loaded: boolean;
@@ -26,7 +25,6 @@ const initialState: State = adapter.getInitialState({
 
 export function countryReducer(state = initialState, action: CountryActions): State {
   switch (action.type) {
-
     case CountryActionTypes.GetCountries:
       return { ...state, loading: true };
 

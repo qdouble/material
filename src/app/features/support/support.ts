@@ -17,16 +17,8 @@ import * as ticketActions from './ticket.actions';
   selector: 'os-support',
   templateUrl: './support.html',
   styleUrls: ['./support.scss'],
-  animations: [
-    trigger('fade', [
-      transition('void => *', [
-        style({ opacity: 0 }),
-        animate(250)
-      ])
-    ])
-  ]
+  animations: [trigger('fade', [transition('void => *', [style({ opacity: 0 }), animate(250)])])]
 })
-
 export class Support implements OnInit {
   added$: Observable<boolean>;
   closedTickets$: Observable<Ticket[]>;
@@ -35,15 +27,12 @@ export class Support implements OnInit {
   lastSort: string;
   openTickets$: Observable<Ticket[]>;
   reverseSort: boolean;
-  sortByVar$: Observable<{ sortBy: string, reverse: boolean }>;
+  sortByVar$: Observable<{ sortBy: string; reverse: boolean }>;
   sortByVarToArray$: Observable<(string | boolean)[]>;
   tickets$: Observable<Ticket[]>;
   ticketSubject: string;
   unsortedTickets$: Observable<Ticket[]>;
-  constructor(
-    private route: ActivatedRoute,
-    private store: Store<fromStore.AppState>
-  ) {
+  constructor(private route: ActivatedRoute, private store: Store<fromStore.AppState>) {
     this.added$ = this.store.select(s => s.ticket.added);
 
     store.dispatch(new ticketActions.GetTickets());
@@ -55,27 +44,29 @@ export class Support implements OnInit {
     this.sortByVarToArray$ = this.sortByVar$
       .filter(s => s !== undefined)
       .map(sort => [sort.sortBy, sort.reverse]);
-    this.tickets$ = Observable
-      .combineLatest(this.sortByVarToArray$, this.unsortedTickets$, combineSort);
+    this.tickets$ = Observable.combineLatest(
+      this.sortByVarToArray$,
+      this.unsortedTickets$,
+      combineSort
+    );
     function showClosed(arr: Ticket[], prop) {
       if (!arr) return;
       return arr.filter(ticket => ticket.closed === prop);
     }
-    this.openTickets$ = Observable
-      .combineLatest(this.tickets$, Observable.of(false), showClosed);
-    this.closedTickets$ = Observable
-      .combineLatest(this.tickets$, Observable.of(true), showClosed);
-
+    this.openTickets$ = Observable.combineLatest(this.tickets$, Observable.of(false), showClosed);
+    this.closedTickets$ = Observable.combineLatest(this.tickets$, Observable.of(true), showClosed);
   }
   ngOnInit() {
-    (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
+    typeof document !== 'undefined' && document.getElementById('os-toolbar')
+      ? document.getElementById('os-toolbar').scrollIntoView()
+      : {}; // tslint:disable-line
     this.route.params.subscribe(params => {
       if (params['report']) {
         this.ticketSubject = `I'd like to report the person who referred me`;
       }
     });
   }
-  closeTicket(ticket: { id: string, close: boolean }) {
+  closeTicket(ticket: { id: string; close: boolean }) {
     this.store.dispatch(new ticketActions.CloseTicket(ticket));
   }
   sortBy(prop: string) {
@@ -84,9 +75,7 @@ export class Support implements OnInit {
     } else {
       this.reverseSort = false;
     }
-    this.store.dispatch(
-      new ticketActions.SortBy({ sortBy: prop, reverse: this.reverseSort })
-    );
+    this.store.dispatch(new ticketActions.SortBy({ sortBy: prop, reverse: this.reverseSort }));
     this.lastSort = prop;
   }
 }

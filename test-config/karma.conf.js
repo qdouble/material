@@ -5,7 +5,7 @@
 const ENV = process.env.npm_lifecycle_event;
 const runOnce = ENV === 'test:once' || ENV === 'test:once:ci';
 
-module.exports = function(config) {
+module.exports = function (config) {
   const testWebpackConfig = require('./webpack.test.js');
 
   const configuration = {
@@ -21,20 +21,25 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
 
     // list of files to exclude
-    exclude: [ ],
+    exclude: [],
 
     /*
      * list of files / patterns to load in the browser
      *
      * we are building the test environment in ./spec-bundle.js
      */
-    files: [ { pattern: './test-config/spec-bundle.js', watched: false } ],
+    files: [{
+      pattern: './test-config/spec-bundle.js',
+      watched: false
+    }],
 
     /*
      * preprocess matching files before serving them to the browser
      * available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
      */
-    preprocessors: { './test-config/spec-bundle.js': ['coverage', 'webpack', 'sourcemap'] },
+    preprocessors: {
+      './test-config/spec-bundle.js': ['coverage', 'webpack', 'sourcemap']
+    },
 
     // Webpack Config at ./webpack.test.js
     webpack: testWebpackConfig,
@@ -50,7 +55,9 @@ module.exports = function(config) {
     },
 
     // Webpack please don't spam the console when running in karma!
-    webpackServer: { noInfo: true },
+    webpackServer: {
+      noInfo: true
+    },
 
     /*
      * test results reporter to use
@@ -58,7 +65,7 @@ module.exports = function(config) {
      * possible values: 'dots', 'progress'
      * available reporters: https://npmjs.org/browse/keyword/karma-reporter
      */
-    reporters: [ 'mocha', 'coverage', 'remap-coverage' ],
+    reporters: ['mocha', 'coverage', 'remap-coverage'],
 
     // web server port
     port: 9876,
@@ -97,7 +104,7 @@ module.exports = function(config) {
     singleRun: runOnce
   };
 
-  if(process.env.TRAVIS){
+  if (process.env.TRAVIS) {
     configuration.browsers = ['Chrome_travis_ci'];
   }
 

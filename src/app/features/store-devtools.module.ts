@@ -7,11 +7,12 @@ import { StoreDevToolsComponent } from './store-devtools.component';
 
 const IMPORTS = [];
 // Enable ngrx/devtools in dev mode
-if (ENV === 'development' && !AOT &&
+if (
+  ENV === 'development' &&
+  !AOT &&
   ['monitor', 'both'].includes(STORE_DEV_TOOLS) // set in constants.js file in project root
-) IMPORTS.push(...[
-  StoreLogMonitorModule
-]);
+)
+  IMPORTS.push(...[StoreLogMonitorModule]);
 
 @NgModule({
   imports: [CommonModule, IMPORTS],
@@ -19,5 +20,4 @@ if (ENV === 'development' && !AOT &&
   exports: [StoreDevToolsComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-
-export class StoreDevToolsModule { }
+export class StoreDevToolsModule {}

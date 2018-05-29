@@ -8,7 +8,6 @@ import { Prize } from '../../../../models/prize';
   styleUrls: ['./selected-prize.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
-
 export class SelectedPrizeComponent {
   @Input() changePrize: boolean;
   @Input() form;

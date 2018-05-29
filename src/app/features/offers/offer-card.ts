@@ -1,6 +1,10 @@
 import {
-  ChangeDetectionStrategy, Component, EventEmitter,
-  Input, OnInit, Output
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
 } from '@angular/core';
 
 import { Offer } from '../../models/offer';
@@ -11,7 +15,6 @@ import { Offer } from '../../models/offer';
   styleUrls: ['./offer-card.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class OfferCard implements OnInit {
   isNew: boolean;
   @Input() addUp: boolean;
@@ -33,7 +36,7 @@ export class OfferCard implements OnInit {
     const dateNow = new Date();
     if (this.offer) {
       const createdDate = new Date(this.offer.createdAt);
-      this.isNew = dateNow.getTime() - createdDate.getTime() < (604800000 * 2);
+      this.isNew = dateNow.getTime() - createdDate.getTime() < 604800000 * 2;
     }
   }
 }

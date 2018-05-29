@@ -25,9 +25,11 @@ function rootNode(args) {
 
 function prependExt(extensions, args) {
   args = args || [];
-  if (!Array.isArray(args)) { args = [args] }
-  return extensions.reduce(function(memo, val) {
-    return memo.concat(val, args.map(function(prefix) {
+  if (!Array.isArray(args)) {
+    args = [args]
+  }
+  return extensions.reduce(function (memo, val) {
+    return memo.concat(val, args.map(function (prefix) {
       return prefix + val;
     }));
   }, ['']);

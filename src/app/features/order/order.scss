@@ -1,5 +1,4 @@
 @import '../../variables';
-
 a {
   color: #456321;
 }
@@ -35,13 +34,16 @@ a {
   margin: 0 auto;
 }
 
-.order-status, #congrats-card, #please-be-sure-card {
+.order-status,
+#congrats-card,
+#please-be-sure-card {
   text-align: center;
   padding: 10px;
   margin-bottom: 10px;
 }
 
-.order-status, .os-message-card {
+.order-status,
+.os-message-card {
   p {
     text-align: left;
   }

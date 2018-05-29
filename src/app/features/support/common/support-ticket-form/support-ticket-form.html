@@ -22,12 +22,14 @@
     <div>Sent: {{entry?.id | date: 'medium'}}</div>
   </mat-card-subtitle>
   <mat-card-content>
-    <os-support-ticket-message #ticketMessage [ticketMessage]="entry" [editing]="message['editing']" [save]="message['save']" (editMessage)="editMessage.emit($event)">
+    <os-support-ticket-message #ticketMessage [ticketMessage]="entry" [editing]="message['editing']" [save]="message['save']"
+      (editMessage)="editMessage.emit($event)">
     </os-support-ticket-message>
   </mat-card-content>
   <mat-card-actions>
     <button *ngIf="message['editing']" color="warn" mat-button (click)="message['editing'] = false; ticketMessage.cancelUpdate()">CANCEL</button>
-    <button *ngIf="message['editing']" color="primary" mat-button (click)="message['editing'] = false; ticketMessage.sendValue()" [disabled]="loading">SAVE</button>
+    <button *ngIf="message['editing']" color="primary" mat-button (click)="message['editing'] = false; ticketMessage.sendValue()"
+      [disabled]="loading">SAVE</button>
   </mat-card-actions>
 </mat-card>
 <mat-card>

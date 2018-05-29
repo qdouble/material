@@ -13,26 +13,15 @@ import { RegexValues } from '../../validators';
   selector: 'os-contact-us',
   templateUrl: './contact-us.html',
   styleUrls: ['./contact-us.scss'],
-  animations: [
-    trigger('fade', [
-      transition('void => *', [
-        style({ opacity: 0 }),
-        animate(250)
-      ])
-    ])
-  ]
+  animations: [trigger('fade', [transition('void => *', [style({ opacity: 0 }), animate(250)])])]
 })
-
 export class ContactUs implements OnDestroy {
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
   hideForm: boolean;
   sending$: Observable<boolean>;
   sent$: Observable<boolean>;
-  constructor(
-    fb: FormBuilder,
-    private store: Store<fromStore.AppState>
-  ) {
+  constructor(fb: FormBuilder, private store: Store<fromStore.AppState>) {
     this.f = fb.group({
       email: ['', [Validators.required, Validators.pattern(RegexValues.email)]],
       subject: ['', [Validators.required, Validators.maxLength(60)]],

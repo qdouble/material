@@ -7,7 +7,6 @@ import { Order } from '../../../models/order';
   templateUrl: './orders-table.html',
   styleUrls: ['./orders-table.scss']
 })
-
 export class OrderTableComponent {
   @Input() loaded: boolean;
   @Input() orders: Order[];

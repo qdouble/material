@@ -1,12 +1,18 @@
-  <mat-card class="os-page-container-vh" @fade>
-    <mat-card class="os-login-form-container">
-      <mat-card-title>{{forgotPassword ? 'Forgot Password' : 'Login'}}</mat-card-title>
-        <form [formGroup]="f" (ngSubmit)="submitForm()" novalidate>
-          <os-form-input class="os-form-input" [autofocus]="true" type="email" controlName="email" placeholder="Email or Username" name="Email" [form]="f"></os-form-input>
-          <os-form-input *ngIf="!forgotPassword" class="os-form-input" type="password" controlName="password" placeholder="Password" name="Password" [form]="f"></os-form-input>
-          <button mat-raised-button color="primary" [disabled]="!f.valid" type="submit">{{forgotPassword ? 'SEND PASSWORD RESET' : 'LOGIN'}}</button>
-        </form>
-        <p *ngIf="!forgotPassword" (click)="enableForgotPassword()"><a>Forgot Password?</a></p>
-        <p *ngIf="forgotPassword" (click)="cancelForgotPassword()"><a>Login</a></p>
-    </mat-card>
+<mat-card class="os-page-container-vh" @fade>
+  <mat-card class="os-login-form-container">
+    <mat-card-title>{{forgotPassword ? 'Forgot Password' : 'Login'}}</mat-card-title>
+    <form [formGroup]="f" (ngSubmit)="submitForm()" novalidate>
+      <os-form-input class="os-form-input" [autofocus]="true" type="email" controlName="email" placeholder="Email or Username"
+        name="Email" [form]="f"></os-form-input>
+      <os-form-input *ngIf="!forgotPassword" class="os-form-input" type="password" controlName="password" placeholder="Password"
+        name="Password" [form]="f"></os-form-input>
+      <button mat-raised-button color="primary" [disabled]="!f.valid" type="submit">{{forgotPassword ? 'SEND PASSWORD RESET' : 'LOGIN'}}</button>
+    </form>
+    <p *ngIf="!forgotPassword" (click)="enableForgotPassword()">
+      <a>Forgot Password?</a>
+    </p>
+    <p *ngIf="forgotPassword" (click)="cancelForgotPassword()">
+      <a>Login</a>
+    </p>
   </mat-card>
+</mat-card>

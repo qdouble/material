@@ -8,15 +8,8 @@ import { FooterModule } from '../footer';
 
 import { routes } from './faq.routing';
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    FooterModule,
-    MATERIAL_MODULES,
-    RouterModule.forChild(routes)
-  ],
+  imports: [CommonModule, FooterModule, MATERIAL_MODULES, RouterModule.forChild(routes)],
   declarations: [FAQ]
 })
-
 export class FAQModule {}

@@ -25,11 +25,11 @@ interface WebpackConfig {
     quiet?: boolean;
     noInfo?: boolean;
     watchOptions?: any;
-    disableHostCheck?: boolean
+    disableHostCheck?: boolean;
   };
   performance?: {
     hints?: boolean;
-  }
+  };
   node?: {
     process?: boolean;
     global?: boolean;
@@ -37,7 +37,7 @@ interface WebpackConfig {
     crypto?: boolean;
     module?: boolean;
     clearImmediate?: boolean;
-    setImmediate?: boolean
+    setImmediate?: boolean;
     clearTimeout?: boolean;
     setTimeout?: boolean;
     __dirname?: boolean;

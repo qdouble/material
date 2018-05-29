@@ -8,7 +8,6 @@ import { log, PUSH_MANAGER_SUPPORT, SERVICE_WORKER_SUPPORT } from './constants';
 
 @Injectable()
 export class SWAndPushService {
-
   permission: Permission;
   swRegistration: any;
 
@@ -18,7 +17,7 @@ export class SWAndPushService {
 
   requestPermission() {
     if ('Notification' in window)
-      Notification.requestPermission((status: any) => this.permission = status);
+      Notification.requestPermission((status: any) => (this.permission = status));
   }
 
   isSupported() {
@@ -26,9 +25,7 @@ export class SWAndPushService {
   }
 
   create(push: PushNotification): Observable<any> {
-
     return new Observable((obs: any) => {
-
       if (!('Notification' in window)) {
         obs.error('Notifications are not available in this environment');
         obs.complete();
@@ -58,14 +55,14 @@ export class SWAndPushService {
   }
 
   registerServiceWorker() {
-    navigator.serviceWorker.register('service-worker.js')
-      .then((swReg) => {
+    navigator.serviceWorker
+      .register('service-worker.js')
+      .then(swReg => {
         log('Cache Service Worker is registered', swReg);
         this.swRegistration = swReg;
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Cache Service Worker Error', error);
       });
   }
-
 }

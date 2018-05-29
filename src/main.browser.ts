@@ -16,7 +16,7 @@ export function main(): Promise<any> {
     module.hot.accept();
   }
   return platformBrowserDynamic()
-  .bootstrapModule(BrowserAppModule)
+    .bootstrapModule(BrowserAppModule)
     .then(decorateModuleRef)
     .catch(err => console.error(err));
 }

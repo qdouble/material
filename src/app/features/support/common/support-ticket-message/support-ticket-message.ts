@@ -1,6 +1,11 @@
 import {
-  ChangeDetectionStrategy, Component, EventEmitter,
-  Input, OnDestroy, OnInit, Output
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
@@ -18,7 +23,6 @@ import { TicketMessage } from '../../ticket.model';
   </form>
   `
 })
-
 export class SupportTicketMessageComponent implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;

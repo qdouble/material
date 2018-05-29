@@ -24,5 +24,6 @@ export class UsernameValidator {
   usernameTaken = (control: FormControl): AsyncValidatorFn => {
     this.input.next(control.value);
     return this.request;
-  }
+    // tslint:disable-next-line:semicolon
+  };
 }

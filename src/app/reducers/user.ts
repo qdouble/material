@@ -34,7 +34,7 @@ export interface State {
   selectedReferral: string | null;
   selectedReferralIds: string[];
   showLevelBadgeNum: number;
-  sortReferralBy: { sortBy: string, reverse: boolean };
+  sortReferralBy: { sortBy: string; reverse: boolean };
   testShowRefRandom: number;
   updatedAt: string;
   user: User;
@@ -76,7 +76,6 @@ export const initialState: State = {
 
 export function userReducer(state = initialState, action: UserActions): State {
   switch (action.type) {
-
     case UserActionTypes.AddCredit: {
       let credit = action.payload.credit;
       if (!credit || state.creditIds.includes(credit.id)) return state;
@@ -110,7 +109,8 @@ export function userReducer(state = initialState, action: UserActions): State {
       let id = action.payload.id;
       if (!id) return { ...state, settingPrize: false };
       return {
-        ...state, loading: false,
+        ...state,
+        loading: false,
         user: {
           ...state.user,
           selectedPrize: id,
@@ -219,7 +219,9 @@ export function userReducer(state = initialState, action: UserActions): State {
             return Object.assign(entities, {
               [credit.id]: credit
             });
-        }, {});
+        },
+        {}
+      );
       return {
         ...state,
         amountPaid: user.amountPaid,
@@ -319,9 +321,8 @@ export function userReducer(state = initialState, action: UserActions): State {
     case UserActionTypes.SetCreditTotal:
       return { ...state, creditTotal: action.payload };
 
-    case UserActionTypes.SetHasQaulifiedReferrals:
+    case UserActionTypes.SetHasQualifiedReferrals:
       return { ...state, user: { ...state.user, hasQualifiedReferrals: action.payload } };
-
 
     case UserActionTypes.SetOrderPending:
       return { ...state, user: { ...state.user, orderPending: action.payload } };
@@ -405,7 +406,7 @@ export function userReducer(state = initialState, action: UserActions): State {
       if (!user) return { ...state, loading: false };
 
       let userUpdate = { ...state.user };
-      Object.keys(user).forEach(function (key, index) {
+      Object.keys(user).forEach(function(key, index) {
         userUpdate = { ...userUpdate, [key]: user[key] };
       });
       return { ...state, loading: false, user: userUpdate };

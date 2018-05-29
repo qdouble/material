@@ -8,9 +8,7 @@ const root = require('../helpers').root;
  * Webpack Plugins
  */
 const DefinePlugin = require('webpack/lib/DefinePlugin');
-const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
-const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 
 const EXCLUDE_SOURCE_MAPS = require('../constants').EXCLUDE_SOURCE_MAPS;
 const MY_TEST_RULES = require('../constants').MY_TEST_RULES;
@@ -123,7 +121,11 @@ module.exports = {
        *
        * See: https://github.com/webpack/json-loader
        */
-      { test: /\.json$/, loader: 'json-loader', exclude: [root('src/index.html')] },
+      {
+        test: /\.json$/,
+        loader: 'json-loader',
+        exclude: [root('src/index.html')]
+      },
 
       /**
        * Raw loader support for *.css files
@@ -131,7 +133,11 @@ module.exports = {
        *
        * See: https://github.com/webpack/raw-loader
        */
-      { test: /\.css$/, loaders: ['to-string-loader', 'css-loader'], exclude: [root('src/index.html')] },
+      {
+        test: /\.css$/,
+        loaders: ['to-string-loader', 'css-loader'],
+        exclude: [root('src/index.html')]
+      },
 
       {
         test: /\.scss$/,
@@ -144,7 +150,11 @@ module.exports = {
        *
        * See: https://github.com/webpack/raw-loader
        */
-      { test: /\.html$/, loader: 'raw-loader', exclude: [root('src/index.html')] },
+      {
+        test: /\.html$/,
+        loader: 'raw-loader',
+        exclude: [root('src/index.html')]
+      },
 
       /**
        * Instruments JS files with Istanbul for subsequent code coverage reporting.
@@ -153,7 +163,8 @@ module.exports = {
        * See: https://github.com/deepsweet/istanbul-instrumenter-loader
        */
       {
-        test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
+        test: /\.(js|ts)$/,
+        loader: 'istanbul-instrumenter-loader',
         enforce: 'post',
         include: root('src'),
         exclude: [

@@ -1,38 +1,35 @@
 /* styles.css will be extracted to main dist folder and is imported in index.html */
+
 /* This file is for importing 3rd party styles  */
+
 @import 'variables';
 @import '@angular/material/theming';
 // Plus imports for other components in your app.
-
 // Include the base styles for Angular Material core. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 @include mat-core();
-
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
 $primary: mat-palette($mat-light-green);
-$accent:  mat-palette($mat-amber, 700, A100, A700);
-
+$accent : mat-palette($mat-amber, 700, A100, A700);
 // The warn palette is optional (defaults to red).
-$warn:    mat-palette($mat-red);
-
+$warn : mat-palette($mat-red);
 // Create the theme object (a Sass map containing all of the palettes).
 $theme: mat-light-theme($primary, $accent, $warn);
-
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($theme);
-
 @media only screen and (min-width: 800px) {
-  mat-sidenav.mat-sidenav-opened, mat-sidenav.mat-sidenav-opening {
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.08),0px 1px 1px 0px rgba(0, 0, 0, 0.07),0px 1px 3px 0px rgba(0, 0, 0, 0.14) !important;
+  mat-sidenav.mat-sidenav-opened,
+  mat-sidenav.mat-sidenav-opening {
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.08), 0px 1px 1px 0px rgba(0, 0, 0, 0.07), 0px 1px 3px 0px rgba(0, 0, 0, 0.14) !important;
   }
 }
 
 .accent {
-   color: mat-color($accent);
+  color: mat-color($accent);
 }
 
 .accent-background {
@@ -48,7 +45,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 }
 
 .primary {
-   color: mat-color($primary);
+  color: mat-color($primary);
 }
 
 .primary-background {
@@ -56,7 +53,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 }
 
 .warn {
-   color: mat-color($warn);
+  color: mat-color($warn);
 }
 
 .warn-background {
@@ -98,6 +95,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   display: table;
 }
+
 @media screen and (max-width: 580px) {
   .table {
     display: block;
@@ -108,17 +106,21 @@ $theme: mat-light-theme($primary, $accent, $warn);
   display: table-row;
   background: #fff;
 }
+
 .row:nth-of-type(odd) {
   background: #f7f7f7;
 }
+
 .row.header {
   font-weight: 900;
   color: #ffffff;
   background: mat-color($primary);
 }
+
 .row.green {
   background: mat-color($primary);
 }
+
 .row.red {
   background: mat-color($warn);
 }
@@ -147,7 +149,8 @@ $theme: mat-light-theme($primary, $accent, $warn);
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   min-height: 100%;
   margin: 0;
@@ -155,7 +158,7 @@ html, body {
   font-family: $primary-font;
   font-size: 14px;
   font-weight: 400;
-  line-height: 20px; 
+  line-height: 20px;
 }
 
 pre {
@@ -171,18 +174,32 @@ pre {
 /**
   * Basic styles from Material Design Lite for HTML elements
   */
-  h1, h2, h3, h4, h5, h6, p {
-  margin: 0;
-  padding: 0; }
 
-h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+h1 small,
+h2 small,
+h3 small,
+h4 small,
+h5 small,
+h6 small {
   font-family: $primary-font;
   font-size: 56px;
   font-weight: 400;
   line-height: 1.35;
   letter-spacing: -0.02em;
   opacity: 0.54;
-  font-size: 0.6em; }
+  font-size: 0.6em;
+}
 
 h1 {
   font-family: $primary-font;
@@ -191,7 +208,8 @@ h1 {
   line-height: 1.35;
   letter-spacing: -0.02em;
   margin-top: 24px;
-  margin-bottom: 24px; }
+  margin-bottom: 24px;
+}
 
 h2 {
   font-family: $primary-font;
@@ -199,7 +217,8 @@ h2 {
   font-weight: 400;
   line-height: 48px;
   margin-top: 24px;
-  margin-bottom: 24px; }
+  margin-bottom: 24px;
+}
 
 h3 {
   font-family: $primary-font;
@@ -207,7 +226,8 @@ h3 {
   font-weight: 400;
   line-height: 40px;
   margin-top: 24px;
-  margin-bottom: 24px; }
+  margin-bottom: 24px;
+}
 
 h4 {
   font-family: $primary-font;
@@ -216,7 +236,8 @@ h4 {
   line-height: 32px;
   -moz-osx-font-smoothing: grayscale;
   margin-top: 24px;
-  margin-bottom: 16px; }
+  margin-bottom: 16px;
+}
 
 h5 {
   font-family: $primary-font;
@@ -225,7 +246,8 @@ h5 {
   line-height: 1;
   letter-spacing: 0.02em;
   margin-top: 24px;
-  margin-bottom: 16px; }
+  margin-bottom: 16px;
+}
 
 h6 {
   font-family: $primary-font;
@@ -234,17 +256,20 @@ h6 {
   line-height: 24px;
   letter-spacing: 0.04em;
   margin-top: 24px;
-  margin-bottom: 16px; }
+  margin-bottom: 16px;
+}
 
 p {
   font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: 0;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+}
 
 a {
-  font-weight: 500; }
+  font-weight: 500;
+}
 
 blockquote {
   font-family: $primary-font;
@@ -253,30 +278,40 @@ blockquote {
   font-weight: 300;
   font-style: italic;
   line-height: 1.35;
-  letter-spacing: 0.08em; }
-  blockquote:before {
-    position: absolute;
-    left: -0.5em;
-    content: '“'; }
-  blockquote:after {
-    content: '”';
-    margin-left: -0.05em; }
+  letter-spacing: 0.08em;
+}
+
+blockquote:before {
+  position: absolute;
+  left: -0.5em;
+  content: '“';
+}
+
+blockquote:after {
+  content: '”';
+  margin-left: -0.05em;
+}
 
 mark {
-  background-color: #f4ff81; }
+  background-color: #f4ff81;
+}
 
 dt {
-  font-weight: 700; }
+  font-weight: 700;
+}
 
 address {
   font-size: 12px;
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0;
-  font-style: normal; }
+  font-style: normal;
+}
 
-ul, ol {
+ul,
+ol {
   font-size: 14px;
   font-weight: 400;
   line-height: 24px;
-  letter-spacing: 0; }
+  letter-spacing: 0;
+}

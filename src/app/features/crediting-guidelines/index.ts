@@ -7,15 +7,8 @@ import { MATERIAL_MODULES } from '../../material.modules';
 import { routes } from './crediting-guidelines.routing';
 import { CreditingGuidelines } from './crediting-guidelines';
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    MATERIAL_MODULES,
-    RouterModule.forChild(routes)
-  ],
+  imports: [CommonModule, MATERIAL_MODULES, RouterModule.forChild(routes)],
   declarations: [CreditingGuidelines]
 })
-
 export class CreditingGuidelinesModule {}
-

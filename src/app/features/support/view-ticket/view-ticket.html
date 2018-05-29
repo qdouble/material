@@ -1,20 +1,12 @@
 <mat-card class="os-page-container">
   <section>
-    <os-support-ticket-form 
-      [ticket]="ticket$ | async"
-      [ticketObs]="ticket$"
-      [addedTicketMessageObs]="addedTicketMessage$"
-      [addingTicketMessageObs]="addingTicketMessage$"
-      (addMessage)=addMessage($event)
-      (closeTicket)=closeTicket($event)
-      (goBack)=goBack($event)
-      (markTicketAsRead)=markTicketAsRead($event)
-    >
-    <mat-card-title class="primary">View Ticket</mat-card-title>
-    <button id="os-vt-back-button" mat-raised-button [routerLink]="['..']">
-      <mat-icon id="os-vt-back-button-arrow">keyboard_arrow_left</mat-icon>
+    <os-support-ticket-form [ticket]="ticket$ | async" [ticketObs]="ticket$" [addedTicketMessageObs]="addedTicketMessage$" [addingTicketMessageObs]="addingTicketMessage$"
+      (addMessage)=addMessage($event) (closeTicket)=closeTicket($event) (goBack)=goBack($event) (markTicketAsRead)=markTicketAsRead($event)>
+      <mat-card-title class="primary">View Ticket</mat-card-title>
+      <button id="os-vt-back-button" mat-raised-button [routerLink]="['..']">
+        <mat-icon id="os-vt-back-button-arrow">keyboard_arrow_left</mat-icon>
         GO TO SUPPORT PAGE
-    </button>
+      </button>
     </os-support-ticket-form>
   </section>
 </mat-card>

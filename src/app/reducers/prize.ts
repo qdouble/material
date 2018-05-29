@@ -27,7 +27,6 @@ export const initialState: State = adapter.getInitialState({
 
 export function prizeReducer(state = initialState, action: PrizeActions): State {
   switch (action.type) {
-
     case PrizeActionTypes.GetPrizes:
       return { ...state, loading: true };
 
@@ -46,7 +45,9 @@ export function prizeReducer(state = initialState, action: PrizeActions): State 
             return Object.assign(entities, {
               [prize.id]: prize
             });
-        }, {});
+        },
+        {}
+      );
 
       return {
         ids: [...state.ids, ...newPrizeIds],
@@ -55,7 +56,6 @@ export function prizeReducer(state = initialState, action: PrizeActions): State 
         loaded: true,
         selectedPrize: state.selectedPrize
       };
-
     }
 
     case PrizeActionTypes.SelectPrize:

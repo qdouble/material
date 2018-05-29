@@ -1,5 +1,5 @@
 /* tslint:disable: no-switch-case-fall-through */
-import { createEntityAdapter,  EntityState } from '@ngrx/entity';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
 import {
   CreditRequestActions,
@@ -19,10 +19,8 @@ export const initialState: State = adapter.getInitialState({
   loaded: false
 });
 
-export function reducer(state = initialState,
-  action: CreditRequestActions): State {
+export function reducer(state = initialState, action: CreditRequestActions): State {
   switch (action.type) {
-
     case CreditRequestActionTypes.GetOfferClicks:
       return { ...state, loading: true, loaded: false };
     case CreditRequestActionTypes.GetOfferClicksFail:

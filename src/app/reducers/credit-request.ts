@@ -33,10 +33,8 @@ export const initialState: State = adapter.getInitialState({
   selectedCreditRequest: null
 });
 
-export function creditRequestReducer(state = initialState,
-  action: CreditRequestActions): State {
+export function creditRequestReducer(state = initialState, action: CreditRequestActions): State {
   switch (action.type) {
-
     case CreditRequestActionTypes.AddCreditRequest:
       return { ...state, adding: true, added: false };
 
@@ -63,8 +61,7 @@ export function creditRequestReducer(state = initialState,
 
     case CreditRequestActionTypes.EditCreditRequestSuccess: {
       let creditRequest = action.payload.creditRequest;
-      if (!action.payload.creditRequest)
-        return { ...state, adding: false, added: false };
+      if (!action.payload.creditRequest) return { ...state, adding: false, added: false };
 
       return {
         ...adapter.updateOne({ id: creditRequest.id, changes: creditRequest }, state),
@@ -72,7 +69,6 @@ export function creditRequestReducer(state = initialState,
         adding: false
       };
     }
-
 
     case CreditRequestActionTypes.GetCreditRequest:
       return {
@@ -87,8 +83,7 @@ export function creditRequestReducer(state = initialState,
 
     case CreditRequestActionTypes.GetCreditRequestSuccess: {
       const creditRequest = action.payload.creditRequest;
-      if (!creditRequest || !creditRequest.id)
-        return { ...state, loading: false };
+      if (!creditRequest || !creditRequest.id) return { ...state, loading: false };
 
       let stateIds = state.ids;
       if (stateIds.includes(creditRequest.id)) {
@@ -127,10 +122,13 @@ export function creditRequestReducer(state = initialState,
       const creditRequest: CreditRequest = action.payload.creditRequest;
       if (!creditRequest) return state;
       return {
-        ...adapter.updateOne({
-          id: creditRequest.id,
-          changes: { status: creditRequest.status, userNotes: creditRequest.userNotes }
-        }, state)
+        ...adapter.updateOne(
+          {
+            id: creditRequest.id,
+            changes: { status: creditRequest.status, userNotes: creditRequest.userNotes }
+          },
+          state
+        )
       };
     }
 

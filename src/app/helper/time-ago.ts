@@ -1,6 +1,5 @@
 /* tslint:disable: no-conditional-assignment */
 export function timeAgo(time) {
-
   switch (typeof time) {
     case 'number':
       break;
@@ -44,12 +43,10 @@ export function timeAgo(time) {
   }
   let i = 0,
     format;
-  while (format = timeFormats[i++])
+  while ((format = timeFormats[i++]))
     if (seconds < format[0]) {
-      if (typeof format[2] === 'string')
-        return format[listChoice];
-      else
-        return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
+      if (typeof format[2] === 'string') return format[listChoice];
+      else return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
     }
   return time;
 }

@@ -4,13 +4,7 @@ import { UIActions, UIActionTypes } from '../actions/ui';
 import { Offer } from '../models/offer';
 import { Order } from '../models/order';
 import { PushNotification } from '../models/push-notification';
-import {
-  GetScriptsToLoadResponse,
-  Script,
-  GetIPInfoResponse,
-  SocialProof,
-  SocialProofSettings
-} from '../models/ui';
+import { Script, GetIPInfoResponse, SocialProof, SocialProofSettings } from '../models/ui';
 import { validateCountry } from '../validators/validate-country';
 
 export interface State {
@@ -59,7 +53,6 @@ export const initialState: State = {
 
 export function uiReducer(state = initialState, action: UIActions): State {
   switch (action.type) {
-
     case UIActionTypes.AddInvalidCountrySuccess: {
       const override = action.payload.override;
       return {
@@ -145,7 +138,9 @@ export function uiReducer(state = initialState, action: UIActions): State {
             return Object.assign(entities, {
               [proof.id]: proof
             });
-        }, {});
+        },
+        {}
+      );
       return {
         ...state,
         socialProofIds: [...proofs.map(p => p.id)],
@@ -167,7 +162,6 @@ export function uiReducer(state = initialState, action: UIActions): State {
       if (!version || typeof version !== 'string') return state;
       return { ...state, latestVersion: version };
     }
-
 
     case UIActionTypes.MarkCompletedOrderAsViewed: {
       const id = action.payload;

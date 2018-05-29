@@ -7,17 +7,8 @@ import { SelectInputModule } from '../../../../components/input-fields/select-in
 import { SelectedPrizeComponent } from './selected-prize';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MATERIAL_MODULES,
-    SelectInputModule
-  ],
-  declarations: [
-    SelectedPrizeComponent
-  ],
-  exports: [
-    SelectedPrizeComponent
-  ]
+  imports: [CommonModule, MATERIAL_MODULES, SelectInputModule],
+  declarations: [SelectedPrizeComponent],
+  exports: [SelectedPrizeComponent]
 })
-
-export class SelectedPrizeModule { }
+export class SelectedPrizeModule {}

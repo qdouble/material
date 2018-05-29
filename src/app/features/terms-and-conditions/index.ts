@@ -5,14 +5,8 @@ import { RouterModule } from '@angular/router';
 import { routes } from './terms-and-conditions.routing';
 import { TermsAndConditions } from './terms-and-conditions';
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
+  imports: [CommonModule, RouterModule.forChild(routes)],
   declarations: [TermsAndConditions]
 })
-
 export class TermsAndConditionsModule {}
-

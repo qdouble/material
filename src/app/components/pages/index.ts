@@ -6,13 +6,8 @@ import { MATERIAL_MODULES } from '../../material.modules';
 import { PagesComponent } from './pages';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MATERIAL_MODULES
-  ],
+  imports: [CommonModule, FormsModule, MATERIAL_MODULES],
   declarations: [PagesComponent],
   exports: [PagesComponent]
 })
-
-export class PagesModule { }
+export class PagesModule {}

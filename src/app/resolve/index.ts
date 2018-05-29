@@ -1,9 +1,5 @@
 import { GetUserProfile } from './get-user-profile';
 
-export {
-  GetUserProfile
-};
+export { GetUserProfile };
 
-export const RESOLVE_DATA  = [
-  GetUserProfile
-];
+export const RESOLVE_DATA = [GetUserProfile];

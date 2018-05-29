@@ -22,12 +22,8 @@ export const initialState: State = adapter.getInitialState({
   selectedNotification: null
 });
 
-export function notificationReducer(
-  state = initialState,
-  action: NotificationActions
-): State {
+export function notificationReducer(state = initialState, action: NotificationActions): State {
   switch (action.type) {
-
     case NotificationActionTypes.AddNotification: {
       let message: string | undefined;
       const response = action.payload;
@@ -97,8 +93,9 @@ export function notificationReducer(
       const notifications = action.payload.notifications;
       const unreadTotal = action.payload.unreadTotal;
       if (!notifications) return state;
-      const newNotifications = notifications
-        .filter(notification => !state.entities[notification.id]);
+      const newNotifications = notifications.filter(
+        notification => !state.entities[notification.id]
+      );
 
       return {
         ...adapter.addMany(newNotifications, state),
@@ -111,10 +108,13 @@ export function notificationReducer(
       if (!(action.payload && action.payload.success)) return state;
       let ids = state.ids;
       return {
-        ...adapter.updateMany(ids.map(u => ({
-          id: u,
-          changes: { read: true }
-        })), state),
+        ...adapter.updateMany(
+          ids.map(u => ({
+            id: u,
+            changes: { read: true }
+          })),
+          state
+        ),
         unreadTotal: 0
       };
     }

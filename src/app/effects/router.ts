@@ -12,14 +12,13 @@ export class RouterEffects {
     ofType(RouterActions.GO),
     map((action: RouterActions.Go) => action.payload),
     // tslint:disable-next-line:max-line-length
-    tap(({ path, query: queryParams, extras}) => this.router.navigate(path, { queryParams, ...extras }))
+    tap(({ path, query: queryParams, extras }) =>
+      this.router.navigate(path, { queryParams, ...extras })
+    )
   );
 
   @Effect({ dispatch: false })
-  navigateBack$ = this.actions$.pipe(
-    ofType(RouterActions.BACK),
-    tap(() => this.location.back())
-  );
+  navigateBack$ = this.actions$.pipe(ofType(RouterActions.BACK), tap(() => this.location.back()));
 
   @Effect({ dispatch: false })
   navigateForward$ = this.actions$.pipe(
@@ -27,9 +26,5 @@ export class RouterEffects {
     tap(() => this.location.forward())
   );
 
-  constructor(
-    private actions$: Actions,
-    private router: Router,
-    private location: Location
-  ) {}
+  constructor(private actions$: Actions, private router: Router, private location: Location) {}
 }

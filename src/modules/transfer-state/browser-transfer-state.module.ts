@@ -15,6 +15,4 @@ export function getTransferState(): TransferState {
     }
   ]
 })
-export class BrowserTransferStateModule {
-
-}
+export class BrowserTransferStateModule {}

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 
 import { API_USER_URL } from './constants';
 import { GetPrizesResponse } from '../models/prize';
@@ -13,7 +12,6 @@ export class PrizeService extends RequestBase {
   }
 
   getPrizes() {
-    return this.http.get<GetPrizesResponse>
-      (`${API_USER_URL}/getPrizes`, this.optionsNoPre);
+    return this.http.get<GetPrizesResponse>(`${API_USER_URL}/getPrizes`, this.optionsNoPre);
   }
 }

@@ -1,41 +1,58 @@
 <mat-card class="offer-section">
   <mat-card-content class="desc-req">
     <div>
-      <img [src]="publish ? 'https://levelrewards.com/images/offer-images/' + offer?.filename : (offer?.directImageURL?.length > 1 ? offer?.directImageURL : offer?.imageURL)" [alt]="offer?.displayName">
+      <img [src]="publish ? 'https://levelrewards.com/images/offer-images/' + offer?.filename : (offer?.directImageURL?.length > 1 ? offer?.directImageURL : offer?.imageURL)"
+        [alt]="offer?.displayName">
     </div>
-    <p>You are being about to be sent to the <b>{{offer?.displayName}}</b> offer.</p>
+    <p>You are being about to be sent to the
+      <b>{{offer?.displayName}}</b> offer.</p>
     <div class="dr-table">
       <div class="dr-row">
-        <div class="dr-title"><b>Description</b></div>
+        <div class="dr-title">
+          <b>Description</b>
+        </div>
         <div class="dr-text" [innerHTML]="offer?.description"></div>
       </div>
       <div *ngIf="offer?.displayYoutube && offer?.youtubeID" class="video-container">
-          <iframe width="560" height="315" [src]="('https://www.youtube.com/embed/' + offer?.youtubeID + '?rel=0') | safeUrl" frameborder="0" allowfullscreen></iframe>  
+        <iframe width="560" height="315" [src]="('https://www.youtube.com/embed/' + offer?.youtubeID + '?rel=0') | safeUrl" frameborder="0"
+          allowfullscreen></iframe>
       </div>
       <div class="dr-row">
-        <div class="dr-title"><b>Requirements</b></div>
-          <div class="dr-text" [innerHTML]="offer?.requirements"></div>
+        <div class="dr-title">
+          <b>Requirements</b>
+        </div>
+        <div class="dr-text" [innerHTML]="offer?.requirements"></div>
       </div>
     </div>
   </mat-card-content>
   <mat-card-actions>
     <ng-container *ngIf="!offer?.tempUnavailable && !ageRestrictUser">
-          <div class="warn invalid-country-text" *ngIf="showInvalidCountry; else continue">
-              <p>OFFER NOT AVAILABLE IN YOUR LOCATION</p>
-              <p>This offer is only available in {{offer?.availableCountryNames?.join(', ')}}</p>
-              <p class="proxy-warn">Please note that any attempts to get around country restrictions by using a VPN or proxy to complete offers will lead to your account being placed on hold and/or permanently closed after manual verification.</p>
-          </div>
+      <div class="warn invalid-country-text" *ngIf="showInvalidCountry; else continue">
+        <p>OFFER NOT AVAILABLE IN YOUR LOCATION</p>
+        <p>This offer is only available in {{offer?.availableCountryNames?.join(', ')}}</p>
+        <p class="proxy-warn">Please note that any attempts to get around country restrictions by using a VPN or proxy to complete offers will
+          lead to your account being placed on hold and/or permanently closed after manual verification.</p>
+      </div>
       <ng-template #continue>
-          <div *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" class="checkbox-row">
-              <span *ngIf="!offer?.noCardRequired && !offer.requiresConfirmation"><span class="warn">The use of prepaid cards and giftcards are not allowed.</span> Members are to keep any trial for at least 90% of the trial period or beyond.</span>
-              <span *ngIf="!offer?.allowCreditRequests">This advertiser does not accept missing credit requests. Please be sure to <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a>.</span>
-            </div>
-            <p class="complete center primary">
-              You currently have {{creditTotal | number: '1.2-2'}} credit(s). After completing this offer, you will have {{(offer?.creditValue + creditTotal) | number: '1.2-2'}} credit(s) and 
-              <span *ngIf="futureLevel > currentLevel">be on Level {{futureLevel}} where you can <em>earn ${{futureLevel * 5}} per referral!</em></span>
-              <span *ngIf="futureLevel === currentLevel">you will be {{(currentLevel + 1 - (creditTotal + offer.creditValue)) | number: '1.2-2'}} credits away from Level {{currentLevel + 1}} where you can <em>earn ${{(currentLevel + 1) * 5}} per referral!</em></span>
-            </p>
-          <button mat-raised-button color="primary" class="white" (click)="continueToOffer.emit(offer?.id)">COMPLETE THIS OFFER</button>
+        <div *ngIf="!offer?.noCardRequired || !offer?.allowCreditRequests" class="checkbox-row">
+          <span *ngIf="!offer?.noCardRequired && !offer.requiresConfirmation">
+            <span class="warn">The use of prepaid, virtual, app and gift cards are prohibited and are a terms and conditions violation.</span>
+            Members are to keep any trial for at least 90% of the trial period or beyond.</span>
+          <span *ngIf="!offer?.allowCreditRequests">This advertiser does not accept missing credit requests. Please be sure to
+            <a [routerLink]="['/crediting-guidelines']" target="_blank">follow our crediting guidelines</a>.</span>
+        </div>
+        <p class="complete center primary">
+          You currently have {{creditTotal | number: '1.2-2'}} credit(s). After completing this offer, you will have {{(offer?.creditValue
+          + creditTotal) | number: '1.2-2'}} credit(s) and
+          <span *ngIf="futureLevel > currentLevel">be on Level {{futureLevel}} where you can
+            <em>earn ${{futureLevel * 5}} per referral!</em>
+          </span>
+          <span *ngIf="futureLevel === currentLevel">you will be {{(currentLevel + 1 - (creditTotal + offer.creditValue)) | number: '1.2-2'}} credits away from Level
+            {{currentLevel + 1}} where you can
+            <em>earn ${{(currentLevel + 1) * 5}} per referral!</em>
+          </span>
+        </p>
+        <button mat-raised-button color="primary" class="white" (click)="continueToOffer.emit(offer?.id)">COMPLETE THIS OFFER</button>
       </ng-template>
     </ng-container>
     <ng-container *ngIf="offer?.tempUnavailable && !showInvalidCountry">
@@ -43,33 +60,41 @@
       <div class="warn">{{offer?.tempUnavailableMessage}}</div>
     </ng-container>
     <div class="age-restricted" *ngIf="ageRestrictUser">
-        <button mat-button class="white accent-background">AGE RESTRICTED</button>
-        <h5 class="accent"><b>{{offer?.displayName}} is restricting traffic from members under the age of {{offer.minUserAge}}.</b></h5>
-        <h6 class="accent"><b>According to your account information, you are {{userAge}} years old.</b></h6>
+      <button mat-button class="white accent-background">AGE RESTRICTED</button>
+      <h5 class="accent">
+        <b>{{offer?.displayName}} is restricting traffic from members under the age of {{offer.minUserAge}}.</b>
+      </h5>
+      <h6 class="accent">
+        <b>According to your account information, you are {{userAge}} years old.</b>
+      </h6>
     </div>
   </mat-card-actions>
   <mat-card-content *ngIf="!showInvalidCountry">
     Once you have completed the requirements listed above, credit is usually applied to your account
     <span *ngIf="offer?.minTimeToCredit === 0 && offer?.maxTimeToCredit === 0">
-    quickly <b>(within 6 hours)</b>.
-  </span>
+      quickly
+      <b>(within 6 hours)</b>.
+    </span>
     <span *ngIf="offer?.minTimeToCredit === 0 && offer?.maxTimeToCredit !== 0">
-    within {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType | singleSafe }}.
-  </span>
+      within {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType | singleSafe }}.
+    </span>
     <span *ngIf="offer?.minTimeToCredit !== 0 && offer?.maxTimeToCredit !== 0">
-    within {{offer?.minTimeToCredit }} - {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType | singleSafe }} .
-  </span> Until the sign up is reported to us, you will not see any indication on your account that you have
-    completed the offer.
+      within {{offer?.minTimeToCredit }} - {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType | singleSafe }} .
+    </span> Until the sign up is reported to us, you will not see any indication on your account that you have completed
+    the offer.
   </mat-card-content>
 </mat-card>
 <mat-card class="fine-print" *ngIf="!showInvalidCountry">
   <mat-card-subtitle id="please-note-section">
     Please note: Unless otherwise stated, use of anything other than a valid credit card or bank issued debit card is prohibited
-    and will invalidate credit. Use of a promotional or coupon code will also invalidate credit. 
-    Do not attempt to complete the offer over the phone or by going directly to the advertiser's website outside of our link, it will not credit.
-    <span class="warn">Immediate or quick cancellations of the product or service will result in your credit being revoked and your account being closed.</span> 
-    Please try the advertisers product or service to its fullest. <b>Lastly, please do not contact the customer service department of an offer if you complete an offer
-    and do not receive credit as they will not be able to help. Offer crediting is typically handled by a company's marketing department and customer service reps are not trained or capable in helping you with crediting.</b> Use our missing credit request form if you are missing
-    credit for an offer you have completed.
+    and will invalidate credit. Use of a promotional or coupon code will also invalidate credit. Do not attempt to complete
+    the offer over the phone or by going directly to the advertiser's website outside of our link, it will not credit.
+    <span class="warn">Immediate or quick cancellations of the product or service will result in your credit being revoked and your account
+      being closed.</span>
+    Please try the advertisers product or service to its fullest.
+    <b>Lastly, please do not contact the customer service department of an offer if you complete an offer and do not receive
+      credit as they will not be able to help. Offer crediting is typically handled by a company's marketing department and
+      customer service reps are not trained or capable in helping you with crediting.</b> Use our missing credit request
+    form if you are missing credit for an offer you have completed.
   </mat-card-subtitle>
 </mat-card>

@@ -8,7 +8,6 @@ import { User } from '../../../models/user';
   templateUrl: './order-form.html',
   styleUrls: ['./order-form.scss']
 })
-
 export class OrderFormComponent {
   accountTypes = ['Checking', 'Savings'];
   @Input() form: FormGroup;

@@ -3,7 +3,7 @@ import { Params, RouterStateSnapshot } from '@angular/router';
 import { ActionReducer, ActionReducerMap } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 import { storeLogger } from 'ngrx-store-logger';
-import { routerReducer,  RouterStateSerializer } from '@ngrx/router-store';
+import { routerReducer, RouterStateSerializer } from '@ngrx/router-store';
 import * as fromRouter from '@ngrx/router-store';
 
 import * as fromCountry from './country';
@@ -25,18 +25,18 @@ export interface RouterStateUrl {
 }
 
 const modules = {
-  'country': fromCountry,
-  'creditRequest': fromCreditRequest,
-  'notification': fromNotification,
-  'notify': fromNotify,
-  'offer': fromOffer,
-  'offerClick': fromOfferClick,
-  'order': fromOrder,
-  'prize': fromPrize,
-  'router': routerReducer,
-  'ticket': fromTicket,
-  'ui': fromUI,
-  'user': fromUser
+  country: fromCountry,
+  creditRequest: fromCreditRequest,
+  notification: fromNotification,
+  notify: fromNotify,
+  offer: fromOffer,
+  offerClick: fromOfferClick,
+  order: fromOrder,
+  prize: fromPrize,
+  router: routerReducer,
+  ticket: fromTicket,
+  ui: fromUI,
+  user: fromUser
 };
 
 export interface AppState {
@@ -75,27 +75,18 @@ export const reducers: ActionReducerMap<AppState> = {
 
 export const getCountryState = createFeatureSelector<fromCountry.State>('country');
 
-export const getSelectedCountryId = createSelector(
-  getCountryState,
-  fromCountry.getSelectedCountry
-);
+export const getSelectedCountryId = createSelector(getCountryState, fromCountry.getSelectedCountry);
 
 export const {
   selectIds: getCountryIds,
   selectEntities: getCountryEntities,
   selectAll: getAllCountries,
-  selectTotal: getTotalCountries,
+  selectTotal: getTotalCountries
 } = fromCountry.adapter.getSelectors(getCountryState);
 
-export const getCountryLoaded = createSelector(
-  getCountryState,
-  fromCountry.getLoaded
-);
+export const getCountryLoaded = createSelector(getCountryState, fromCountry.getLoaded);
 
-export const getCountryLoading = createSelector(
-  getCountryState,
-  fromCountry.getLoading
-);
+export const getCountryLoading = createSelector(getCountryState, fromCountry.getLoading);
 
 export const getSelectedCountry = createSelector(
   getCountryEntities,
@@ -114,7 +105,9 @@ export const getCountryCollection = createSelector(
  */
 
 // tslint:disable-next-line:max-line-length
-export const getCreditRequestState = createFeatureSelector<fromCreditRequest.State>('creditRequest');
+export const getCreditRequestState = createFeatureSelector<fromCreditRequest.State>(
+  'creditRequest'
+);
 
 export const getSelectedCreditRequestId = createSelector(
   getCreditRequestState,
@@ -125,7 +118,7 @@ export const {
   selectIds: getCreditRequestIds,
   selectEntities: getCreditRequestEntities,
   selectAll: getAllCreditRequests,
-  selectTotal: getTotalCreditRequests,
+  selectTotal: getTotalCreditRequests
 } = fromCreditRequest.adapter.getSelectors(getCreditRequestState);
 
 export const getCreditRequestAdded = createSelector(
@@ -185,7 +178,7 @@ export const {
   selectIds: getNotificationIds,
   selectEntities: getNotificationEntities,
   selectAll: getAllNotifications,
-  selectTotal: getTotalNotifications,
+  selectTotal: getTotalNotifications
 } = fromNotification.adapter.getSelectors(getNotificationState);
 
 export const getNotificationPending = createSelector(
@@ -216,16 +209,13 @@ export const getNotificationCollection = createSelector(
 
 export const getNotifyState = createFeatureSelector<fromNotify.State>('notify');
 
-export const getSelectedNotifyId = createSelector(
-  getNotifyState,
-  fromNotify.getSelectedNotify
-);
+export const getSelectedNotifyId = createSelector(getNotifyState, fromNotify.getSelectedNotify);
 
 export const {
   selectIds: getNotifyIds,
   selectEntities: getNotifyEntities,
-  selectAll: getAllNotifys,
-  selectTotal: getTotalNotifys,
+  selectAll: getAllNotify,
+  selectTotal: getTotalNotify
 } = fromNotify.adapter.getSelectors(getNotifyState);
 
 export const getSelectedNotify = createSelector(
@@ -237,7 +227,7 @@ export const getSelectedNotify = createSelector(
 export const getNotifyCollection = createSelector(
   getNotifyEntities,
   getNotifyIds,
-  (notifys, ids: string[]) => ids.map(id => notifys[id])
+  (notify, ids: string[]) => ids.map(id => notify[id])
 );
 
 /**
@@ -250,19 +240,12 @@ export const {
   selectIds: getOfferClickIds,
   selectEntities: getOfferClickEntities,
   selectAll: getAllOfferClicks,
-  selectTotal: getTotalOfferClicks,
+  selectTotal: getTotalOfferClicks
 } = fromOfferClick.adapter.getSelectors(getOfferClickState);
 
+export const getOfferClicksLoaded = createSelector(getOfferClickState, fromOfferClick.getLoaded);
 
-export const getOfferClicksLoaded = createSelector(
-  getOfferClickState,
-  fromOfferClick.getLoaded
-);
-
-export const getOfferClicksLoading = createSelector(
-  getOfferClickState,
-  fromOfferClick.getLoading
-);
+export const getOfferClicksLoading = createSelector(getOfferClickState, fromOfferClick.getLoading);
 
 export const getOfferClickCollection = createSelector(
   getOfferClickEntities,
@@ -270,49 +253,33 @@ export const getOfferClickCollection = createSelector(
   (offerClicks, ids: string[]) => ids.map(id => offerClicks[id])
 );
 
-
 /**
  * Offer
  */
 
 export const getOfferState = createFeatureSelector<fromOffer.State>('offer');
 
-export const getSelectedOfferId = createSelector(
-  getOfferState,
-  fromOffer.getSelectedOffer
-);
+export const getSelectedOfferId = createSelector(getOfferState, fromOffer.getSelectedOffer);
 
 export const {
- selectIds: getOfferIds,
+  selectIds: getOfferIds,
   selectEntities: getOfferEntities,
   selectAll: getAllOffers,
-  selectTotal: getTotalOffers,
+  selectTotal: getTotalOffers
 } = fromOffer.adapter.getSelectors(getOfferState);
 
-export const getOfferLastUpdatedAt = createSelector(
-  getOfferState,
-  fromOffer.getLastUpdatedAt
-);
+export const getOfferLastUpdatedAt = createSelector(getOfferState, fromOffer.getLastUpdatedAt);
 
-export const getOfferLoaded = createSelector(
-  getOfferState,
-  fromOffer.getLoaded
-);
+export const getOfferLoaded = createSelector(getOfferState, fromOffer.getLoaded);
 
 export const getOfferLoadedUserOffers = createSelector(
   getOfferState,
   fromOffer.getLoadedUserOffers
 );
 
-export const getOfferLoading = createSelector(
-  getOfferState,
-  fromOffer.getLoading
-);
+export const getOfferLoading = createSelector(getOfferState, fromOffer.getLoading);
 
-export const getOfferRankUpdatedAt = createSelector(
-  getOfferState,
-  fromOffer.getRankUpdatedAt
-);
+export const getOfferRankUpdatedAt = createSelector(getOfferState, fromOffer.getRankUpdatedAt);
 
 export const getSelectedOffer = createSelector(
   getOfferEntities,
@@ -320,10 +287,7 @@ export const getSelectedOffer = createSelector(
   (entities, selectedId) => entities[selectedId]
 );
 
-export const getOfferUserAgent = createSelector(
-  getOfferState,
-  fromOffer.getUserAgent
-);
+export const getOfferUserAgent = createSelector(getOfferState, fromOffer.getUserAgent);
 
 export const getOfferCollection = createSelector(
   getOfferEntities,
@@ -338,26 +302,17 @@ export const getOfferCollection = createSelector(
 export const getOrderState = createFeatureSelector<fromOrder.State>('order');
 
 export const {
- selectIds: getOrderIds,
+  selectIds: getOrderIds,
   selectEntities: getOrderEntities,
   selectAll: getAllOrders,
-  selectTotal: getTotalOrders,
+  selectTotal: getTotalOrders
 } = fromOrder.adapter.getSelectors(getOrderState);
 
-export const getOrderLoaded = createSelector(
-  getOrderState,
-  fromOrder.getLoaded
-);
+export const getOrderLoaded = createSelector(getOrderState, fromOrder.getLoaded);
 
-export const getOrderLoading = createSelector(
-  getOrderState,
-  fromOrder.getLoading
-);
+export const getOrderLoading = createSelector(getOrderState, fromOrder.getLoading);
 
-export const getOrderPlacing = createSelector(
-  getOrderState,
-  fromOrder.getPlacing
-);
+export const getOrderPlacing = createSelector(getOrderState, fromOrder.getPlacing);
 
 export const getOrderCollection = createSelector(
   getOrderEntities,
@@ -365,42 +320,30 @@ export const getOrderCollection = createSelector(
   (orders, ids: string[]) => ids.map(id => orders[id])
 );
 
-
 /**
  * Prize
  */
 
 export const getPrizeState = createFeatureSelector<fromPrize.State>('prize');
 
-export const getSelectedPrizeId = createSelector(
-  getPrizeState,
-  fromPrize.getSelectedPrize
-);
+export const getSelectedPrizeId = createSelector(getPrizeState, fromPrize.getSelectedPrize);
 
 export const {
- selectIds: getPrizeIds,
+  selectIds: getPrizeIds,
   selectEntities: getPrizeEntities,
   selectAll: getAllPrizes,
-  selectTotal: getTotalPrizes,
+  selectTotal: getTotalPrizes
 } = fromPrize.adapter.getSelectors(getPrizeState);
 
+export const getPrizeLoaded = createSelector(getPrizeState, fromPrize.getLoaded);
 
-export const getPrizeLoaded = createSelector(
-  getPrizeState,
-  fromPrize.getLoaded
-);
-
-export const getPrizeLoading = createSelector(
-  getPrizeState,
-  fromPrize.getLoading
-);
+export const getPrizeLoading = createSelector(getPrizeState, fromPrize.getLoading);
 
 export const getSelectedPrize = createSelector(
   getPrizeEntities,
   getSelectedPrizeId,
   (entities, selectedId) => entities[selectedId]
 );
-
 
 export const getPrizeCollection = createSelector(
   getPrizeEntities,
@@ -414,47 +357,26 @@ export const getPrizeCollection = createSelector(
 
 export const getTicketState = createFeatureSelector<fromTicket.State>('ticket');
 
-export const getSelectedTicketId = createSelector(
-  getTicketState,
-  fromTicket.getSelectedTicket
-);
+export const getSelectedTicketId = createSelector(getTicketState, fromTicket.getSelectedTicket);
 
 export const {
- selectIds: getTicketIds,
+  selectIds: getTicketIds,
   selectEntities: getTicketEntities,
   selectAll: getAllTickets,
-  selectTotal: getTotalTickets,
+  selectTotal: getTotalTickets
 } = fromTicket.adapter.getSelectors(getTicketState);
 
-export const getTicketAdded = createSelector(
-  getTicketState,
-  fromTicket.getAdded
-);
+export const getTicketAdded = createSelector(getTicketState, fromTicket.getAdded);
 
-export const getTicketAddedMessage = createSelector(
-  getTicketState,
-  fromTicket.getAddedMessage
-);
+export const getTicketAddedMessage = createSelector(getTicketState, fromTicket.getAddedMessage);
 
-export const getTicketAdding = createSelector(
-  getTicketState,
-  fromTicket.getAdding
-);
+export const getTicketAdding = createSelector(getTicketState, fromTicket.getAdding);
 
-export const getTicketAddingMessage = createSelector(
-  getTicketState,
-  fromTicket.getAddingMessage
-);
+export const getTicketAddingMessage = createSelector(getTicketState, fromTicket.getAddingMessage);
 
-export const getTicketLoaded = createSelector(
-  getTicketState,
-  fromTicket.getLoaded
-);
+export const getTicketLoaded = createSelector(getTicketState, fromTicket.getLoaded);
 
-export const getTicketLoading = createSelector(
-  getTicketState,
-  fromTicket.getLoading
-);
+export const getTicketLoading = createSelector(getTicketState, fromTicket.getLoading);
 
 export const getSelectedTicket = createSelector(
   getTicketEntities,
@@ -462,10 +384,7 @@ export const getSelectedTicket = createSelector(
   (entities, selectedId) => entities[selectedId]
 );
 
-export const getTicketSortBy = createSelector(
-  getTicketState,
-  fromTicket.getSortBy
-);
+export const getTicketSortBy = createSelector(getTicketState, fromTicket.getSortBy);
 
 export const getTicketCollection = createSelector(
   getTicketEntities,
@@ -473,22 +392,15 @@ export const getTicketCollection = createSelector(
   (tickets, ids: string[]) => ids.map(id => tickets[id])
 );
 
-
 /**
  * UI
  */
 
 export const getUIState = createFeatureSelector<fromUI.State>('ui');
 
-export const getUICompletedOrderIds = createSelector(
-  getUIState,
-  fromUI.getCompletedOrderIds
-);
+export const getUICompletedOrderIds = createSelector(getUIState, fromUI.getCompletedOrderIds);
 
-export const getUICompletedOrders = createSelector(
-  getUIState,
-  fromUI.getCompletedOrders
-);
+export const getUICompletedOrders = createSelector(getUIState, fromUI.getCompletedOrders);
 
 export const getUICompletedOrdersCollection = createSelector(
   getUICompletedOrders,
@@ -496,20 +408,11 @@ export const getUICompletedOrdersCollection = createSelector(
   (offers, ids: string[]) => ids.map(id => offers[id])
 );
 
-export const getUIContactRequestSent = createSelector(
-  getUIState,
-  fromUI.getContactRequestSent
-);
+export const getUIContactRequestSent = createSelector(getUIState, fromUI.getContactRequestSent);
 
-export const getUICreditedOfferIds = createSelector(
-  getUIState,
-  fromUI.getCreditedOfferIds
-);
+export const getUICreditedOfferIds = createSelector(getUIState, fromUI.getCreditedOfferIds);
 
-export const getUICreditedOffers = createSelector(
-  getUIState,
-  fromUI.getCreditedOffers
-);
+export const getUICreditedOffers = createSelector(getUIState, fromUI.getCreditedOffers);
 
 export const getUICreditedOfferCollection = createSelector(
   getUICreditedOffers,
@@ -517,55 +420,25 @@ export const getUICreditedOfferCollection = createSelector(
   (offers, ids: string[]) => ids.map(id => offers[id])
 );
 
-export const getUIInvalidCountry = createSelector(
-  getUIState,
-  fromUI.getInvalidCountry
-);
+export const getUIInvalidCountry = createSelector(getUIState, fromUI.getInvalidCountry);
 
-export const getUIIPInfo = createSelector(
-  getUIState,
-  fromUI.getIPInfo
-);
+export const getUIIPInfo = createSelector(getUIState, fromUI.getIPInfo);
 
-export const getUIMobile = createSelector(
-  getUIState,
-  fromUI.getMobile
-);
+export const getUIMobile = createSelector(getUIState, fromUI.getMobile);
 
-export const getUIPushNotification = createSelector(
-  getUIState,
-  fromUI.getPushNotification
-);
+export const getUIPushNotification = createSelector(getUIState, fromUI.getPushNotification);
 
-export const getUIOverrideInvalidIp = createSelector(
-  getUIState,
-  fromUI.getOverrideInvalidIp
-);
+export const getUIOverrideInvalidIp = createSelector(getUIState, fromUI.getOverrideInvalidIp);
 
-export const getUIScripts = createSelector(
-  getUIState,
-  fromUI.getScripts
-);
+export const getUIScripts = createSelector(getUIState, fromUI.getScripts);
 
-export const getUISendingContact = createSelector(
-  getUIState,
-  fromUI.getSendingContact
-);
+export const getUISendingContact = createSelector(getUIState, fromUI.getSendingContact);
 
-export const getUISideNavOpen = createSelector(
-  getUIState,
-  fromUI.getSideNavOpen
-);
+export const getUISideNavOpen = createSelector(getUIState, fromUI.getSideNavOpen);
 
-export const getUISocialProofIds = createSelector(
-  getUIState,
-  fromUI.getSocialProofIds
-);
+export const getUISocialProofIds = createSelector(getUIState, fromUI.getSocialProofIds);
 
-export const getUISocialProofs = createSelector(
-  getUIState,
-  fromUI.getSocialProofs
-);
+export const getUISocialProofs = createSelector(getUIState, fromUI.getSocialProofs);
 
 export const getUISocialProofCollection = createSelector(
   getUISocialProofs,
@@ -573,20 +446,11 @@ export const getUISocialProofCollection = createSelector(
   (proofs, ids: string[]) => ids.map(id => proofs[id])
 );
 
-export const getUISocialProofSettings = createSelector(
-  getUIState,
-  fromUI.getSocialProofSettings
-);
+export const getUISocialProofSettings = createSelector(getUIState, fromUI.getSocialProofSettings);
 
-export const getUILatestVersion = createSelector(
-  getUIState,
-  fromUI.getLatestVersion
-);
+export const getUILatestVersion = createSelector(getUIState, fromUI.getLatestVersion);
 
-export const getUIVersion = createSelector(
-  getUIState,
-  fromUI.getVersion
-);
+export const getUIVersion = createSelector(getUIState, fromUI.getVersion);
 
 /**
  * User
@@ -594,25 +458,13 @@ export const getUIVersion = createSelector(
 
 export const getUserState = createFeatureSelector<fromUser.State>('user');
 
-export const getUserAmountPaid = createSelector(
-  getUserState,
-  fromUser.getAmountPaid
-);
+export const getUserAmountPaid = createSelector(getUserState, fromUser.getAmountPaid);
 
-export const getUserAskQuestions = createSelector(
-  getUserState,
-  fromUser.getAskQuestions
-);
+export const getUserAskQuestions = createSelector(getUserState, fromUser.getAskQuestions);
 
-export const getUserCreditIds = createSelector(
-  getUserState,
-  fromUser.getCreditIds
-);
+export const getUserCreditIds = createSelector(getUserState, fromUser.getCreditIds);
 
-export const getUserCredits = createSelector(
-  getUserState,
-  fromUser.getCredits
-);
+export const getUserCredits = createSelector(getUserState, fromUser.getCredits);
 
 export const getUserCreditCollection = createSelector(
   getUserCredits,
@@ -620,85 +472,37 @@ export const getUserCreditCollection = createSelector(
   (credits, ids: string[]) => ids.map(id => credits[id])
 );
 
-export const getUserCreditTotal = createSelector(
-  getUserState,
-  fromUser.getCreditTotal
-);
+export const getUserCreditTotal = createSelector(getUserState, fromUser.getCreditTotal);
 
-export const getUserEntryEmail = createSelector(
-  getUserState,
-  fromUser.getEntryEmail
-);
+export const getUserEntryEmail = createSelector(getUserState, fromUser.getEntryEmail);
 
-export const getUserIP = createSelector(
-  getUserState,
-  fromUser.getIP
-);
+export const getUserIP = createSelector(getUserState, fromUser.getIP);
 
-export const getUserIPJson = createSelector(
-  getUserState,
-  fromUser.getIPJson
-);
+export const getUserIPJson = createSelector(getUserState, fromUser.getIPJson);
 
-export const getUserIsNew = createSelector(
-  getUserState,
-  fromUser.getIsNew
-);
+export const getUserIsNew = createSelector(getUserState, fromUser.getIsNew);
 
-export const getUserLastUpdate = createSelector(
-  getUserState,
-  fromUser.getLastUpdate
-);
+export const getUserLastUpdate = createSelector(getUserState, fromUser.getLastUpdate);
 
-export const getUserLoaded = createSelector(
-  getUserState,
-  fromUser.getLoaded
-);
+export const getUserLoaded = createSelector(getUserState, fromUser.getLoaded);
 
-export const getUserLoading = createSelector(
-  getUserState,
-  fromUser.getLoading
-);
+export const getUserLoading = createSelector(getUserState, fromUser.getLoading);
 
-export const getUserLoginChecked = createSelector(
-  getUserState,
-  fromUser.getLoginChecked
-);
+export const getUserLoginChecked = createSelector(getUserState, fromUser.getLoginChecked);
 
-export const getUserLoggedIn = createSelector(
-  getUserState,
-  fromUser.getLoggedIn
-);
+export const getUserLoggedIn = createSelector(getUserState, fromUser.getLoggedIn);
 
-export const getUserMatches = createSelector(
-  getUserState,
-  fromUser.getMatches
-);
+export const getUserMatches = createSelector(getUserState, fromUser.getMatches);
 
-export const getUserOnAdminPage = createSelector(
-  getUserState,
-  fromUser.getOnAdminPage
-);
+export const getUserOnAdminPage = createSelector(getUserState, fromUser.getOnAdminPage);
 
-export const getUserReferrerBlocked = createSelector(
-  getUserState,
-  fromUser.getReferrerBlocked
-);
+export const getUserReferrerBlocked = createSelector(getUserState, fromUser.getReferrerBlocked);
 
-export const getUserReferredBy = createSelector(
-  getUserState,
-  fromUser.getReferredBy
-);
+export const getUserReferredBy = createSelector(getUserState, fromUser.getReferredBy);
 
-export const getUserReferralIds = createSelector(
-  getUserState,
-  fromUser.getReferralIds
-);
+export const getUserReferralIds = createSelector(getUserState, fromUser.getReferralIds);
 
-export const getUserReferrals = createSelector(
-  getUserState,
-  fromUser.getReferrals
-);
+export const getUserReferrals = createSelector(getUserState, fromUser.getReferrals);
 
 export const getUserReferralCollection = createSelector(
   getUserReferrals,
@@ -706,25 +510,13 @@ export const getUserReferralCollection = createSelector(
   (referrals, ids) => ids.map(id => referrals[id])
 );
 
-export const getUserResetEmailSent = createSelector(
-  getUserState,
-  fromUser.getResetEmailSent
-);
+export const getUserResetEmailSent = createSelector(getUserState, fromUser.getResetEmailSent);
 
-export const getUserReturningUser = createSelector(
-  getUserState,
-  fromUser.getReturningUser
-);
+export const getUserReturningUser = createSelector(getUserState, fromUser.getReturningUser);
 
-export const getUserSelectedPrizeId = createSelector(
-  getUserState,
-  fromUser.getSelectedPrize
-);
+export const getUserSelectedPrizeId = createSelector(getUserState, fromUser.getSelectedPrize);
 
-export const getUserSelectedReferralId = createSelector(
-  getUserState,
-  fromUser.getSelectedReferral
-);
+export const getUserSelectedReferralId = createSelector(getUserState, fromUser.getSelectedReferral);
 
 export const getUserSelectedReferral = createSelector(
   getUserReferrals,
@@ -732,44 +524,21 @@ export const getUserSelectedReferral = createSelector(
   (entities, selectedId) => entities[selectedId]
 );
 
-export const getSelectedReferralIds = createSelector(
-  getUserState,
-  fromUser.getSelectedReferralIds
-);
+export const getSelectedReferralIds = createSelector(getUserState, fromUser.getSelectedReferralIds);
 
+export const getUserSettingPrize = createSelector(getUserState, fromUser.getSettingPrize);
 
-export const getUserSettingPrize = createSelector(
-  getUserState,
-  fromUser.getSettingPrize
-);
+export const getUserShowLevelBadgeNum = createSelector(getUserState, fromUser.getShowLevelBadgeNum);
 
-export const getUserShowLevelBadgeNum = createSelector(
-  getUserState,
-  fromUser.getShowLevelBadgeNum
-);
+export const getUserSortReferralBy = createSelector(getUserState, fromUser.getSortReferralBy);
 
-export const getUserSortReferralBy = createSelector(
-  getUserState,
-  fromUser.getSortReferralBy
-);
+export const getUserTestShowRefRandom = createSelector(getUserState, fromUser.getTestShowRefRandom);
 
-export const getUserTestShowRefRandom = createSelector(
-  getUserState,
-  fromUser.getTestShowRefRandom
-);
+export const getUserUpdatedAt = createSelector(getUserState, fromUser.getUpdatedAt);
 
-export const getUserUpdatedAt = createSelector(
-  getUserState,
-  fromUser.getUpdatedAt
-);
+export const getUserProfile = createSelector(getUserState, fromUser.getUser);
 
-export const getUserProfile = createSelector(
-  getUserState,
-  fromUser.getUser
-);
-
-export class CustomRouterStateSerializer
-  implements RouterStateSerializer<RouterStateUrl> {
+export class CustomRouterStateSerializer implements RouterStateSerializer<RouterStateUrl> {
   serialize(routerState: RouterStateSnapshot): RouterStateUrl {
     let route = routerState.root;
 
@@ -777,7 +546,10 @@ export class CustomRouterStateSerializer
       route = route.firstChild;
     }
 
-    const { url, root: { queryParams } } = routerState;
+    const {
+      url,
+      root: { queryParams }
+    } = routerState;
     const { params } = route;
 
     // Only return an object including the URL, params and query params
@@ -786,10 +558,9 @@ export class CustomRouterStateSerializer
   }
 }
 
-
 // Generate a reducer to set the root state in dev mode for HMR
 function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
-  return function (state: any, action: any) {
+  return function(state: any, action: any) {
     if (action.type === 'SET_ROOT_STATE') {
       return action.payload;
     }
@@ -798,11 +569,11 @@ function stateSetter(reducer: ActionReducer<any>): ActionReducer<any> {
 }
 
 export function resetOnLogout(reducer: ActionReducer<AppState>): ActionReducer<AppState> {
-  return function (state, action) {
+  return function(state, action) {
     let newState;
     if (action.type === '[User] Logout Success') {
       newState = Object.assign({}, state);
-      Object.keys(modules).forEach((key) => {
+      Object.keys(modules).forEach(key => {
         newState[key] = modules[key]['initialState'];
       });
     }
@@ -815,4 +586,3 @@ export const DEV_REDUCERS: MetaReducer<AppState>[] = [stateSetter, storeFreeze];
 if (['logger', 'both'].indexOf(STORE_DEV_TOOLS) !== -1) {
   DEV_REDUCERS.push(storeLogger());
 }
-

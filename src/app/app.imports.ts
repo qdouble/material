@@ -34,20 +34,24 @@ import { CustomPipesModule } from './pipes';
 import { DEV_REDUCERS, reducers, resetOnLogout, AppState } from './reducers';
 
 const STORE_DEV_TOOLS_IMPORTS = [];
-if (ENV === 'development' && !AOT &&
+if (
+  ENV === 'development' &&
+  !AOT &&
   ['monitor', 'both'].includes(STORE_DEV_TOOLS) // set in constants.js file in project root
-) STORE_DEV_TOOLS_IMPORTS.push(...[
-  StoreDevtoolsModule.instrument({
-    monitor: useLogMonitor({
-      visible: true,
-      position: 'right'
-    })
-  })
-]);
+)
+  STORE_DEV_TOOLS_IMPORTS.push(
+    ...[
+      StoreDevtoolsModule.instrument({
+        monitor: useLogMonitor({
+          visible: true,
+          position: 'right'
+        })
+      })
+    ]
+  );
 
-
-export const metaReducers: MetaReducer<AppState>[] = ENV === 'development' ?
-  [...DEV_REDUCERS, resetOnLogout] : [resetOnLogout];
+export const metaReducers: MetaReducer<AppState>[] =
+  ENV === 'development' ? [...DEV_REDUCERS, resetOnLogout] : [resetOnLogout];
 
 export const APP_IMPORTS = [
   CustomPipesModule,

@@ -5,11 +5,24 @@
  */
 
 import {
-  DEV_PORT, PROD_PORT, UNIVERSAL_PORT, EXCLUDE_SOURCE_MAPS, HOST,
-  USE_DEV_SERVER_PROXY, DEV_SERVER_PROXY_CONFIG, DEV_SERVER_WATCH_OPTIONS,
-  DEV_SOURCE_MAPS, PROD_SOURCE_MAPS, STORE_DEV_TOOLS,
-  MY_COPY_FOLDERS, MY_VENDOR_DLLS, MY_CLIENT_PLUGINS, MY_CLIENT_PRODUCTION_PLUGINS,
-  MY_CLIENT_RULES, SHOW_WEBPACK_BUNDLE_ANALYZER, SW_RUNTIME_CACHING
+  DEV_PORT,
+  PROD_PORT,
+  UNIVERSAL_PORT,
+  EXCLUDE_SOURCE_MAPS,
+  HOST,
+  USE_DEV_SERVER_PROXY,
+  DEV_SERVER_PROXY_CONFIG,
+  DEV_SERVER_WATCH_OPTIONS,
+  DEV_SOURCE_MAPS,
+  PROD_SOURCE_MAPS,
+  STORE_DEV_TOOLS,
+  MY_COPY_FOLDERS,
+  MY_VENDOR_DLLS,
+  MY_CLIENT_PLUGINS,
+  MY_CLIENT_PRODUCTION_PLUGINS,
+  MY_CLIENT_RULES,
+  SHOW_WEBPACK_BUNDLE_ANALYZER,
+  SW_RUNTIME_CACHING
 } from './constants';
 
 const {
@@ -32,7 +45,6 @@ const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const webpackMerge = require('webpack-merge');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const { getAotPlugin } = require('./webpack.aot');
-
 
 const { hasProcessFlag, root, testDll } = require('./helpers.js');
 const EVENT = process.env.npm_lifecycle_event || '';
@@ -118,7 +130,7 @@ if (!DEV_SERVER) {
   COPY_FOLDERS.push({ from: 'dll' });
 }
 
-const commonConfig = function webpackConfig(): WebpackConfig {
+const commonConfig = (function webpackConfig(): WebpackConfig {
   let config: WebpackConfig = Object.assign({});
 
   config.module = {
@@ -131,12 +143,15 @@ const commonConfig = function webpackConfig(): WebpackConfig {
       },
       {
         test: /\.ts$/,
-        loaders: !DLL && !DEV_SERVER ? ['@ngtools/webpack'] : [
-          '@angularclass/hmr-loader',
-          'awesome-typescript-loader?{configFileName: "tsconfig.webpack.json"}',
-          'angular2-template-loader',
-          'angular-router-loader?loader=system&genDir=compiled&aot=' + AOT
-        ],
+        loaders:
+          !DLL && !DEV_SERVER
+            ? ['@ngtools/webpack']
+            : [
+                '@angularclass/hmr-loader',
+                'awesome-typescript-loader?{configFileName: "tsconfig.webpack.json"}',
+                'angular2-template-loader',
+                'angular-router-loader?loader=system&genDir=compiled&aot=' + AOT
+              ],
         exclude: [/\.(spec|e2e|d)\.ts$/]
       },
       { test: /\.json$/, loader: 'json-loader' },
@@ -176,12 +191,11 @@ const commonConfig = function webpackConfig(): WebpackConfig {
     );
   }
 
-
   if (DLL) {
     config.plugins.push(
       new DllPlugin({
         name: '[name]',
-        path: root('dll/[name]-manifest.json'),
+        path: root('dll/[name]-manifest.json')
       })
     );
   } else {
@@ -201,37 +215,34 @@ const commonConfig = function webpackConfig(): WebpackConfig {
         threshold: 10240,
         minRatio: 0.8
       }),
-      new SWPrecacheWebpackPlugin(
-        {
-          cacheId: 'my-project-cache',
-          filename: 'service-worker.js',
-          maximumFileSizeToCacheInBytes: 4194304,
-          navigateFallback: 'index.html',
-          runtimeCaching: SW_RUNTIME_CACHING,
-          // minify: true,
-          // importScripts: ['sw-push.js']
-        }
-      ),
-      ...MY_CLIENT_PRODUCTION_PLUGINS,
+      new SWPrecacheWebpackPlugin({
+        cacheId: 'my-project-cache',
+        filename: 'service-worker.js',
+        maximumFileSizeToCacheInBytes: 4194304,
+        navigateFallback: 'index.html',
+        runtimeCaching: SW_RUNTIME_CACHING
+        // minify: true,
+        // importScripts: ['sw-push.js']
+      }),
+      ...MY_CLIENT_PRODUCTION_PLUGINS
     );
     if (!E2E && !WATCH && !UNIVERSAL && SHOW_WEBPACK_BUNDLE_ANALYZER) {
-      config.plugins.push(
-        new BundleAnalyzerPlugin({ analyzerPort: 5000 })
-      );
+      config.plugins.push(new BundleAnalyzerPlugin({ analyzerPort: 5000 }));
     }
   }
 
   return config;
-}();
+})();
 
 // type definition for WebpackConfig at the bottom
-const clientConfig = function webpackConfig(): WebpackConfig {
-
+const clientConfig = (function webpackConfig(): WebpackConfig {
   let config: WebpackConfig = Object.assign({});
 
   config.cache = true;
   config.target = 'web';
-  PROD ? config.devtool = PUBLISH ? undefined : PROD_SOURCE_MAPS : config.devtool = DEV_SOURCE_MAPS;
+  PROD
+    ? (config.devtool = PUBLISH ? undefined : PROD_SOURCE_MAPS)
+    : (config.devtool = DEV_SOURCE_MAPS);
   config.plugins = [getAotPlugin('client', AOT)];
 
   if (PROD) {
@@ -281,7 +292,7 @@ const clientConfig = function webpackConfig(): WebpackConfig {
 
   if (!DLL) {
     config.output = {
-      path: PUBLISH ? !TEST ? '/var/www/html' : '/var/www/test' : root('dist'),
+      path: PUBLISH ? (!TEST ? '/var/www/html' : '/var/www/test') : root('dist'),
       filename: !PROD ? '[name].bundle.js' : '[name].[chunkhash].bundle.js',
       sourceMapFilename: !PROD ? '[name].bundle.map' : '[name].[chunkhash].bundle.map',
       chunkFilename: !PROD ? '[id].chunk.js' : '[id].[chunkhash].chunk.js'
@@ -298,7 +309,7 @@ const clientConfig = function webpackConfig(): WebpackConfig {
     contentBase: AOT ? './compiled' : './src',
     port: CONSTANTS.PORT,
     historyApiFallback: {
-      disableDotRule: true,
+      disableDotRule: true
     },
     stats: 'minimal',
     host: '0.0.0.0',
@@ -328,8 +339,7 @@ const clientConfig = function webpackConfig(): WebpackConfig {
   };
 
   return config;
-
-}();
+})();
 
 const serverConfig: WebpackConfig = {
   target: 'node',
@@ -338,9 +348,7 @@ const serverConfig: WebpackConfig = {
     filename: 'server.js',
     path: root('dist')
   },
-  plugins: [
-    getAotPlugin('server', AOT)
-  ],
+  plugins: [getAotPlugin('server', AOT)],
   module: {
     rules: [
       {
@@ -348,14 +356,13 @@ const serverConfig: WebpackConfig = {
         loader: 'imports-loader',
         options: {
           window: '>global',
-          'CSS': '>null',
-          navigator: '>{get userAgent(){ return \'Chrome\'; }}',
-          document: '>global.document',
-        },
-      },
+          CSS: '>null',
+          navigator: ">{get userAgent(){ return 'Chrome'; }}",
+          document: '>global.document'
+        }
+      }
     ]
-  },
-
+  }
 };
 
 const defaultConfig = {

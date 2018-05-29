@@ -1,16 +1,21 @@
 .os-offer-card-image-container {
   margin: 0 auto;
 }
+
 .os-offer-card-image {
-  max-width: 250px; 
-  max-height: 100px; 
-  display: block; 
+  max-width: 250px;
+  max-height: 100px;
+  display: block;
   margin: 0 auto;
-} 
-.os-offer-card-containter, .os-offer-card-containter-s-closed {
+}
+
+.os-offer-card-container,
+.os-offer-card-container-s-closed {
   text-align: center;
 }
-.os-offer-card, .os-offer-card-s-closed {
+
+.os-offer-card,
+.os-offer-card-s-closed {
   display: inline-block;
   text-align: initial;
 }
@@ -41,18 +46,19 @@
 @media screen and (max-width: 807px) {
   .os-offer-card {
     width: 90%;
-  }  
-  .os-offer-card-containter {
+  }
+  .os-offer-card-container {
     text-align: left;
   }
 }
+
 @media screen and (max-width: 656px) {
   .os-offer-card-s-closed {
     width: 90%;
   }
-  .os-offer-card-containter {
+  .os-offer-card-container {
     text-align: left;
-  }  
+  }
 }
 
 .dark-green {

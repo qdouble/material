@@ -20,9 +20,9 @@ export const routes: Routes = [
     path: 'offer-redirect',
     component: OfferRedirect
   },
-   {
+  {
     path: 'view-offers',
     component: Offers,
     canActivate: [LoggedInRedirectGuard]
-  },
+  }
 ];

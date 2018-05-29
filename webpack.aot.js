@@ -1,5 +1,9 @@
-const { root } = require('./helpers');
-const { AngularCompilerPlugin } = require('@ngtools/webpack');
+const {
+  root
+} = require('./helpers');
+const {
+  AngularCompilerPlugin
+} = require('@ngtools/webpack');
 
 const tsconfigs = {
   client: root('./src/tsconfig.browser.json'),

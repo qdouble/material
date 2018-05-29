@@ -17,7 +17,7 @@ export interface State extends EntityState<Ticket> {
   loading: boolean;
   loaded: boolean;
   selectedTicket: string | null;
-  sortBy: { sortBy: string, reverse: boolean };
+  sortBy: { sortBy: string; reverse: boolean };
 }
 
 export const initialState: State = adapter.getInitialState({
@@ -34,7 +34,6 @@ export const initialState: State = adapter.getInitialState({
 
 export function ticketReducer(state = initialState, action: TicketActions): State {
   switch (action.type) {
-
     case TicketActionTypes.AddMessage:
       return { ...state, addingMessage: true, addedMessage: false };
     case TicketActionTypes.AddMessageFail:
@@ -50,16 +49,19 @@ export function ticketReducer(state = initialState, action: TicketActions): Stat
       }
 
       return {
-        ...adapter.updateOne({
-          id: ticketMessage.ticketId,
-          changes: {
-            messages: [...state.entities[ticketMessage.ticketId].messages, ticketMessage],
-            entries: entries,
-            lastEntry: lastEntry,
-            lastEntryBy: lastEntryBy,
-            updatedAt: lastEntry
-          }
-        }, state),
+        ...adapter.updateOne(
+          {
+            id: ticketMessage.ticketId,
+            changes: {
+              messages: [...state.entities[ticketMessage.ticketId].messages, ticketMessage],
+              entries: entries,
+              lastEntry: lastEntry,
+              lastEntryBy: lastEntryBy,
+              updatedAt: lastEntry
+            }
+          },
+          state
+        ),
         loading: false,
         addedMessage: true,
         addingMessage: false
@@ -123,14 +125,16 @@ export function ticketReducer(state = initialState, action: TicketActions): Stat
 
     case TicketActionTypes.GetTicketSuccess: {
       const ticket = action.payload.ticket;
-      if (!ticket || !ticket.id)
-        return { ...state, loading: false };
+      if (!ticket || !ticket.id) return { ...state, loading: false };
 
       return {
-        ...adapter.upsertOne({
-          id: ticket.id,
-          changes: ticket
-        }, state),
+        ...adapter.upsertOne(
+          {
+            id: ticket.id,
+            changes: ticket
+          },
+          state
+        ),
         loading: false,
         loaded: true
       };
@@ -163,10 +167,13 @@ export function ticketReducer(state = initialState, action: TicketActions): Stat
       if (!ticketId) return { ...state, loading: false };
 
       return {
-        ...adapter.updateOne({
-          id: ticketId,
-          changes: { readByUser: mark }
-        }, state),
+        ...adapter.updateOne(
+          {
+            id: ticketId,
+            changes: { readByUser: mark }
+          },
+          state
+        ),
         loading: false
       };
     }
@@ -179,10 +186,13 @@ export function ticketReducer(state = initialState, action: TicketActions): Stat
       const ticket: Ticket = action.payload.ticket;
       if (!ticket) return state;
       return {
-        ...adapter.updateOne({
-          id: ticket.id,
-          changes: ticket
-        }, state)
+        ...adapter.updateOne(
+          {
+            id: ticket.id,
+            changes: ticket
+          },
+          state
+        )
       };
     }
 

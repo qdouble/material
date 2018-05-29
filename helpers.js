@@ -10,7 +10,8 @@ const _root = path.resolve(__dirname);
 
 function checkNodeImport(context, request, cb) {
   if (!path.isAbsolute(request) && request.charAt(0) !== '.') {
-    cb(null, 'commonjs ' + request); return;
+    cb(null, 'commonjs ' + request);
+    return;
   }
   cb();
 }

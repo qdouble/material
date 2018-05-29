@@ -10,16 +10,8 @@ import { Subject } from 'rxjs/Subject';
   selector: 'os-crediting-guidelines',
   templateUrl: './crediting-guidelines.html',
   styleUrls: ['./crediting-guidelines.scss'],
-  animations: [
-    trigger('fade', [
-      transition('void => *', [
-        style({ opacity: 0 }),
-        animate(250)
-      ])
-    ])
-  ]
+  animations: [trigger('fade', [transition('void => *', [style({ opacity: 0 }), animate(250)])])]
 })
-
 export class CreditingGuidelines implements OnDestroy, OnInit {
   confirmDialogRef: MatDialogRef<ConfirmDialog>;
   confirmDialogConfig: MatDialogConfig = {
@@ -28,31 +20,26 @@ export class CreditingGuidelines implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
   match: boolean;
 
-  constructor(
-    public dialog: MatDialog,
-    private route: ActivatedRoute
-  ) { }
+  constructor(public dialog: MatDialog, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.route.queryParams
-      .filter(query => query !== undefined)
-      .forEach(query => {
-        this.match = !!query['match'];
-        if (query['match']) {
-          this.openConfirmDialog();
-        }
-      });
+    this.route.queryParams.filter(query => query !== undefined).forEach(query => {
+      this.match = !!query['match'];
+      if (query['match']) {
+        this.openConfirmDialog();
+      }
+    });
   }
 
   openConfirmDialog() {
-    this.confirmDialogRef = this.dialog.open(ConfirmDialog,
-      this.confirmDialogRef);
+    this.confirmDialogRef = this.dialog.open(ConfirmDialog, this.confirmDialogRef);
     this.confirmDialogRef.componentInstance.confirmText = `Your sponsor has already accessed this offer using the same internet connection, only one completion is allowed per IP address.`;
     this.confirmDialogRef.componentInstance.confirmColor = 'red';
     this.confirmDialogRef.componentInstance.okayOnly = true;
 
     if (this.confirmDialogRef) {
-      this.confirmDialogRef.afterClosed()
+      this.confirmDialogRef
+        .afterClosed()
         .takeUntil(this.destroyed$)
         .subscribe(result => {
           this.confirmDialogRef = null;
@@ -60,8 +47,5 @@ export class CreditingGuidelines implements OnDestroy, OnInit {
     }
   }
 
-  ngOnDestroy() {
-
-  }
+  ngOnDestroy() {}
 }
-

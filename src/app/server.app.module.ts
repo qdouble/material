@@ -25,10 +25,7 @@ export function onBootstrap(appRef: ApplicationRef, transferState: TransferState
       provide: APP_BOOTSTRAP_LISTENER,
       useFactory: onBootstrap,
       multi: true,
-      deps: [
-        ApplicationRef,
-        TransferState
-      ]
+      deps: [ApplicationRef, TransferState]
     }
   ],
   imports: [
@@ -41,6 +38,4 @@ export function onBootstrap(appRef: ApplicationRef, transferState: TransferState
     AppModule
   ]
 })
-export class ServerAppModule {
-
-}
+export class ServerAppModule {}

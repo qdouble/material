@@ -1,10 +1,14 @@
 <mat-card class="os-page-container" @fade>
   <div id="details" class="details-container">
-    <button mat-button routerLink="/offers" color="primary" class="back-button" preserveFragment><mat-icon>keyboard_arrow_left</mat-icon>Back to Offers Page</button>
-    <mat-card *ngIf="(creditTotal$ | async) < 1" id="complete-offer" class="os-title-card primary-background"><b>Step 2 :</b> Read and complete</mat-card>
+    <button mat-button routerLink="/offers" color="primary" class="back-button" preserveFragment>
+      <mat-icon>keyboard_arrow_left</mat-icon>Back to Offers Page</button>
+    <mat-card *ngIf="(creditTotal$ | async) < 1" id="complete-offer" class="os-title-card primary-background">
+      <b>Step 2 :</b> Read and complete</mat-card>
     <mat-card *ngIf="(creditTotal$ | async) > 1" id="important-review" class="accent-background">
       <mat-card-subtitle class="white">Important: Please review the following information before continuing with the offer!</mat-card-subtitle>
     </mat-card>
-    <os-offer-details-card *ngIf="offer$ | async" [ageRestrictUser]="ageRestrictUser" [alreadyCompleted]="alreadyCompleted" [creditTotal]="creditTotal$ | async" [invalidCountry]="invalidCountry$ | async" [ipCountryCode]="(ipInfo$ | async)?.countryCode" [offer]="offer$ | async" [publish]="publish" [userAge]="userAge" [userAgent]="userAgent$ | async" (continueToOffer)="continueToOffer($event)"></os-offer-details-card>
+    <os-offer-details-card *ngIf="offer$ | async" [ageRestrictUser]="ageRestrictUser" [alreadyCompleted]="alreadyCompleted" [creditTotal]="creditTotal$ | async"
+      [invalidCountry]="invalidCountry$ | async" [ipCountryCode]="(ipInfo$ | async)?.countryCode" [offer]="offer$ | async"
+      [publish]="publish" [userAge]="userAge" [userAgent]="userAgent$ | async" (continueToOffer)="continueToOffer($event)"></os-offer-details-card>
   </div>
 </mat-card>

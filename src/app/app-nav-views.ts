@@ -17,7 +17,7 @@ export const views: Object[] = [
     link: ['register'],
     loggedIn: false
   },
-   {
+  {
     name: 'FAQ',
     icon: 'beenhere',
     link: ['faq'],
@@ -70,11 +70,5 @@ export const views: Object[] = [
     icon: 'beenhere',
     link: ['faq'],
     loggedIn: true
-  },
-  // {
-  //   name: 'Logout',
-  //   icon: 'close',
-  //   link: ['logout'],
-  //   loggedIn: true
-  // }
+  }
 ];

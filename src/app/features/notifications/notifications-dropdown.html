@@ -1,4 +1,4 @@
-<div class="ntfy-dropdown">
+<div class="notify-dropdown">
   <os-notifications-item *ngFor="let notification of sortedNotifications$ | async" [notification]="notification" (deleteNotifications)="deleteNotifications($event)"
     (markNotificationsAsRead)="markNotificationsAsRead($event)">
   </os-notifications-item>

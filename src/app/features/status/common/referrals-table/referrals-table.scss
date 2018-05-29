@@ -10,7 +10,7 @@
 }
 
 #reload-referrals {
-  position: relative; 
+  position: relative;
   top: 5px;
   left: 22px;
 }
@@ -24,7 +24,8 @@
 }
 
 @media screen and (max-width: 413px) {
-  .hide-1, .hide-2 {
+  .hide-1,
+  .hide-2 {
     display: none;
   }
 }
@@ -42,18 +43,7 @@
 
 .stripe-2 {
   color: black;
-  background: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 10px,
-    #ccc 10px,
-    #ccc 20px
-  ),
-  linear-gradient(
-    to bottom,
-    #eee,
-    #999
-  )
+  background: repeating-linear-gradient( 45deg, transparent, transparent 10px, #ccc 10px, #ccc 20px), linear-gradient( to bottom, #eee, #999)
 }
 
 @media screen and (max-width: 390px) {
@@ -74,4 +64,3 @@
     display: none
   }
 }
-

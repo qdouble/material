@@ -22,9 +22,8 @@ import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularcla
 
 import { Store } from '@ngrx/store';
 
-import {
-  BrowserTransferStateModule
-} from '../modules/transfer-state/browser-transfer-state.module';
+// tslint:disable-next-line:max-line-length
+import { BrowserTransferStateModule } from '../modules/transfer-state/browser-transfer-state.module';
 
 import { APP_DECLARATIONS } from './app.declarations';
 import { APP_ENTRY_COMPONENTS } from './app.entry-components';
@@ -39,10 +38,7 @@ import { AppState } from './reducers';
 import { HttpErrorInterceptor } from './services/http-error.interceptor';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    APP_DECLARATIONS
-  ],
+  declarations: [AppComponent, APP_DECLARATIONS],
   entryComponents: [APP_ENTRY_COMPONENTS],
   imports: [
     CommonModule,
@@ -50,7 +46,7 @@ import { HttpErrorInterceptor } from './services/http-error.interceptor';
     HttpClientModule,
     HttpClientJsonpModule,
     APP_IMPORTS,
-    RouterModule.forRoot(routes, { useHash: false, preloadingStrategy: IdlePreload }),
+    RouterModule.forRoot(routes, { useHash: false, preloadingStrategy: IdlePreload })
   ],
   bootstrap: [AppComponent],
   exports: [AppComponent],
@@ -59,16 +55,14 @@ import { HttpErrorInterceptor } from './services/http-error.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
-      multi: true,
+      multi: true
     }
     // { provide: HttpClient, useClass: ExtendedHttpService }
   ]
 })
-
 export class AppModule {
   static injector: Injector;
-  constructor(public appRef: ApplicationRef,
-    private _store: Store<AppState>, injector: Injector) {
+  constructor(public appRef: ApplicationRef, private _store: Store<AppState>, injector: Injector) {
     AppModule.injector = injector;
   }
 
@@ -83,13 +77,15 @@ export class AppModule {
       });
     }
 
-    if ('restoreInputValues' in store) { store.restoreInputValues(); }
+    if ('restoreInputValues' in store) {
+      store.restoreInputValues();
+    }
     this.appRef.tick();
     Object.keys(store).forEach(prop => delete store[prop]);
   }
   hmrOnDestroy(store) {
     const cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
-    this._store.take(1).subscribe(s => store.rootState = s);
+    this._store.take(1).subscribe(s => (store.rootState = s));
     store.disposeOldHosts = createNewHosts(cmpLocation);
     store.restoreInputValues = createInputTransfer();
     removeNgStyles();

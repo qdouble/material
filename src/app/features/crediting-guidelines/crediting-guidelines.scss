@@ -1,17 +1,21 @@
-p { margin-left: 15px; }
+p {
+  margin-left: 15px;
+}
 
 .missing-credit {
   list-style: none;
   margin: -6px 0 0 20px;
   li:before {
     content: '✔';
-    margin-left: -1em; margin-right: .100em;
+    margin-left: -1em;
+    margin-right: .100em;
   }
 }
 
 .os-cg-container {
   padding: 24px;
 }
+
 .match {
   font-weight: bold;
   color: red;

@@ -7,7 +7,6 @@ import { Offer } from '../../models/offer';
   templateUrl: './offer-rows.html',
   styleUrls: ['./offer-rows.scss']
 })
-
 export class OfferRows {
   publish = PUBLISH;
   offer: Offer;

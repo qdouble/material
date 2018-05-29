@@ -6,7 +6,7 @@ export enum PrizeActionTypes {
   GetPrizes = '[Prize] Get Prizes',
   GetPrizesFail = '[Prize] Get Prizes Fail',
   GetPrizesSuccess = '[Prize] Get Prizes Success',
-  SelectPrize = '[Prize] Select Prize',
+  SelectPrize = '[Prize] Select Prize'
 }
 
 export class GetPrizes implements Action {
@@ -16,23 +16,19 @@ export class GetPrizes implements Action {
 export class GetPrizesFail implements Action {
   readonly type = PrizeActionTypes.GetPrizesFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetPrizesSuccess implements Action {
   readonly type = PrizeActionTypes.GetPrizesSuccess;
 
-  constructor(public payload: GetPrizesResponse) { }
+  constructor(public payload: GetPrizesResponse) {}
 }
 
 export class SelectPrize implements Action {
   readonly type = PrizeActionTypes.SelectPrize;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
-export type PrizeActions =
-  | GetPrizes
-  | GetPrizesFail
-  | GetPrizesSuccess
-  | SelectPrize;
+export type PrizeActions = GetPrizes | GetPrizesFail | GetPrizesSuccess | SelectPrize;

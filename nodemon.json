@@ -2,5 +2,5 @@
   "watch": [
     "dist"
   ],
-  "ext" : "js ts json html"
+  "ext": "js ts json html"
 }

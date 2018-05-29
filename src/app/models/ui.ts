@@ -37,11 +37,9 @@ export interface GetSocialProofResponse {
   proofs: SocialProof[];
 }
 
-
 export interface GetVersionResponse {
   version: string;
 }
-
 
 export interface Script {
   name: string;

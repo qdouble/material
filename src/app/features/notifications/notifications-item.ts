@@ -5,7 +5,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   templateUrl: './notifications-item.html',
   styleUrls: ['./notifications-item.scss']
 })
-
 export class NotificationsItemComponent {
   @Input() notification;
   @Output() deleteNotifications = new EventEmitter();

@@ -17,4 +17,3 @@ export const services = [
   UIService,
   UserService
 ];
-

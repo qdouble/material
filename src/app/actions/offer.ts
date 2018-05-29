@@ -23,19 +23,19 @@ export class ClearOffers implements Action {
 export class GetOffer implements Action {
   readonly type = OfferActionTypes.GetOffer;
 
-  constructor(public payload: string) { }
+  constructor(public payload: string) {}
 }
 
 export class GetOfferFail implements Action {
   readonly type = OfferActionTypes.GetOfferFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetOfferSuccess implements Action {
   readonly type = OfferActionTypes.GetOfferSuccess;
 
-  constructor(public payload: GetOfferResponse) { }
+  constructor(public payload: GetOfferResponse) {}
 }
 
 export class GetOffers implements Action {
@@ -45,13 +45,13 @@ export class GetOffers implements Action {
 export class GetOffersFail implements Action {
   readonly type = OfferActionTypes.GetOffersFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetOffersSuccess implements Action {
   readonly type = OfferActionTypes.GetOffersSuccess;
 
-  constructor(public payload: GetOffersResponse) { }
+  constructor(public payload: GetOffersResponse) {}
 }
 
 export class GetOffersUpdatedAt implements Action {
@@ -61,13 +61,13 @@ export class GetOffersUpdatedAt implements Action {
 export class GetOffersUpdatedAtFail implements Action {
   readonly type = OfferActionTypes.GetOffersUpdatedAtFail;
 
-  constructor(public payload: Error) { }
+  constructor(public payload: Error) {}
 }
 
 export class GetOffersUpdatedAtSuccess implements Action {
   readonly type = OfferActionTypes.GetOffersUpdatedAtSuccess;
 
-  constructor(public payload: { lastUpdatedAt: string }) { }
+  constructor(public payload: { lastUpdatedAt: string }) {}
 }
 
 export class GetViewOffers implements Action {

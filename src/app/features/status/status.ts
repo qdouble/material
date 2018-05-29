@@ -24,16 +24,8 @@ import * as userActions from '../../actions/user';
   selector: 'os-status',
   templateUrl: './status.html',
   styleUrls: ['./status.scss'],
-  animations: [
-    trigger('fade', [
-      transition('void => *', [
-        style({ opacity: 0 }),
-        animate(250)
-      ])
-    ])
-  ]
+  animations: [trigger('fade', [transition('void => *', [style({ opacity: 0 }), animate(250)])])]
 })
-
 export class Status implements OnDestroy, OnInit {
   changePrize = false;
   confirmDialogRef: MatDialogRef<ConfirmDialog>;
@@ -60,7 +52,7 @@ export class Status implements OnDestroy, OnInit {
   settingPrize$: Observable<boolean>;
   showAnnouncements: boolean = true;
   showHidden = new FormControl();
-  sortingBy: { sortBy: string, reverse: boolean };
+  sortingBy: { sortBy: string; reverse: boolean };
   sponsorForm: FormGroup;
   switchSponsor: boolean;
   updatedAt: string;
@@ -78,14 +70,14 @@ export class Status implements OnDestroy, OnInit {
       appId: '1784209348260534',
       version: 'v2.10'
     });
-    this.selectPrizeForm = this.fb.group({ 'selectedPrize': null });
-    this.sponsorForm = this.fb.group(
-      {
-        'sponsorUserName': ['', [Validators.required, Validators.minLength(3)]]
-      });
+    this.selectPrizeForm = this.fb.group({ selectedPrize: null });
+    this.sponsorForm = this.fb.group({
+      sponsorUserName: ['', [Validators.required, Validators.minLength(3)]]
+    });
     this.loaded$ = store.pipe(select(fromStore.getUserLoaded));
     this.loading$ = store.pipe(select(fromStore.getUserLoading));
-    store.pipe(select(fromStore.getPrizeLoaded))
+    store
+      .pipe(select(fromStore.getPrizeLoaded))
       .take(1)
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
@@ -95,48 +87,46 @@ export class Status implements OnDestroy, OnInit {
     let referralsUnsorted$ = store.pipe(select(fromStore.getUserReferralCollection));
     let sortReferralBy$ = store.select(s => s.user.sortReferralBy);
     let sortReferralsByToArray$ = sortReferralBy$.map(sort => [sort.sortBy, sort.reverse]);
-    sortReferralBy$.subscribe(sort => this.sortingBy = sort);
-    this.referrals$ = Observable
-      .combineLatest(sortReferralsByToArray$, referralsUnsorted$, combineSort);
+    sortReferralBy$.subscribe(sort => (this.sortingBy = sort));
+    this.referrals$ = Observable.combineLatest(
+      sortReferralsByToArray$,
+      referralsUnsorted$,
+      combineSort
+    );
     this.user$ = store.pipe(select(fromStore.getUserProfile));
-    this.user$
-      .takeUntil(this.destroyed$)
-      .subscribe(user => {
-        this.user = user;
-        if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
-          this.hideStatus = true;
+    this.user$.takeUntil(this.destroyed$).subscribe(user => {
+      this.user = user;
+      if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
+        this.hideStatus = true;
+      }
+      this.store.dispatch(new prizeActions.SelectPrize(user.selectedPrize));
+      this.prize$ = this.store.pipe(select(fromStore.getSelectedPrize));
+      this.prizes$ = this.store.pipe(select(fromStore.getPrizeCollection));
+      this.selectedPrizeLabels$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
+      this.selectedPrizeValues$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
+      this.prizes$.takeUntil(this.destroyed$).subscribe(prizes => {
+        if (prizes && prizes.length > 0) {
+          let selectedPrize = this.selectPrizeForm.get('selectedPrize');
+          if (!selectedPrize.value && this.user.selectedPrize !== undefined) {
+            this.user.selectedPrize !== undefined
+              ? selectedPrize.setValue(user.selectedPrize)
+              : selectedPrize.setValue(prizes[0].id);
+          }
+        } else {
+          this.store.dispatch(new prizeActions.GetPrizes());
         }
-        this.store.dispatch(new prizeActions.SelectPrize(user.selectedPrize));
-        this.prize$ = this.store.pipe(select(fromStore.getSelectedPrize));
-        this.prizes$ = this.store.pipe(select(fromStore.getPrizeCollection));
-        this.selectedPrizeLabels$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
-        this.selectedPrizeValues$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
-        this.prizes$
-          .takeUntil(this.destroyed$)
-          .subscribe(prizes => {
-            if (prizes && prizes.length > 0) {
-              let selectedPrize = this.selectPrizeForm.get('selectedPrize');
-              if (!selectedPrize.value && this.user.selectedPrize !== undefined) {
-                this.user.selectedPrize !== undefined ? selectedPrize.setValue(user.selectedPrize) :
-                  selectedPrize.setValue(prizes[0].id);
-              }
-            } else {
-              this.store.dispatch(new prizeActions.GetPrizes());
-            }
-          });
       });
+    });
     this.credits$ = store.pipe(select(fromStore.getUserCreditCollection));
     this.creditTotal$ = store.pipe(select(fromStore.getUserCreditTotal));
 
     this.updatedAt$ = store.select(s => s.user.updatedAt);
-    this.updatedAt$
-      .takeUntil(this.destroyed$)
-      .subscribe(updatedAt => {
-        this.updatedAt = updatedAt;
-        if (updatedAt) {
-          this.store.dispatch(new userActions.CheckIfUserUpdated());
-        }
-      });
+    this.updatedAt$.takeUntil(this.destroyed$).subscribe(updatedAt => {
+      this.updatedAt = updatedAt;
+      if (updatedAt) {
+        this.store.dispatch(new userActions.CheckIfUserUpdated());
+      }
+    });
     let lastUpdate$ = store.select(s => s.user.lastUpdate);
     lastUpdate$
       .filter(l => l !== null && l !== undefined)
@@ -149,11 +139,13 @@ export class Status implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
+    typeof document !== 'undefined' && document.getElementById('os-toolbar')
+      ? document.getElementById('os-toolbar').scrollIntoView()
+      : {}; // tslint:disable-line
     this.selectedReferralIds$ = this.store.pipe(select(fromStore.getSelectedReferralIds));
     this.selectedReferralIds$
       .takeUntil(this.destroyed$)
-      .subscribe(ids => this.selectedReferralIds = ids);
+      .subscribe(ids => (this.selectedReferralIds = ids));
   }
 
   applyToChecked() {
@@ -180,12 +172,17 @@ export class Status implements OnDestroy, OnInit {
 
   changeSelectedPrize() {
     if (this.changePrize) {
-      this.store.dispatch(new userActions.ChangeSelectedPrize(
-        this.selectPrizeForm.get('selectedPrize').value));
+      this.store.dispatch(
+        new userActions.ChangeSelectedPrize(this.selectPrizeForm.get('selectedPrize').value)
+      );
       this.settingPrize$
         .filter(s => s !== false)
         .takeUntil(this.destroyed$)
-        .subscribe(() => setTimeout(() => { this.changePrize = false; }, 50));
+        .subscribe(() =>
+          setTimeout(() => {
+            this.changePrize = false;
+          }, 50)
+        );
     } else {
       this.changePrize = true;
     }
@@ -200,20 +197,19 @@ export class Status implements OnDestroy, OnInit {
   }
 
   fbShare() {
-
     const options: UIParams = {
       method: 'share',
       href: 'https://levelrewards.com/register?ref=' + this.user.username
     };
 
-    this.facebook.ui(options)
+    this.facebook
+      .ui(options)
       .then((res: UIResponse) => {
         if (ENV === 'development') {
           console.log('Got the users profile', res);
         }
       })
       .catch(this.handleError);
-
   }
 
   getReferral(referral: User) {
@@ -232,35 +228,38 @@ export class Status implements OnDestroy, OnInit {
   }
 
   hideReferrals(hide: boolean) {
-    this.store.dispatch(new userActions.HideReferrals({
-      ids: this.selectedReferralIds, hide: hide
-    }));
+    this.store.dispatch(
+      new userActions.HideReferrals({
+        ids: this.selectedReferralIds,
+        hide: hide
+      })
+    );
   }
 
   removeReferrals() {
-    this.confirmDialogRef = this.dialog.open(ConfirmDialog,
-      this.confirmDialogRef);
-    this.confirmDialogRef.componentInstance.confirmText =
-      `Are you sure you sure you want to remove the
+    this.confirmDialogRef = this.dialog.open(ConfirmDialog, this.confirmDialogRef);
+    // tslint:disable-next-line:max-line-length
+    this.confirmDialogRef.componentInstance.confirmText = `Are you sure you sure you want to remove the
       ${this.selectedReferralIds.length} selected referral(s)?`;
     this.confirmDialogRef.componentInstance.confirmColor = '#FFA000';
-    this.confirmDialogRef.componentInstance.subtext =
-      `Removing your referrals means they will no longer be under you. This cannot be undone.`;
+    // tslint:disable-next-line:max-line-length
+    this.confirmDialogRef.componentInstance.subtext = `Removing your referrals means they will no longer be under you. This cannot be undone.`;
     this.confirmDialogRef.componentInstance.subtextColor = '#F44336';
 
     if (this.confirmDialogRef) {
-      this.confirmDialogRef.afterClosed()
-      .takeUntil(this.destroyed$)
-      .subscribe(result => {
-        if (result) {
-          this.store.dispatch(new userActions.RemoveReferrals(this.selectedReferralIds));
-        }
-        this.confirmDialogRef = null;
-      });
+      this.confirmDialogRef
+        .afterClosed()
+        .takeUntil(this.destroyed$)
+        .subscribe(result => {
+          if (result) {
+            this.store.dispatch(new userActions.RemoveReferrals(this.selectedReferralIds));
+          }
+          this.confirmDialogRef = null;
+        });
     }
   }
 
-  selectReferral(selected: { id: string, checked: boolean }) {
+  selectReferral(selected: { id: string; checked: boolean }) {
     if (selected.checked) {
       this.selectReferrals([selected.id]);
     } else {
@@ -275,10 +274,10 @@ export class Status implements OnDestroy, OnInit {
   sortBy(sortBy: string) {
     if (sortBy === this.sortingBy.sortBy) {
       this.store.dispatch(
-        new userActions.SortReferralsBy({ sortBy: sortBy, reverse: !this.sortingBy.reverse }));
+        new userActions.SortReferralsBy({ sortBy: sortBy, reverse: !this.sortingBy.reverse })
+      );
     } else {
-      this.store.dispatch(
-        new userActions.SortReferralsBy({ sortBy: sortBy, reverse: false }));
+      this.store.dispatch(new userActions.SortReferralsBy({ sortBy: sortBy, reverse: false }));
     }
   }
 

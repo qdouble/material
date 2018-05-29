@@ -4,37 +4,28 @@ import { Action } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { concat } from 'rxjs/observable/concat';
-import {
-  map,
-  switchMap,
-  catchError,
-} from 'rxjs/operators';
+import { map, switchMap, catchError } from 'rxjs/operators';
 
 import { CountryService } from '../services/country';
-import {
-  CountryActionTypes,
-  GetCountriesFail,
-  GetCountriesSuccess
-} from '../actions/country';
+import { CountryActionTypes, GetCountriesFail, GetCountriesSuccess } from '../actions/country';
 import { AddNotify } from '../actions/notify';
 
-
 @Injectable()
-
 export class CountryEffects {
-  constructor(
-    public actions$: Actions,
-    private countryService: CountryService
-  ) { }
+  constructor(public actions$: Actions, private countryService: CountryService) {}
 
-  @Effect() getCountries$: Observable<Action> = this.actions$.pipe(
+  @Effect()
+  getCountries$: Observable<Action> = this.actions$.pipe(
     ofType(CountryActionTypes.GetCountries),
-    switchMap(email => this.countryService.getCountries().pipe(
-      map((res) => new GetCountriesSuccess(res)),
-      catchError((err) => concat(
-        Observable.of(new GetCountriesFail(err)),
-        Observable.of(new AddNotify(err))
-      ))
+    switchMap(email =>
+      this.countryService
+        .getCountries()
+        .pipe(
+          map(res => new GetCountriesSuccess(res)),
+          catchError(err =>
+            concat(Observable.of(new GetCountriesFail(err)), Observable.of(new AddNotify(err)))
+          )
+        )
     )
-  ));
+  );
 }

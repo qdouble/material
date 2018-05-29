@@ -5,7 +5,6 @@ declare var document: any;
 
 @Injectable()
 export class ScriptService {
-
   private scripts: any = {};
 
   constructor() {}
@@ -19,7 +18,7 @@ export class ScriptService {
     });
     let scripts = scriptsToLoad.map(s => s.name);
     let promises: any[] = [];
-    scripts.forEach((script) => promises.push(this.loadScript(script)));
+    scripts.forEach(script => promises.push(this.loadScript(script)));
     return Promise.all(promises);
   }
 
@@ -33,7 +32,8 @@ export class ScriptService {
         let script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = this.scripts[name].src;
-        if (script.readyState) {  // IE
+        if (script.readyState) {
+          // IE
           script.onreadystatechange = () => {
             if (script.readyState === 'loaded' || script.readyState === 'complete') {
               script.onreadystatechange = null;
@@ -41,14 +41,14 @@ export class ScriptService {
               resolve({ script: name, loaded: true, status: 'Loaded' });
             }
           };
-        } else {  // Others
+        } else {
+          // Others
           script.onload = () => {
             this.scripts[name].loaded = true;
             resolve({ script: name, loaded: true, status: 'Loaded' });
           };
         }
-        script.onerror = (error: any) =>
-          resolve({ script: name, loaded: false, status: 'Loaded' });
+        script.onerror = (error: any) => resolve({ script: name, loaded: false, status: 'Loaded' });
         document.getElementsByTagName('head')[0].appendChild(script);
       }
     });

@@ -1,5 +1,11 @@
 import {
-  ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, OnDestroy, Output
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  OnDestroy,
+  Output
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
@@ -13,7 +19,6 @@ import { Ticket, TicketMessage } from '../../ticket.model';
   templateUrl: './support-ticket-form.html',
   styles: [`mat-input-container{ width: 100%; }`]
 })
-
 export class SupportTicketFormComponent implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
   f: FormGroup;
@@ -28,9 +33,7 @@ export class SupportTicketFormComponent implements OnDestroy, OnInit {
   @Output() goBack = new EventEmitter();
   @Output() markTicketAsRead = new EventEmitter();
   @Output() sortBy = new EventEmitter();
-  constructor(
-    private fb: FormBuilder
-  ) {
+  constructor(private fb: FormBuilder) {
     this.f = this.fb.group({
       message: ''
     });
@@ -72,5 +75,4 @@ export class SupportTicketFormComponent implements OnDestroy, OnInit {
   ngOnDestroy() {
     this.destroyed$.next();
   }
-
 }

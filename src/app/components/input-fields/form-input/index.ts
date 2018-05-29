@@ -7,17 +7,8 @@ import { MATERIAL_MODULES } from '../../../material.modules';
 import { FormInput } from './form-input';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MATERIAL_MODULES,
-    ReactiveFormsModule
-  ],
-  declarations: [
-    FormInput
-  ],
-  exports: [
-    FormInput
-  ]
+  imports: [CommonModule, MATERIAL_MODULES, ReactiveFormsModule],
+  declarations: [FormInput],
+  exports: [FormInput]
 })
-
-export class FormInputModule { }
+export class FormInputModule {}

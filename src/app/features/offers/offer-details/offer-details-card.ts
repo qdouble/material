@@ -1,5 +1,11 @@
 import {
-  ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
 } from '@angular/core';
 import { Offer } from '../../../models/offer';
 import { UserAgent } from '../../../models/user-agent';
@@ -9,11 +15,10 @@ import { UserAgent } from '../../../models/user-agent';
   templateUrl: './offer-details-card.html',
   styleUrls: ['./offer-details.scss']
 })
-
 export class OfferDetailsCard implements OnChanges, OnInit {
   accept: boolean;
   agree: boolean;
-  current: { availableCountryCodes: string[], invalidCountry: boolean, ipCountryCode: string };
+  current: { availableCountryCodes: string[]; invalidCountry: boolean; ipCountryCode: string };
   currentLevel: number;
   flash: string;
   futureLevel: number;
@@ -29,21 +34,21 @@ export class OfferDetailsCard implements OnChanges, OnInit {
   @Input() userAge: number;
   @Input() userAgent: UserAgent;
   @Output() continueToOffer = new EventEmitter();
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor() {
     this.current = Object.assign({});
-   }
+  }
   ngOnChanges(changes: SimpleChanges) {
     this.setLevels();
-    let offer: Offer;
-    let invalidCountry: boolean;
-    let ipCountryCode: string;
-    // tslint:disable-next-line:max-line-length
-    if (changes.offer && changes.offer.currentValue) this.current.availableCountryCodes = changes.offer.currentValue.availableCountryCodes;
+    if (changes.offer && changes.offer.currentValue)
+      this.current.availableCountryCodes = changes.offer.currentValue.availableCountryCodes;
     if (changes.invalidCountry) this.current.invalidCountry = changes.invalidCountry.currentValue;
     if (changes.ipCountryCode) this.current.ipCountryCode = changes.ipCountryCode.currentValue;
-    if (this.current.invalidCountry || (this.current.ipCountryCode &&
-      this.current.availableCountryCodes &&
-      !this.current.availableCountryCodes.includes(this.ipCountryCode))) {
+    if (
+      this.current.invalidCountry ||
+      (this.current.ipCountryCode &&
+        this.current.availableCountryCodes &&
+        !this.current.availableCountryCodes.includes(this.ipCountryCode))
+    ) {
       this.showInvalidCountry = true;
     }
   }

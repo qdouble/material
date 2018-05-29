@@ -5,9 +5,8 @@ import { Ticket } from '../../ticket.model';
 @Component({
   selector: 'os-support-ticket-table',
   templateUrl: './support-ticket-table.html',
-  styleUrls: ['./support-ticket-table.scss'],
+  styleUrls: ['./support-ticket-table.scss']
 })
-
 export class SupportTicketTable {
   @Input() loading: boolean;
   @Input() tickets: Ticket[];

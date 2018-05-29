@@ -3,11 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { concat } from 'rxjs/observable/concat';
-import {
-  map,
-  switchMap,
-  catchError,
-} from 'rxjs/operators';
+import { map, switchMap, catchError } from 'rxjs/operators';
 
 import { AddNotify } from '../../actions/notify';
 import {
@@ -32,74 +28,92 @@ import {
 } from './ticket.actions';
 import { TicketService } from './ticket.service';
 
-
 @Injectable()
-
 export class TicketEffects {
-  constructor(
-    public actions$: Actions,
-    private ticketService: TicketService
-  ) { }
+  constructor(public actions$: Actions, private ticketService: TicketService) {}
 
-  @Effect() addMessage$ = this.actions$.pipe(
+  @Effect()
+  addMessage$ = this.actions$.pipe(
     ofType(TicketActionTypes.AddMessage),
     map((action: AddMessage) => action.payload),
-    switchMap(message => this.ticketService.addMessage(message).pipe(
-      map((res) => new AddMessageSuccess(res)),
-      catchError((err) => Observable.of(
-        new AddMessageFail(err)
-      ))
-    )));
+    switchMap(message =>
+      this.ticketService
+        .addMessage(message)
+        .pipe(
+          map(res => new AddMessageSuccess(res)),
+          catchError(err => Observable.of(new AddMessageFail(err)))
+        )
+    )
+  );
 
-  @Effect() addTicket$ = this.actions$.pipe(
+  @Effect()
+  addTicket$ = this.actions$.pipe(
     ofType(TicketActionTypes.AddTicket),
     map((action: AddTicket) => action.payload),
-    switchMap(ticket => this.ticketService.addTicket(ticket).pipe(
-      switchMap((res) => concat(
-        Observable.of(new AddTicketSuccess(res)),
-        Observable.of(new AddNotify(res))
-      )),
-      catchError((err) => Observable.of(
-        new AddTicketFail(err)
-      ))
-    )));
+    switchMap(ticket =>
+      this.ticketService
+        .addTicket(ticket)
+        .pipe(
+          switchMap(res =>
+            concat(Observable.of(new AddTicketSuccess(res)), Observable.of(new AddNotify(res)))
+          ),
+          catchError(err => Observable.of(new AddTicketFail(err)))
+        )
+    )
+  );
 
-  @Effect() closeTicket$ = this.actions$.pipe(
+  @Effect()
+  closeTicket$ = this.actions$.pipe(
     ofType(TicketActionTypes.CloseTicket),
     map((action: CloseTicket) => action.payload),
-    switchMap(id => this.ticketService.closeTicket(id).pipe(
-      map((res) => new CloseTicketSuccess(res)),
-      catchError((err) => Observable.of(
-        new CloseTicketFail(err)
-      ))
-    )));
+    switchMap(id =>
+      this.ticketService
+        .closeTicket(id)
+        .pipe(
+          map(res => new CloseTicketSuccess(res)),
+          catchError(err => Observable.of(new CloseTicketFail(err)))
+        )
+    )
+  );
 
-  @Effect() getTicket$ = this.actions$.pipe(
+  @Effect()
+  getTicket$ = this.actions$.pipe(
     ofType(TicketActionTypes.GetTicket),
     map((action: GetTicket) => action.payload),
-    switchMap(id => this.ticketService.getTicket(id).pipe(
-      map((res) => new GetTicketSuccess(res)),
-      catchError((err) => Observable.of(
-        new GetTicketFail(err)
-      ))
-    )));
+    switchMap(id =>
+      this.ticketService
+        .getTicket(id)
+        .pipe(
+          map(res => new GetTicketSuccess(res)),
+          catchError(err => Observable.of(new GetTicketFail(err)))
+        )
+    )
+  );
 
-  @Effect() getTickets$ = this.actions$.pipe(
+  @Effect()
+  getTickets$ = this.actions$.pipe(
     ofType(TicketActionTypes.GetTickets),
-    switchMap(email => this.ticketService.getTickets().pipe(
-      map((res) => new GetTicketsSuccess(res)),
-      catchError((err) => Observable.of(
-        new GetTicketsFail(err)
-      ))
-    )));
+    switchMap(email =>
+      this.ticketService
+        .getTickets()
+        .pipe(
+          map(res => new GetTicketsSuccess(res)),
+          catchError(err => Observable.of(new GetTicketsFail(err)))
+        )
+    )
+  );
 
-  @Effect() markTicketAsRead$ = this.actions$.pipe(
+  @Effect()
+  markTicketAsRead$ = this.actions$.pipe(
     ofType(TicketActionTypes.MarkTicketAsRead),
     map((action: MarkTicketAsRead) => action.payload),
-    switchMap(ticket => this.ticketService.markTicketAsRead(ticket).pipe(
-      map((res) => new MarkTicketAsReadSuccess(res)),
-      catchError((err) => Observable.of(
-        new MarkTicketAsReadFail(err)
-      ))
-    )));
+    switchMap(ticket =>
+      this.ticketService
+        .markTicketAsRead(ticket)
+        .pipe(
+          map(res => new MarkTicketAsReadSuccess(res)),
+          catchError(err => Observable.of(new MarkTicketAsReadFail(err)))
+        )
+    )
+  );
 }

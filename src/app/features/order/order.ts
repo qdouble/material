@@ -25,22 +25,14 @@ import { User } from '../../models/user';
   templateUrl: './order.html',
   styleUrls: ['./order.scss'],
   animations: [
-    trigger('fade', [
-      transition('void => *', [
-        style({ opacity: 0 }),
-        animate(250)
-      ])
-    ]),
+    trigger('fade', [transition('void => *', [style({ opacity: 0 }), animate(250)])]),
     trigger('flashing', [
       state('bright', style({ background: 'hsl(87.8,50.2%,62.7%)' })),
       state('dark', style({ background: 'hsl(87.8,50.2%,52.7%)' })),
-      transition('bright <=> dark', [
-        animate(350)
-      ])
+      transition('bright <=> dark', [animate(350)])
     ])
   ]
 })
-
 export class OrderComponent implements OnDestroy, OnInit {
   changePrize = false;
   confirmDialogRef: MatDialogRef<ConfirmDialog>;
@@ -91,64 +83,76 @@ export class OrderComponent implements OnDestroy, OnInit {
       paypal: [''],
       selectedPrize: [''],
       useSavedBank: false,
-      bankName: [{ value: '', disabled: true }, [Validators.pattern(RegexValues.nameValue), Validators.required]],
+      bankName: [
+        { value: '', disabled: true },
+        [Validators.pattern(RegexValues.nameValue), Validators.required]
+      ],
       accountType: [{ value: 'Checking', disabled: true }],
-      routingNumber: [{ value: '', disabled: true }, [Validators.pattern(RegexValues.bankNumbers), Validators.required]],
-      accountNumber: [{ value: '', disabled: true }, [Validators.pattern(RegexValues.bankNumbers), Validators.required]]
+      routingNumber: [
+        { value: '', disabled: true },
+        [Validators.pattern(RegexValues.bankNumbers), Validators.required]
+      ],
+      accountNumber: [
+        { value: '', disabled: true },
+        [Validators.pattern(RegexValues.bankNumbers), Validators.required]
+      ]
     });
     this.loaded$ = store.pipe(select(fromStore.getUserLoaded));
     this.placing$ = store.pipe(select(fromStore.getOrderPlacing));
-    store.pipe(select(fromStore.getPrizeLoaded))
+    store
+      .pipe(select(fromStore.getPrizeLoaded))
       .take(1)
       .takeUntil(this.destroyed$)
       .subscribe(loaded => {
         if (loaded) this.store.dispatch(new prizeActions.GetPrizes());
       });
-    this.selectPrizeForm = fb.group({ 'selectedPrize': null });
+    this.selectPrizeForm = fb.group({ selectedPrize: null });
     this.settingPrize$ = store.pipe(select(fromStore.getUserSettingPrize));
     this.user$ = store.pipe(select(fromStore.getUserProfile));
-    this.user$
-      .takeUntil(this.destroyed$)
-      .subscribe(user => {
+    this.user$.takeUntil(this.destroyed$).subscribe(user => {
+      this.user = user;
+      if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
+        this.hideOrders = true;
         this.user = user;
-        if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
-          this.hideOrders = true;
-          this.user = user;
-        }
-        this.f.patchValue(user);
-        if (this.user.savedAccountNum) {
-          this.f.get('useSavedBank').setValue(true);
-        }
-        this.store.dispatch(new prizeActions.SelectPrize(user.selectedPrize));
-        this.prize$ = this.store.pipe(select(fromStore.getSelectedPrize));
-        this.prizes$ = this.store.pipe(select(fromStore.getPrizeCollection));
-        this.selectedPrizeLabels$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
-        this.selectedPrizeValues$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
-        this.selectedPrizeLabels$
-          .takeUntil(this.destroyed$)
-          .subscribe(labels => this.prizeLabels = labels);
-        this.selectedPrizeValues$
-          .takeUntil(this.destroyed$)
-          .subscribe(values => this.prizeValues = values);
-        this.prizes$
-          .filter(prizes => prizes !== undefined && prizes.length > 0)
-          .takeUntil(this.destroyed$)
-          .subscribe(prizes => {
-            let selectedPrize = this.selectPrizeForm.get('selectedPrize');
-            let prizeIds = prizes.map(p => p.id);
-            if (!selectedPrize.value && this.user.selectedPrize !== undefined) {
-              if (this.user.selectedPrize !== undefined && prizeIds.includes(this.user.selectedPrize)) {
-                selectedPrize.setValue(user.selectedPrize);
-              } else if (this.user.selectedPrize === this.bankCheckId) {
-                this.store.dispatch(new userActions.ChangeSelectedPrize(this.bankTransferId));
-              } else {
-                selectedPrize.setValue(prizes[0].id);
-              }
-              this.user.selectedPrize !== undefined ? selectedPrize.setValue(user.selectedPrize) :
-                selectedPrize.setValue(prizes[0].id);
+      }
+      this.f.patchValue(user);
+      if (this.user.savedAccountNum) {
+        this.f.get('useSavedBank').setValue(true);
+      }
+      this.store.dispatch(new prizeActions.SelectPrize(user.selectedPrize));
+      this.prize$ = this.store.pipe(select(fromStore.getSelectedPrize));
+      this.prizes$ = this.store.pipe(select(fromStore.getPrizeCollection));
+      this.selectedPrizeLabels$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
+      this.selectedPrizeValues$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
+      this.selectedPrizeLabels$
+        .takeUntil(this.destroyed$)
+        .subscribe(labels => (this.prizeLabels = labels));
+      this.selectedPrizeValues$
+        .takeUntil(this.destroyed$)
+        .subscribe(values => (this.prizeValues = values));
+      this.prizes$
+        .filter(prizes => prizes !== undefined && prizes.length > 0)
+        .takeUntil(this.destroyed$)
+        .subscribe(prizes => {
+          let selectedPrize = this.selectPrizeForm.get('selectedPrize');
+          let prizeIds = prizes.map(p => p.id);
+          if (!selectedPrize.value && this.user.selectedPrize !== undefined) {
+            if (
+              this.user.selectedPrize !== undefined &&
+              prizeIds.includes(this.user.selectedPrize)
+            ) {
+              selectedPrize.setValue(user.selectedPrize);
+            } else if (this.user.selectedPrize === this.bankCheckId) {
+              this.store.dispatch(new userActions.ChangeSelectedPrize(this.bankTransferId));
+            } else {
+              selectedPrize.setValue(prizes[0].id);
             }
-          });
-      });
+            this.user.selectedPrize !== undefined
+              ? selectedPrize.setValue(user.selectedPrize)
+              : selectedPrize.setValue(prizes[0].id);
+          }
+        });
+    });
     this.store.dispatch(new orderActions.GetOrders());
     this.orders$ = this.store.pipe(select(fromStore.getOrderCollection));
     this.ordersLoaded$ = this.store.pipe(select(fromStore.getOrderLoaded));
@@ -179,47 +183,55 @@ export class OrderComponent implements OnDestroy, OnInit {
       }
       count++;
     }, 350);
-    (typeof document !== 'undefined' && document.getElementById('os-toolbar')) ? (document.getElementById('os-toolbar').scrollIntoView()) : {};  // tslint:disable-line
-    if (this.paypalIds.includes(this.f.get('selectedPrize').value) &&
-      (this.f.get('paypal').value == undefined || this.f.get('paypal').value == ''
-        || this.f.get('paypal').value.paypal === ' ')) {
+    typeof document !== 'undefined' && document.getElementById('os-toolbar')
+      ? document.getElementById('os-toolbar').scrollIntoView()
+      : {}; // tslint:disable-line
+    if (
+      this.paypalIds.includes(this.f.get('selectedPrize').value) &&
+      (this.f.get('paypal').value == undefined ||
+        this.f.get('paypal').value == '' ||
+        this.f.get('paypal').value.paypal === ' ')
+    ) {
       this.needPaypalEmail = true;
     } else {
       this.needPaypalEmail = false;
     }
-    this.f.valueChanges
-      .takeUntil(this.destroyed$)
-      .subscribe((fValue) => {
-        if (this.paypalIds.includes(this.f.get('selectedPrize').value) &&
-          (fValue.paypal == undefined || fValue.paypal == '' || fValue.paypal === ' ')) {
-          this.needPaypalEmail = true;
-        } else {
-          this.needPaypalEmail = false;
+    this.f.valueChanges.takeUntil(this.destroyed$).subscribe(fValue => {
+      if (
+        this.paypalIds.includes(this.f.get('selectedPrize').value) &&
+        (fValue.paypal == undefined || fValue.paypal == '' || fValue.paypal === ' ')
+      ) {
+        this.needPaypalEmail = true;
+      } else {
+        this.needPaypalEmail = false;
+      }
+      if (
+        fValue['selectedPrize'] &&
+        this.prizeLabels[this.prizeValues.indexOf(fValue['selectedPrize'])] === 'Bank Transfer'
+      ) {
+        this.needBankInfo = true;
+        if (!this.f.get('useSavedBank').value && this.f.get('bankName').disabled) {
+          this.f.get('bankName').enable();
+          this.f.get('accountType').enable();
+          this.f.get('routingNumber').enable();
+          this.f.get('accountNumber').enable();
         }
-        if (fValue['selectedPrize'] && this.prizeLabels[this.prizeValues.indexOf(fValue['selectedPrize'])] === 'Bank Transfer') {
-          this.needBankInfo = true;
-          if (!this.f.get('useSavedBank').value && this.f.get('bankName').disabled) {
-            this.f.get('bankName').enable();
-            this.f.get('accountType').enable();
-            this.f.get('routingNumber').enable();
-            this.f.get('accountNumber').enable();
-          }
-          if (this.f.get('useSavedBank').value && (this.f.get('bankName').enabled)) {
-            this.f.get('bankName').disable();
-            this.f.get('accountType').disable();
-            this.f.get('routingNumber').disable();
-            this.f.get('accountNumber').disable();
-          }
-        } else {
-          this.needBankInfo = false;
-          if (this.f.get('bankName').enabled) {
-            this.f.get('bankName').disable();
-            this.f.get('accountType').disable();
-            this.f.get('routingNumber').disable();
-            this.f.get('accountNumber').disable();
-          }
+        if (this.f.get('useSavedBank').value && this.f.get('bankName').enabled) {
+          this.f.get('bankName').disable();
+          this.f.get('accountType').disable();
+          this.f.get('routingNumber').disable();
+          this.f.get('accountNumber').disable();
         }
-      });
+      } else {
+        this.needBankInfo = false;
+        if (this.f.get('bankName').enabled) {
+          this.f.get('bankName').disable();
+          this.f.get('accountType').disable();
+          this.f.get('routingNumber').disable();
+          this.f.get('accountNumber').disable();
+        }
+      }
+    });
   }
 
   cancelPrizeChange() {
@@ -231,31 +243,36 @@ export class OrderComponent implements OnDestroy, OnInit {
 
   changeSelectedPrize() {
     if (this.changePrize) {
-      this.store.dispatch(new userActions.ChangeSelectedPrize(
-        this.selectPrizeForm.get('selectedPrize').value));
+      this.store.dispatch(
+        new userActions.ChangeSelectedPrize(this.selectPrizeForm.get('selectedPrize').value)
+      );
       this.settingPrize$
         .filter(s => s !== false)
         .takeUntil(this.destroyed$)
-        .subscribe(() => setTimeout(() => { this.changePrize = false; }, 50));
+        .subscribe(() =>
+          setTimeout(() => {
+            this.changePrize = false;
+          }, 50)
+        );
     } else {
       this.changePrize = true;
     }
   }
 
   openConfirmDialog(formValue) {
-    this.confirmDialogRef = this.dialog.open(ConfirmDialog,
-      this.confirmDialogRef);
-    this.confirmDialogRef.componentInstance.confirmText =
-      `Are you sure <br><b>${formValue.paypal}</b><br> is your PayPal email address?`;
+    this.confirmDialogRef = this.dialog.open(ConfirmDialog, this.confirmDialogRef);
+    this.confirmDialogRef.componentInstance.confirmText = `Are you sure <br><b>${
+      formValue.paypal
+    }</b><br> is your PayPal email address?`;
     this.confirmDialogRef.componentInstance.confirmColor = '#73a03d';
-    this.confirmDialogRef.componentInstance.subtext =
-      `If your paypal email address is incorrect,
+    this.confirmDialogRef.componentInstance.subtext = `If your paypal email address is incorrect,
       it may take you a long time to resolve the issue and get paid.
       You cannot switch payment methods after payment is sent.`;
     this.confirmDialogRef.componentInstance.subtextColor = '#F44336';
 
     if (this.confirmDialogRef) {
-      this.confirmDialogRef.afterClosed()
+      this.confirmDialogRef
+        .afterClosed()
         .takeUntil(this.destroyed$)
         .subscribe(result => {
           if (result) {
@@ -267,18 +284,16 @@ export class OrderComponent implements OnDestroy, OnInit {
   }
 
   openConfirmDialogInvalidPayPal() {
-    this.confirmDialogRef = this.dialog.open(ConfirmDialog,
-      this.confirmDialogRef);
-    this.confirmDialogRef.componentInstance.confirmText =
-      `Your paypal email address is invalid.`;
+    this.confirmDialogRef = this.dialog.open(ConfirmDialog, this.confirmDialogRef);
+    this.confirmDialogRef.componentInstance.confirmText = `Your paypal email address is invalid.`;
     this.confirmDialogRef.componentInstance.confirmColor = '#F44336';
-    this.confirmDialogRef.componentInstance.subtext =
-      `Please enter in a valid paypal email address`;
+    this.confirmDialogRef.componentInstance.subtext = `Please enter in a valid paypal email address`;
     this.confirmDialogRef.componentInstance.subtextColor = '#73a03d';
     this.confirmDialogRef.componentInstance.okayOnly = true;
 
     if (this.confirmDialogConfig) {
-      this.confirmDialogRef.afterClosed()
+      this.confirmDialogRef
+        .afterClosed()
         .takeUntil(this.destroyed$)
         .subscribe(result => {
           this.confirmDialogRef = null;

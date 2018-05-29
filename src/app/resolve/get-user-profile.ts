@@ -8,14 +8,11 @@ import * as fromStore from '../reducers';
 import { select } from '@ngrx/store';
 
 @Injectable()
-
 export class GetUserProfile {
   loaded$: Observable<boolean>;
   loaded: boolean;
   user$: Observable<User>;
-  constructor(
-    private store: Store<fromStore.AppState>
-  ) { }
+  constructor(private store: Store<fromStore.AppState>) {}
   resolve() {
     this.loaded$ = this.store.pipe(select(fromStore.getUserLoaded));
     this.loaded$.take(1).subscribe(loaded => {

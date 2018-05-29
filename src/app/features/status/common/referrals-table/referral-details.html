@@ -10,8 +10,8 @@
     <div>
       Credits: {{creditTotal | number: '1.2-2'}}
       <span *ngIf="referral.credits.length > 0" style="text-decoration: underline; cursor: pointer" (click)="creditsShown ? creditsShown = false : creditsShown = true">
-          {{creditsShown ? 'Hide' : 'Show'}}
-        </span>
+        {{creditsShown ? 'Hide' : 'Show'}}
+      </span>
     </div>
     <ng-container *ngIf="creditsShown">
       <div class="table-container">
@@ -22,7 +22,7 @@
                 {{ credit.offerName | slice:0:18 }}
               </div>
               <div class="cell value-col" [ngClass]="{'accent': credit.unconfirmed,'warn': !credit.active}">
-                {{ credit.active ? ( credit.unconfirmed ? 'Unconfirmed' : (credit.creditValue | number:'1.2-2'))  : 'Revoked'}}
+                {{ credit.active ? ( credit.unconfirmed ? 'Unconfirmed' : (credit.creditValue | number:'1.2-2')) : 'Revoked'}}
               </div>
             </div>
           </ng-container>
@@ -32,16 +32,22 @@
     <div [ngClass]="{'primary': (referral.currentLevel - referral.payBeyondLevel) > 0 }">
       <b>Unpaid Levels: {{referral.currentLevel - referral.payBeyondLevel}}</b>
     </div>
-    <div>Eligible for new order: <b>{{(referral.payBeyondLevel < referral.currentLevel && !referral.hold) ? 'true' : 'false'}}</b></div>
+    <div>Eligible for new order:
+      <b>{{(referral.payBeyondLevel
+        < referral.currentLevel && !referral.hold) ? 'true' : 'false'}}</b>
+    </div>
     <div class="warn bold" *ngIf="referral.hold">
-      On Hold: {{referral.hold ? 'true' : 'false' }}<br> {{referral.holdReason}}
+      On Hold: {{referral.hold ? 'true' : 'false' }}
+      <br> {{referral.holdReason}}
     </div>
   </ng-container>
   <ng-container *ngIf="!referral.currentSponsor">
     <div>Previous Level: {{referral.payBeyondLevel}}</div>
     <div>Level At Transfer: {{referral.currentLevel}}</div>
     <b>Unpaid Levels: {{referral.unpaidLevels ? referral.unpaidLevels : 0}}</b>
-    <div><b>Member was transferred by their own request.</b></div>
+    <div>
+      <b>Member was transferred by their own request.</b>
+    </div>
   </ng-container>
   <button type="button" mat-button color="accent" (click)="dialogRef.close()">CLOSE</button>
 </ng-container>

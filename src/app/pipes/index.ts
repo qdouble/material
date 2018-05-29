@@ -12,9 +12,7 @@ import { TimeAgoPipe } from './time-ago';
 import { TimeAgoRecentPipe } from './time-ago-recent';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   declarations: [
     CostToUserPipe,
     EarnPerReferralPipe,
@@ -38,5 +36,4 @@ import { TimeAgoRecentPipe } from './time-ago-recent';
     TimeAgoRecentPipe
   ]
 })
-
-export class CustomPipesModule { }
+export class CustomPipesModule {}

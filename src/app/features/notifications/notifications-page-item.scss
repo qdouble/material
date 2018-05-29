@@ -1,10 +1,9 @@
 @import '../../variables';
-
-.ntfy-clickable {
+.notify-clickable {
   cursor: pointer;
 }
 
-.ntfy-close {
+.notify-close {
   position: absolute;
   top: 36px;
   right: -9px;
@@ -13,19 +12,18 @@
   cursor: pointer;
 }
 
-.ntfy-ico {
+.notify-ico {
   font-size: 33px;
   color: $primary-color;
 }
 
-.ntfy-item:focus {
-	outline: none !important;
+.notify-item:focus {
+  outline: none !important;
 }
 
-.ntfy-item {
+.notify-item {
   position: relative;
   width: 100%;
-  // max-width: 400px;
   height: 60px;
   margin-bottom: 2px;
   font-size: 13px;
@@ -33,14 +31,14 @@
   border-bottom: 2px solid #8bc34a;
 }
 
-.ntfy-image {
+.notify-image {
   position: absolute;
   width: 54px;
   height: 54px;
   overflow: hidden;
 }
 
-.ntfy-message {
+.notify-message {
   position: absolute;
   top: 0px;
   left: 58px;
@@ -54,7 +52,7 @@
   }
 }
 
-.ntfy-radio {
+.notify-radio {
   position: absolute;
   top: 4px;
   right: -9px;
@@ -63,7 +61,7 @@
   cursor: pointer;
 }
 
-.ntfy-timestamp {
+.notify-timestamp {
   position: absolute;
   top: 36px;
   left: 58px;

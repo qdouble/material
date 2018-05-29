@@ -22,7 +22,6 @@ export const initialState: State = adapter.getInitialState({
 
 export function orderReducer(state = initialState, action: OrderActions): State {
   switch (action.type) {
-
     case OrderActionTypes.GetOrders:
       return { ...state, loading: true };
 
@@ -61,7 +60,6 @@ export function orderReducer(state = initialState, action: OrderActions): State 
     }
   }
 }
-
 
 export const getLoaded = (state: State) => state.loaded;
 

@@ -17,14 +17,15 @@ import { MatDialogRef } from '@angular/material';
       (click)="dialogRef.close(true)">YES</button>
     <button type="button" mat-button color="primary"
       (click)="dialogRef.close()">NO</button>
-  </ng-container>`, // tslint:disable-line
-  styles: [` button { margin-top: 5px; width: 100%; }
+  </ng-container>`,
+  styles: [
+    ` button { margin-top: 5px; width: 100%; }
   p {text-align: justify; font-size: 15px; margin-top: 5px; }
-  h5 {text-align: center; font-size: 18px;}`]
+  h5 {text-align: center; font-size: 18px;}`
+  ]
 })
 export class IPMatchFoundDialog {
   ip: string;
   ISP: string;
-  constructor(public dialogRef: MatDialogRef<IPMatchFoundDialog>) { }
-
+  constructor(public dialogRef: MatDialogRef<IPMatchFoundDialog>) {}
 }

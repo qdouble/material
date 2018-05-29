@@ -1,6 +1,10 @@
 import {
-  ChangeDetectionStrategy, Component,
-  EventEmitter, Input, OnDestroy, Output
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output
 } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { Subject } from 'rxjs/Subject';
@@ -14,7 +18,6 @@ import { User } from '../../../../models/user';
   styleUrls: ['./referrals-table.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class ReferralsTable implements OnDestroy {
   dialogRef: MatDialogRef<ReferralDetailsDialog>;
   destroyed$: Subject<any> = new Subject<any>();
@@ -38,18 +41,19 @@ export class ReferralsTable implements OnDestroy {
   @Output() selectReferral = new EventEmitter();
   @Output() sortBy = new EventEmitter();
   @Output() viewReferral = new EventEmitter();
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {}
 
   open(referral) {
     this.dialogRef = this.dialog.open(ReferralDetailsDialog, this.config);
     this.dialogRef.componentInstance.referral = referral;
 
-    this.dialogRef.afterClosed()
+    this.dialogRef
+      .afterClosed()
       .takeUntil(this.destroyed$)
       .subscribe(result => {
-      this.lastCloseResult = result;
-      this.dialogRef = null;
-    });
+        this.lastCloseResult = result;
+        this.dialogRef = null;
+      });
   }
 
   trackById(index: number, user: User) {

@@ -16,9 +16,12 @@ const app = express();
 const api = new App();
 const baseUrl = `http://localhost:${UNIVERSAL_PORT}`;
 
-app.engine('html', ngExpressEngine({
-  bootstrap: ServerAppModule
-}));
+app.engine(
+  'html',
+  ngExpressEngine({
+    bootstrap: ServerAppModule
+  })
+);
 
 app.set('view engine', 'html');
 app.set('views', 'src');

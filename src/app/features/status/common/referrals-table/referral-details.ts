@@ -14,7 +14,7 @@ export class ReferralDetailsDialog implements OnInit {
   startedFrom = 0;
   referral: Referral;
 
-  constructor(public dialogRef: MatDialogRef<ReferralDetailsDialog>) { }
+  constructor(public dialogRef: MatDialogRef<ReferralDetailsDialog>) {}
   ngOnInit() {
     if (this.referral.credits && this.referral.credits.length > 0) {
       this.referral.credits.forEach(credit => {

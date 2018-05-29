@@ -1,15 +1,12 @@
 /**
  * @author: @AngularClass
  */
-const webpack = require('webpack');
 const helpers = require('./helpers');
 
 /**
  * Webpack Plugins
  */
-const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
-const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 
 const ip = require('ip');
@@ -136,7 +133,11 @@ module.exports = {
        *
        * See: https://github.com/webpack/json-loader
        */
-      { test: /\.json$/, loader: 'json-loader', exclude: [helpers.root('src/index.html')] },
+      {
+        test: /\.json$/,
+        loader: 'json-loader',
+        exclude: [helpers.root('src/index.html')]
+      },
 
       /**
        * Raw loader support for *.css files
@@ -144,7 +145,11 @@ module.exports = {
        *
        * See: https://github.com/webpack/raw-loader
        */
-      { test: /\.css$/, loaders: ['to-string-loader', 'css-loader'], exclude: [helpers.root('src/index.html')] },
+      {
+        test: /\.css$/,
+        loaders: ['to-string-loader', 'css-loader'],
+        exclude: [helpers.root('src/index.html')]
+      },
       {
         test: /\.scss$/,
         exclude: /node_modules/,
@@ -157,7 +162,11 @@ module.exports = {
        *
        * See: https://github.com/webpack/raw-loader
        */
-      { test: /\.html$/, loader: 'raw-loader', exclude: [helpers.root('src/index.html')] }
+      {
+        test: /\.html$/,
+        loader: 'raw-loader',
+        exclude: [helpers.root('src/index.html')]
+      }
 
     ],
 
@@ -175,7 +184,8 @@ module.exports = {
        * See: https://github.com/deepsweet/istanbul-instrumenter-loader
        */
       {
-        test: /\.(js|ts)$/, loader: 'istanbul-instrumenter-loader',
+        test: /\.(js|ts)$/,
+        loader: 'istanbul-instrumenter-loader',
         include: helpers.root('src'),
         exclude: [
           /\.(e2e|spec)\.ts$/,

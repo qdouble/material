@@ -17,4 +17,4 @@ import { BrowserTransferStateModule } from '../modules/transfer-state/browser-tr
     AppModule
   ]
 })
-export class BrowserAppModule { }
+export class BrowserAppModule {}

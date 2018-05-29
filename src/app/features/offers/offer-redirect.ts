@@ -15,26 +15,25 @@ import { AppState } from '../../reducers';
     <mat-progress-bar mode="query" class="demo-progress-bar-margins"></mat-progress-bar>
   </div>
   </mat-card>
-  `, styles: [`
+  `,
+  styles: [
+    `
   h5 { text-align: center } mat-progress-bar { width: 75%; margin: 0 auto; }
   .progress-container { position: absolute; top: 40%; transform: translateY(-40%); width: 100%; }
-  `]
+  `
+  ]
 })
-
 export class OfferRedirect implements OnInit, OnDestroy {
   destroyed$: Subject<any> = new Subject<any>();
   id: string;
   routerSub: Subscription;
-  constructor(
-    private route: ActivatedRoute,
-    private store: Store<AppState>
-  ) {
+  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
     this.routerSub = this.route.queryParams
-    .takeUntil(this.destroyed$)
-    .filter(query => query !== undefined)
-    .subscribe(query => {
-      this.id = query['id'];
-    });
+      .takeUntil(this.destroyed$)
+      .filter(query => query !== undefined)
+      .subscribe(query => {
+        this.id = query['id'];
+      });
   }
   ngOnInit() {
     this.store.dispatch(new userActions.RecordClick(this.id));

@@ -33,7 +33,6 @@ export const initialState: State = adapter.getInitialState({
 
 export function offerReducer(state = initialState, action: OfferActions): State {
   switch (action.type) {
-
     case OfferActionTypes.ClearOffers:
       return {
         ...adapter.removeAll(state),
@@ -56,16 +55,22 @@ export function offerReducer(state = initialState, action: OfferActions): State 
       const userAgent = action.payload.userAgent;
       if (!offer) return { ...state, loading: false };
       return {
-        ...adapter.upsertOne({
-          id: offer.id, changes: {
-            ...offer,
-            costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
-            popularityRank: offer.popularityRank ? offer.popularityRank : 99,
-            popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
-            featured: offer.popularityRank ||
-              (offer.popularityRank2 && offer.popularityRank2 <= 20) ? true : false
-          }
-        }, state),
+        ...adapter.upsertOne(
+          {
+            id: offer.id,
+            changes: {
+              ...offer,
+              costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
+              popularityRank: offer.popularityRank ? offer.popularityRank : 99,
+              popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
+              featured:
+                offer.popularityRank || (offer.popularityRank2 && offer.popularityRank2 <= 20)
+                  ? true
+                  : false
+            }
+          },
+          state
+        ),
         userAgent: userAgent,
         loading: false
       };
@@ -79,20 +84,21 @@ export function offerReducer(state = initialState, action: OfferActions): State 
 
       const newOffers = offers;
       const offerIds = newOffers.map(offer => offer.id!);
-      const offerEntities = newOffers.reduce(
-        (entities: { [id: string]: Offer }, offer: Offer) => {
-          if (offer.id)
-            return Object.assign(entities, {
-              [offer.id]: {
-                ...offer,
-                costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
-                popularityRank: offer.popularityRank ? offer.popularityRank : 99,
-                popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
-                featured: offer.popularityRank ||
-                  (offer.popularityRank2 && offer.popularityRank2 <= 20) ? true : false
-              }
-            });
-        }, {});
+      const offerEntities = newOffers.reduce((entities: { [id: string]: Offer }, offer: Offer) => {
+        if (offer.id)
+          return Object.assign(entities, {
+            [offer.id]: {
+              ...offer,
+              costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
+              popularityRank: offer.popularityRank ? offer.popularityRank : 99,
+              popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
+              featured:
+                offer.popularityRank || (offer.popularityRank2 && offer.popularityRank2 <= 20)
+                  ? true
+                  : false
+            }
+          });
+      }, {});
 
       return {
         ...state,
