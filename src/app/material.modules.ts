@@ -14,7 +14,7 @@ import {
   MatListModule,
   // MatMenuModule,
   // MatCoreModule,
-  MatProgressBarModule,
+  // MatProgressBarModule,
   // MatProgressSpinnerModule,
   // MatRadioModule,
   // MatRippleModule,
@@ -24,14 +24,12 @@ import {
   // MatSliderModule,
   MatSnackBarModule,
   // MatTabsModule,
-  MatTableModule,
+  // MatTableModule,
   MatToolbarModule,
   MatTooltipModule,
   MatNativeDateModule
 } from '@angular/material';
-import { CdkTableModule } from '@angular/cdk/table';
 export const MATERIAL_MODULES = [
-  CdkTableModule,
   // MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
@@ -47,7 +45,7 @@ export const MATERIAL_MODULES = [
   MatListModule,
   // MatMenuModule,
   // MatCoreModule,
-  MatProgressBarModule,
+  // MatProgressBarModule,
   // MatProgressSpinnerModule,
   // MatRadioModule,
   // MatRippleModule,
@@ -56,7 +54,7 @@ export const MATERIAL_MODULES = [
   MatSlideToggleModule,
   // MatSliderModule,
   MatSnackBarModule,
-  MatTableModule,
+  // MatTableModule,
   // MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
