@@ -1,6 +1,6 @@
 {
   "name": "offersystem-frontend",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "LevelUp Rewards user UI",
   "author": "Qdouble <qdouble@gmail.com>",
   "main": "index.js",
@@ -16,14 +16,11 @@
     "protractor": "protractor",
     "pree2e:only": "npm run webdriver:update -- --standalone",
     "e2e": "npm run sass && npm-run-all -p -r e2e:server e2e:only",
-    "e2e:testall":
-      "npm run e2e:jit && npm run e2e:aot && npm run e2e:universal && npm run e2e:universal:aot",
+    "e2e:testall": "npm run e2e:jit && npm run e2e:aot && npm run e2e:universal && npm run e2e:universal:aot",
     "e2e:aot": "npm run build:aot:prod:e2e && npm run e2e",
     "e2e:jit": "npm run build:prod:e2e && npm run e2e",
-    "e2e:universal":
-      "npm run build:universal:prod:e2e && npm-run-all -p -r server:universal e2e:only:universal",
-    "e2e:universal:aot":
-      "npm run build:universal:aot:e2e && npm-run-all -p -r server:universal e2e:only:universal",
+    "e2e:universal": "npm run build:universal:prod:e2e && npm-run-all -p -r server:universal e2e:only:universal",
+    "e2e:universal:aot": "npm run build:universal:aot:e2e && npm-run-all -p -r server:universal e2e:only:universal",
     "e2e:only:universal": "npm run protractor -- --universal",
     "e2e:only": "npm run protractor",
     "e2e:live": "npm run e2e -- --elementExplorer",
@@ -38,8 +35,7 @@
     "ci:testall": "npm run e2e:testall && npm run test:once:ci",
     "tslint": "tslint --project tsconfig.json",
     "lint": "npm run tslint \"src/app/**/*.ts\" ",
-    "clean":
-      "npm run clean:compile && npm run rimraf -- node_modules doc typings coverage dist .awcache dll",
+    "clean": "npm run clean:compile && npm run rimraf -- node_modules doc typings coverage dist .awcache dll",
     "clean:dist": "npm run rimraf -- dist .awcache",
     "clean:dll": "npm run rimraf -- dll",
     "clean:compile": "npm run rimraf -- \"compiled\" ",
@@ -48,10 +44,8 @@
     "prodserver": "node prodserver",
     "publish": "npm run build:aot:prod:publish",
     "publish:test": "npm run build:aot:prod:publish:test",
-    "sass":
-      "node-sass \"src/app/styles.scss\" \"src/app/styles.css\" --include-path node_modules --output-style compressed -q",
-    "sass:watch":
-      "node-sass -w \"src/app/styles.scss\" \"src/app/styles.css\" --include-path node_modules --output-style compressed -q",
+    "sass": "node-sass \"src/app/styles.scss\" \"src/app/styles.css\" --include-path node_modules --output-style compressed -q",
+    "sass:watch": "node-sass -w \"src/app/styles.scss\" \"src/app/styles.css\" --include-path node_modules --output-style compressed -q",
     "start": "npm run server:dev",
     "start:hmr": "npm run server:hmr",
     "serve80": "sudo PORT=80 node prodserver",
@@ -92,8 +86,7 @@
     "watch:universal": "npm-run-all -p -r \"build:universal -- --watch\" sass:watch",
     "universal": "npm run build:universal && npm run server:universal",
     "universal:aot": "npm run build:universal:aot && npm run server:universal",
-    "universal:watch":
-      "npm run build:universal && npm-run-all -p -r watch:universal server:universal"
+    "universal:watch": "npm run build:universal && npm-run-all -p -r watch:universal server:universal"
   },
   "dependencies": {
     "@angular/animations": "~5.2.10",
