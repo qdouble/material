@@ -29,7 +29,7 @@ import { User } from '../../../../models/user';
 })
 export class ReferralsTable implements AfterViewInit, OnInit, OnDestroy {
   @Input() loading: boolean;
-  @Input() referrals: User[];
+  @Input() referrals: User[] = [];
   @Input() showHidden: boolean;
   @Output() getReferral = new EventEmitter();
   @Output() reload = new EventEmitter();
@@ -42,8 +42,8 @@ export class ReferralsTable implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   pageSize = 10;
   selectedRowIndex: number = -1;
-  leveledUpRefs: string[];
-  onHoldRefs: string[];
+  leveledUpRefs: string[] = [];
+  onHoldRefs: string[] = [];
   dialogRef: MatDialogRef<ReferralDetailsDialog>;
   destroyed$: Subject<any> = new Subject<any>();
   lastCloseResult: string;
@@ -61,10 +61,6 @@ export class ReferralsTable implements AfterViewInit, OnInit, OnDestroy {
   constructor(public dialog: MatDialog) {}
 
   ngOnInit() {
-    console.log('hello');
-    this.leveledUpRefs = this.referrals.filter(r => r.leveledUp).map(r => r.id);
-    console.log({leveledUpRefs: this.leveledUpRefs});
-    this.onHoldRefs = this.referrals.filter(r => r.hold).map(r => r.id);
     this.dataSource = new MatTableDataSource<User>(this.referrals);
   }
 
@@ -73,6 +69,14 @@ export class ReferralsTable implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    this.leveledUpRefs = this.referrals
+      .filter(r => r !== undefined)
+      .filter(r => r.leveledUp)
+      .map(r => r.id);
+    this.onHoldRefs = this.referrals
+      .filter(r => r !== undefined)
+      .filter(r => r.hold)
+      .map(r => r.id);
     this.dataSource.paginator = this.paginator;
   }
 

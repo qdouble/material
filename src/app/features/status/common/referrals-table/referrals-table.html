@@ -4,13 +4,14 @@
     <!-- Position Column -->
     <ng-container matColumnDef="addedOn">
       <mat-header-cell class="hide-1" *matHeaderCellDef> Added On </mat-header-cell>
-      <mat-cell *matCellDef="let referral" class="hide-1 nowrap" [ngClass]="{'primary-bold':  (referral.payBeyondLevel < referral.currentLevel && !referral.hold && referral.currentSponsor), 'warn bold': referral?.hold  }"> {{referral?.addedOn | date: 'short'}} </mat-cell>
+      <mat-cell *matCellDef="let referral" class="hide-1 nowrap" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
+      {{referral?.addedOn | date: 'short'}} </mat-cell>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="username">
       <mat-header-cell *matHeaderCellDef> Username </mat-header-cell>
-      <mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral.payBeyondLevel < referral.currentLevel && !referral.hold && referral.currentSponsor), 'warn bold': referral?.hold  }">
+      <mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
         <span class="long-username nowrap">{{referral?.username | slice:0:20 }}</span>
         <span class="short-username nowrap">{{referral?.username | slice:0:10 }}</span>
       </mat-cell>
@@ -19,8 +20,8 @@
     <!-- Weight Column -->
     <ng-container matColumnDef="currentLevel">
       <mat-header-cell *matHeaderCellDef> Level </mat-header-cell>
-      <mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral.payBeyondLevel < referral.currentLevel && !referral.hold && referral.currentSponsor), 'warn bold': referral?.hold  }">
-        <ng-container *ngIf="referral.currentSponsor">
+      <mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
+        <ng-container *ngIf="referral?.currentSponsor">
           <ng-container *ngIf="!referral?.hold">
             <span>{{referral?.currentLevel}}</span>
             <ng-container *ngIf="referral?.payBeyondLevel < referral?.currentLevel">
@@ -29,9 +30,9 @@
               </span>
             </ng-container>
           </ng-container>
-          <ng-container *ngIf="referral.hold">Hold</ng-container>
+          <ng-container *ngIf="referral?.hold">Hold</ng-container>
         </ng-container>
-        <ng-container *ngIf="!referral.currentSponsor">
+        <ng-container *ngIf="!referral?.currentSponsor">
           <ng-container>T</ng-container>
         </ng-container>
       </mat-cell>
@@ -40,17 +41,16 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral.payBeyondLevel < referral.currentLevel && !referral.hold && referral.currentSponsor), 'warn bold': referral?.hold  }">
-        <button mat-icon-button
-          (click)="getReferral.emit(referral)">
+      <td mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
+        <button mat-icon-button (click)="getReferral?.emit(referral)">
           <mat-icon>remove_red_eye</mat-icon>
         </button>
-        <mat-checkbox #select (change)="selectReferral.emit({id: referral.id, checked: select.checked })"></mat-checkbox>
+        <mat-checkbox #select (change)="selectReferral?.emit({id: referral?.id, checked: select.checked })"></mat-checkbox>
       </td>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.id, 'green-key': leveledUpRefs?.includes(row.id)}"
+    <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row?.id, 'green-key': leveledUpRefs?.includes(row?.id)}"
       (click)="highlight(row)"></mat-row>
   </mat-table>
 
