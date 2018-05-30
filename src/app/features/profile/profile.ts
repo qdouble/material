@@ -13,6 +13,7 @@ import * as userActions from '../../actions/user';
 import { Country } from '../../models/country';
 import { User } from '../../models/user';
 import { CustomValidators, RegexValues } from '../../validators';
+import { isoToNewDateFormatter } from '../../helper/iso-to-new-date-formatter';
 
 @Component({
   selector: 'os-profile',
@@ -109,8 +110,9 @@ export class Profile implements OnDestroy, OnInit {
           this.hideProfile = true;
           this.user = user;
         }
+
         let loadedUser = Object.assign({}, user, {
-          birthday: (user.birthday || '').substring(0, 10),
+          birthday: isoToNewDateFormatter(user.birthday),
           confirmEmail: user.email
         });
         this.f.patchValue(loadedUser);
