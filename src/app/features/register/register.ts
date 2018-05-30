@@ -132,6 +132,7 @@ export class Register implements OnDestroy, OnInit {
         ),
         agree: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
         agree2: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
+        agree3: new FormControl(PUBLISH ? null : true, CustomValidators.isTrue),
         hidden: new FormControl(true),
         selectedPrize: new FormControl(null)
       },

@@ -46,14 +46,19 @@
             placeholder="How would you like to receive your prize?" [controlName]="'selectedPrize'" [form]="f">
           </select-input>
         </div>
-        <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address (optional)'" [controlName]="'paypal'"
-          [form]="f">
+        <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address (optional)'"
+          [controlName]="'paypal'" [form]="f">
         </os-form-input>
         <div class="os-agree-checkbox">
-          <mat-checkbox color="primary" formControlName="agree" type="checkbox">I agree to the
-            <a routerLink="../terms-and-conditions">Terms and Conditions</a>
+          <p class="explainer">In order to eligible to earn money on Level Rewards, you have to "level up." You will then receive $5 per level
+            your referrals complete as long as a particular referral's level does not exceed your own level. Leveling up
+            involves the completion of trial offers or surveys from 3rd party advertisers. Membership to Level Rewards is
+            free, but each trial or survey has it's own requirements with applicable terms and conditions.</p>
+          <mat-checkbox color="primary" formControlName="agree" type="checkbox">I understand the basic requirements of this site</mat-checkbox>
+          <mat-checkbox color="primary" formControlName="agree2" type="checkbox">I know that only 1 account per household is allowed</mat-checkbox>
+          <mat-checkbox color="primary" formControlName="agree3" type="checkbox">I agree to all of the
+            <a routerLink="../terms-and-conditions">terms and conditions</a> of this site
           </mat-checkbox>
-          <mat-checkbox color="primary" formControlName="agree2" type="checkbox">I am aware that only one account per household is allowed</mat-checkbox>
         </div>
       </div>
       <ng-container *ngIf="!invalidCountry">
