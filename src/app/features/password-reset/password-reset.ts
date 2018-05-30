@@ -29,8 +29,14 @@ export class PasswordReset implements OnInit {
             Validators.pattern(RegexValues.email)
           ]),
           code: new FormControl(params['code'], [Validators.required]),
-          password: new FormControl(PUBLISH ? '' : 'password', Validators.required),
-          confirmPassword: new FormControl(PUBLISH ? '' : 'password', Validators.required)
+          password: new FormControl(PUBLISH ? '' : 'password', [
+            Validators.required,
+            Validators.pattern(RegexValues.password)
+          ]),
+          confirmPassword: new FormControl(PUBLISH ? '' : 'password', [
+            Validators.required,
+            Validators.pattern(RegexValues.password)
+          ])
         },
         CustomValidators.compare('password', 'confirmPassword', 'comparePassword')
       );
