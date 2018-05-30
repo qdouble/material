@@ -369,7 +369,7 @@ export class AppComponent implements OnInit {
 
     this.scripts$.filter(s => s && s.length > 0).subscribe(scripts => this.loadScripts(scripts));
 
-    if (this.version === '0.7.1') {
+    if (this.version === '0.7.2') {
       this.socialProofSettings$.filter(s => s !== undefined && s !== null).subscribe(settings => {
         this.socialProofSettings = settings;
         if (settings.active) {
