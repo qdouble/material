@@ -3,6 +3,7 @@
   <div *ngIf="referral.firstName && referral.lastName">Name: {{referral.firstName + ' ' + referral.lastName}}</div>
   <div>Username: {{referral.username}}</div>
   <div>Email: {{referral.email}}</div>
+  <div>Phone: {{referral.phone}}</div>
   <ng-container *ngIf="referral.currentSponsor">
     <div *ngIf="startedFrom">Start at Level: {{startedFrom}}</div>
     <div>Current Level: {{referral.currentLevel}}</div>

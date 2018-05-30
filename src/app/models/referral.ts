@@ -7,6 +7,7 @@ export interface Referral {
   readonly lastName: string;
   readonly username: string;
   readonly email: string;
+  readonly phone: string;
   readonly currentLevel: number;
   readonly payBeyondLevel: number;
   readonly leveledUp: boolean;
