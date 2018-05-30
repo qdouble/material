@@ -48,7 +48,7 @@ export const initialState: State = {
   socialProofs: {},
   socialProofSettings: null,
   latestVersion: null,
-  version: '0.7.2'
+  version: '0.7.3'
 };
 
 export function uiReducer(state = initialState, action: UIActions): State {
