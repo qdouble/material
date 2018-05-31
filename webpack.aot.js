@@ -1,9 +1,5 @@
-const {
-  root
-} = require('./helpers');
-const {
-  AngularCompilerPlugin
-} = require('@ngtools/webpack');
+const { root } = require('./helpers');
+const { AngularCompilerPlugin } = require('@ngtools/webpack');
 
 const tsconfigs = {
   client: root('./src/tsconfig.browser.json'),
@@ -18,7 +14,7 @@ const aotTsconfigs = {
 function getAotPlugin(platform, aot) {
   return new AngularCompilerPlugin({
     tsConfigPath: aot ? aotTsconfigs[platform] : tsconfigs[platform],
-    skipCodeGeneration: aot ? false : true,
+    skipCodeGeneration: !aot,
     sourceMap: false
   });
 }

@@ -363,6 +363,7 @@ const clientConfig = (function webpackConfig(): WebpackConfig {
 
 const serverConfig: WebpackConfig = {
   target: 'node',
+  mode: PROD ? 'production' : 'development',
   entry: AOT ? './src/server.aot.ts' : root('./src/server.ts'),
   output: {
     filename: 'server.js',
@@ -370,18 +371,7 @@ const serverConfig: WebpackConfig = {
   },
   plugins: [getAotPlugin('server', AOT)],
   module: {
-    rules: [
-      {
-        test: /@angular(\\|\/)material/,
-        loader: 'imports-loader',
-        options: {
-          window: '>global',
-          CSS: '>null',
-          navigator: ">{get userAgent(){ return 'Chrome'; }}",
-          document: '>global.document'
-        }
-      }
-    ]
+    rules: []
   }
 };
 

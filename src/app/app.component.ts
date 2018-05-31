@@ -51,7 +51,6 @@ import { ProofSnackbarComponent } from './snackbars/proof.snackbar.component';
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
-  showMonitor = ENV === 'development' && !AOT && ['monitor', 'both'].includes(STORE_DEV_TOOLS);
   // Nav menu related //
   initView = true;
   previousView;
@@ -289,7 +288,10 @@ export class AppComponent implements OnInit {
     });
 
     this.route.queryParams
-      .pipe(filter(param => param['ref'] !== undefined), take(1))
+      .pipe(
+        filter(param => param['ref'] !== undefined),
+        take(1)
+      )
       .subscribe(param => {
         this.referredBy = param['ref'];
         if (validateUserName(this.referredBy)) {
@@ -420,27 +422,32 @@ export class AppComponent implements OnInit {
     this.webSocket$ = webSocket(
       `${PUBLISH ? 'wss' : 'ws'}://${HOST}:${PUBLISH ? '8443' : '8089'}/user/socket/connect`
     ); // tslint:disable-line max-line-length
-    this.webSocket$.pipe(retry(), takeUntil(this.closeConnection$)).subscribe(
-      (res: { event?: string; id?: string; type?: string; payload?: any }) => {
-        log(`connected: `, res);
-        if (res.event === 'CONNECTION') {
-          this.store.dispatch(new uiActions.AddUserIDToSocket(res.id));
-        }
-        if (res.type) {
-          this.store.dispatch({ type: res.type, payload: res.payload });
-        }
-        if (Array.isArray(res)) {
-          res.forEach(action => {
-            this.store.dispatch({ type: action.type, payload: action.payload });
-          });
-        }
-      },
-      err => {
-        log(err);
-        this.connect();
-      },
-      () => log('complete')
-    );
+    this.webSocket$
+      .pipe(
+        retry(),
+        takeUntil(this.closeConnection$)
+      )
+      .subscribe(
+        (res: { event?: string; id?: string; type?: string; payload?: any }) => {
+          log(`connected: `, res);
+          if (res.event === 'CONNECTION') {
+            this.store.dispatch(new uiActions.AddUserIDToSocket(res.id));
+          }
+          if (res.type) {
+            this.store.dispatch({ type: res.type, payload: res.payload });
+          }
+          if (Array.isArray(res)) {
+            res.forEach(action => {
+              this.store.dispatch({ type: action.type, payload: action.payload });
+            });
+          }
+        },
+        err => {
+          log(err);
+          this.connect();
+        },
+        () => log('complete')
+      );
   }
 
   loadScripts(scripts: Script[]) {
