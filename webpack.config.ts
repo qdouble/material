@@ -41,9 +41,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const ScriptExtPlugin = require('script-ext-html-webpack-plugin');
-const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpackMerge = require('webpack-merge');
-const WebpackMd5Hash = require('webpack-md5-hash');
 const { getAotPlugin } = require('./webpack.aot');
 
 const { hasProcessFlag, root, testDll } = require('./helpers.js');
@@ -164,7 +164,17 @@ const commonConfig = (function webpackConfig(): WebpackConfig {
               ],
         exclude: [/\.(spec|e2e|d)\.ts$/]
       },
-      { test: /\.json$/, loader: 'json-loader' },
+      {
+        type: 'javascript/auto',
+        test: /\.(json|jsonp)/,
+        exclude: /(node_modules|bower_components)/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: { name: '[name].[ext]' }
+          }
+        ]
+      },
       { test: /\.html/, loader: 'raw-loader', exclude: [root('src/index.html')] },
       { test: /\.css$/, loader: 'raw-loader' },
       {
@@ -180,10 +190,12 @@ const commonConfig = (function webpackConfig(): WebpackConfig {
     new CheckerPlugin(),
     new DefinePlugin(CONSTANTS),
     new NamedModulesPlugin(),
-    new WebpackMd5Hash(),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       metadata: { isDevServer: DEV_SERVER }
+    }),
+    new FilterWarningsPlugin({
+      exclude: /System\.import/
     }),
     ...MY_CLIENT_PLUGINS
   ];
@@ -247,7 +259,7 @@ const commonConfig = (function webpackConfig(): WebpackConfig {
 // type definition for WebpackConfig at the bottom
 const clientConfig = (function webpackConfig(): WebpackConfig {
   let config: WebpackConfig = Object.assign({});
-
+  config.mode = PROD ? 'production' : 'development';
   config.cache = true;
   config.target = 'web';
   PROD
@@ -303,9 +315,9 @@ const clientConfig = (function webpackConfig(): WebpackConfig {
   if (!DLL) {
     config.output = {
       path: PUBLISH ? (!TEST ? '/var/www/html' : '/var/www/test') : root('dist'),
-      filename: !PROD ? '[name].bundle.js' : '[name].[chunkhash].bundle.js',
-      sourceMapFilename: !PROD ? '[name].bundle.map' : '[name].[chunkhash].bundle.map',
-      chunkFilename: !PROD ? '[id].chunk.js' : '[id].[chunkhash].chunk.js'
+      filename: !PROD ? '[name].bundle.js' : '[name].[md5:contenthash:hex:20].bundle.js',
+      sourceMapFilename: !PROD ? '[name].bundle.map' : '[name].[md5:contenthash:hex:20].bundle.map',
+      chunkFilename: !PROD ? '[id].chunk.js' : '[id].[md5:contenthash:hex:20].chunk.js'
     };
   } else {
     config.output = {
