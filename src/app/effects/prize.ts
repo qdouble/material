@@ -2,8 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable } from 'rxjs/Observable';
-import { concat } from 'rxjs/observable/concat';
+import { Observable, concat, of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 
 import { AddNotify } from '../actions/notify';
@@ -22,9 +21,7 @@ export class PrizeEffects {
         .getPrizes()
         .pipe(
           map(res => new GetPrizesSuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new GetPrizesFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new GetPrizesFail(err)), of(new AddNotify(err))))
         )
     )
   );

@@ -12,12 +12,12 @@ import * as userActions from './actions/user';
     <mat-card class="os-login-form-container">
       <mat-card-title>Admin Login</mat-card-title>
         <form [formGroup]="f" (ngSubmit)="submitForm()">
-        <mat-input-container>
+        <mat-form-field>
           <input matInput placeholder="Username" formControlName="username">
-        </mat-input-container><br>
-        <mat-input-container>
+        </mat-form-field><br>
+        <mat-form-field>
           <input matInput placeholder="Password" formControlName="password" type="password">
-        </mat-input-container>
+        </mat-form-field>
         <br>
         <button mat-raised-button class="white" color="primary" [disabled]="!f.valid" type="submit">
           LOGIN

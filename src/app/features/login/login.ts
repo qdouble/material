@@ -2,8 +2,8 @@ import { Component, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
+import { filter, take, takeUntil } from 'rxjs/operators';
 
 import * as fromStore from '../../reducers';
 import * as userActions from '../../actions/user';
@@ -33,7 +33,7 @@ export class Login implements OnDestroy {
 
   constructor(private store: Store<fromStore.AppState>) {
     this.entryEmail$ = store.pipe(select(fromStore.getUserEntryEmail));
-    this.entryEmail$.take(1).subscribe(email => {
+    this.entryEmail$.pipe(take(1)).subscribe(email => {
       if (email) this.f.get('email').setValue(email);
     });
     this.loading$ = this.store.select(s => s.user.loading);
@@ -63,9 +63,7 @@ export class Login implements OnDestroy {
     if (this.forgotPassword) {
       this.store.dispatch(new userActions.ForgotPassword(this.f.value['email']));
       this.resetEmailSent$
-        .filter(sent => sent === true)
-        .take(1)
-        .takeUntil(this.destroyed$)
+        .pipe(filter(sent => sent === true), take(1), takeUntil(this.destroyed$))
         .subscribe(sent => {
           this.cancelForgotPassword();
         });

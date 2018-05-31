@@ -21,6 +21,7 @@ import {
   SetSponsorResponse
 } from '../models/prize';
 import { GenericResponse } from '../models/generic-response';
+import { retry } from 'rxjs/operators';
 
 @Injectable()
 export class UserService extends RequestBase {
@@ -112,7 +113,7 @@ export class UserService extends RequestBase {
   recordClick(offerId: string) {
     return this.http
       .post<RecordClickResponse>(`${API_USER_URL}/recordClick`, { id: offerId }, this.options)
-      .retry();
+      .pipe(retry());
   }
 
   registerUser(user: User) {

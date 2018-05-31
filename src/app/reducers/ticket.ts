@@ -130,8 +130,7 @@ export function ticketReducer(state = initialState, action: TicketActions): Stat
       return {
         ...adapter.upsertOne(
           {
-            id: ticket.id,
-            changes: ticket
+            ...ticket
           },
           state
         ),

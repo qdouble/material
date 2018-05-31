@@ -2,8 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable } from 'rxjs/Observable';
-import { concat } from 'rxjs/observable/concat';
+import { concat, Observable, of } from 'rxjs';
 import { map, mergeMap, switchMap, catchError } from 'rxjs/operators';
 
 import {
@@ -45,9 +44,7 @@ export class UIEffects {
         .addInvalidCountry(ipInfo)
         .pipe(
           map(res => new AddInvalidCountrySuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new AddInvalidCountryFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new AddInvalidCountryFail(err)), of(new AddNotify(err))))
         )
     )
   );
@@ -61,9 +58,7 @@ export class UIEffects {
         .addUserIDToSocket(id)
         .pipe(
           map(res => new AddUserIDToSocketSuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new AddUserIDToSocketFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new AddUserIDToSocketFail(err)), of(new AddNotify(err))))
         )
     )
   );
@@ -76,12 +71,8 @@ export class UIEffects {
       this.uiService
         .contactUs(contact)
         .pipe(
-          mergeMap(res =>
-            concat(Observable.of(new ContactUsSuccess(res)), Observable.of(new AddNotify(res)))
-          ),
-          catchError(err =>
-            concat(Observable.of(new ContactUsFail(err)), Observable.of(new AddNotify(err)))
-          )
+          mergeMap(res => concat(of(new ContactUsSuccess(res)), of(new AddNotify(res)))),
+          catchError(err => concat(of(new ContactUsFail(err)), of(new AddNotify(err))))
         )
     )
   );
@@ -95,9 +86,7 @@ export class UIEffects {
         .getIPInfo(ip)
         .pipe(
           map(res => new GetIPInfoSuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new GetIPInfoFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new GetIPInfoFail(err)), of(new AddNotify(err))))
         )
     )
   );
@@ -110,9 +99,7 @@ export class UIEffects {
         .getVersion()
         .pipe(
           map(res => new GetVersionSuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new GetVersionFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new GetVersionFail(err)), of(new AddNotify(err))))
         )
     )
   );
@@ -125,9 +112,7 @@ export class UIEffects {
         .getScriptsToLoad()
         .pipe(
           map(res => new GetScriptsToLoadSuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new GetSocialProofFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new GetSocialProofFail(err)), of(new AddNotify(err))))
         )
     )
   );
@@ -141,9 +126,7 @@ export class UIEffects {
         .getSocialProof(type)
         .pipe(
           map(res => new GetSocialProofSuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new GetSocialProofFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new GetSocialProofFail(err)), of(new AddNotify(err))))
         )
     )
   );
@@ -156,12 +139,7 @@ export class UIEffects {
         .getSocialProofSettings()
         .pipe(
           map(res => new GetSocialProofSettingsSuccess(res)),
-          catchError(err =>
-            concat(
-              Observable.of(new GetSocialProofSettingsFail(err)),
-              Observable.of(new AddNotify(err))
-            )
-          )
+          catchError(err => concat(of(new GetSocialProofSettingsFail(err)), of(new AddNotify(err))))
         )
     )
   );

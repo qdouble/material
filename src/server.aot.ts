@@ -2,7 +2,7 @@
 const compression = require('compression');
 import 'zone.js/dist/zone-node';
 import './polyfills.server';
-import './rxjs.imports';
+
 import * as express from 'express';
 import * as path from 'path';
 import { ServerAppModuleNgFactory } from './ngfactory/app/server.app.module.ngfactory';

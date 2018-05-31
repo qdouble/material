@@ -9,14 +9,8 @@
 import { ApplicationRef, NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  HttpClientJsonpModule,
-  HttpClient,
-  HttpClientModule,
-  HTTP_INTERCEPTORS
-} from '@angular/common/http';
-import { RouterModule } from '@angular/router';
-import { IdlePreload } from 'angular-idle-preload';
+import { HttpClientJsonpModule, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { PreloadAllModules, RouterModule } from '@angular/router';
 
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 
@@ -36,6 +30,7 @@ import { AppComponent } from './app.component';
 
 import { AppState } from './reducers';
 import { HttpErrorInterceptor } from './services/http-error.interceptor';
+import { take } from 'rxjs/operators';
 
 @NgModule({
   declarations: [AppComponent, APP_DECLARATIONS],
@@ -46,7 +41,7 @@ import { HttpErrorInterceptor } from './services/http-error.interceptor';
     HttpClientModule,
     HttpClientJsonpModule,
     APP_IMPORTS,
-    RouterModule.forRoot(routes, { useHash: false, preloadingStrategy: IdlePreload })
+    RouterModule.forRoot(routes, { useHash: false, preloadingStrategy: PreloadAllModules })
   ],
   bootstrap: [AppComponent],
   exports: [AppComponent],
@@ -85,7 +80,7 @@ export class AppModule {
   }
   hmrOnDestroy(store) {
     const cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
-    this._store.take(1).subscribe(s => (store.rootState = s));
+    this._store.pipe(take(1)).subscribe(s => (store.rootState = s));
     store.disposeOldHosts = createNewHosts(cmpLocation);
     store.restoreInputValues = createInputTransfer();
     removeNgStyles();

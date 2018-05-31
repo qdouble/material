@@ -2,9 +2,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { concat, of } from 'rxjs';
 import { tap, map, mergeMap, switchMap, catchError } from 'rxjs/operators';
-import { concat } from 'rxjs/observable/concat';
 
 import { AppState } from '../../reducers';
 import { CreditRequestService } from './credit-request.service';
@@ -41,15 +40,13 @@ export class CreditRequestEffects {
     map((action: AddCreditRequest) => action.payload),
     switchMap(creditRequest =>
       this.creditRequestService.addCreditRequest(creditRequest).pipe(
-        switchMap(res =>
-          concat(Observable.of(new AddCreditRequestSuccess(res)), Observable.of(new AddNotify(res)))
-        ),
+        switchMap(res => concat(of(new AddCreditRequestSuccess(res)), of(new AddNotify(res)))),
         tap(res => {
           if (res.payload.message_type) {
             this.store.dispatch(new Go({ path: ['./support'] }));
           }
         }),
-        catchError(err => Observable.of(new AddCreditRequestFail(err)))
+        catchError(err => of(new AddCreditRequestFail(err)))
       )
     )
   );
@@ -62,13 +59,8 @@ export class CreditRequestEffects {
       this.creditRequestService
         .editCreditRequest(request)
         .pipe(
-          mergeMap(res =>
-            concat(
-              Observable.of(new EditCreditRequestSuccess(res)),
-              Observable.of(new AddNotify(res))
-            )
-          ),
-          catchError(err => Observable.of(new EditCreditRequestFail(err)))
+          mergeMap(res => concat(of(new EditCreditRequestSuccess(res)), of(new AddNotify(res)))),
+          catchError(err => of(new EditCreditRequestFail(err)))
         )
     )
   );
@@ -82,7 +74,7 @@ export class CreditRequestEffects {
         .getCreditRequest(id)
         .pipe(
           map(res => new GetCreditRequestSuccess(res)),
-          catchError(err => Observable.of(new GetCreditRequestFail(err)))
+          catchError(err => of(new GetCreditRequestFail(err)))
         )
     )
   );
@@ -95,7 +87,7 @@ export class CreditRequestEffects {
         .getCreditRequests()
         .pipe(
           map(res => new GetCreditRequestsSuccess(res)),
-          catchError(err => Observable.of(new GetCreditRequestsFail(err)))
+          catchError(err => of(new GetCreditRequestsFail(err)))
         )
     )
   );
@@ -103,12 +95,12 @@ export class CreditRequestEffects {
   @Effect()
   getOfferClicks$ = this.actions$.pipe(
     ofType(CreditRequestActionTypes.GetOfferClicks),
-    switchMap(email =>
+    switchMap(() =>
       this.creditRequestService
         .getOfferClicks()
         .pipe(
           map(res => new GetOfferClicksSuccess(res)),
-          catchError(err => Observable.of(new GetOfferClicksFail(err)))
+          catchError(err => of(new GetOfferClicksFail(err)))
         )
     )
   );

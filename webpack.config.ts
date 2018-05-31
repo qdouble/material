@@ -93,10 +93,12 @@ const CONSTANTS = {
 };
 
 const DLL_VENDORS = [
+  '@angular/animations',
   '@angular/cdk',
   '@angular/common',
   '@angular/compiler',
   '@angular/core',
+  '@angular/flex-layout',
   '@angular/forms',
   '@angular/http',
   '@angular/material',
@@ -104,15 +106,23 @@ const DLL_VENDORS = [
   '@angular/platform-browser-dynamic',
   '@angular/platform-server',
   '@angular/router',
-  '@ngrx/core',
+  '@angularclass/hmr',
+  '@angularclass/hmr-loader',
   '@ngrx/effects',
+  '@ngrx/entity',
   '@ngrx/router-store',
   '@ngrx/store',
   '@ngrx/store-devtools',
-  '@ngrx/store-log-monitor',
+  'core-js',
+  'hammerjs',
+  'linkifyjs',
   'ngrx-store-freeze',
   'ngrx-store-logger',
+  'ngx-facebook',
   'rxjs',
+  'thenby',
+  'web-animations-js',
+  'zone.js',
   ...MY_VENDOR_DLLS
 ];
 
@@ -311,7 +321,7 @@ const clientConfig = (function webpackConfig(): WebpackConfig {
     historyApiFallback: {
       disableDotRule: true
     },
-    stats: 'minimal',
+    stats: 'normal',
     host: '0.0.0.0',
     watchOptions: DEV_SERVER_WATCH_OPTIONS
   };

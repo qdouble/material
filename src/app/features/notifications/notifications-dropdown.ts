@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { combineLatest, Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 
 import * as fromStore from '../../reducers';
@@ -18,8 +18,8 @@ export class NotificationsDropDownComponent implements OnInit {
   sortedNotifications$: Observable<Notification[]>;
   constructor(private store: Store<fromStore.AppState>) {
     this.notifications$ = store.pipe(select(fromStore.getNotificationCollection));
-    this.sortedNotifications$ = Observable.combineLatest(
-      Observable.of(['createdAt', true]),
+    this.sortedNotifications$ = combineLatest(
+      of(['createdAt', true]),
       this.notifications$,
       combineSort
     );

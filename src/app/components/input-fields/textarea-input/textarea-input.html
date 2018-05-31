@@ -1,9 +1,9 @@
 <div class="form-group" class="textarea">
   <label [style.visibility]="dynamicControl.value ? 'visible' : 'hidden'">{{label}}</label>
   <div>
-    <mat-input-container>
+    <mat-form-field>
       <textarea matInput rows="4" [cols]="50" [formControl]="dynamicControl" [placeholder]="placeholder" class="form-control"></textarea>
-    </mat-input-container>
+    </mat-form-field>
     <span class="help-text-textarea" *ngIf="help">{{help}}</span>
   </div>
   <button *ngIf="submit" type="submit">{{submit}}</button>

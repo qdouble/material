@@ -2,8 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
 
 import { todaysDate } from '../../../helper/todays-date';
 
@@ -13,6 +12,7 @@ import * as offerActions from '../../../actions/offer';
 import { CreditRequest, OfferClick } from '../credit-request.model';
 import { Offer } from '../../../models/offer';
 import { Back } from '../../../actions/router';
+import { takeUntil, map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'os-credit-request',
@@ -59,8 +59,8 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
     });
     if (this.creditRequest$) {
       this.creditRequest$
-        .takeUntil(this.destroyed$)
-        .filter(c => c != undefined) // tslint:disable-line:triple-equals
+        // tslint:disable-next-line:triple-equals
+        .pipe(takeUntil(this.destroyed$), filter(c => c != undefined))
         .subscribe(creditRequest => {
           this.creditRequest = creditRequest;
           this.f.patchValue({
@@ -72,14 +72,14 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
     }
 
     this.offerClicks$ = store.pipe(select(fromStore.getOfferClickCollection));
-    this.offerIds$ = this.offerClicks$.map(clicks => clicks.map(click => click.id));
-    this.offerIds$.takeUntil(this.destroyed$).subscribe(ids => (this.offerIds = ids));
-    this.offerNames$ = this.offerClicks$.map(clicks => clicks.map(click => click.name));
-    this.offerNames$.takeUntil(this.destroyed$).subscribe(names => (this.offerNames = names));
+    this.offerIds$ = this.offerClicks$.pipe(map(clicks => clicks.map(click => click.id)));
+    this.offerIds$.pipe(takeUntil(this.destroyed$)).subscribe(ids => (this.offerIds = ids));
+    this.offerNames$ = this.offerClicks$.pipe(map(clicks => clicks.map(click => click.name)));
+    this.offerNames$.pipe(takeUntil(this.destroyed$)).subscribe(names => (this.offerNames = names));
     this.loadedClicks$ = store.pipe(select(fromStore.getOfferClicksLoaded));
   }
   ngOnInit() {
-    this.f.valueChanges.takeUntil(this.destroyed$).subscribe((f: CreditRequest) => {
+    this.f.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe((f: CreditRequest) => {
       if (
         this.view &&
         f.headers === this.creditRequest.headers &&
@@ -93,7 +93,7 @@ export class CreditRequestComponent implements OnDestroy, OnInit {
     });
     this.f
       .get('offerId')
-      .valueChanges.takeUntil(this.destroyed$)
+      .valueChanges.pipe(takeUntil(this.destroyed$))
       .subscribe(id => {
         this.store.dispatch(new offerActions.GetOffer(id));
         this.offer$ = this.store.pipe(select(fromStore.getSelectedOffer));

@@ -3,8 +3,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
 
 import { openInNewTab } from '../../../helper/open-in-new-tab';
 
@@ -18,6 +17,7 @@ import { UserAgent } from '../../../models/user-agent';
 import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
 import { getAge } from '../../../utilities/get-age';
 import { GetIPInfoResponse } from '../../../models/ui';
+import { takeUntil, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'os-offer-details',
@@ -63,12 +63,12 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
       let id = param['id'];
       this.store.dispatch(new offerActions.GetOffer(id));
       this.userAgent$ = this.store.select(s => s.offer.userAgent);
-      this.userAgent$.takeUntil(this.destroyed$).subscribe(u => (this.userAgent = u));
+      this.userAgent$.pipe(takeUntil(this.destroyed$)).subscribe(u => (this.userAgent = u));
       this.user$ = this.store.pipe(select(fromStore.getUserProfile));
       this.offer$ = this.store.pipe(select(fromStore.getSelectedOffer));
-      this.offer$.takeUntil(this.destroyed$).subscribe(o => {
+      this.offer$.pipe(takeUntil(this.destroyed$)).subscribe(o => {
         this.offer = o;
-        this.user$.takeUntil(this.destroyed$).subscribe(user => {
+        this.user$.pipe(takeUntil(this.destroyed$)).subscribe(user => {
           if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
             this.router.navigate(['..']);
           }
@@ -80,8 +80,7 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
           }
         });
         this.credits$
-          .takeUntil(this.destroyed$)
-          .filter(c => c !== null && c !== undefined)
+          .pipe(takeUntil(this.destroyed$), filter(c => c !== null && c !== undefined))
           .subscribe(credits => {
             if (o) {
               this.alreadyCompleted = !!credits.find(c => c.offerId === o.id);
@@ -97,7 +96,7 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
       });
     });
     this.creditTotal$ = this.store.pipe(select(fromStore.getUserCreditTotal));
-    this.creditTotal$.takeUntil(this.destroyed$).subscribe(total => {
+    this.creditTotal$.pipe(takeUntil(this.destroyed$)).subscribe(total => {
       this.userLevel = Math.floor(Number(Number(total).toFixed(2)));
     });
     this.ipInfo$ = this.store.pipe(select(fromStore.getUIIPInfo));
@@ -172,7 +171,7 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
     if (this.confirmDialogRef) {
       this.confirmDialogRef
         .afterClosed()
-        .takeUntil(this.destroyed$)
+        .pipe(takeUntil(this.destroyed$))
         .subscribe(result => {
           this.confirmDialogRef = null;
         });
@@ -188,7 +187,7 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
     if (this.confirmDialogConfig) {
       this.confirmDialogRef
         .afterClosed()
-        .takeUntil(this.destroyed$)
+        .pipe(takeUntil(this.destroyed$))
         .subscribe(result => {
           this.confirmDialogRef = null;
         });

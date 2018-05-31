@@ -5,8 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
 
 import * as countryActions from '../../actions/country';
 import * as prizeActions from '../../actions/prize';
@@ -19,6 +18,7 @@ import { CustomValidators, RegexValues, UsernameValidator } from '../../validato
 
 import { IPMatchFoundDialog } from './ip-match-found.dialog';
 import { GetIPInfoResponse } from '../../models/ui';
+import { takeUntil, filter, take, map } from 'rxjs/operators';
 
 @Component({
   selector: 'os-register',
@@ -146,71 +146,63 @@ export class Register implements OnDestroy, OnInit {
     this.loading$ = this.store.pipe(select(fromStore.getUserLoading));
     this.invalidCountry$ = this.store.pipe(select(fromStore.getUIInvalidCountry));
     this.overrideInvalid$ = this.store.pipe(select(fromStore.getUIOverrideInvalidIp));
-    this.invalidCountry$.takeUntil(this.destroyed$).subscribe(invalid => {
+    this.invalidCountry$.pipe(takeUntil(this.destroyed$)).subscribe(invalid => {
       if (invalid) {
         this.overrideInvalid$
-          .takeUntil(this.destroyed$)
-          .filter(o => o === '')
+          .pipe(takeUntil(this.destroyed$), filter(o => o === ''))
           .subscribe(() => (this.invalidCountry = true));
       }
     });
     this.ipInfo$ = this.store.pipe(select(fromStore.getUIIPInfo));
-    this.ipInfo$.takeUntil(this.destroyed$).subscribe(i => (this.ipInfo = i));
+    this.ipInfo$.pipe(takeUntil(this.destroyed$)).subscribe(i => (this.ipInfo = i));
     this.countryLoaded$ = this.store.pipe(select(fromStore.getCountryLoaded));
-    this.countryLoaded$.takeUntil(this.destroyed$).subscribe(loaded => {
+    this.countryLoaded$.pipe(takeUntil(this.destroyed$)).subscribe(loaded => {
       if (!loaded) this.store.dispatch(new countryActions.GetCountries());
     });
     this.prizeLoaded$ = this.store.pipe(select(fromStore.getPrizeLoaded));
-    this.prizeLoaded$.takeUntil(this.destroyed$).subscribe(loaded => {
+    this.prizeLoaded$.pipe(takeUntil(this.destroyed$)).subscribe(loaded => {
       if (!loaded) {
         this.store.dispatch(new prizeActions.GetPrizes());
       }
     });
     this.countryLoaded$ = this.store.pipe(select(fromStore.getCountryLoaded));
-    this.countryLoaded$.takeUntil(this.destroyed$).subscribe(loaded => {
+    this.countryLoaded$.pipe(takeUntil(this.destroyed$)).subscribe(loaded => {
       if (!loaded) {
         this.store.dispatch(new countryActions.GetCountries());
       }
     });
     this.store
-      .pipe(select(fromStore.getUserReferrerBlocked))
-      .takeUntil(this.destroyed$)
+      .pipe(select(fromStore.getUserReferrerBlocked), takeUntil(this.destroyed$))
       .subscribe(blocked => {
         if (blocked) {
           this.blocked = true;
         }
       });
     this.countries$ = this.store.pipe(select(fromStore.getCountryCollection));
-    this.countryIds$ = this.countries$.map(countries => countries.map(country => country.id));
+    this.countryIds$ = this.countries$.pipe(map(countries => countries.map(country => country.id)));
     this.countryIds$
-      .filter(ids => ids.length > 0)
-      .take(1)
-      .takeUntil(this.destroyed$)
+      .pipe(filter(ids => ids.length > 0), take(1), takeUntil(this.destroyed$))
       .subscribe(ids => this.f.get('country').setValue(ids[0]));
-    this.countryNames$ = this.countries$.map(countries =>
-      countries.map(country => country.displayName)
+    this.countryNames$ = this.countries$.pipe(
+      map(countries => countries.map(country => country.displayName))
     );
     this.entryEmail$ = this.store.pipe(select(fromStore.getUserEntryEmail));
-    this.entryEmail$
-      .takeUntil(this.destroyed$)
-      .take(1)
-      .subscribe(email => {
-        if (email) this.f.get('email').setValue(email);
-      });
+    this.entryEmail$.pipe(takeUntil(this.destroyed$), take(1)).subscribe(email => {
+      if (email) this.f.get('email').setValue(email);
+    });
 
     this.ip$ = this.store.select(s => s.user.ip);
     this.ipJson$ = this.store.select(s => s.user.ipJson);
     this.referredBy$ = this.store.pipe(select(fromStore.getUserReferredBy));
     this.referredBy$
-      .takeUntil(this.destroyed$)
-      .filter(ref => ref !== null)
+      .pipe(takeUntil(this.destroyed$), filter(ref => ref !== null))
       .subscribe(ref => {
         this.f.get('referredBy').setValue(ref);
       });
 
     this.prizes$ = this.store.pipe(select(fromStore.getPrizeCollection));
-    this.prizeIds$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
-    this.prizeNames$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
+    this.prizeIds$ = this.prizes$.pipe(map(prizes => prizes.map(prize => prize.id)));
+    this.prizeNames$ = this.prizes$.pipe(map(prizes => prizes.map(prize => prize.name)));
     this.route.queryParams.forEach(param => {
       if (param.email) {
         this.f.get('email').patchValue(param.email);
@@ -227,12 +219,11 @@ export class Register implements OnDestroy, OnInit {
       }
     });
     this.selectedPrize$ = this.store.pipe(select(fromStore.getSelectedPrizeId));
-    this.selectedPrize$.takeUntil(this.destroyed$).subscribe(id => {
+    this.selectedPrize$.pipe(takeUntil(this.destroyed$)).subscribe(id => {
       if (id === null) this.showPrizes = true;
     });
     this.prizeIds$
-      .filter(ids => ids.length > 0)
-      .takeUntil(this.destroyed$)
+      .pipe(filter(ids => ids.length > 0), takeUntil(this.destroyed$))
       .subscribe(ids => {
         this.store.dispatch(new prizeActions.SelectPrize(ids[0]));
         if (this.f.get('selectedPrize').value === null) {
@@ -241,17 +232,16 @@ export class Register implements OnDestroy, OnInit {
       });
 
     this.selectedPrize$
-      .filter(id => id !== null)
-      .takeUntil(this.destroyed$)
+      .pipe(filter(id => id !== null), takeUntil(this.destroyed$))
       .subscribe(id => this.f.patchValue({ selectedPrize: id }));
   }
 
   openIPMatchDialog() {
     this.dialogRef = this.dialog.open(IPMatchFoundDialog, this.config);
-    this.ip$.take(1).subscribe(ip => {
+    this.ip$.pipe(take(1)).subscribe(ip => {
       this.dialogRef.componentInstance.ip = ip;
     });
-    this.ipJson$.take(1).subscribe(ip => {
+    this.ipJson$.pipe(take(1)).subscribe(ip => {
       if (ip) {
         this.dialogRef.componentInstance.ISP = ip.org;
       }
@@ -269,9 +259,7 @@ export class Register implements OnDestroy, OnInit {
   submitForm() {
     let matches$ = this.store.select(s => s.user.matches);
     matches$
-      .filter(m => m !== undefined)
-      .take(1)
-      .takeUntil(this.destroyed$)
+      .pipe(filter(m => m !== undefined), take(1), takeUntil(this.destroyed$))
       .subscribe(match => {
         if (match) {
           this.openIPMatchDialog();

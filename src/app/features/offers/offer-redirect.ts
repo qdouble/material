@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
+import { Subject, Subscription } from 'rxjs';
 import * as userActions from '../../actions/user';
 import { AppState } from '../../reducers';
+import { takeUntil, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'offer-redirect',
@@ -29,8 +29,7 @@ export class OfferRedirect implements OnInit, OnDestroy {
   routerSub: Subscription;
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {
     this.routerSub = this.route.queryParams
-      .takeUntil(this.destroyed$)
-      .filter(query => query !== undefined)
+      .pipe(takeUntil(this.destroyed$), filter(query => query !== undefined))
       .subscribe(query => {
         this.id = query['id'];
       });

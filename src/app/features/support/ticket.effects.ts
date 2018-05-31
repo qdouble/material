@@ -1,8 +1,7 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable } from 'rxjs/Observable';
-import { concat } from 'rxjs/observable/concat';
+import { concat, Observable, of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 
 import { AddNotify } from '../../actions/notify';
@@ -41,7 +40,7 @@ export class TicketEffects {
         .addMessage(message)
         .pipe(
           map(res => new AddMessageSuccess(res)),
-          catchError(err => Observable.of(new AddMessageFail(err)))
+          catchError(err => of(new AddMessageFail(err)))
         )
     )
   );
@@ -54,10 +53,8 @@ export class TicketEffects {
       this.ticketService
         .addTicket(ticket)
         .pipe(
-          switchMap(res =>
-            concat(Observable.of(new AddTicketSuccess(res)), Observable.of(new AddNotify(res)))
-          ),
-          catchError(err => Observable.of(new AddTicketFail(err)))
+          switchMap(res => concat(of(new AddTicketSuccess(res)), of(new AddNotify(res)))),
+          catchError(err => of(new AddTicketFail(err)))
         )
     )
   );
@@ -71,7 +68,7 @@ export class TicketEffects {
         .closeTicket(id)
         .pipe(
           map(res => new CloseTicketSuccess(res)),
-          catchError(err => Observable.of(new CloseTicketFail(err)))
+          catchError(err => of(new CloseTicketFail(err)))
         )
     )
   );
@@ -83,10 +80,7 @@ export class TicketEffects {
     switchMap(id =>
       this.ticketService
         .getTicket(id)
-        .pipe(
-          map(res => new GetTicketSuccess(res)),
-          catchError(err => Observable.of(new GetTicketFail(err)))
-        )
+        .pipe(map(res => new GetTicketSuccess(res)), catchError(err => of(new GetTicketFail(err))))
     )
   );
 
@@ -98,7 +92,7 @@ export class TicketEffects {
         .getTickets()
         .pipe(
           map(res => new GetTicketsSuccess(res)),
-          catchError(err => Observable.of(new GetTicketsFail(err)))
+          catchError(err => of(new GetTicketsFail(err)))
         )
     )
   );
@@ -112,7 +106,7 @@ export class TicketEffects {
         .markTicketAsRead(ticket)
         .pipe(
           map(res => new MarkTicketAsReadSuccess(res)),
-          catchError(err => Observable.of(new MarkTicketAsReadFail(err)))
+          catchError(err => of(new MarkTicketAsReadFail(err)))
         )
     )
   );

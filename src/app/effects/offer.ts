@@ -1,10 +1,9 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, concat, of } from 'rxjs';
+import { map, switchMap, catchError } from 'rxjs/operators';
 import { Action } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { map, switchMap, catchError } from 'rxjs/operators';
-import { concat } from 'rxjs/observable/concat';
 
 import { AddNotify } from '../actions/notify';
 import {
@@ -32,9 +31,7 @@ export class OfferEffects {
         .getOffer(id)
         .pipe(
           map(res => new GetOfferSuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new GetOfferFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new GetOfferFail(err)), of(new AddNotify(err))))
         )
     )
   );
@@ -47,9 +44,7 @@ export class OfferEffects {
         .getOffers()
         .pipe(
           map(res => new GetOffersSuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new GetOffersFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new GetOffersFail(err)), of(new AddNotify(err))))
         )
     )
   );
@@ -62,7 +57,7 @@ export class OfferEffects {
         .getOffersUpdatedAt()
         .pipe(
           map(res => new GetOffersUpdatedAtSuccess(res)),
-          catchError(err => Observable.of(new GetOffersUpdatedAtFail(err)))
+          catchError(err => of(new GetOffersUpdatedAtFail(err)))
         )
     )
   );
@@ -75,9 +70,7 @@ export class OfferEffects {
         .getViewOffers()
         .pipe(
           map(res => new GetOffersSuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new GetOffersFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new GetOffersFail(err)), of(new AddNotify(err))))
         )
     )
   );

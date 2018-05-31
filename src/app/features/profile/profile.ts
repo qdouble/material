@@ -3,8 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
 
 import * as fromStore from '../../reducers';
 import * as countryActions from '../../actions/country';
@@ -14,6 +13,7 @@ import { Country } from '../../models/country';
 import { User } from '../../models/user';
 import { CustomValidators, RegexValues } from '../../validators';
 import { isoToNewDateFormatter } from '../../helper/iso-to-new-date-formatter';
+import { takeUntil, take, map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'os-profile',
@@ -81,11 +81,11 @@ export class Profile implements OnDestroy, OnInit {
 
   ngOnInit() {
     this.countryLoaded$ = this.store.pipe(select(fromStore.getCountryLoaded));
-    this.countryLoaded$.takeUntil(this.destroyed$).subscribe(loaded => {
+    this.countryLoaded$.pipe(takeUntil(this.destroyed$)).subscribe(loaded => {
       if (!loaded) this.store.dispatch(new countryActions.GetCountries());
     });
     this.user$ = this.store.pipe(select(fromStore.getUserProfile));
-    this.user$.take(1).subscribe(u => {
+    this.user$.pipe(take(1)).subscribe(u => {
       if (u && u.profilePending) {
         this.store.dispatch(new userActions.GetProfile());
       }
@@ -95,13 +95,12 @@ export class Profile implements OnDestroy, OnInit {
       ? document.getElementById('os-toolbar').scrollIntoView()
       : {}; // tslint:disable-line
     this.countries$ = this.store.pipe(select(fromStore.getCountryCollection));
-    this.countryIds$ = this.countries$.map(countries => countries.map(country => country.id));
-    this.countryNames$ = this.countries$.map(countries =>
-      countries.map(country => country.displayName)
+    this.countryIds$ = this.countries$.pipe(map(countries => countries.map(country => country.id)));
+    this.countryNames$ = this.countries$.pipe(
+      map(countries => countries.map(country => country.displayName))
     );
     this.user$
-      .filter(user => user !== undefined)
-      .takeUntil(this.destroyed$)
+      .pipe(filter(user => user !== undefined), takeUntil(this.destroyed$))
       .subscribe((user: User) => {
         if (user.profilePending) {
           this.pendingProfile = user.pendingProfile;
@@ -126,7 +125,7 @@ export class Profile implements OnDestroy, OnInit {
 
     this.f
       .get('email')
-      .valueChanges.takeUntil(this.destroyed$)
+      .valueChanges.pipe(takeUntil(this.destroyed$))
       .subscribe(value => {
         if (value === this.initialFormValue.email) {
           this.f.get('confirmEmail').setValue(value);

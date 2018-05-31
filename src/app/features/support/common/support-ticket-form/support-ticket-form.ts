@@ -8,16 +8,16 @@ import {
   Output
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { Subject, Observable } from 'rxjs';
 
 import { Ticket, TicketMessage } from '../../ticket.model';
+import { takeUntil, filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'os-support-ticket-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './support-ticket-form.html',
-  styles: [`mat-input-container{ width: 100%; }`]
+  styles: [`mat-form-field{ width: 100%; }`]
 })
 export class SupportTicketFormComponent implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
@@ -41,9 +41,7 @@ export class SupportTicketFormComponent implements OnDestroy, OnInit {
 
   ngOnInit() {
     this.ticketObs
-      .takeUntil(this.destroyed$)
-      .filter(t => t !== undefined)
-      .take(1)
+      .pipe(takeUntil(this.destroyed$), filter(t => t !== undefined), take(1))
       .subscribe(t => {
         if (!t.readByUser) {
           this.markTicketAsRead.emit({ id: t.id, mark: true });
@@ -59,9 +57,7 @@ export class SupportTicketFormComponent implements OnDestroy, OnInit {
         ticketId: this.ticket.id
       });
       this.addedTicketMessageObs
-        .filter(v => v === true)
-        .take(1)
-        .takeUntil(this.destroyed$)
+        .pipe(filter(v => v === true), take(1), takeUntil(this.destroyed$))
         .subscribe(v => {
           this.f.get('message').setValue('');
         });

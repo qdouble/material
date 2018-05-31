@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Observable, ReplaySubject, combineLatest, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { combineSort } from '../../helper/combine-sort';
 
@@ -41,20 +41,17 @@ export class Support implements OnInit {
     this.unsortedTickets$ = store.pipe(select(fromStore.getTicketCollection));
 
     this.sortByVar$ = this.store.select(s => s.ticket.sortBy);
-    this.sortByVarToArray$ = this.sortByVar$
-      .filter(s => s !== undefined)
-      .map(sort => [sort.sortBy, sort.reverse]);
-    this.tickets$ = Observable.combineLatest(
-      this.sortByVarToArray$,
-      this.unsortedTickets$,
-      combineSort
+    this.sortByVarToArray$ = this.sortByVar$.pipe(
+      filter(s => s !== undefined),
+      map(sort => [sort.sortBy, sort.reverse])
     );
+    this.tickets$ = combineLatest(this.sortByVarToArray$, this.unsortedTickets$, combineSort);
     function showClosed(arr: Ticket[], prop) {
       if (!arr) return;
       return arr.filter(ticket => ticket.closed === prop);
     }
-    this.openTickets$ = Observable.combineLatest(this.tickets$, Observable.of(false), showClosed);
-    this.closedTickets$ = Observable.combineLatest(this.tickets$, Observable.of(true), showClosed);
+    this.openTickets$ = combineLatest(this.tickets$, of(false), showClosed);
+    this.closedTickets$ = combineLatest(this.tickets$, of(true), showClosed);
   }
   ngOnInit() {
     typeof document !== 'undefined' && document.getElementById('os-toolbar')

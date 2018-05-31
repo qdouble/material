@@ -3,9 +3,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject, Observable, Subject, combineLatest, of } from 'rxjs';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
 
 const firstBy = require('thenby');
@@ -18,6 +16,7 @@ import * as userActions from '../../actions/user';
 
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { User } from '../../models/user';
+import { takeUntil, filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'os-offers',
@@ -105,11 +104,13 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.mobile$ = this.store.pipe(select(fromStore.getUIMobile));
     this.sideNavOpen$ = this.store.pipe(select(fromStore.getUISideNavOpen));
     this.loaded$ = this.store.pipe(select(fromStore.getOfferLoaded));
-    this.loaded$.takeUntil(this.destroyed$).subscribe(l => (this.loaded = l));
+    this.loaded$.pipe(takeUntil(this.destroyed$)).subscribe(l => (this.loaded = l));
     this.loadedUserOffers$ = this.store.pipe(select(fromStore.getOfferLoadedUserOffers));
-    this.loadedUserOffers$.takeUntil(this.destroyed$).subscribe(l => (this.loadedUserOffers = l));
+    this.loadedUserOffers$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(l => (this.loadedUserOffers = l));
     this.loggedIn$ = this.store.pipe(select(fromStore.getUserLoggedIn));
-    this.loggedIn$.takeUntil(this.destroyed$).subscribe(loggedIn => {
+    this.loggedIn$.pipe(takeUntil(this.destroyed$)).subscribe(loggedIn => {
       this.loggedIn = loggedIn;
       if (!this.loaded) {
         if (loggedIn) {
@@ -125,31 +126,34 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
 
     this.offersUnsorted$ = this.store.pipe(select(fromStore.getOfferCollection));
     this.offersUnsorted$
-      .takeUntil(this.destroyed$)
-      .filter(o => o !== undefined)
+      .pipe(takeUntil(this.destroyed$), filter(o => o !== undefined))
       .subscribe(offers => {
         this.pages = [];
         for (let i = 0; i < offers.length / this.offersPerPage; i++) {
           this.pages.push(i + 1);
         }
       });
-    this.sortBy$.takeUntil(this.destroyed$).subscribe((sortBy: string) => {
+    this.sortBy$.pipe(takeUntil(this.destroyed$)).subscribe((sortBy: string) => {
       if (sortBy === 'featured') {
-        this.offersSorted$ = this.offersUnsorted$.map(arr =>
-          arr.sort(
-            firstBy(sortBy, { direction: -1 })
-              .thenBy('order')
-              .thenBy('name')
+        this.offersSorted$ = this.offersUnsorted$.pipe(
+          map(arr =>
+            arr.sort(
+              firstBy(sortBy, { direction: -1 })
+                .thenBy('order')
+                .thenBy('name')
+            )
           )
         );
       } else {
-        this.offersSorted$ = this.offersUnsorted$.map(arr =>
-          arr.sort(
-            firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : -1 })
-              .thenBy('popularityRank', 1)
-              .thenBy('popularityRank2', 1)
-              .thenBy('featured', -1)
-              .thenBy('order')
+        this.offersSorted$ = this.offersUnsorted$.pipe(
+          map(arr =>
+            arr.sort(
+              firstBy(sortBy, { direction: sortBy === 'costToUser' ? 1 : -1 })
+                .thenBy('popularityRank', 1)
+                .thenBy('popularityRank2', 1)
+                .thenBy('featured', -1)
+                .thenBy('order')
+            )
           )
         );
       }
@@ -160,14 +164,16 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
       };
       this.credits$ = this.store.pipe(select(fromStore.getUserCreditCollection));
       this.credits$
-        .takeUntil(this.destroyed$)
-        .filter(credits => credits !== undefined)
-        .filter(credits => credits.length > 0)
+        .pipe(
+          takeUntil(this.destroyed$),
+          filter(credits => credits !== undefined),
+          filter(credits => credits.length > 0)
+        )
         .subscribe(credits => {
           this.creditedOfferIds = credits.map(credit => credit.offerId);
-          this.offersCompleted$ = Observable.combineLatest(
+          this.offersCompleted$ = combineLatest(
             this.offersSorted$,
-            Observable.of(this.creditedOfferIds),
+            of(this.creditedOfferIds),
             completed
           );
         });
@@ -206,7 +212,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.firstName$ = this.store.select(s => s.user.user.firstName);
     let lastUpdate$ = this.store.select(s => s.offer.lastUpdatedAt);
     let lastUpdate;
-    lastUpdate$.takeUntil(this.destroyed$).subscribe(l => {
+    lastUpdate$.pipe(takeUntil(this.destroyed$)).subscribe(l => {
       if (!lastUpdate) {
         lastUpdate = l;
       } else if (lastUpdate && lastUpdate !== l) {
@@ -222,12 +228,11 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.returningUser$ = this.store.select(s => s.user.returningUser);
     this.testShowRef$ = this.store.select(s => s.user.testShowRefRandom);
     this.username$ = this.store.select(s => s.user.user.username);
-    this.username$.takeUntil(this.destroyed$).subscribe(u => (this.username = u));
+    this.username$.pipe(takeUntil(this.destroyed$)).subscribe(u => (this.username = u));
     this.store.dispatch(new offerActions.GetOffersUpdatedAt());
 
     this.user$
-      .filter(user => user.createdAt !== undefined)
-      .takeUntil(this.destroyed$)
+      .pipe(filter(user => user.createdAt !== undefined), takeUntil(this.destroyed$))
       .subscribe(user => {
         if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
           this.hideOffers = true;
@@ -297,7 +302,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     if (this.confirmDialogRef) {
       this.confirmDialogRef
         .afterClosed()
-        .takeUntil(this.destroyed$)
+        .pipe(takeUntil(this.destroyed$))
         .subscribe(result => {
           this.confirmDialogRef = null;
         });

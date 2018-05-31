@@ -1,6 +1,5 @@
 /* tslint:disable: max-line-length */
 import { TestBed } from '@angular/core/testing';
-import 'rxjs/Rx';
 
 import { SanityComp } from './sanity';
 

@@ -2,8 +2,8 @@ import { FormControl } from '@angular/forms';
 import { AsyncValidatorFn } from '@angular/forms/src/directives/validators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Observable, of, ReplaySubject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, take, switchMap, catchError } from 'rxjs/operators';
 import { API_USER_URL } from '../services/constants';
 
 @Injectable()
@@ -13,12 +13,13 @@ export class UsernameValidator {
 
   constructor(private http: HttpClient) {
     this.input = new ReplaySubject(1);
-    this.request = this.input
-      .debounceTime(50)
-      .distinctUntilChanged()
-      .take(1)
-      .switchMap(input => this.http.get(`${API_USER_URL}/checkUsername?username=${input}`))
-      .catch(() => Observable.of(null));
+    this.request = this.input.pipe(
+      debounceTime(50),
+      distinctUntilChanged(),
+      take(1),
+      switchMap(input => this.http.get(`${API_USER_URL}/checkUsername?username=${input}`)),
+      catchError(() => of(null))
+    );
   }
 
   usernameTaken = (control: FormControl): AsyncValidatorFn => {

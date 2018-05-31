@@ -2,8 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import * as fromStore from '../../reducers';
 import * as uiActions from '../../actions/ui';
@@ -33,13 +33,10 @@ export class ContactUs implements OnDestroy {
   }
   submitForm() {
     this.store.dispatch(new uiActions.ContactUs(this.f.value));
-    this.sent$
-      .filter(s => s === true)
-      .takeUntil(this.destroyed$)
-      .subscribe(() => {
-        this.f.reset();
-        this.hideForm = true;
-      });
+    this.sent$.pipe(filter(s => s === true), takeUntil(this.destroyed$)).subscribe(() => {
+      this.f.reset();
+      this.hideForm = true;
+    });
   }
   ngOnDestroy() {
     this.destroyed$.next();

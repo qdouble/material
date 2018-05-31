@@ -4,8 +4,8 @@ import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { Store, select } from '@ngrx/store';
 import { FacebookService, UIResponse, UIParams } from 'ngx-facebook';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { take, takeUntil, map, filter } from 'rxjs/operators';
 
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { combineSort } from '../../helper/combine-sort';
@@ -77,24 +77,18 @@ export class Status implements OnDestroy, OnInit {
     this.loaded$ = store.pipe(select(fromStore.getUserLoaded));
     this.loading$ = store.pipe(select(fromStore.getUserLoading));
     store
-      .pipe(select(fromStore.getPrizeLoaded))
-      .take(1)
-      .takeUntil(this.destroyed$)
+      .pipe(select(fromStore.getPrizeLoaded), take(1), takeUntil(this.destroyed$))
       .subscribe(loaded => {
         if (loaded) this.store.dispatch(new prizeActions.GetPrizes());
       });
     this.settingPrize$ = store.pipe(select(fromStore.getUserSettingPrize));
     let referralsUnsorted$ = store.pipe(select(fromStore.getUserReferralCollection));
     let sortReferralBy$ = store.select(s => s.user.sortReferralBy);
-    let sortReferralsByToArray$ = sortReferralBy$.map(sort => [sort.sortBy, sort.reverse]);
+    let sortReferralsByToArray$ = sortReferralBy$.pipe(map(sort => [sort.sortBy, sort.reverse]));
     sortReferralBy$.subscribe(sort => (this.sortingBy = sort));
-    this.referrals$ = Observable.combineLatest(
-      sortReferralsByToArray$,
-      referralsUnsorted$,
-      combineSort
-    );
+    this.referrals$ = combineLatest(sortReferralsByToArray$, referralsUnsorted$, combineSort);
     this.user$ = store.pipe(select(fromStore.getUserProfile));
-    this.user$.takeUntil(this.destroyed$).subscribe(user => {
+    this.user$.pipe(takeUntil(this.destroyed$)).subscribe(user => {
       this.user = user;
       if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
         this.hideStatus = true;
@@ -102,9 +96,9 @@ export class Status implements OnDestroy, OnInit {
       this.store.dispatch(new prizeActions.SelectPrize(user.selectedPrize));
       this.prize$ = this.store.pipe(select(fromStore.getSelectedPrize));
       this.prizes$ = this.store.pipe(select(fromStore.getPrizeCollection));
-      this.selectedPrizeLabels$ = this.prizes$.map(prizes => prizes.map(prize => prize.name));
-      this.selectedPrizeValues$ = this.prizes$.map(prizes => prizes.map(prize => prize.id));
-      this.prizes$.takeUntil(this.destroyed$).subscribe(prizes => {
+      this.selectedPrizeLabels$ = this.prizes$.pipe(map(prizes => prizes.map(prize => prize.name)));
+      this.selectedPrizeValues$ = this.prizes$.pipe(map(prizes => prizes.map(prize => prize.id)));
+      this.prizes$.pipe(takeUntil(this.destroyed$)).subscribe(prizes => {
         if (prizes && prizes.length > 0) {
           let selectedPrize = this.selectPrizeForm.get('selectedPrize');
           if (!selectedPrize.value && this.user.selectedPrize !== undefined) {
@@ -121,7 +115,7 @@ export class Status implements OnDestroy, OnInit {
     this.creditTotal$ = store.pipe(select(fromStore.getUserCreditTotal));
 
     this.updatedAt$ = store.select(s => s.user.updatedAt);
-    this.updatedAt$.takeUntil(this.destroyed$).subscribe(updatedAt => {
+    this.updatedAt$.pipe(takeUntil(this.destroyed$)).subscribe(updatedAt => {
       this.updatedAt = updatedAt;
       if (updatedAt) {
         this.store.dispatch(new userActions.CheckIfUserUpdated());
@@ -129,8 +123,7 @@ export class Status implements OnDestroy, OnInit {
     });
     let lastUpdate$ = store.select(s => s.user.lastUpdate);
     lastUpdate$
-      .filter(l => l !== null && l !== undefined)
-      .takeUntil(this.destroyed$)
+      .pipe(filter(l => l !== null && l !== undefined), takeUntil(this.destroyed$))
       .subscribe(lastUpdate => {
         if (this.updatedAt && lastUpdate !== this.updatedAt) {
           store.dispatch(new userActions.GetProfile());
@@ -144,7 +137,7 @@ export class Status implements OnDestroy, OnInit {
       : {}; // tslint:disable-line
     this.selectedReferralIds$ = this.store.pipe(select(fromStore.getSelectedReferralIds));
     this.selectedReferralIds$
-      .takeUntil(this.destroyed$)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(ids => (this.selectedReferralIds = ids));
   }
 
@@ -175,14 +168,11 @@ export class Status implements OnDestroy, OnInit {
       this.store.dispatch(
         new userActions.ChangeSelectedPrize(this.selectPrizeForm.get('selectedPrize').value)
       );
-      this.settingPrize$
-        .filter(s => s !== false)
-        .takeUntil(this.destroyed$)
-        .subscribe(() =>
-          setTimeout(() => {
-            this.changePrize = false;
-          }, 50)
-        );
+      this.settingPrize$.pipe(filter(s => s !== false), takeUntil(this.destroyed$)).subscribe(() =>
+        setTimeout(() => {
+          this.changePrize = false;
+        }, 50)
+      );
     } else {
       this.changePrize = true;
     }
@@ -216,15 +206,12 @@ export class Status implements OnDestroy, OnInit {
     if (referral.currentSponsor) {
       this.store.dispatch(new userActions.GetReferral(referral.id));
     }
-    this.loading$
-      .filter(l => l === false)
-      .take(1)
-      .subscribe(() => {
-        let referral$ = this.store.pipe(select(fromStore.getUserSelectedReferral));
-        referral$.take(1).subscribe(ref => {
-          this.referralTable.open(ref);
-        });
+    this.loading$.pipe(filter(l => l === false), take(1)).subscribe(() => {
+      let referral$ = this.store.pipe(select(fromStore.getUserSelectedReferral));
+      referral$.pipe(take(1)).subscribe(ref => {
+        this.referralTable.open(ref);
       });
+    });
   }
 
   hideReferrals(hide: boolean) {
@@ -249,7 +236,7 @@ export class Status implements OnDestroy, OnInit {
     if (this.confirmDialogRef) {
       this.confirmDialogRef
         .afterClosed()
-        .takeUntil(this.destroyed$)
+        .pipe(takeUntil(this.destroyed$))
         .subscribe(result => {
           if (result) {
             this.store.dispatch(new userActions.RemoveReferrals(this.selectedReferralIds));

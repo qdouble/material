@@ -16,10 +16,11 @@ import {
   MatPaginator,
   MatTableDataSource
 } from '@angular/material';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { ReferralDetailsDialog } from './referral-details';
 import { User } from '../../../../models/user';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'os-referrals-table',
@@ -86,7 +87,7 @@ export class ReferralsTable implements AfterViewInit, OnInit, OnDestroy {
 
     this.dialogRef
       .afterClosed()
-      .takeUntil(this.destroyed$)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(result => {
         this.lastCloseResult = result;
         this.dialogRef = null;

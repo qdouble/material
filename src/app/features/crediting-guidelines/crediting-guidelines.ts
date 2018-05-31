@@ -4,7 +4,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'os-crediting-guidelines',
@@ -23,7 +24,7 @@ export class CreditingGuidelines implements OnDestroy, OnInit {
   constructor(public dialog: MatDialog, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.route.queryParams.filter(query => query !== undefined).forEach(query => {
+    this.route.queryParams.pipe(filter(query => query !== undefined)).forEach(query => {
       this.match = !!query['match'];
       if (query['match']) {
         this.openConfirmDialog();
@@ -40,7 +41,7 @@ export class CreditingGuidelines implements OnDestroy, OnInit {
     if (this.confirmDialogRef) {
       this.confirmDialogRef
         .afterClosed()
-        .takeUntil(this.destroyed$)
+        .pipe(takeUntil(this.destroyed$))
         .subscribe(result => {
           this.confirmDialogRef = null;
         });

@@ -38,17 +38,17 @@
         <ng-container *ngIf="!(offer$ | async) || (offer$ | async).allowCreditRequests">
           <label>Date Completed:</label>
           <input type="date" id="myDate" formControlName="completedOn">
-          <mat-input-container>
+          <mat-form-field>
             <textarea matInput [rows]="6" placeholder="Confirmation Email Headers" formControlName="headers"></textarea>
-          </mat-input-container>
+          </mat-form-field>
           <br>
-          <mat-input-container>
+          <mat-form-field>
             <textarea matInput [rows]="6" placeholder="Confirmation Email Body" formControlName="body"></textarea>
-          </mat-input-container>
+          </mat-form-field>
           <br>
-          <mat-input-container>
+          <mat-form-field>
             <textarea matInput [rows]="6" placeholder="Additional Details" formControlName="additionalDetails"></textarea>
-          </mat-input-container>
+          </mat-form-field>
           <br>
           <button mat-raised-button class="white" color="primary" [disabled]="f.invalid || disableButton">{{ view ? 'UPDATE CREDIT REQUEST' : 'SUBMIT CREDIT REQUEST' }}</button>
         </ng-container>

@@ -8,7 +8,7 @@ import {
   Output
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { TicketMessage } from '../../ticket.model';
 

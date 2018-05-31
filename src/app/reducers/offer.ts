@@ -57,17 +57,14 @@ export function offerReducer(state = initialState, action: OfferActions): State 
       return {
         ...adapter.upsertOne(
           {
-            id: offer.id,
-            changes: {
-              ...offer,
-              costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
-              popularityRank: offer.popularityRank ? offer.popularityRank : 99,
-              popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
-              featured:
-                offer.popularityRank || (offer.popularityRank2 && offer.popularityRank2 <= 20)
-                  ? true
-                  : false
-            }
+            ...offer,
+            costToUser: offer.costToUser === -1 ? 1000 : offer.costToUser,
+            popularityRank: offer.popularityRank ? offer.popularityRank : 99,
+            popularityRank2: offer.popularityRank2 ? offer.popularityRank2 : 999,
+            featured:
+              offer.popularityRank || (offer.popularityRank2 && offer.popularityRank2 <= 20)
+                ? true
+                : false
           },
           state
         ),

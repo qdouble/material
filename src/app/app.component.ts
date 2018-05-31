@@ -10,8 +10,9 @@ import {
   MatSnackBarRef
 } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { interval, Observable, Subject, timer } from 'rxjs';
+import { filter, take, retry, takeUntil } from 'rxjs/operators';
+import { webSocket } from 'rxjs/webSocket';
 import { Store, select } from '@ngrx/store';
 
 import { TransferState } from '../modules/transfer-state/transfer-state';
@@ -46,8 +47,8 @@ import { ProofSnackbarComponent } from './snackbars/proof.snackbar.component';
   selector: 'my-app',
   styleUrls: ['main.scss', './app.component.scss'],
   templateUrl: './app.component.html',
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
   showMonitor = ENV === 'development' && !AOT && ['monitor', 'both'].includes(STORE_DEV_TOOLS);
@@ -131,9 +132,9 @@ export class AppComponent implements OnInit {
   showLevelBadge$: Observable<number>;
   completedOrders$: Observable<Order[]>;
   creditedOffer$: Observable<Offer[]>;
-  userFirstName$: Store<string>;
-  userLastUpdate$: Store<string>;
-  pushNotifications$: Store<PushNotification>;
+  userFirstName$: Observable<string>;
+  userLastUpdate$: Observable<string>;
+  pushNotifications$: Observable<PushNotification>;
   checkVersionInterval$: Observable<number>;
   constructor(
     private cache: TransferState,
@@ -151,11 +152,11 @@ export class AppComponent implements OnInit {
     this.userLoggedIn$ = this.store.pipe(select(fromStore.getUserLoggedIn));
     this.userLoaded$ = this.store.pipe(select(fromStore.getUserLoaded));
     this.userLoading$ = this.store.pipe(select(fromStore.getUserLoading));
-    this.userActive$ = this.store.select(s => s.user.user.active);
-    this.userUpdatedAt$ = this.store.select(s => s.user.updatedAt);
-    this.userLastUpdate$ = this.store.select(s => s.user.lastUpdate);
-    this.userFirstName$ = this.store.select(s => s.user.user.firstName);
-    this.pushNotifications$ = this.store.select(s => s.ui.pushNotification);
+    this.userActive$ = this.store.pipe(select(s => s.user.user.active));
+    this.userUpdatedAt$ = this.store.pipe(select(s => s.user.updatedAt));
+    this.userLastUpdate$ = this.store.pipe(select(s => s.user.lastUpdate));
+    this.userFirstName$ = this.store.pipe(select(s => s.user.user.firstName));
+    this.pushNotifications$ = this.store.pipe(select(s => s.ui.pushNotification));
     this.ipInfo$ = this.store.pipe(select(fromStore.getUIIPInfo));
     this.invalidCountry$ = this.store.pipe(select(fromStore.getUIInvalidCountry));
     this.onAdminLoginPage$ = this.store.pipe(select(fromStore.getUserOnAdminPage));
@@ -177,7 +178,7 @@ export class AppComponent implements OnInit {
     this.creditedOffer$ = this.store.pipe(select(fromStore.getUICreditedOfferCollection));
     this.socialProofs$ = this.store.pipe(select(fromStore.getUISocialProofCollection));
     this.socialProofSettings$ = this.store.pipe(select(fromStore.getUISocialProofSettings));
-    this.checkVersionInterval$ = Observable.interval(600000);
+    this.checkVersionInterval$ = interval(600000);
   }
 
   ngOnInit() {
@@ -189,7 +190,7 @@ export class AppComponent implements OnInit {
 
     this.version$.subscribe(v => (this.version = v));
 
-    this.latestVersion$.filter(v => v !== null).subscribe(latestVersion => {
+    this.latestVersion$.pipe(filter(v => v !== null)).subscribe(latestVersion => {
       if (latestVersion !== this.version) {
         log(`${latestVersion} <-> ${this.version}`);
         window.location.reload();
@@ -245,7 +246,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.userActive$.filter(active => active === false).subscribe(() => {
+    this.userActive$.pipe(filter(active => active === false)).subscribe(() => {
       this.store.dispatch(new userActions.Logout());
     });
 
@@ -253,7 +254,7 @@ export class AppComponent implements OnInit {
       this.updatedAt = updatedAt;
     });
 
-    this.userLastUpdate$.filter(l => l !== null && l !== undefined).subscribe(lastUpdate => {
+    this.userLastUpdate$.pipe(filter(l => l !== null && l !== undefined)).subscribe(lastUpdate => {
       if (this.updatedAt && lastUpdate !== this.updatedAt) {
         this.store.dispatch(new userActions.GetProfile());
       }
@@ -261,17 +262,17 @@ export class AppComponent implements OnInit {
 
     this.ipInfo$.subscribe(i => (this.ipInfo = i));
 
-    this.invalidCountry$.filter(i => i === true).subscribe(i => {
+    this.invalidCountry$.pipe(filter(i => i === true)).subscribe(i => {
       this.store.dispatch(new uiActions.AddInvalidCountry(this.ipInfo));
       const override = this.store.pipe(select(fromStore.getUIOverrideInvalidIp));
-      override.filter(o => typeof o === 'string').subscribe(o => {
+      override.pipe(filter(o => typeof o === 'string')).subscribe(o => {
         setTimeout(() => {
           this.store.dispatch(new uiActions.OverrideInvalidCountry(o));
         });
       });
     });
 
-    this.notify$.filter(notify => notify.length > 0).subscribe(notify => {
+    this.notify$.pipe(filter(notify => notify.length > 0)).subscribe(notify => {
       if (notify && notify[0] && notify[0].message === 'Unexpected token U in JSON at position 0') {
         return;
       }
@@ -288,8 +289,7 @@ export class AppComponent implements OnInit {
     });
 
     this.route.queryParams
-      .filter(param => param['ref'] !== undefined)
-      .take(1)
+      .pipe(filter(param => param['ref'] !== undefined), take(1))
       .subscribe(param => {
         this.referredBy = param['ref'];
         if (validateUserName(this.referredBy)) {
@@ -338,9 +338,11 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.pushNotifications$.filter(push => push !== null).subscribe((push: PushNotification) => {
-      this.swAndPushService.create(push).subscribe(() => log('success'), err => log(err));
-    });
+    this.pushNotifications$
+      .pipe(filter(push => push !== null))
+      .subscribe((push: PushNotification) => {
+        this.swAndPushService.create(push).subscribe(() => log('success'), err => log(err));
+      });
 
     this.completedOrders$.subscribe(orders => {
       orders.forEach(order => {
@@ -352,8 +354,10 @@ export class AppComponent implements OnInit {
     });
 
     this.creditedOffer$
-      .filter(offers => offers.length > 0)
-      .filter(offers => offers.find(offer => offer.viewed === undefined) !== undefined)
+      .pipe(
+        filter(offers => offers.length > 0),
+        filter(offers => offers.find(offer => offer.viewed === undefined) !== undefined)
+      )
       .subscribe(offers => {
         offers.forEach(offer => {
           if (!offer.viewed) {
@@ -363,28 +367,32 @@ export class AppComponent implements OnInit {
         });
       });
 
-    this.showLevelBadge$.filter(l => l !== undefined && l !== null).subscribe(level => {
+    this.showLevelBadge$.pipe(filter(l => l !== undefined && l !== null)).subscribe(level => {
       this.openLevelBadgeDialog(level);
     });
 
-    this.scripts$.filter(s => s && s.length > 0).subscribe(scripts => this.loadScripts(scripts));
+    this.scripts$
+      .pipe(filter(s => s && s.length > 0))
+      .subscribe(scripts => this.loadScripts(scripts));
 
     if (this.version === '0.7.4') {
-      this.socialProofSettings$.filter(s => s !== undefined && s !== null).subscribe(settings => {
-        this.socialProofSettings = settings;
-        if (settings.active) {
-          this.proofCount = 0;
-          this.destroyProofTimer$.next();
-          if (this.loggedIn) {
-            setTimeout(() => {
-              this.store.dispatch(new uiActions.GetSocialProof('level'));
-            }, 2000);
-          } else {
-            this.store.dispatch(new uiActions.GetSocialProof('join'));
+      this.socialProofSettings$
+        .pipe(filter(s => s !== undefined && s !== null))
+        .subscribe(settings => {
+          this.socialProofSettings = settings;
+          if (settings.active) {
+            this.proofCount = 0;
+            this.destroyProofTimer$.next();
+            if (this.loggedIn) {
+              setTimeout(() => {
+                this.store.dispatch(new uiActions.GetSocialProof('level'));
+              }, 2000);
+            } else {
+              this.store.dispatch(new uiActions.GetSocialProof('join'));
+            }
           }
-        }
-      });
-      this.socialProofs$.filter(p => p.length >= 1).subscribe(proofs => {
+        });
+      this.socialProofs$.pipe(filter(p => p.length >= 1)).subscribe(proofs => {
         this.proofs = proofs;
         this.openProofSnackBar(this.loggedIn);
       });
@@ -409,33 +417,30 @@ export class AppComponent implements OnInit {
     this.closeConnection$.next();
   }
   connect() {
-    this.webSocket$ = Observable.webSocket(
+    this.webSocket$ = webSocket(
       `${PUBLISH ? 'wss' : 'ws'}://${HOST}:${PUBLISH ? '8443' : '8089'}/user/socket/connect`
     ); // tslint:disable-line max-line-length
-    this.webSocket$
-      .retry()
-      .takeUntil(this.closeConnection$)
-      .subscribe(
-        (res: { event?: string; id?: string; type?: string; payload?: any }) => {
-          log(`connected: `, res);
-          if (res.event === 'CONNECTION') {
-            this.store.dispatch(new uiActions.AddUserIDToSocket(res.id));
-          }
-          if (res.type) {
-            this.store.dispatch({ type: res.type, payload: res.payload });
-          }
-          if (Array.isArray(res)) {
-            res.forEach(action => {
-              this.store.dispatch({ type: action.type, payload: action.payload });
-            });
-          }
-        },
-        err => {
-          log(err);
-          this.connect();
-        },
-        () => log('complete')
-      );
+    this.webSocket$.pipe(retry(), takeUntil(this.closeConnection$)).subscribe(
+      (res: { event?: string; id?: string; type?: string; payload?: any }) => {
+        log(`connected: `, res);
+        if (res.event === 'CONNECTION') {
+          this.store.dispatch(new uiActions.AddUserIDToSocket(res.id));
+        }
+        if (res.type) {
+          this.store.dispatch({ type: res.type, payload: res.payload });
+        }
+        if (Array.isArray(res)) {
+          res.forEach(action => {
+            this.store.dispatch({ type: action.type, payload: action.payload });
+          });
+        }
+      },
+      err => {
+        log(err);
+        this.connect();
+      },
+      () => log('complete')
+    );
   }
 
   loadScripts(scripts: Script[]) {
@@ -513,13 +518,13 @@ export class AppComponent implements OnInit {
     if (this.proofSnackBar && !this.socialProofStopRepeat) {
       this.proofSnackBar
         .afterDismissed()
-        .takeUntil(this.destroyProofTimer$)
+        .pipe(takeUntil(this.destroyProofTimer$))
         .subscribe(d => {
           if (d.dismissedByAction) {
             this.proofDismissedWithAction = true;
           } else {
-            Observable.timer(this.socialProofSettings.delay)
-              .takeUntil(this.destroyProofTimer$)
+            timer(this.socialProofSettings.delay)
+              .pipe(takeUntil(this.destroyProofTimer$))
               .subscribe(() => {
                 this.openProofSnackBar(this.loggedIn);
               });

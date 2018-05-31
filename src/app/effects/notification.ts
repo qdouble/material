@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 
 import { NotificationService } from '../services/notification';
@@ -35,7 +35,7 @@ export class NotificationEffects {
         .deleteAllNotifications()
         .pipe(
           map(res => new DeleteAllNotificationsSuccess(res)),
-          catchError(err => Observable.of(new DeleteAllNotificationsFail(err)))
+          catchError(err => of(new DeleteAllNotificationsFail(err)))
         )
     )
   );
@@ -49,7 +49,7 @@ export class NotificationEffects {
         .deleteNotifications(ids)
         .pipe(
           map(res => new DeleteNotificationsSuccess(res)),
-          catchError(err => Observable.of(new DeleteNotificationsFail(err)))
+          catchError(err => of(new DeleteNotificationsFail(err)))
         )
     )
   );
@@ -63,7 +63,7 @@ export class NotificationEffects {
         .getNotifications(query)
         .pipe(
           map(res => new GetNotificationsSuccess(res)),
-          catchError(err => Observable.of(new GetNotificationsFail(err)))
+          catchError(err => of(new GetNotificationsFail(err)))
         )
     )
   );
@@ -76,7 +76,7 @@ export class NotificationEffects {
         .markAllAsRead()
         .pipe(
           map(res => new MarkAllAsReadSuccess(res)),
-          catchError(err => Observable.of(new MarkAllAsReadFail(err)))
+          catchError(err => of(new MarkAllAsReadFail(err)))
         )
     )
   );
@@ -90,7 +90,7 @@ export class NotificationEffects {
         .markNotificationsAsRead(mark)
         .pipe(
           map(res => new MarkNotificationsAsReadSuccess(res)),
-          catchError(err => Observable.of(new MarkNotificationsAsReadFail(err)))
+          catchError(err => of(new MarkNotificationsAsReadFail(err)))
         )
     )
   );

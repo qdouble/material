@@ -1,8 +1,8 @@
 /* tslint:disable */
 import { Directive, Input, ElementRef, Renderer } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Subject, fromEvent } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 function isBlank(obj: any): boolean {
   return obj === undefined || obj === null;
@@ -23,9 +23,8 @@ export class DebounceInputControlValueAccessor implements ControlValueAccessor {
   constructor(private _elementRef: ElementRef, private _renderer: Renderer) {}
 
   ngAfterViewInit() {
-    Observable.fromEvent(this._elementRef.nativeElement, 'keyup')
-      .takeUntil(this.destroyed$)
-      .debounceTime(this.debounceTime)
+    fromEvent(this._elementRef.nativeElement, 'keyup')
+      .pipe(takeUntil(this.destroyed$), debounceTime(this.debounceTime))
       .subscribe((event: any) => {
         this.onChange(event.target.value);
       });

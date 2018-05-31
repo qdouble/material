@@ -1,24 +1,24 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
 
 import { AppState } from '../../../../reducers';
 import * as ticketActions from '../../ticket.actions';
+import { filter, take, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'os-support-ticket',
   template: `
   <section>
     <form *ngIf="!hide" [formGroup]="f" (ngSubmit)="submitForm()">
-      <mat-input-container>
+      <mat-form-field>
         <input matInput maxlength=90 placeholder="Subject" formControlName="subject">
-      </mat-input-container>
+      </mat-form-field>
       <br>
-      <mat-input-container>
+      <mat-form-field>
         <textarea matInput [rows]="6" placeholder="Question" formControlName="question"></textarea>
-      </mat-input-container>
+      </mat-form-field>
       <br>
       <button mat-raised-button class="white" color="primary" [disabled]="!f.valid">SUBMIT</button>
     </form>
@@ -28,7 +28,7 @@ import * as ticketActions from '../../ticket.actions';
     </b>
   </section>
   `,
-  styles: [`mat-input-container { width: 99%; }`]
+  styles: [`mat-form-field { width: 99%; }`]
 })
 export class SupportTicket implements OnDestroy, OnInit {
   destroyed$: Subject<any> = new Subject<any>();
@@ -48,9 +48,7 @@ export class SupportTicket implements OnDestroy, OnInit {
   submitForm() {
     this.store.dispatch(new ticketActions.AddTicket(this.f.value));
     this.addedObs
-      .filter(a => a === true)
-      .take(1)
-      .takeUntil(this.destroyed$)
+      .pipe(filter(a => a === true), take(1), takeUntil(this.destroyed$))
       .subscribe(() => {
         this.f.reset();
         this.hide = true;

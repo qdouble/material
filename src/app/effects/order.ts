@@ -1,9 +1,8 @@
 /* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { concat, Observable, of } from 'rxjs';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
-import { concat } from 'rxjs/observable/concat';
 import { tap, map, switchMap, catchError } from 'rxjs/operators';
 
 import { AppState } from '../reducers';
@@ -35,9 +34,7 @@ export class OrderEffects {
         .getOrders()
         .pipe(
           map(res => new GetOrdersSuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new GetOrdersFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new GetOrdersFail(err)), of(new AddNotify(err))))
         )
     )
   );
@@ -57,9 +54,7 @@ export class OrderEffects {
             this.store.dispatch(new SetOrderPending(true));
           }
         }),
-        catchError(err =>
-          concat(Observable.of(new PlaceOrderFail(err)), Observable.of(new AddNotify(err)))
-        )
+        catchError(err => concat(of(new PlaceOrderFail(err)), of(new AddNotify(err))))
       )
     )
   );

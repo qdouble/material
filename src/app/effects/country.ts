@@ -2,8 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable } from 'rxjs/Observable';
-import { concat } from 'rxjs/observable/concat';
+import { concat, Observable, of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 
 import { CountryService } from '../services/country';
@@ -22,9 +21,7 @@ export class CountryEffects {
         .getCountries()
         .pipe(
           map(res => new GetCountriesSuccess(res)),
-          catchError(err =>
-            concat(Observable.of(new GetCountriesFail(err)), Observable.of(new AddNotify(err)))
-          )
+          catchError(err => concat(of(new GetCountriesFail(err)), of(new AddNotify(err))))
         )
     )
   );
