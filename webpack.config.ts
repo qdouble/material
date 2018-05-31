@@ -25,13 +25,7 @@ import {
   SW_RUNTIME_CACHING
 } from './constants';
 
-const {
-  DefinePlugin,
-  DllPlugin,
-  DllReferencePlugin,
-  ProgressPlugin,
-  NoEmitOnErrorsPlugin
-} = require('webpack');
+const webpack = require('webpack');
 
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CompressionPlugin = require('compression-webpack-plugin');
@@ -186,9 +180,9 @@ const commonConfig = (function webpackConfig(): WebpackConfig {
   };
 
   config.plugins = [
-    new ProgressPlugin(),
+    new webpack.ProgressPlugin(),
     new CheckerPlugin(),
-    new DefinePlugin(CONSTANTS),
+    new webpack.DefinePlugin(CONSTANTS),
     new NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
@@ -202,11 +196,11 @@ const commonConfig = (function webpackConfig(): WebpackConfig {
 
   if (DEV_SERVER) {
     config.plugins.push(
-      new DllReferencePlugin({
+      new webpack.DllReferencePlugin({
         context: '.',
         manifest: require(`./dll/polyfill-manifest.json`)
       }),
-      new DllReferencePlugin({
+      new webpack.DllReferencePlugin({
         context: '.',
         manifest: require(`./dll/vendor-manifest.json`)
       })
@@ -215,7 +209,7 @@ const commonConfig = (function webpackConfig(): WebpackConfig {
 
   if (DLL) {
     config.plugins.push(
-      new DllPlugin({
+      new webpack.DllPlugin({
         name: '[name]',
         path: root('dll/[name]-manifest.json')
       })
@@ -229,7 +223,7 @@ const commonConfig = (function webpackConfig(): WebpackConfig {
 
   if (PROD) {
     config.plugins.push(
-      new NoEmitOnErrorsPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
       new CompressionPlugin({
         asset: '[path].gz[query]',
         algorithm: 'gzip',
