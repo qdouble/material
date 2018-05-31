@@ -270,8 +270,12 @@ const clientConfig = (function webpackConfig(): WebpackConfig {
   if (PROD) {
     config.plugins.push(
       new UglifyJsPlugin({
-        beautify: false,
-        comments: false
+        uglifyOptions: {
+          output: {
+            comments: false,
+            beautify: false
+          }
+        }
       })
     );
   }

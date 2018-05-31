@@ -9,6 +9,7 @@ import { take, takeUntil, map, filter } from 'rxjs/operators';
 
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { combineSort } from '../../helper/combine-sort';
+import { log } from '../../services/constants';
 
 import * as fromStore from '../../reducers';
 import { Credit } from '../../models/credit';
@@ -195,9 +196,7 @@ export class Status implements OnDestroy, OnInit {
     this.facebook
       .ui(options)
       .then((res: UIResponse) => {
-        if (ENV === 'development') {
-          console.log('Got the users profile', res);
-        }
+        log('Got the users profile', res);
       })
       .catch(this.handleError);
   }
