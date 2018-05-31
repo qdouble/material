@@ -5,18 +5,17 @@ const commonConfig = require('./webpack.common.js'); // the settings that are co
 /**
  * Webpack Plugins
  */
-const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
-const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 
 /**
  * Webpack Constants
  */
-const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
+const ENV = (process.env.NODE_ENV = process.env.ENV = 'production');
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8088;
 const METADATA = webpackMerge(commonConfig.metadata, {
@@ -27,7 +26,6 @@ const METADATA = webpackMerge(commonConfig.metadata, {
 });
 
 module.exports = webpackMerge(commonConfig, {
-
   /**
    * Switch loaders to debug mode.
    *
@@ -49,7 +47,6 @@ module.exports = webpackMerge(commonConfig, {
    * See: http://webpack.github.io/docs/configuration.html#output
    */
   output: {
-
     /**
      * The output directory as absolute path (required).
      *
@@ -80,7 +77,6 @@ module.exports = webpackMerge(commonConfig, {
      * See: http://webpack.github.io/docs/configuration.html#output-chunkfilename
      */
     chunkFilename: '[id].[hash].chunk.js'
-
   },
 
   /**
@@ -89,7 +85,6 @@ module.exports = webpackMerge(commonConfig, {
    * See: http://webpack.github.io/docs/configuration.html#plugins
    */
   plugins: [
-
     /**
      * Plugin: WebpackMd5Hash
      * Description: Plugin to replace a standard webpack hash with md5.
@@ -119,12 +114,12 @@ module.exports = webpackMerge(commonConfig, {
      */
     // NOTE: when adding more properties make sure you include them in custom-typings.d.ts
     new DefinePlugin({
-      'ENV': JSON.stringify(METADATA.ENV),
-      'HMR': METADATA.HMR,
+      ENV: JSON.stringify(METADATA.ENV),
+      HMR: METADATA.HMR,
       'process.env': {
-        'ENV': JSON.stringify(METADATA.ENV),
-        'NODE_ENV': JSON.stringify(METADATA.ENV),
-        'HMR': METADATA.HMR,
+        ENV: JSON.stringify(METADATA.ENV),
+        NODE_ENV: JSON.stringify(METADATA.ENV),
+        HMR: METADATA.HMR
       }
     }),
 
@@ -138,7 +133,6 @@ module.exports = webpackMerge(commonConfig, {
     // NOTE: To debug prod builds un-comment //debug lines and comment //prod lines
 
     new UglifyJsPlugin({
-
       beautify: false,
 
       mangle: {
@@ -183,7 +177,6 @@ module.exports = webpackMerge(commonConfig, {
       threshold: 10240,
       minRatio: 0.8
     })
-
   ],
 
   /**
@@ -208,11 +201,7 @@ module.exports = webpackMerge(commonConfig, {
     minimize: true,
     removeAttributeQuotes: false,
     caseSensitive: true,
-    customAttrSurround: [
-      [/#/, /(?:)/],
-      [/\*/, /(?:)/],
-      [/\[?\(?/, /(?:)/]
-    ],
+    customAttrSurround: [[/#/, /(?:)/], [/\*/, /(?:)/], [/\[?\(?/, /(?:)/]],
     customAttrAssign: [/\)?\]?=/]
   },
 
@@ -230,5 +219,4 @@ module.exports = webpackMerge(commonConfig, {
     clearImmediate: false,
     setImmediate: false
   }
-
 });

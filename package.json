@@ -125,6 +125,7 @@
     "ngrx-store-freeze": "~0.2.3",
     "ngrx-store-logger": "~0.2.1",
     "ngx-facebook": "^2.4.0",
+    "prettier": "^1.13.3",
     "rxjs": "~6.2.0",
     "thenby": "~1.2.3",
     "web-animations-js": "^2.3.1",
