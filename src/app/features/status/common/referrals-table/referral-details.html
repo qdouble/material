@@ -3,11 +3,22 @@
   <div>Added: {{referral.addedOn | date: 'medium'}}</div>
   <div *ngIf="referral.firstName && referral.lastName">Name: {{referral.firstName + ' ' + referral.lastName}}</div>
   <div>Username: {{referral.username}}</div>
-  <div>Email:
+  <!-- <div>Email:
     <a [href]="'mailto:' + referral.email">{{referral.email}}</a>
+  </div> -->
+  <div class="referral-email">
+    <button class="icon-button" mat-icon-button>
+      <a [href]="'mailto:' + referral.email">
+        <mat-icon>email</mat-icon>
+      </a>
+    </button>{{referral.email}}
   </div>
-  <div>Phone:
-    <a [href]="'tel:' + referral.phone">{{referral.phone}}</a>
+  <div class="referral-phone">
+    <button class="icon-button" mat-icon-button>
+      <a [href]="'tel:' + referral.phone">
+        <mat-icon>phone</mat-icon>
+      </a>
+    </button>{{referral.phone}}
   </div>
   <ng-container *ngIf="referral.currentSponsor">
     <div *ngIf="startedFrom">Start at Level: {{startedFrom}}</div>
@@ -55,5 +66,5 @@
       <b>Member was transferred by their own request.</b>
     </div>
   </ng-container>
-  <button type="button" mat-button color="accent" (click)="dialogRef.close()">CLOSE</button>
+  <button class="close-button" type="button" mat-button color="accent" (click)="dialogRef.close()">CLOSE</button>
 </div>

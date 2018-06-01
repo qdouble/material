@@ -1,4 +1,4 @@
-button {
+.close-button {
   margin-top: 5px;
   width: 100%;
 }
@@ -6,6 +6,23 @@ button {
 a[href^='tel:'],
 a[href^='mailto:'] {
   color: #8bc34a; // text-decoration: none;
+}
+
+.referral-email {
+  margin: -12px 0 0 -9px;
+  white-space: nowrap;
+}
+
+.referral-phone {
+  margin: -19px 0 -8px -9px;
+  white-space: nowrap;
+}
+
+.icon-button {
+  mat-icon {
+    position: relative;
+    top: 7px;
+  }
 }
 
 .name-col {
