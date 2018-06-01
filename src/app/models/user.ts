@@ -1,5 +1,6 @@
 import { Credit } from './credit';
 import { GenericResponse } from './generic-response';
+import { Referral } from './referral';
 export interface User {
   readonly id?: string;
   readonly firstName?: string;
@@ -63,7 +64,7 @@ export interface UserReferral {
   unpaidLevels?: number;
   leveledUp: boolean;
   levels: number[][];
-  addedOn: Date;
+  addedOn: string;
   transferredOn: string;
   currentSponsor: boolean;
   active: boolean;
@@ -84,7 +85,7 @@ export interface GetProfileResponse extends GenericResponse {
 }
 
 export interface GetReferralResponse extends GenericResponse {
-  referral: User;
+  referral: Referral;
 }
 
 export interface RecordClickResponse extends GenericResponse {

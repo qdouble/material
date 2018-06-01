@@ -20,6 +20,7 @@ import { User } from '../../models/user';
 import { ReferralsTable } from './common/referrals-table';
 import * as prizeActions from '../../actions/prize';
 import * as userActions from '../../actions/user';
+import { SortModel } from '../../models/ui';
 
 @Component({
   selector: 'os-status',
@@ -44,7 +45,6 @@ export class Status implements OnDestroy, OnInit {
   prizes$: Observable<Prize[]>;
   referralSelect = new FormControl(' ');
   referrals$: Observable<Referral[]>;
-  reverse = false;
   selectPrizeForm: FormGroup;
   selectedPrizeLabels$: Observable<string[]>;
   selectedPrizeValues$: Observable<string[]>;
@@ -52,7 +52,6 @@ export class Status implements OnDestroy, OnInit {
   selectedReferralIds$: Observable<string[]>;
   settingPrize$: Observable<boolean>;
   showAnnouncements: boolean = true;
-  showHidden = new FormControl();
   sortingBy: { sortBy: string; reverse: boolean };
   sponsorForm: FormGroup;
   switchSponsor: boolean;
@@ -78,7 +77,11 @@ export class Status implements OnDestroy, OnInit {
     this.loaded$ = store.pipe(select(fromStore.getUserLoaded));
     this.loading$ = store.pipe(select(fromStore.getUserLoading));
     store
-      .pipe(select(fromStore.getPrizeLoaded), take(1), takeUntil(this.destroyed$))
+      .pipe(
+        select(fromStore.getPrizeLoaded),
+        take(1),
+        takeUntil(this.destroyed$)
+      )
       .subscribe(loaded => {
         if (loaded) this.store.dispatch(new prizeActions.GetPrizes());
       });
@@ -124,7 +127,10 @@ export class Status implements OnDestroy, OnInit {
     });
     let lastUpdate$ = store.select(s => s.user.lastUpdate);
     lastUpdate$
-      .pipe(filter(l => l !== null && l !== undefined), takeUntil(this.destroyed$))
+      .pipe(
+        filter(l => l !== null && l !== undefined),
+        takeUntil(this.destroyed$)
+      )
       .subscribe(lastUpdate => {
         if (this.updatedAt && lastUpdate !== this.updatedAt) {
           store.dispatch(new userActions.GetProfile());
@@ -142,8 +148,8 @@ export class Status implements OnDestroy, OnInit {
       .subscribe(ids => (this.selectedReferralIds = ids));
   }
 
-  applyToChecked() {
-    switch (this.referralSelect.value) {
+  applyToChecked(event) {
+    switch (event) {
       case 'hide':
         this.hideReferrals(true);
         break;
@@ -169,11 +175,16 @@ export class Status implements OnDestroy, OnInit {
       this.store.dispatch(
         new userActions.ChangeSelectedPrize(this.selectPrizeForm.get('selectedPrize').value)
       );
-      this.settingPrize$.pipe(filter(s => s !== false), takeUntil(this.destroyed$)).subscribe(() =>
-        setTimeout(() => {
-          this.changePrize = false;
-        }, 50)
-      );
+      this.settingPrize$
+        .pipe(
+          filter(s => s !== false),
+          takeUntil(this.destroyed$)
+        )
+        .subscribe(() =>
+          setTimeout(() => {
+            this.changePrize = false;
+          }, 50)
+        );
     } else {
       this.changePrize = true;
     }
@@ -201,16 +212,19 @@ export class Status implements OnDestroy, OnInit {
       .catch(this.handleError);
   }
 
-  getReferral(referral: User) {
-    if (referral.currentSponsor) {
-      this.store.dispatch(new userActions.GetReferral(referral.id));
-    }
-    this.loading$.pipe(filter(l => l === false), take(1)).subscribe(() => {
-      let referral$ = this.store.pipe(select(fromStore.getUserSelectedReferral));
-      referral$.pipe(take(1)).subscribe(ref => {
-        this.referralTable.open(ref);
+  getReferral(id: string) {
+    this.store.dispatch(new userActions.GetReferral(id));
+    this.loading$
+      .pipe(
+        filter(l => l === false),
+        take(1)
+      )
+      .subscribe(() => {
+        let referral$ = this.store.pipe(select(fromStore.getUserReferralDetails));
+        referral$.pipe(take(1)).subscribe(ref => {
+          this.referralTable.open(ref);
+        });
       });
-    });
   }
 
   hideReferrals(hide: boolean) {
@@ -257,14 +271,8 @@ export class Status implements OnDestroy, OnInit {
     this.store.dispatch(new userActions.SelectReferrals(ids));
   }
 
-  sortBy(sortBy: string) {
-    if (sortBy === this.sortingBy.sortBy) {
-      this.store.dispatch(
-        new userActions.SortReferralsBy({ sortBy: sortBy, reverse: !this.sortingBy.reverse })
-      );
-    } else {
-      this.store.dispatch(new userActions.SortReferralsBy({ sortBy: sortBy, reverse: false }));
-    }
+  sortBy(event: SortModel) {
+    this.store.dispatch(new userActions.SortReferralsBy(event));
   }
 
   submitSponsor() {

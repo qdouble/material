@@ -1,6 +1,47 @@
-.table {
-  max-width: 390px;
+.ref-footer {
+  width: 100%; // display: block;
+  overflow: hidden;
+  text-align: center;
+}
+
+::ng-deep .mat-select-content {
+  font-size: 14px;
+}
+
+.footer-td {
+  padding: 4px 0 !important;
+  .show-hidden {
+    text-align: center;
+    height: 30px;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 8px;
+    margin-top: 5px;
+  }
+}
+
+mat-option {
+  text-align: center;
+}
+
+mat-slide-toggle {
+  padding: 5px;
+}
+
+.actions-td,
+.actions-th {
+  text-align: right;
+}
+
+.referrals-table {
+  width: 100%;
+}
+
+.referrals-table-container {
   margin: 0 auto;
+}
+
+.highlight {
+  background: #f3f3f3;
 }
 
 .primary-bold {
@@ -48,12 +89,13 @@
 
 .stripe-2 {
   color: black;
-  background: repeating-linear-gradient( 45deg, transparent, transparent 10px, #ccc 10px, #ccc 20px), linear-gradient( to bottom, #eee, #999)
+  background: repeating-linear-gradient(45deg, transparent, transparent 10px, #ccc 10px, #ccc 20px),
+    linear-gradient(to bottom, #eee, #999);
 }
 
 @media screen and (max-width: 390px) {
   .hide-mail {
-    display: none
+    display: none;
   }
 }
 
@@ -66,14 +108,6 @@
 
 @media screen and (min-width: 366px) {
   .short-username {
-    display: none
+    display: none;
   }
-}
-
-.mat-cell, .mat-header-cell { 
-  text-align: center; 
-}
-
-.highlight{
-  background: #f3f3f3;
 }

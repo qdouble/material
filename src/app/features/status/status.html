@@ -161,19 +161,9 @@
     <mat-card id="referrals-table-section">
       <mat-card-title class="primary">Your Referrals</mat-card-title>
       <ng-container *ngIf="(referrals$ | async)?.length > 0">
-        <os-referrals-table [referrals]="referrals$ | async" [showHidden]="showHidden.value" (getReferral)="getReferral($event)"
-          (selectReferral)="selectReferral($event)" (sortBy)="sortBy($event)">
+        <os-referrals-table [referrals$]="referrals$" [selectedReferralIds$]="selectedReferralIds$" (applyToChecked)="applyToChecked($event)"
+          (getReferral)="getReferral($event)" (selectReferral)="selectReferral($event)" (sortBy)="sortBy($event)">
         </os-referrals-table>
-        <div class="ref-select-row">
-          <mat-select [formControl]="referralSelect">
-            <mat-option value=" ">- CHOOSE OPTION -</mat-option>
-            <mat-option value="hide">HIDE</mat-option>
-            <mat-option value="show">SHOW</mat-option>
-            <mat-option value="remove">REMOVE</mat-option>
-          </mat-select>
-          <button mat-raised-button class="white" color="accent" (click)="applyToChecked()" [disabled]="!selectedReferralIds.length">APPLY</button>
-        </div>
-        <mat-slide-toggle [formControl]="showHidden" color="primary">Show Hidden</mat-slide-toggle>
       </ng-container>
       <mat-card-content *ngIf="(referrals$ | async)?.length <= 0">
         You do not have any referrals. Be sure to share your referral link. Tell any missing referrals to enter in your username

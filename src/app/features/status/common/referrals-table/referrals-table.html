@@ -1,58 +1,79 @@
-<div class="mat-elevation-z1">
-  <mat-table mat-table [dataSource]="dataSource">
+<div class="mat-elevation-z1 referrals-table-container">
+  <table class="referrals-table" mat-table [dataSource]="referrals" matSort matSortActive="addedOn" matSortDisableClear matSortDirection="asc">
 
     <!-- Position Column -->
     <ng-container matColumnDef="addedOn">
-      <mat-header-cell class="hide-1" *matHeaderCellDef> Added On </mat-header-cell>
-      <mat-cell *matCellDef="let referral" class="hide-1 nowrap" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
-      {{referral?.addedOn | date: 'short'}} </mat-cell>
+      <th mat-header-cell mat-sort-header matSortDisableClear *matHeaderCellDef>
+        <span class="hide-1">Added On</span>
+      </th>
+      <td mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
+        <span class="hide-1 nowrap">{{referral?.addedOn | date: 'medium'}}</span>
+      </td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="username">
-      <mat-header-cell *matHeaderCellDef> Username </mat-header-cell>
-      <mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
+      <th mat-header-cell mat-sort-header matSortDisableClear *matHeaderCellDef> Username </th>
+      <td mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
         <span class="long-username nowrap">{{referral?.username | slice:0:20 }}</span>
         <span class="short-username nowrap">{{referral?.username | slice:0:10 }}</span>
-      </mat-cell>
+      </td>
     </ng-container>
 
     <!-- Weight Column -->
     <ng-container matColumnDef="currentLevel">
-      <mat-header-cell *matHeaderCellDef> Level </mat-header-cell>
-      <mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
-        <ng-container *ngIf="referral?.currentSponsor">
-          <ng-container *ngIf="!referral?.hold">
-            <span>{{referral?.currentLevel}}</span>
-            <ng-container *ngIf="referral?.payBeyondLevel < referral?.currentLevel">
-              <span>
-                <b>({{ referral?.currentLevel - referral?.payBeyondLevel }})</b>
-              </span>
-            </ng-container>
+      <th mat-header-cell mat-sort-header matSortDisableClear *matHeaderCellDef> Level </th>
+      <td mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
+        <ng-container *ngIf="!referral?.hold">
+          <span>{{referral?.currentLevel}}</span>
+          <ng-container *ngIf="referral?.payBeyondLevel < referral?.currentLevel">
+            <b>({{ referral?.currentLevel - referral?.payBeyondLevel }})</b>
           </ng-container>
-          <ng-container *ngIf="referral?.hold">Hold</ng-container>
+          <ng-container *ngIf="!referral?.currentSponsor">(T)</ng-container>
         </ng-container>
-        <ng-container *ngIf="!referral?.currentSponsor">
-          <ng-container>T</ng-container>
-        </ng-container>
-      </mat-cell>
+        <ng-container *ngIf="referral?.hold">Hold</ng-container>
+      </td>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
-        <button mat-icon-button (click)="getReferral?.emit(referral)">
+      <th mat-header-cell *matHeaderCellDef class="actions-th"> Actions </th>
+      <td mat-cell *matCellDef="let referral" class="actions-td" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
+        <button mat-icon-button (click)="getReferral?.emit(referral.id)">
           <mat-icon>remove_red_eye</mat-icon>
         </button>
-        <mat-checkbox #select (change)="selectReferral?.emit({id: referral?.id, checked: select.checked })"></mat-checkbox>
+        <mat-checkbox #select [checked]="(selectedReferralIds$ | async)?.includes(referral.id)" (change)="selectReferral?.emit({id: referral?.id, checked: select.checked })"></mat-checkbox>
       </td>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row?.id, 'green-key': leveledUpRefs?.includes(row?.id)}"
-      (click)="highlight(row)"></mat-row>
-  </mat-table>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row?.id }" (click)="highlight(row)"></tr>
 
-  <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+    <ng-container matColumnDef="footerContainer">
+      <td mat-footer-cell *matFooterCellDef colspan="4" class="footer-td">
+        <div class="ref-footer" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+          <div fxFlex="50" class="ref-footer-select">
+            <mat-select [formControl]="referralSelect">
+              <mat-option value=" ">- CHOOSE OPTION -</mat-option>
+              <mat-option value="hide">HIDE</mat-option>
+              <mat-option value="show">SHOW</mat-option>
+              <mat-option value="remove">REMOVE</mat-option>
+            </mat-select>
+          </div>
+          <div fxFlex="50" class="ref-footer-button">
+            <button mat-raised-button class="white" color="accent" (click)="applyToChecked.emit(referralSelect.value)" [disabled]="!(selectedReferralIds$ | async)?.length">APPLY</button>
+          </div>
+        </div>
+        <div *ngIf="hasHiddenReferrals || hasTransferredReferrals" class="show-hidden">
+          <mat-slide-toggle *ngIf="hasHiddenReferrals" [formControl]="showHidden" color="primary">Show Hidden</mat-slide-toggle>
+          <mat-slide-toggle *ngIf="hasTransferredReferrals" [formControl]="showTransferred" color="primary">Show Transferred</mat-slide-toggle>
+        </div>
+      </td>
+      <td mat-footer-cell *matFooterCellDef colspan="4">
+      </td>
+    </ng-container>
+    <tr mat-footer-row *matFooterRowDef="footer"></tr>
+  </table>
+
+  <mat-paginator [length]="totalReferrals" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
 </div>

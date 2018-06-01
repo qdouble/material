@@ -500,6 +500,8 @@ export const getUserReferrerBlocked = createSelector(getUserState, fromUser.getR
 
 export const getUserReferredBy = createSelector(getUserState, fromUser.getReferredBy);
 
+export const getUserReferralDetails = createSelector(getUserState, fromUser.getReferralDetails);
+
 export const getUserReferralIds = createSelector(getUserState, fromUser.getReferralIds);
 
 export const getUserReferrals = createSelector(getUserState, fromUser.getReferrals);

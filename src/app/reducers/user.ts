@@ -25,6 +25,7 @@ export interface State {
   onAdminPage: boolean;
   referrerBlocked: boolean;
   referredBy: string | null;
+  referralDetails: Referral;
   referralIds: string[];
   referrals: { [id: string]: Referral | UserReferral };
   resetEmailSent: boolean;
@@ -59,6 +60,7 @@ export const initialState: State = {
   onAdminPage: false,
   referrerBlocked: false,
   referredBy: null,
+  referralDetails: null,
   referralIds: [],
   referrals: {},
   resetEmailSent: false,
@@ -246,16 +248,16 @@ export function userReducer(state = initialState, action: UserActions): State {
     case UserActionTypes.GetReferralSuccess: {
       let referral = action.payload.referral;
       if (!referral || !referral.id) return { ...state, loading: false };
-      let id = referral.id;
-      let referralMod = { ...state.referrals };
-      Object.keys(referral).forEach(key => {
-        if (referralMod[id][key] === undefined) {
-          referralMod = { ...referralMod, [id]: { ...referralMod[id], [key]: referral[key] } };
-        }
-      });
+      // let id = referral.id;
+      // let referralMod = { ...state.referrals };
+      // Object.keys(referral).forEach(key => {
+      //   if (referralMod[id][key] === undefined) {
+      //     referralMod = { ...referralMod, [id]: { ...referralMod[id], [key]: referral[key] } };
+      //   }
+      // });
       return {
         ...state,
-        referrals: referralMod,
+        referralDetails: { ...referral, ...state.referrals[referral.id] },
         loading: false
       };
     }
@@ -459,6 +461,8 @@ export const getOnAdminPage = (state: State) => state.onAdminPage;
 export const getReferrerBlocked = (state: State) => state.referrerBlocked;
 
 export const getReferredBy = (state: State) => state.referredBy;
+
+export const getReferralDetails = (state: State) => state.referralDetails;
 
 export const getReferralIds = (state: State) => state.referralIds;
 

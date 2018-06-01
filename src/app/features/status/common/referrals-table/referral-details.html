@@ -1,5 +1,6 @@
-<ng-container>
+<div class="referral-details-container">
   <div class="referral-details">Referral Summary</div>
+  <div>Added: {{referral.addedOn | date: 'medium'}}</div>
   <div *ngIf="referral.firstName && referral.lastName">Name: {{referral.firstName + ' ' + referral.lastName}}</div>
   <div>Username: {{referral.username}}</div>
   <div>Email: {{referral.email}}</div>
@@ -51,4 +52,4 @@
     </div>
   </ng-container>
   <button type="button" mat-button color="accent" (click)="dialogRef.close()">CLOSE</button>
-</ng-container>
+</div>

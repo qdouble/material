@@ -9,11 +9,12 @@ export interface Referral {
   readonly email: string;
   readonly phone: string;
   readonly currentLevel: number;
+  readonly unpaidLevels?: number;
   readonly payBeyondLevel: number;
   readonly leveledUp: boolean;
   readonly levels: number[][];
-  readonly addedOn: Date;
-  readonly transferredOn: Date;
+  readonly addedOn: string;
+  readonly transferredOn: string;
   readonly currentSponsor: boolean;
   readonly active: boolean;
   readonly hold: boolean;

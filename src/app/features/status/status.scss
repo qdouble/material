@@ -28,7 +28,7 @@ a:link {
 
 #fb-post-btn {
   text-align: center;
-  background: #3B5998;
+  background: #3b5998;
   color: white !important;
   font-weight: 700;
 }
@@ -77,15 +77,14 @@ mat-slide-toggle {
   max-width: 570px;
 }
 
-.ref-select-row {
-  text-align: center;
-  width: 90%;
-  margin-top: 10px;
-  mat-select {
-    margin-bottom: 12px;
-  }
-}
-
+// .ref-select-row {
+//   text-align: center;
+//   width: 90%;
+//   margin-top: 10px;
+//   mat-select {
+//     margin-bottom: 12px;
+//   }
+// }
 #referral-link-section {
   mat-card-content {
     :nth-child(1) {

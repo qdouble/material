@@ -29,6 +29,11 @@ export interface GetIPInfoResponse {
   message: string;
 }
 
+export interface SortModel {
+  sortBy: string;
+  reverse: boolean;
+}
+
 export interface GetScriptsToLoadResponse {
   scripts: Script[];
 }
