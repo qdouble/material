@@ -3,6 +3,11 @@ button {
   width: 100%;
 }
 
+a[href^='tel:'],
+a[href^='mailto:'] {
+  color: orange; // text-decoration: none;
+}
+
 .name-col {
   width: 70%;
 }
