@@ -1,40 +1,29 @@
-import { animate, style, transition, trigger, keyframes, state } from '@angular/animations';
+import {
+  animate,
+  style,
+  transition,
+  trigger,
+  keyframes,
+  AnimationTriggerMetadata
+} from '@angular/animations';
 
-export const spinScaleAnimation = (
-  manualTrigger: 'enter' | 'leave' | 'manual' = 'enter',
-  delay: number | [number] = 200,
-  speed = 425,
-  degrees = 360
-) => {
-  if (Array.isArray(delay)) {
-    delay = delay[0] + 200;
-  }
-  let stateTransition: string;
-  switch (manualTrigger) {
-    case 'enter':
-      stateTransition = 'void => *';
-      break;
-    case 'leave':
-      stateTransition = '* => void';
-      break;
-    case 'manual':
-      stateTransition = 'default => rotated';
-      break;
-
-    default:
-      break;
-  }
+export function spinScaleAnimation(
+  transitionSting: string,
+  delay: number,
+  speed: number,
+  degrees: number
+): AnimationTriggerMetadata {
   return trigger('spinScale', [
-    transition(stateTransition, [
+    transition(`${transitionSting ? transitionSting : 'void => *'}`, [
       animate(
-        `${speed}ms ${delay}ms`,
+        `${speed || 425}ms ${delay || 200}ms`,
         keyframes([
           style({ opacity: 1, transform: 'rotate(0) scale(1)', offset: 0 }),
-          style({ opacity: 1, transform: `rotate(${degrees}deg) scale(1)`, offset: 0.4 }),
-          style({ opacity: 1, transform: `rotate(${degrees}deg) scale(1.5)`, offset: 0.5 }),
-          style({ opacity: 1, transform: `rotate(${degrees}deg) scale(1)`, offset: 1.0 })
+          style({ opacity: 1, transform: `rotate(${degrees || 360}deg) scale(1)`, offset: 0.4 }),
+          style({ opacity: 1, transform: `rotate(${degrees || 360}deg) scale(1.5)`, offset: 0.5 }),
+          style({ opacity: 1, transform: `rotate(${degrees || 360}deg) scale(1)`, offset: 1.0 })
         ])
       )
     ])
   ]);
-};
+}
