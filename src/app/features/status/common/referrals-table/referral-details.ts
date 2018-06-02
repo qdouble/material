@@ -4,12 +4,40 @@ import { MatDialogRef } from '@angular/material';
 import { Referral } from '../../../../models/referral';
 import { spinScaleAnimation } from '../../../../animations/spin-scale.animation';
 import { pulseAnimation } from '../../../../animations/pulse.animation';
+import { trigger, transition, keyframes, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'os-referral-dialog',
   templateUrl: './referral-details.html',
   styleUrls: ['./referral-details.scss'],
-  animations: [spinScaleAnimation('enter'), pulseAnimation('enter', [250])]
+  animations: [
+    // spinScaleAnimation('enter'),
+    trigger('spinScale', [
+      transition('void => *', [
+        animate(
+          `${425}ms ${200}ms`,
+          keyframes([
+            style({ opacity: 1, transform: 'rotate(0) scale(1)', offset: 0 }),
+            style({ opacity: 1, transform: `rotate(${360}deg) scale(1)`, offset: 0.4 }),
+            style({ opacity: 1, transform: `rotate(${360}deg) scale(1.5)`, offset: 0.5 }),
+            style({ opacity: 1, transform: `rotate(${360}deg) scale(1)`, offset: 1.0 })
+          ])
+        )
+      ])
+    ]),
+    trigger('pulse', [
+      transition('void => *', [
+        animate(
+          `${200}ms ${470}ms`,
+          keyframes([
+            style({ opacity: 1, transform: `scale(1)`, offset: 0 }),
+            style({ opacity: 0.9, transform: `scale(${1.5})`, offset: 0.4 }),
+            style({ opacity: 1, transform: `scale(1)`, offset: 1.0 })
+          ])
+        )
+      ])
+    ])
+  ]
 })
 export class ReferralDetailsDialog implements OnInit {
   creditTotal = 0;
