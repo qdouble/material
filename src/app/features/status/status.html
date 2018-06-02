@@ -21,7 +21,7 @@
   </div>
   <mat-card class="os-title-card primary-background">Share your link</mat-card>
   <div class="os-status-page-section">
-    <mat-card id="referral-link-section">
+    <mat-card id="referral-link-section" class="os-section-card">
       <mat-card-content>
         <div class="referral-links">
           Landing Page Referral Link:
@@ -77,7 +77,7 @@
     </mat-card>
   </div>
   <div *ngIf="(creditTotal$ | async) >= 1" class="os-status-page-section">
-    <mat-card id="announcements-section" *ngIf="showAnnouncements">
+    <mat-card id="announcements-section" class="os-section-card" *ngIf="showAnnouncements">
       <mat-card-title class="primary">Announcements</mat-card-title>
       <mat-card-content>
         <p>
@@ -90,7 +90,7 @@
     </mat-card>
   </div>
   <div class="os-status-page-section">
-    <mat-card id="current-status-section">
+    <mat-card id="current-status-section" class="os-section-card">
       <mat-card-title class="primary">Your Current Status</mat-card-title>
       <mat-card-content *ngIf="loaded$ | async">
         <p>Welcome {{user?.firstName}}!</p>
@@ -149,7 +149,7 @@
     </mat-card>
   </div>
   <div class="os-status-page-section">
-    <mat-card id="selected-prize-section">
+    <mat-card id="selected-prize-section" class="os-section-card">
       <mat-card-title class="primary">Your Selected Prize</mat-card-title>
       <os-selected-prize [changePrize]="changePrize" [form]="selectPrizeForm" [prize]="prize$ | async" [prizes]="prizes$ | async"
         [selectedPrizeLabels]="selectedPrizeLabels$ | async" [selectedPrizeValues]="selectedPrizeValues$ | async" (cancelPrizeChange)="cancelPrizeChange()"

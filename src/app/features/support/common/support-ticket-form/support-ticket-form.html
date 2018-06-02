@@ -1,5 +1,4 @@
 <mat-card>
-  <ng-content></ng-content>
   <mat-card-actions>
     <button mat-button (click)="ticket.readByUser ? markTicketAsRead.emit({id: ticket.id, mark: false}) : markTicketAsRead.emit({id: ticket.id, mark: true})">{{ticket?.readByUser ? 'MARK AS UNREAD' : 'MARK AS READ'}}</button>
     <button mat-button [color]="ticket?.closed ? 'primary' : 'accent'" (click)="ticket.closed ? closeTicket.emit({id: ticket.id, close: false}) : closeTicket.emit({id: ticket.id, close: true})">{{ticket?.closed ? 'REOPEN TICKET' : 'CLOSE TICKET'}}</button>

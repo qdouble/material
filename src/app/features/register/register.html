@@ -2,7 +2,7 @@
 <mat-card *ngIf="!blocked" class="register-page-container" @fade>
   <img *ngIf="step === 1" id="register-top" src="assets/svg/register-top-1366x768.svg">
   <mat-card class="os-title-card primary-background">Register</mat-card>
-  <mat-card class="os-form-container">
+  <mat-card class="os-form-container os-section-card">
     <form [formGroup]="f" (ngSubmit)="submitForm()">
       <div [hidden]="step === 2" *ngIf="!invalidCountry" @fade>
         <mat-card-subtitle>
@@ -24,7 +24,7 @@
       <div *ngIf="step === 2" @fade>
         <mat-card-subtitle>Step 2: Enter Account Details</mat-card-subtitle>
         <div id="registration-text" class="primary-background white">
-          <p>Registration information is verified before we process payments. Please be sure to use fully accurate information.</p>
+          <p>Registration information is verified before we pay our members. Please be sure to use fully accurate information.</p>
         </div>
         <os-form-input class="os-form-input" type="text" controlName="firstName" placeholder="First Name" [form]="f"></os-form-input>
         <os-form-input class="os-form-input" type="text" controlName="lastName" placeholder="Last Name" [form]="f"></os-form-input>
@@ -50,10 +50,11 @@
           [controlName]="'paypal'" [form]="f">
         </os-form-input>
         <div class="os-agree-checkbox">
-          <p class="explainer">In order to be eligible to earn money on Level Rewards, you have to "Level Up." After you Level Up, 
-            you can then share your referral link and earn $5 per level your referrals complete. The maximum amount you can earn per referral is based on your own level. 
-            In order to Level Up, members must complete trial offers and surveys from 3rd party advertisers. Membership to Level Rewards is
-            free, but each trial or survey has its own requirements with applicable terms and conditions.</p>
+          <p class="explainer">In order to be eligible to earn money on Level Rewards, you have to "Level Up." After you Level Up, you can then
+            share your referral link and earn $5 per level your referrals complete. The maximum amount you can earn per referral
+            is based on your own level. In order to Level Up, members must complete trial offers and surveys from 3rd party
+            advertisers. Membership to Level Rewards is free, but each trial or survey has its own requirements with applicable
+            terms and conditions.</p>
           <mat-checkbox color="primary" formControlName="agree" type="checkbox">I understand how to get paid using this site.</mat-checkbox>
           <mat-checkbox color="primary" formControlName="agree2" type="checkbox">I know that only 1 account per household is allowed.</mat-checkbox>
           <mat-checkbox color="primary" formControlName="agree3" type="checkbox">I agree to all of the

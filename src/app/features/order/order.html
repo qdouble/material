@@ -9,9 +9,9 @@
     </mat-card>
   </div>
 </mat-card>
-<mat-card *ngIf="!hideOrders" class="os-page-container" @fade>
+<mat-card *ngIf="!hideOrders" class="os-page-container os-section-card" @fade>
   <mat-card class="step-title os-title-card primary-background">Request Payment</mat-card>
-  <mat-card id="place-order" class="os-form-container">
+  <mat-card id="place-order" class="os-form-container os-section-card">
     <ng-container *ngIf="user?.orderPending">
       <mat-card class="order-status primary-background white">
         <h6 class="center">Payment pending approval</h6>
@@ -74,7 +74,7 @@
         <b>Please note that Bank Transfers typically take 3 to 5 business days to complete.</b>
       </mat-card-subtitle>
       <div id="order-form">
-        <mat-card id="please-be-sure-card" class="accent-background white">Please ensure that all information is absolutely correct before requesting payment!</mat-card>
+        <mat-card id="please-be-sure-card" class="os-section-card accent-background white">Please ensure that all information is absolutely correct before requesting payment!</mat-card>
         <os-order-form [form]="f" [loaded]="loaded$ | async" [needBankInfo]="needBankInfo" [needPaypalEmail]="needPaypalEmail" [placing]="placing$ | async"
           [user]="user$ | async" (placeOrder)="placeOrder()">
         </os-order-form>
@@ -85,7 +85,7 @@
       You are currently on hold and can not request any payments until your hold is removed.
     </mat-card>
   </mat-card>
-  <mat-card *ngIf="totalEarnings > 0" class="os-form-container earnings">
+  <mat-card *ngIf="totalEarnings > 0" class="os-section-card os-form-container earnings">
     <mat-card-title class="primary">Earnings</mat-card-title>
     <mat-card-content>
       <div class="table">
@@ -108,7 +108,7 @@
       </div>
     </mat-card-content>
   </mat-card>
-  <mat-card *ngIf="(orders$| async)?.length > 0" class="os-form-container">
+  <mat-card *ngIf="(orders$| async)?.length > 0" class="os-form-container os-section-card">
     <mat-card-title class="primary">Payment History</mat-card-title>
     <os-orders-table [loaded]="ordersLoaded$ | async" [orders]="orders$ | async">
     </os-orders-table>

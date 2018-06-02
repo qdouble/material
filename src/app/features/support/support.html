@@ -1,22 +1,27 @@
 <mat-card class="os-page-container" @fade>
   <div class="os-support-tickets-table-container">
-    <mat-card *ngIf="(openTickets$ | async)?.length > 0" class="os-support-ticket-section">
-      <mat-card-title>Open Tickets</mat-card-title>
-      <os-support-ticket-table [tickets]="openTickets$ | async" (closeTicket)=closeTicket($event) (sortBy)=sortBy($event)>
-      </os-support-ticket-table>
-    </mat-card>
-    <mat-card *ngIf="(closedTickets$ | async)?.length > 0" class="os-support-ticket-section">
-      <mat-card-title>Closed Tickets</mat-card-title>
-      <os-support-ticket-table [tickets]="closedTickets$ | async" (closeTicket)=closeTicket($event) (sortBy)=sortBy($event)>
-      </os-support-ticket-table>
-    </mat-card>
-    <mat-card *ngIf="(creditRequests$ | async)?.length > 0" class="os-support-ticket-section">
-      <mat-card-title>Credit Requests</mat-card-title>
-      <os-credit-request-table [creditRequests]="creditRequests$ | async">
-      </os-credit-request-table>
-    </mat-card>
-    <mat-card class="os-new-support-ticket">
-      <mat-card-title>New Support Ticket</mat-card-title>
+    <ng-container *ngIf="(openTickets$ | async)?.length > 0">
+      <mat-card class="os-support-ticket-section os-section-card">
+        <os-support-ticket-table [tickets]="openTickets$ | async" (closeTicket)=closeTicket($event) (sortBy)=sortBy($event)>
+        </os-support-ticket-table>
+      </mat-card>
+    </ng-container>
+    <ng-container *ngIf="(closedTickets$ | async)?.length > 0">
+      <mat-card class="os-title-card primary-background">Closed Tickets</mat-card>
+      <mat-card class="os-support-ticket-section os-section-card">
+        <os-support-ticket-table [tickets]="closedTickets$ | async" (closeTicket)=closeTicket($event) (sortBy)=sortBy($event)>
+        </os-support-ticket-table>
+      </mat-card>
+    </ng-container>
+    <ng-container *ngIf="(creditRequests$ | async)?.length > 0">
+      <mat-card class="os-title-card primary-background">Credit Requests</mat-card>
+      <mat-card class="os-support-ticket-section os-section-card">
+        <os-credit-request-table [creditRequests]="creditRequests$ | async">
+        </os-credit-request-table>
+      </mat-card>
+    </ng-container>
+    <mat-card class="os-title-card primary-background">New Support Ticket</mat-card>
+    <mat-card class="os-new-support-ticket os-section-card">
       <os-support-ticket [addedObs]="added$" [ticketSubject]="ticketSubject"></os-support-ticket>
     </mat-card>
     <br>

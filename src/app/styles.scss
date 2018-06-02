@@ -36,6 +36,22 @@ $theme: mat-light-theme($primary, $accent, $warn);
   line-height: $size;
 }
 
+.mat-button-toggle-group {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.09),
+    0 1px 5px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+mat-card.os-section-card,
+mat-card.os-message-card {
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.09), 0px 1px 1px 0px rgba(0, 0, 0, 0.07),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.09) !important;
+}
+
+.mat-raised-button:not([class*='mat-elevation-z']) {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.08), 0 2px 2px 0 rgba(0, 0, 0, 0.01),
+    0 1px 5px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
 .accent {
   color: mat-color($accent);
 }

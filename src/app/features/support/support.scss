@@ -20,7 +20,7 @@ mat-card-title {
 }
 
 .os-support-section {
-  width: 100%
+  width: 100%;
 }
 
 .os-new-support-ticket-container {
@@ -31,7 +31,6 @@ mat-card-title {
   width: 90%;
   max-width: 615px;
   margin: 0 auto 15px;
-  border-bottom: 5px solid $primary-color;
   overflow: scroll;
 }
 
@@ -40,10 +39,13 @@ mat-card-title {
   width: 90%;
   max-width: 615px;
   margin: 0 auto;
-  border-bottom: 5px solid $primary-color;
 }
 
 .os-support-tickets-card {
   margin: 5px auto 5px;
   width: 578px;
+}
+
+.os-title-card {
+  max-width: 615px;
 }

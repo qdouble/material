@@ -7,7 +7,6 @@ mat-card-title {
 .os-faq-container {
   position: relative;
   max-width: 696px;
-  margin: 0 auto;
-  border-bottom: 5px solid $primary-color;
-  border-top: 5px solid $primary-color;
+  margin: 0 auto; // border-bottom: 5px solid $primary-color;
+  // border-top: 5px solid $primary-color;
 }

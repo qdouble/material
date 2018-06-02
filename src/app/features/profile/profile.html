@@ -11,8 +11,8 @@
 </mat-card>
 
 <mat-card *ngIf="!hideProfile" class="os-page-container" @fade>
-  <mat-card class="os-form-container">
-    <mat-card-title class="primary">Profile</mat-card-title>
+  <mat-card class="os-title-card primary-background">Profile</mat-card>
+  <mat-card class="os-form-container os-section-card">
     <mat-card *ngIf="(loaded$ | async) && (user$ | async).profilePending" id="profile-pending" class="accent-medium-background">
       <mat-card-content>
         <h6>Your Profile Changes are Pending Approval</h6>

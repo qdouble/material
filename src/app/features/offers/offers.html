@@ -127,7 +127,7 @@
     <mat-card id="no-completed-card" class="os-message-card accent-background white" *ngIf="selectedOption === 'Completed' && (offersCompleted$ | async)?.length < 1">
       You Have No Completed Offers. Complete an offer on the Available tab to level up!
     </mat-card>
-    <mat-card *ngIf="!showCompleted && (offers$ | async)?.length > 0" class="os-offer-page-footer">
+    <mat-card *ngIf="!showCompleted && (offers$ | async)?.length > 0" class="os-offer-page-footer os-section-card">
       <p>*The level you reach determines the maximum amount of earnings you can receive per referral. The actual amount you
         make per referral is determined by the level your referrals reach (level reached multiplied by $5). All orders are
         subject to verification and cross-checks to validate the legitimacy of signups. In certain instances, we may put

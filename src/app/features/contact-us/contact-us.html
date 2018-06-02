@@ -1,7 +1,8 @@
 <mat-card class="os-page-container-vh">
-  <mat-card class="os-form-container" @fade>
+  <mat-card class="os-title-card primary-background os-form-container">Contact Us</mat-card>
+  <mat-card class="os-form-container os-section-card" @fade>
+
     <form *ngIf="!hideForm" [formGroup]="f" (ngSubmit)="submitForm()">
-      <mat-card-title class="primary">Contact Us</mat-card-title>
       <mat-form-field>
         <input matInput id="email" formControlName="email" placeholder="Your Email Address">
       </mat-form-field>

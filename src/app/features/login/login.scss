@@ -17,18 +17,20 @@ button {
   -webkit-transform: translateY(-30%);
   -ms-transform: translateY(-30%);
   transform: translateY(-30%);
-  max-width: 350px;
+  max-width: 375px;
   margin: 0 auto;
-  border-bottom: 5px solid $primary-color;
-  border-top: 5px solid $primary-color;
+}
+
+.os-login-form {
+  padding: 13px 24px 38px;
 }
 
 .os-page-container-vh {
   box-shadow: none;
 }
 
-:host>>>.mat-input-element {
-  font-size: 16px !important;
+:host /deep/ .mat-input-element {
+  font-size: 16px;
 }
 
 p {
