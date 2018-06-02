@@ -45,19 +45,23 @@ export class ReferralsTable implements AfterViewInit, OnInit, OnDestroy {
   @Output() applyToChecked = new EventEmitter();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns = ['addedOn', 'username', 'currentLevel', 'actions'];
+  displayedColumns = ['addedOn', 'email', 'currentLevel', 'actions'];
   footer = ['footerContainer'];
   pageSize = 10;
   totalReferrals = 0;
   referralSelect = new FormControl(' ');
   showHidden = new FormControl('');
   showTransferred = new FormControl('');
+  referralLevelVar = new FormControl('currentLevel');
+  referralVar = new FormControl('email');
   selectedRowIndex: number = -1;
   dialogRef: MatDialogRef<ReferralDetailsDialog>;
   destroyed$: Subject<any> = new Subject<any>();
+  forceCheck$: Subject<any> = new Subject<any>();
   lastCloseResult: string;
   config: MatDialogConfig = {
     disableClose: false,
+    autoFocus: false,
     width: '',
     height: '',
     position: {
@@ -84,11 +88,24 @@ export class ReferralsTable implements AfterViewInit, OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => (this.paginator.pageIndex = 0));
 
+    this.referralVar.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(val => {
+      this.displayedColumns[1] = val;
+      this.sortBy.emit({ sortBy: val, reverse: this.sort.direction === 'desc' });
+      this.forceCheck$.next(true);
+    });
+
+    this.referralLevelVar.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(val => {
+      this.displayedColumns[2] = val;
+      this.sortBy.emit({ sortBy: val, reverse: this.sort.direction === 'asc' });
+      this.forceCheck$.next(true);
+    });
+
     merge(
       this.showHidden.valueChanges,
       this.showTransferred.valueChanges,
       this.paginator.page,
-      this.sort.sortChange
+      this.sort.sortChange,
+      this.forceCheck$
     )
       .pipe(
         startWith({}),
@@ -148,6 +165,10 @@ export class ReferralsTable implements AfterViewInit, OnInit, OnDestroy {
         this.lastCloseResult = result;
         this.dialogRef = null;
       });
+  }
+
+  preventDefault(event) {
+    event.stopPropagation();
   }
 
   trackById(index: number, user: User) {

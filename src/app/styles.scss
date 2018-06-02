@@ -12,9 +12,9 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
 $primary: mat-palette($mat-light-green);
-$accent : mat-palette($mat-amber, 700, A100, A700);
+$accent: mat-palette($mat-amber, 700, A100, A700);
 // The warn palette is optional (defaults to red).
-$warn : mat-palette($mat-red);
+$warn: mat-palette($mat-red);
 // Create the theme object (a Sass map containing all of the palettes).
 $theme: mat-light-theme($primary, $accent, $warn);
 // Include theme styles for core and each component used in your app.
@@ -24,8 +24,16 @@ $theme: mat-light-theme($primary, $accent, $warn);
 @media only screen and (min-width: 800px) {
   mat-sidenav.mat-sidenav-opened,
   mat-sidenav.mat-sidenav-opening {
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.08), 0px 1px 1px 0px rgba(0, 0, 0, 0.07), 0px 1px 3px 0px rgba(0, 0, 0, 0.14) !important;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.08), 0px 1px 1px 0px rgba(0, 0, 0, 0.07),
+      0px 1px 3px 0px rgba(0, 0, 0, 0.14) !important;
   }
+}
+
+@mixin md-icon-size($size: 24px) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+  line-height: $size;
 }
 
 .accent {
@@ -37,11 +45,11 @@ $theme: mat-light-theme($primary, $accent, $warn);
 }
 
 .accent-medium {
-  color: #FFC107;
+  color: #ffc107;
 }
 
 .accent-medium-background {
-  background: #FFC107;
+  background: #ffc107;
 }
 
 .primary {

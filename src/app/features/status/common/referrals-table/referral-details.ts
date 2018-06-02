@@ -2,17 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 
 import { Referral } from '../../../../models/referral';
+import { spinScaleAnimation } from '../../../../animations/spin-scale.animation';
+import { pulseAnimation } from '../../../../animations/pulse.animation';
 
 @Component({
   selector: 'os-referral-dialog',
   templateUrl: './referral-details.html',
-  styleUrls: ['./referral-details.scss']
+  styleUrls: ['./referral-details.scss'],
+  animations: [spinScaleAnimation('enter'), pulseAnimation('enter', [250])]
 })
 export class ReferralDetailsDialog implements OnInit {
   creditTotal = 0;
   creditsShown: boolean;
   startedFrom = 0;
   referral: Referral;
+  show: boolean;
 
   constructor(public dialogRef: MatDialogRef<ReferralDetailsDialog>) {}
   ngOnInit() {
@@ -27,5 +31,8 @@ export class ReferralDetailsDialog implements OnInit {
     if (this.referral.levels[0][0] !== 0) {
       this.startedFrom = this.referral.levels[this.referral.levels.length - 1][0];
     }
+    setTimeout(() => {
+      this.show = true;
+    });
   }
 }

@@ -158,8 +158,10 @@
     </mat-card>
   </div>
   <div *ngIf="(creditTotal$ | async) >= 1 || (referrals$ | async)?.length" class="os-status-page-section">
-    <mat-card id="referrals-table-section">
-      <mat-card-title class="primary">Your Referrals</mat-card-title>
+    <div id="referrals-table-section" class="os-div-section">
+      <mat-card class="os-title-card primary-background">
+        <mat-card-title>Your Referral List</mat-card-title>
+      </mat-card>
       <ng-container *ngIf="(referrals$ | async)?.length > 0">
         <os-referrals-table [referrals$]="referrals$" [selectedReferralIds$]="selectedReferralIds$" (applyToChecked)="applyToChecked($event)"
           (getReferral)="getReferral($event)" (selectReferral)="selectReferral($event)" (sortBy)="sortBy($event)">
@@ -169,7 +171,7 @@
         You do not have any referrals. Be sure to share your referral link. Tell any missing referrals to enter in your username
         on the 'Your Current Status' section of their Status page if they signed up and are not referred.
       </mat-card-content>
-    </mat-card>
+    </div>
   </div>
   <os-footer></os-footer>
 </mat-card>

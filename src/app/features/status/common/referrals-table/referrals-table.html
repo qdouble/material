@@ -1,45 +1,52 @@
 <div class="mat-elevation-z1 referrals-table-container">
   <table class="referrals-table" mat-table [dataSource]="referrals" matSort matSortActive="addedOn" matSortDisableClear matSortDirection="asc">
 
-    <!-- Position Column -->
     <ng-container matColumnDef="addedOn">
       <th mat-header-cell mat-sort-header matSortDisableClear *matHeaderCellDef>
         <span class="hide-1">Added On</span>
       </th>
-      <td mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
+      <td mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn-bold': referral?.hold  }">
         <span class="hide-1 nowrap">{{referral?.addedOn | date: 'medium'}}</span>
       </td>
     </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="username">
-      <th mat-header-cell mat-sort-header matSortDisableClear *matHeaderCellDef> Username </th>
-      <td mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
-        <span class="long-username nowrap">{{referral?.username | slice:0:20 }}</span>
-        <span class="short-username nowrap">{{referral?.username | slice:0:10 }}</span>
+    <ng-container [matColumnDef]="displayedColumns[1]">
+      <th class="referral-th" mat-header-cell mat-sort-header matSortDisableClear *matHeaderCellDef>
+        <mat-select class="referral-select select-box-shadow" [formControl]="referralVar" (click)="preventDefault($event)">
+          <mat-option value="email">Email</mat-option>
+          <mat-option value="username">Username</mat-option>
+        </mat-select>
+      </th>
+      <td mat-cell class="referral-td" *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn-bold': referral?.hold  }">
+        <span class="long-username nowrap">{{referral[displayedColumns[1]] | slice:0:26 }}</span>
+        <span class="short-username nowrap">{{referral[displayedColumns[1]] | slice:0:10 }}</span>
       </td>
     </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="currentLevel">
-      <th mat-header-cell mat-sort-header matSortDisableClear *matHeaderCellDef> Level </th>
-      <td mat-cell *matCellDef="let referral" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
-        <ng-container *ngIf="!referral?.hold">
-          <span>{{referral?.currentLevel}}</span>
-          <ng-container *ngIf="referral?.payBeyondLevel < referral?.currentLevel">
+    <ng-container [matColumnDef]="displayedColumns[2]">
+      <th class="level-th" mat-header-cell mat-sort-header matSortDisableClear *matHeaderCellDef>
+        <mat-select class="level-select select-box-shadow" [formControl]="referralLevelVar" (click)="preventDefault($event)">
+          <mat-option value="currentLevel">Level</mat-option>
+          <mat-option value="leveledUp">Unpaid Levels</mat-option>
+          <mat-option value="hold">On Hold</mat-option>
+        </mat-select>
+      </th>
+      <td mat-cell *matCellDef="let referral" class="level-td" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn-bold': referral?.hold  }">
+        <div class="level-td-content">
+          <span *ngIf="displayedColumns[2] !== 'hold'">{{referral[displayedColumns[2]]}}</span>
+          <span *ngIf="displayedColumns[2] === 'hold'">{{referral.hold ? 'true' : 'false'}}</span>
+          <ng-container *ngIf="displayedColumns[2] === 'currentLevel' && referral?.payBeyondLevel < referral?.currentLevel">
             <b>({{ referral?.currentLevel - referral?.payBeyondLevel }})</b>
           </ng-container>
           <ng-container *ngIf="!referral?.currentSponsor">(T)</ng-container>
-        </ng-container>
-        <ng-container *ngIf="referral?.hold">Hold</ng-container>
+        </div>
       </td>
     </ng-container>
 
-    <!-- Symbol Column -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef class="actions-th"> Actions </th>
-      <td mat-cell *matCellDef="let referral" class="actions-td" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn bold': referral?.hold  }">
-        <button mat-icon-button (click)="getReferral?.emit(referral.id)">
+      <td mat-cell *matCellDef="let referral" class="actions-td" [ngClass]="{'primary-bold':  (referral?.payBeyondLevel < referral?.currentLevel && !referral?.hold && referral?.currentSponsor), 'warn-bold': referral?.hold  }">
+        <button mat-icon-button class="view-referral icon-button-shadow" (click)="getReferral?.emit(referral.id)">
           <mat-icon>remove_red_eye</mat-icon>
         </button>
         <mat-checkbox #select [checked]="(selectedReferralIds$ | async)?.includes(referral.id)" (change)="selectReferral?.emit({id: referral?.id, checked: select.checked })"></mat-checkbox>
@@ -53,7 +60,7 @@
       <td mat-footer-cell *matFooterCellDef colspan="4" class="footer-td">
         <div class="ref-footer" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
           <div fxFlex="50" class="ref-footer-select">
-            <mat-select [formControl]="referralSelect">
+            <mat-select class="select-box-shadow" [formControl]="referralSelect">
               <mat-option value=" ">- CHOOSE OPTION -</mat-option>
               <mat-option value="hide">HIDE</mat-option>
               <mat-option value="show">SHOW</mat-option>
@@ -61,7 +68,8 @@
             </mat-select>
           </div>
           <div fxFlex="50" class="ref-footer-button">
-            <button mat-raised-button class="white" color="accent" (click)="applyToChecked.emit(referralSelect.value)" [disabled]="!(selectedReferralIds$ | async)?.length">APPLY</button>
+            <button mat-raised-button class="white mat-elevation-z5" color="accent" (click)="applyToChecked.emit(referralSelect.value)"
+              [disabled]="!(selectedReferralIds$ | async)?.length">APPLY</button>
           </div>
         </div>
         <div *ngIf="hasHiddenReferrals || hasTransferredReferrals" class="show-hidden">

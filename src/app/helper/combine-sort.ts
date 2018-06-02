@@ -1,3 +1,13 @@
+const sortBoolean = function(a, b, sortBy, reverse) {
+  let nameA = a[sortBy];
+  let nameB = b[sortBy];
+  if (reverse) {
+    nameA = b[sortBy];
+    nameB = a[sortBy];
+  }
+  return nameA === nameB ? 0 : nameA ? -1 : 1;
+};
+
 const sortOther = function(a, b, sortBy, reverse) {
   let nameA = a[sortBy];
   let nameB = b[sortBy];
@@ -45,6 +55,8 @@ export function combineSort(sortBy: string | number, obj) {
   return obj.sort(function(a, b) {
     if (!a || !b) return obj;
     if (typeof a[sortBy[0]] === 'string') return sortString(a, b, sortBy[0], sortBy[1]);
+    if (typeof a[sortBy[0]] === 'boolean' || typeof a[sortBy[0]] === 'undefined')
+      return sortBoolean(a, b, sortBy[0], sortBy[1]);
     return sortOther(a, b, sortBy[0], sortBy[1]);
   });
 }

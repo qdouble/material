@@ -5,7 +5,8 @@
 }
 
 ::ng-deep .mat-select-content {
-  font-size: 14px;
+  font-size: 13px;
+  color: gray;
 }
 
 .footer-td {
@@ -17,23 +18,82 @@
     padding-top: 8px;
     margin-top: 5px;
   }
+  mat-select {
+    margin-left: 20px;
+    height: 30px;
+    width: 100%;
+  }
+}
+
+:host /deep/ .mat-select-value {
+  padding-top: 3px;
+}
+
+:host /deep/ th.mat-header-cell {
+  text-align: left;
+  font-size: 14px;
+}
+
+:host /deep/ .mat-select-value,
+:host /deep/ th.mat-header-cell,
+:host /deep/ .mat-slide-toggle-content {
+  color: #5d5d5d;
+}
+
+:host .mat-cell,
+.mat-footer-cell {
+  color: rgba(0, 0, 0, 0.82);
 }
 
 mat-option {
   text-align: center;
 }
 
-mat-slide-toggle {
-  padding: 5px;
+mat-select {
+  width: 83px;
+}
+
+.icon-button-shadow {
+  box-shadow: 2px 2px 1px -1.2px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.2),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.017);
+}
+
+.select-box-shadow {
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.1), 0px 1px 1px 0px rgba(0, 0, 0, 0.02),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.03);
+}
+
+th mat-select {
+  position: relative !important;
+  top: -3px !important;
+}
+
+.level-select {
+  position: relative !important;
+  left: -9px;
 }
 
 .actions-td,
 .actions-th {
   text-align: right;
+  white-space: nowrap;
 }
 
 .referrals-table {
   width: 100%;
+}
+
+.referral-td {
+  padding-left: 6px;
+}
+
+.level-td {
+  text-align: center;
+}
+
+.level-td-content {
+  position: relative;
+  left: -23px;
 }
 
 .referrals-table-container {
@@ -44,8 +104,17 @@ mat-slide-toggle {
   background: #f3f3f3;
 }
 
+.view-referral {
+  margin-right: 7px;
+}
+
 .primary-bold {
-  color: #8bc34a;
+  color: #8bc34a !important;
+  font-weight: bold;
+}
+
+.warn-bold {
+  color: #f44336 !important;
   font-weight: bold;
 }
 
@@ -74,11 +143,19 @@ mat-slide-toggle {
   .hide-2 {
     display: none;
   }
+  td.mat-cell:first-child,
+  th.mat-header-cell:first-child {
+    padding: 0 !important;
+  }
 }
 
 @media screen and (min-width: 413px) and (max-width: 500px) {
   .hide-1 {
     display: none;
+  }
+  td.mat-cell:first-child,
+  th.mat-header-cell:first-child {
+    padding: 0 !important;
   }
 }
 
