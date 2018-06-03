@@ -54,6 +54,8 @@ select-input {
 
 .register-top-image-container {
   width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
   overflow-x: hidden;
   display: flex;
   align-items: center;
