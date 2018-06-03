@@ -1,8 +1,10 @@
 <h5 *ngIf="blocked" style="text-align: center">This referer has been blocked due to inappropriate advertising.</h5>
-<mat-card *ngIf="!blocked" class="register-page-container" @fade>
-  <img *ngIf="step === 1" id="register-top" src="assets/svg/register-top-1366x768.svg">
-  <mat-card class="os-title-card primary-background">Register</mat-card>
-  <mat-card class="os-form-container os-section-card">
+<mat-card *ngIf="!blocked" class="register-page-container" [hidden]="!showElements" @fade>
+  <div class="register-top-image-container">
+    <img *ngIf="step === 1" id="register-top-image" (load)="imageLoaded($event)" src="assets/svg/register-top-1366x768.svg">
+  </div>
+  <mat-card *ngIf="showElements" class="os-title-card primary-background">Register</mat-card>
+  <mat-card *ngIf="showElements" class="os-form-container os-section-card">
     <form [formGroup]="f" (ngSubmit)="submitForm()">
       <div [hidden]="step === 2" *ngIf="!invalidCountry" @fade>
         <mat-card-subtitle>
@@ -16,7 +18,7 @@
         </div>
         <os-form-input class="os-form-input" type="password" controlName="password" placeholder="Password" [form]="f"></os-form-input>
         <os-form-input class="os-form-input" type="password" controlName="confirmPassword" placeholder="Confirm Password" [form]="f"></os-form-input>
-        <div [hidden]="!f.hasError('comparePassword') || 
+        <div [hidden]="!f.hasError('comparePassword') ||
             !f.get('confirmPassword').valid" class="warn-text">
           Passwords do not match.
         </div>
@@ -63,7 +65,7 @@
         </div>
       </div>
       <ng-container *ngIf="!invalidCountry">
-        <button *ngIf="step === 1" class="white" mat-raised-button color="primary" type="button" [disabled]="invalidCountry" (click)="step = 2">Next</button>
+        <button *ngIf="step === 1" class="white" mat-raised-button color="primary" type="button" [disabled]="invalidCountry" (click)="step = 2; scrollToTop()">Next</button>
         <button *ngIf="step === 2" class="white" mat-raised-button color="primary" type="submit" [disabled]="!f.valid || (loading$ | async) || invalidCountry">Register</button>
       </ng-container>
       <div class="warn invalid-country-text" *ngIf="invalidCountry">
@@ -82,5 +84,5 @@
       </ng-container>
     </form>
   </mat-card>
-  <os-footer></os-footer>
+  <os-footer *ngIf="showElements"></os-footer>
 </mat-card>

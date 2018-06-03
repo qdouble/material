@@ -47,24 +47,26 @@ select-input {
   max-width: 500px;
 }
 
-.receive-prize {
-  width: 100%;
-  overflow: hidden;
-  left: -4px;
-}
-
 #referred-by {
   margin-top: 15px;
   margin-bottom: -5px;
 }
 
-#register-top {
-  width: 160%;
-  max-width: 850px;
-  margin-left: 50%;
-  transform: translateX(-50%);
-  @media screen and (min-width: 600px) {
-    width: 100%;
+.register-top-image-container {
+  width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  #register-top-image {
+    height: 101%;
+    width: 160%;
+    @media screen and (min-width: 600px) {
+      width: 100%;
+    }
+  }
+  form {
+    height: 101%;
   }
 }
 
@@ -77,6 +79,6 @@ select-input {
 }
 
 .register-page-container {
-  overflow: hidden;
   box-shadow: none;
+  min-height: 854px;
 }

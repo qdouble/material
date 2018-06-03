@@ -1,24 +1,23 @@
-/* tslint:disable: variable-name */
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 import * as countryActions from '../../actions/country';
 import * as prizeActions from '../../actions/prize';
 import * as userActions from '../../actions/user';
 import { Country } from '../../models/country';
 import { IP } from '../../models/ip';
 import { Prize } from '../../models/prize';
-import * as fromStore from '../../reducers';
-import { CustomValidators, RegexValues, UsernameValidator } from '../../validators';
-
-import { IPMatchFoundDialog } from './ip-match-found.dialog';
 import { GetIPInfoResponse } from '../../models/ui';
-import { takeUntil, filter, take, map } from 'rxjs/operators';
+import * as fromStore from '../../reducers';
+import { scrollToTop } from '../../utilities/scroll-to-top';
+import { CustomValidators, RegexValues, UsernameValidator } from '../../validators';
+import { IPMatchFoundDialog } from './ip-match-found.dialog';
+/* tslint:disable: variable-name */
 
 @Component({
   selector: 'os-register',
@@ -67,6 +66,7 @@ export class Register implements OnDestroy, OnInit {
   selectedPrize: string | null;
   showPrizes: boolean;
   step = 1;
+  showElements: boolean;
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
@@ -149,7 +149,10 @@ export class Register implements OnDestroy, OnInit {
     this.invalidCountry$.pipe(takeUntil(this.destroyed$)).subscribe(invalid => {
       if (invalid) {
         this.overrideInvalid$
-          .pipe(takeUntil(this.destroyed$), filter(o => o === ''))
+          .pipe(
+            takeUntil(this.destroyed$),
+            filter(o => o === '')
+          )
           .subscribe(() => (this.invalidCountry = true));
       }
     });
@@ -172,7 +175,10 @@ export class Register implements OnDestroy, OnInit {
       }
     });
     this.store
-      .pipe(select(fromStore.getUserReferrerBlocked), takeUntil(this.destroyed$))
+      .pipe(
+        select(fromStore.getUserReferrerBlocked),
+        takeUntil(this.destroyed$)
+      )
       .subscribe(blocked => {
         if (blocked) {
           this.blocked = true;
@@ -181,21 +187,33 @@ export class Register implements OnDestroy, OnInit {
     this.countries$ = this.store.pipe(select(fromStore.getCountryCollection));
     this.countryIds$ = this.countries$.pipe(map(countries => countries.map(country => country.id)));
     this.countryIds$
-      .pipe(filter(ids => ids.length > 0), take(1), takeUntil(this.destroyed$))
+      .pipe(
+        filter(ids => ids.length > 0),
+        take(1),
+        takeUntil(this.destroyed$)
+      )
       .subscribe(ids => this.f.get('country').setValue(ids[0]));
     this.countryNames$ = this.countries$.pipe(
       map(countries => countries.map(country => country.displayName))
     );
     this.entryEmail$ = this.store.pipe(select(fromStore.getUserEntryEmail));
-    this.entryEmail$.pipe(takeUntil(this.destroyed$), take(1)).subscribe(email => {
-      if (email) this.f.get('email').setValue(email);
-    });
+    this.entryEmail$
+      .pipe(
+        takeUntil(this.destroyed$),
+        take(1)
+      )
+      .subscribe(email => {
+        if (email) this.f.get('email').setValue(email);
+      });
 
     this.ip$ = this.store.select(s => s.user.ip);
     this.ipJson$ = this.store.select(s => s.user.ipJson);
     this.referredBy$ = this.store.pipe(select(fromStore.getUserReferredBy));
     this.referredBy$
-      .pipe(takeUntil(this.destroyed$), filter(ref => ref !== null))
+      .pipe(
+        takeUntil(this.destroyed$),
+        filter(ref => ref !== null)
+      )
       .subscribe(ref => {
         this.f.get('referredBy').setValue(ref);
       });
@@ -223,7 +241,10 @@ export class Register implements OnDestroy, OnInit {
       if (id === null) this.showPrizes = true;
     });
     this.prizeIds$
-      .pipe(filter(ids => ids.length > 0), takeUntil(this.destroyed$))
+      .pipe(
+        filter(ids => ids.length > 0),
+        takeUntil(this.destroyed$)
+      )
       .subscribe(ids => {
         this.store.dispatch(new prizeActions.SelectPrize(ids[0]));
         if (this.f.get('selectedPrize').value === null) {
@@ -232,8 +253,15 @@ export class Register implements OnDestroy, OnInit {
       });
 
     this.selectedPrize$
-      .pipe(filter(id => id !== null), takeUntil(this.destroyed$))
+      .pipe(
+        filter(id => id !== null),
+        takeUntil(this.destroyed$)
+      )
       .subscribe(id => this.f.patchValue({ selectedPrize: id }));
+  }
+
+  imageLoaded() {
+    this.showElements = true;
   }
 
   openIPMatchDialog() {
@@ -256,10 +284,18 @@ export class Register implements OnDestroy, OnInit {
     }
   }
 
+  scrollToTop() {
+    scrollToTop();
+  }
+
   submitForm() {
     let matches$ = this.store.select(s => s.user.matches);
     matches$
-      .pipe(filter(m => m !== undefined), take(1), takeUntil(this.destroyed$))
+      .pipe(
+        filter(m => m !== undefined),
+        take(1),
+        takeUntil(this.destroyed$)
+      )
       .subscribe(match => {
         if (match) {
           this.openIPMatchDialog();
