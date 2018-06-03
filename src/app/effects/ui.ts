@@ -40,12 +40,10 @@ export class UIEffects {
     ofType(UIActionTypes.AddInvalidCountry),
     map((action: AddInvalidCountry) => action.payload),
     switchMap(ipInfo =>
-      this.uiService
-        .addInvalidCountry(ipInfo)
-        .pipe(
-          map(res => new AddInvalidCountrySuccess(res)),
-          catchError(err => concat(of(new AddInvalidCountryFail(err)), of(new AddNotify(err))))
-        )
+      this.uiService.addInvalidCountry(ipInfo).pipe(
+        map(res => new AddInvalidCountrySuccess(res)),
+        catchError(err => concat(of(new AddInvalidCountryFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -54,12 +52,10 @@ export class UIEffects {
     ofType(UIActionTypes.AddUserIDToSocket),
     map((action: AddUserIDToSocket) => action.payload),
     switchMap(id =>
-      this.uiService
-        .addUserIDToSocket(id)
-        .pipe(
-          map(res => new AddUserIDToSocketSuccess(res)),
-          catchError(err => concat(of(new AddUserIDToSocketFail(err)), of(new AddNotify(err))))
-        )
+      this.uiService.addUserIDToSocket(id).pipe(
+        map(res => new AddUserIDToSocketSuccess(res)),
+        catchError(err => concat(of(new AddUserIDToSocketFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -68,12 +64,10 @@ export class UIEffects {
     ofType(UIActionTypes.ContactUs),
     map((action: ContactUs) => action.payload),
     switchMap(contact =>
-      this.uiService
-        .contactUs(contact)
-        .pipe(
-          mergeMap(res => concat(of(new ContactUsSuccess(res)), of(new AddNotify(res)))),
-          catchError(err => concat(of(new ContactUsFail(err)), of(new AddNotify(err))))
-        )
+      this.uiService.contactUs(contact).pipe(
+        mergeMap(res => concat(of(new ContactUsSuccess(res)), of(new AddNotify(res)))),
+        catchError(err => concat(of(new ContactUsFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -82,12 +76,10 @@ export class UIEffects {
     ofType(UIActionTypes.GetIPInfo),
     map((action: GetIPInfo) => action.payload),
     switchMap(ip =>
-      this.uiService
-        .getIPInfo(ip)
-        .pipe(
-          map(res => new GetIPInfoSuccess(res)),
-          catchError(err => concat(of(new GetIPInfoFail(err)), of(new AddNotify(err))))
-        )
+      this.uiService.getIPInfo(ip).pipe(
+        map(res => new GetIPInfoSuccess(res)),
+        catchError(err => concat(of(new GetIPInfoFail(err))))
+      )
     )
   );
 
@@ -95,12 +87,10 @@ export class UIEffects {
   getProfile$: Observable<Action> = this.actions$.pipe(
     ofType(UIActionTypes.GetVersion),
     switchMap(() =>
-      this.uiService
-        .getVersion()
-        .pipe(
-          map(res => new GetVersionSuccess(res)),
-          catchError(err => concat(of(new GetVersionFail(err)), of(new AddNotify(err))))
-        )
+      this.uiService.getVersion().pipe(
+        map(res => new GetVersionSuccess(res)),
+        catchError(err => concat(of(new GetVersionFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -108,12 +98,10 @@ export class UIEffects {
   getScriptsToLoad$: Observable<Action> = this.actions$.pipe(
     ofType(UIActionTypes.GetSocialProof),
     switchMap(() =>
-      this.uiService
-        .getScriptsToLoad()
-        .pipe(
-          map(res => new GetScriptsToLoadSuccess(res)),
-          catchError(err => concat(of(new GetSocialProofFail(err)), of(new AddNotify(err))))
-        )
+      this.uiService.getScriptsToLoad().pipe(
+        map(res => new GetScriptsToLoadSuccess(res)),
+        catchError(err => concat(of(new GetSocialProofFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -122,12 +110,10 @@ export class UIEffects {
     ofType(UIActionTypes.GetSocialProof),
     map((action: GetSocialProof) => action.payload),
     switchMap(type =>
-      this.uiService
-        .getSocialProof(type)
-        .pipe(
-          map(res => new GetSocialProofSuccess(res)),
-          catchError(err => concat(of(new GetSocialProofFail(err)), of(new AddNotify(err))))
-        )
+      this.uiService.getSocialProof(type).pipe(
+        map(res => new GetSocialProofSuccess(res)),
+        catchError(err => concat(of(new GetSocialProofFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -135,12 +121,10 @@ export class UIEffects {
   getSocialProofSettings$: Observable<Action> = this.actions$.pipe(
     ofType(UIActionTypes.GetSocialProofSettings),
     switchMap(() =>
-      this.uiService
-        .getSocialProofSettings()
-        .pipe(
-          map(res => new GetSocialProofSettingsSuccess(res)),
-          catchError(err => concat(of(new GetSocialProofSettingsFail(err)), of(new AddNotify(err))))
-        )
+      this.uiService.getSocialProofSettings().pipe(
+        map(res => new GetSocialProofSettingsSuccess(res)),
+        catchError(err => concat(of(new GetSocialProofSettingsFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 }
