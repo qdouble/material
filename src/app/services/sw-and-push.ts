@@ -55,6 +55,9 @@ export class SWAndPushService {
   }
 
   registerServiceWorkers(fileNames: string[]) {
+    if (!('Notification' in window)) {
+      return;
+    }
     fileNames.forEach(name => {
       navigator.serviceWorker
         .register(name)
@@ -69,6 +72,9 @@ export class SWAndPushService {
   }
 
   unregisterServiceWorkers(fileNames: string[]) {
+    if (!('Notification' in window)) {
+      return;
+    }
     navigator.serviceWorker
       .getRegistrations()
       .then(function(registrations) {

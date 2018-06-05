@@ -217,8 +217,10 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.initDispatches();
     this.cache.set('cached', true);
-    this.swAndPushService.unregisterServiceWorkers(['service-worker.js']);
-    this.swAndPushService.registerServiceWorkers(['sw-push.js']);
+    if (SERVICE_WORKER_SUPPORT) {
+      this.swAndPushService.unregisterServiceWorkers(['service-worker.js']);
+      this.swAndPushService.registerServiceWorkers(['sw-push.js']);
+    }
 
     this.version$.subscribe(v => (this.version = v));
 
@@ -417,7 +419,7 @@ export class AppComponent implements OnInit {
       .pipe(filter(s => s && s.length > 0))
       .subscribe(scripts => this.loadScripts(scripts));
 
-    if (this.version === '0.9.2') {
+    if (this.version === '0.9.3') {
       this.socialProofSettings$
         .pipe(filter(s => s !== undefined && s !== null))
         .subscribe(settings => {
