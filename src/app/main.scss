@@ -8,7 +8,6 @@
 
 .os-form-container {
   position: relative;
-  max-width: 500px;
   margin: 0 auto; // border-bottom: 5px solid $primary-color;
   overflow: scroll;
   @media screen and (min-width: 500px) {
@@ -43,6 +42,8 @@
   min-height: -webkit-calc(100vh - 64px -48px);
   min-height: calc(100vh - 64px - 48px);
   box-shadow: none !important;
+  margin: 0 auto;
+  max-width: 800px;
 }
 
 :host mat-card.os-section-card {

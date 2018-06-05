@@ -1,19 +1,18 @@
-/* tslint:disable: variable-name */
-import { Component, OnDestroy, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-
-import * as fromStore from '../../reducers';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 import * as countryActions from '../../actions/country';
 import * as offerActions from '../../actions/offer';
 import * as userActions from '../../actions/user';
+import { isoToNewDateFormatter } from '../../helper/iso-to-new-date-formatter';
 import { Country } from '../../models/country';
 import { User } from '../../models/user';
+import * as fromStore from '../../reducers';
 import { CustomValidators, RegexValues } from '../../validators';
-import { isoToNewDateFormatter } from '../../helper/iso-to-new-date-formatter';
-import { takeUntil, take, map, filter } from 'rxjs/operators';
+/* tslint:disable: variable-name */
 
 @Component({
   selector: 'os-profile',
@@ -91,16 +90,16 @@ export class Profile implements OnDestroy, OnInit {
       }
     });
     this.loaded$ = this.store.pipe(select(fromStore.getUserLoaded));
-    typeof document !== 'undefined' && document.getElementById('os-toolbar')
-      ? document.getElementById('os-toolbar').scrollIntoView()
-      : {}; // tslint:disable-line
     this.countries$ = this.store.pipe(select(fromStore.getCountryCollection));
     this.countryIds$ = this.countries$.pipe(map(countries => countries.map(country => country.id)));
     this.countryNames$ = this.countries$.pipe(
       map(countries => countries.map(country => country.displayName))
     );
     this.user$
-      .pipe(filter(user => user !== undefined), takeUntil(this.destroyed$))
+      .pipe(
+        filter(user => user !== undefined),
+        takeUntil(this.destroyed$)
+      )
       .subscribe((user: User) => {
         if (user.profilePending) {
           this.pendingProfile = user.pendingProfile;

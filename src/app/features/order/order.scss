@@ -26,11 +26,14 @@ a {
   }
   button {
     margin-bottom: 5px;
+    max-width: 100%;
+    font-size: 13px;
+    margin: 0 auto;
   }
 }
 
 .hold-container {
-  max-width: 600px;
+  // max-width: 600px;
   margin: 0 auto;
 }
 
@@ -55,7 +58,12 @@ mat-card-subtitle {
 }
 
 .os-form-container {
-  max-width: 550px; // border-top: 5px solid $primary-color;
+  // max-width: 550px; // border-top: 5px solid $primary-color;
+}
+
+.os-page-container {
+  max-width: 690px;
+  margin: 0 auto;
 }
 
 #place-order {
@@ -63,5 +71,5 @@ mat-card-subtitle {
 }
 
 .step-title {
-  max-width: 552px;
+  // max-width: 552px;
 }

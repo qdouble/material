@@ -1,24 +1,20 @@
-/* tslint:disable triple-equals max-line-length */
-import { Component, OnDestroy, OnInit } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
-
-import { Store, select } from '@ngrx/store';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
+import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
-
-import { RegexValues } from '../../validators';
-
-import { ConfirmDialog } from '../../dialogs/confirm.dialog';
-
-import * as fromStore from '../../reducers';
-import * as prizeActions from '../../actions/prize';
 import * as orderActions from '../../actions/order';
+import * as prizeActions from '../../actions/prize';
 import * as userActions from '../../actions/user';
-import { Prize } from '../../models/prize';
+import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { Order } from '../../models/order';
+import { Prize } from '../../models/prize';
 import { User } from '../../models/user';
+import * as fromStore from '../../reducers';
+import { RegexValues } from '../../validators';
+/* tslint:disable triple-equals max-line-length */
 
 @Component({
   selector: 'os-order',
@@ -100,7 +96,11 @@ export class OrderComponent implements OnDestroy, OnInit {
     this.loaded$ = store.pipe(select(fromStore.getUserLoaded));
     this.placing$ = store.pipe(select(fromStore.getOrderPlacing));
     store
-      .pipe(select(fromStore.getPrizeLoaded), take(1), takeUntil(this.destroyed$))
+      .pipe(
+        select(fromStore.getPrizeLoaded),
+        take(1),
+        takeUntil(this.destroyed$)
+      )
       .subscribe(loaded => {
         if (loaded) this.store.dispatch(new prizeActions.GetPrizes());
       });
@@ -185,9 +185,6 @@ export class OrderComponent implements OnDestroy, OnInit {
       }
       count++;
     }, 350);
-    typeof document !== 'undefined' && document.getElementById('os-toolbar')
-      ? document.getElementById('os-toolbar').scrollIntoView()
-      : {}; // tslint:disable-line
     if (
       this.paypalIds.includes(this.f.get('selectedPrize').value) &&
       (this.f.get('paypal').value == undefined ||
@@ -248,11 +245,16 @@ export class OrderComponent implements OnDestroy, OnInit {
       this.store.dispatch(
         new userActions.ChangeSelectedPrize(this.selectPrizeForm.get('selectedPrize').value)
       );
-      this.settingPrize$.pipe(filter(s => s !== false), takeUntil(this.destroyed$)).subscribe(() =>
-        setTimeout(() => {
-          this.changePrize = false;
-        }, 50)
-      );
+      this.settingPrize$
+        .pipe(
+          filter(s => s !== false),
+          takeUntil(this.destroyed$)
+        )
+        .subscribe(() =>
+          setTimeout(() => {
+            this.changePrize = false;
+          }, 50)
+        );
     } else {
       this.changePrize = true;
     }

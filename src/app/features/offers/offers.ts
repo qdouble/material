@@ -1,22 +1,21 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
-import { BehaviorSubject, Observable, Subject, combineLatest, of } from 'rxjs';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
-
-const firstBy = require('thenby');
-
-import * as fromStore from '../../reducers';
-import { Credit } from '../../models/credit';
-import { Offer } from '../../models/offer';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import * as offerActions from '../../actions/offer';
 import * as userActions from '../../actions/user';
-
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
+import { Credit } from '../../models/credit';
+import { Offer } from '../../models/offer';
 import { User } from '../../models/user';
-import { takeUntil, filter, map } from 'rxjs/operators';
+import * as fromStore from '../../reducers';
+import { scrollToTop } from '../../utilities/scroll-to-top';
+
+const firstBy = require('thenby');
 
 @Component({
   selector: 'os-offers',
@@ -126,7 +125,10 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
 
     this.offersUnsorted$ = this.store.pipe(select(fromStore.getOfferCollection));
     this.offersUnsorted$
-      .pipe(takeUntil(this.destroyed$), filter(o => o !== undefined))
+      .pipe(
+        takeUntil(this.destroyed$),
+        filter(o => o !== undefined)
+      )
       .subscribe(offers => {
         this.pages = [];
         for (let i = 0; i < offers.length / this.offersPerPage; i++) {
@@ -195,9 +197,6 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
       this.offersSelectedCreditValue = creditValue;
     });
 
-    typeof document !== 'undefined' && document.getElementById('os-toolbar')
-      ? document.getElementById('os-toolbar').scrollIntoView()
-      : {}; // tslint:disable-line
     this.route.params.subscribe(param => {
       if (param['showRefT']) {
         this.store.dispatch(new userActions.TestShowRefRandom(JSON.parse(param['showRefT'])));
@@ -232,7 +231,10 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
     this.store.dispatch(new offerActions.GetOffersUpdatedAt());
 
     this.user$
-      .pipe(filter(user => user.createdAt !== undefined), takeUntil(this.destroyed$))
+      .pipe(
+        filter(user => user.createdAt !== undefined),
+        takeUntil(this.destroyed$)
+      )
       .subscribe(user => {
         if (user && user.holdReason === 'Identification Hold - Suspicious Activity') {
           this.hideOffers = true;
@@ -264,9 +266,7 @@ export class Offers implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngAfterViewInit() {
-    if (this.route.snapshot.params['new']) {
-      typeof document !== 'undefined' ? document.getElementById('os-toolbar').scrollIntoView() : {}; // tslint:disable-line
-    }
+    scrollToTop();
   }
 
   goToOfferDetails(offer: Offer) {

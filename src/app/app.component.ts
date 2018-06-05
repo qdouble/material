@@ -1,61 +1,81 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import {
   MatDialog,
-  MatDialogRef,
   MatDialogConfig,
+  MatDialogRef,
   MatSnackBar,
   MatSnackBarConfig,
   MatSnackBarHorizontalPosition,
+  MatSnackBarRef,
   MatSnackBarVerticalPosition,
-  MatSnackBarRef
+  MatSidenav,
+  MatButton,
+  MatToolbar
 } from '@angular/material';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, NavigationStart } from '@angular/router';
+import { select, Store } from '@ngrx/store';
 import { interval, Observable, Subject, timer } from 'rxjs';
-import { filter, take, retry, takeUntil } from 'rxjs/operators';
+import { filter, retry, take, takeUntil } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
-import { Store, select } from '@ngrx/store';
-
 import { TransferState } from '../modules/transfer-state/transfer-state';
-
-import * as fromStore from './reducers';
-import { Credit } from './models/credit';
-import { Notification } from './models/notification';
-import { Notify } from './models/notify';
 import * as notificationActions from './actions/notification';
 import * as prizeActions from './actions/prize';
 import * as uiActions from './actions/ui';
 import * as userActions from './actions/user';
-
-import { validateUserName } from './validators';
-
 import { views } from './app-nav-views';
-import { log, MOBILE, SERVICE_WORKER_SUPPORT } from './services/constants';
-import { PushNotification } from './models/push-notification';
-import { SWAndPushService } from './services/sw-and-push';
-
 import { AskQuestionsDialog } from './dialogs/ask-questions.dialog';
 import { CompletedOrderDialog } from './dialogs/completed-order.dialog';
 import { CreditedOfferDialog } from './dialogs/credited-offer.dialog';
 import { LevelBadgeDialog } from './dialogs/level-badge.dialog';
+import { Credit } from './models/credit';
+import { Notification } from './models/notification';
+import { Notify } from './models/notify';
 import { Offer } from './models/offer';
 import { Order } from './models/order';
+import { PushNotification } from './models/push-notification';
+import { GetIPInfoResponse, Script, SocialProof, SocialProofSettings } from './models/ui';
+import * as fromStore from './reducers';
 import { ScriptService } from './script.service';
-import { Script, GetIPInfoResponse, SocialProof, SocialProofSettings } from './models/ui';
+import { log, MOBILE, SERVICE_WORKER_SUPPORT } from './services/constants';
+import { SWAndPushService } from './services/sw-and-push';
 import { ProofSnackbarComponent } from './snackbars/proof.snackbar.component';
+import { validateUserName } from './validators';
+import { scrollToTop } from './utilities/scroll-to-top';
+import { trigger, transition, animate, keyframes, style } from '@angular/animations';
 
 @Component({
   selector: 'my-app',
-  styleUrls: ['main.scss', './app.component.scss'],
+  styleUrls: ['styles.scss', 'main.scss', './app.component.scss'],
   templateUrl: './app.component.html',
-  encapsulation: ViewEncapsulation.None
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  encapsulation: ViewEncapsulation.None,
+  animations: [
+    trigger('fadeStartEnd', [
+      transition('start => end', [
+        animate(
+          `2s`,
+          keyframes([style({ opacity: 0, offset: 0 }), style({ opacity: 1, offset: 1.0 })])
+        )
+      ]),
+      transition('end => start', [
+        animate(
+          `2s`,
+          keyframes([style({ opacity: 1, offset: 0 }), style({ opacity: 0, offset: 1.0 })])
+        )
+      ])
+    ])
+  ]
 })
 export class AppComponent implements OnInit {
+  @ViewChild('sidenav') sidenav: MatSidenav;
+  @ViewChild('menuButton') menuButton: MatButton;
+  @ViewChild('toolbar') toolbar: MatToolbar;
   // Nav menu related //
   initView = true;
-  previousView;
   mobile = MOBILE;
-  sideNavMode = MOBILE ? 'over' : 'side';
+  previousView;
+  sideNavMode = this.mobile ? 'over' : 'side';
+  sideNavOpen = false;
+  sideNavPosition = 'start';
   /////////////////////
   actionButtonLabel: string = 'Close';
   action: boolean = false;
@@ -80,13 +100,14 @@ export class AppComponent implements OnInit {
   /////////////
   amountPaid$: Observable<number>;
   askQuestions$: Observable<boolean>;
-  destroyProofTimer$: Subject<any> = new Subject<any>();
+  checkVersionInterval$: Observable<number>;
+  completedOrders$: Observable<Order[]>;
+  creditedOffer$: Observable<Offer[]>;
   credits$: Observable<Credit[]>;
   creditTotal: number;
   creditTotal$: Observable<number>;
+  destroyProofTimer$: Subject<any> = new Subject<any>();
   firstName: string;
-  onAdminLoginPage$: Observable<boolean>;
-  onAdminLoginPage: boolean;
   HMR = HMR;
   invalidCountry$: Observable<boolean>;
   ipInfo: GetIPInfoResponse;
@@ -95,55 +116,55 @@ export class AppComponent implements OnInit {
   loaded: boolean;
   loggedIn: boolean;
   loginChecked: boolean;
+  navigationPhase: 'start' | 'end';
   notifications$: Observable<Notification[]>;
   notify$: Observable<Notify[]>;
+  onAdminLoginPage: boolean;
+  onAdminLoginPage$: Observable<boolean>;
   openLevelAfterClose = 0;
   proofCount = 0;
   proofDismissedWithAction: boolean;
-  proofSnackBar: MatSnackBarRef<ProofSnackbarComponent>;
   proofs: SocialProof[];
+  proofSnackBar: MatSnackBarRef<ProofSnackbarComponent>;
+  pushNotifications$: Observable<PushNotification>;
   referredBy: string;
   scripts$: Observable<Script[]>;
   scriptsRequested: boolean;
+  showLevelBadge$: Observable<number>;
   showNotifications = false;
   showStatus: boolean;
   snackRefs = [];
-  socialProofStopRepeat: boolean;
   socialProofs$: Observable<SocialProof[]>;
-  socialProofSettings$: Observable<SocialProofSettings>;
   socialProofSettings: SocialProofSettings;
+  socialProofSettings$: Observable<SocialProofSettings>;
+  socialProofStopRepeat: boolean;
   unreadMessageTotal$: Observable<number>;
   unreadNotificationPendingTotal$: Observable<number>;
   unreadNotificationTotal$: Observable<number>;
   updatedAt: string;
-  userUpdatedAt$: Observable<string>;
   userActive$: Observable<boolean>;
-  userLoading$: Observable<boolean>;
+  userFirstName$: Observable<string>;
+  userId = '';
+  userLastUpdate$: Observable<string>;
   userLoaded$: Observable<boolean>;
+  userLoading$: Observable<boolean>;
   userLoggedIn$: Observable<boolean>;
   userLoginChecked$: Observable<boolean>;
   userReferredBy$: Observable<string | null>;
-  userId = '';
+  userReferrerBlocked$: Observable<boolean>;
+  userUpdatedAt$: Observable<string>;
   version: string;
   version$: Observable<string>;
   views = views;
-  userReferrerBlocked$: Observable<boolean>;
-  showLevelBadge$: Observable<number>;
-  completedOrders$: Observable<Order[]>;
-  creditedOffer$: Observable<Offer[]>;
-  userFirstName$: Observable<string>;
-  userLastUpdate$: Observable<string>;
-  pushNotifications$: Observable<PushNotification>;
-  checkVersionInterval$: Observable<number>;
   constructor(
     private cache: TransferState,
-    public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
     private script: ScriptService,
+    private store: Store<fromStore.AppState>,
     private swAndPushService: SWAndPushService,
-    public snackBar: MatSnackBar,
-    private store: Store<fromStore.AppState>
+    public dialog: MatDialog,
+    public snackBar: MatSnackBar
   ) {
     this.version$ = this.store.pipe(select(fromStore.getUIVersion));
     this.latestVersion$ = this.store.pipe(select(fromStore.getUILatestVersion));
@@ -183,9 +204,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.initDispatches();
     this.cache.set('cached', true);
-    if (SERVICE_WORKER_SUPPORT && ENV !== 'development') {
-      this.swAndPushService.registerServiceWorker();
-    }
+    this.swAndPushService.unregisterServiceWorkers(['service-worker.js']);
+    this.swAndPushService.registerServiceWorkers(['sw-push.js']);
 
     this.version$.subscribe(v => (this.version = v));
 
@@ -300,8 +320,10 @@ export class AppComponent implements OnInit {
         }
       });
 
-    this.onAdminLoginPage$.subscribe(on => {
-      this.onAdminLoginPage = on;
+    this.onAdminLoginPage$.pipe(filter(on => on === true)).subscribe(() => {
+      setTimeout(() => {
+        this.onAdminLoginPage = true;
+      });
     });
 
     this.credits$.subscribe(credits => {
@@ -332,10 +354,15 @@ export class AppComponent implements OnInit {
 
     this.userFirstName$.subscribe(n => (this.firstName = n));
 
-    this.router.events.subscribe(val => {
-      if (val instanceof NavigationEnd) {
-        log('ROUTER EVENTS', val.url);
-        this.showStatus = val.url.startsWith('/offers');
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.navigationPhase = 'start';
+        scrollToTop();
+      }
+      if (event instanceof NavigationEnd) {
+        this.navigationPhase = 'end';
+        log('ROUTER EVENTS', event.url);
+        this.showStatus = event.url.startsWith('/offers');
         this.showNotifications = false;
       }
     });
@@ -377,7 +404,7 @@ export class AppComponent implements OnInit {
       .pipe(filter(s => s && s.length > 0))
       .subscribe(scripts => this.loadScripts(scripts));
 
-    if (this.version === '0.8.3') {
+    if (this.version === '0.9.1') {
       this.socialProofSettings$
         .pipe(filter(s => s !== undefined && s !== null))
         .subscribe(settings => {
@@ -417,6 +444,11 @@ export class AppComponent implements OnInit {
   }
   closeConnection() {
     this.closeConnection$.next();
+  }
+
+  closeSideNav() {
+    this.sidenav.close();
+    this.menuButton._elementRef.nativeElement.classList.remove('cdk-program-focused');
   }
   connect() {
     this.webSocket$ = webSocket(
@@ -498,8 +530,8 @@ export class AppComponent implements OnInit {
 
   openProofSnackBar(showLoggedIn = false) {
     if (this.proofDismissedWithAction) return;
-    let horizontalPosition: MatSnackBarHorizontalPosition = 'start';
-    let verticalPosition: MatSnackBarVerticalPosition = this.mobile ? 'top' : 'bottom';
+    let horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+    let verticalPosition: MatSnackBarVerticalPosition = 'bottom';
     if (this.proofSnackBar) {
       this.proofSnackBar.dismiss();
       this.proofSnackBar = undefined;
@@ -508,7 +540,7 @@ export class AppComponent implements OnInit {
       this.proofSnackBar = this.snackBar.openFromComponent(ProofSnackbarComponent, {
         data: this.proofs[this.proofCount],
         duration: this.socialProofSettings.duration,
-        panelClass: 'os-snackbar',
+        panelClass: 'os-proof-snackbar',
         horizontalPosition: horizontalPosition,
         verticalPosition: verticalPosition
       });

@@ -1,88 +1,89 @@
 <h5 *ngIf="blocked" style="text-align: center">This referer has been blocked due to inappropriate advertising.</h5>
-<mat-card *ngIf="!blocked" class="register-page-container" [hidden]="!showElements" @fade>
+<mat-card *ngIf="!blocked" class="os-page-container" [hidden]="!showElements" @fade>
   <div class="register-top-image-container">
     <img *ngIf="step === 1" id="register-top-image" (load)="imageLoaded($event)" src="assets/svg/register-top-1366x768.svg">
   </div>
-  <mat-card *ngIf="showElements" class="os-title-card primary-background">Register</mat-card>
-  <mat-card *ngIf="showElements" class="os-form-container os-section-card">
-    <form [formGroup]="f" (ngSubmit)="submitForm()">
-      <div [hidden]="step === 2" *ngIf="!invalidCountry" @fade>
-        <mat-card-subtitle>
-          <b>Only accepting residents of the USA, Canada, UK and Australia.</b>
-        </mat-card-subtitle>
-        <mat-card-subtitle>Step 1: Enter Account Information</mat-card-subtitle>
-        <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
-        <os-form-input class="os-form-input" type="text" controlName="username" placeholder="Username" [form]="f"></os-form-input>
-        <div [hidden]="!f.get('username').hasError('usernameTaken')" class="warn-text">
-          Username has already been taken.
+  <div class="register-form-container">
+    <mat-card *ngIf="showElements" class="os-title-card primary-background">Register</mat-card>
+    <mat-card *ngIf="showElements" class="os-form-container os-section-card">
+      <form [formGroup]="f" (ngSubmit)="submitForm()">
+        <div [hidden]="step === 2" *ngIf="!invalidCountry" @fade>
+          <mat-card-subtitle>
+            <b>Only accepting residents of the USA, Canada, UK and Australia.</b>
+          </mat-card-subtitle>
+          <mat-card-subtitle>Step 1: Enter Account Information</mat-card-subtitle>
+          <os-form-input class="os-form-input" type="email" controlName="email" placeholder="Email Address" [form]="f"></os-form-input>
+          <os-form-input class="os-form-input" type="text" controlName="username" placeholder="Username" [form]="f"></os-form-input>
+          <div [hidden]="!f.get('username').hasError('usernameTaken')" class="warn-text">
+            Username has already been taken.
+          </div>
+          <os-form-input class="os-form-input" type="password" controlName="password" placeholder="Password" [form]="f"></os-form-input>
+          <os-form-input class="os-form-input" type="password" controlName="confirmPassword" placeholder="Confirm Password" [form]="f"></os-form-input>
+          <div [hidden]="!f.hasError('comparePassword') ||
+                !f.get('confirmPassword').valid" class="warn-text">
+            Passwords do not match.
+          </div>
         </div>
-        <os-form-input class="os-form-input" type="password" controlName="password" placeholder="Password" [form]="f"></os-form-input>
-        <os-form-input class="os-form-input" type="password" controlName="confirmPassword" placeholder="Confirm Password" [form]="f"></os-form-input>
-        <div [hidden]="!f.hasError('comparePassword') ||
-            !f.get('confirmPassword').valid" class="warn-text">
-          Passwords do not match.
-        </div>
-      </div>
-      <div *ngIf="step === 2" @fade>
-        <mat-card-subtitle>Step 2: Enter Account Details</mat-card-subtitle>
-        <div id="registration-text" class="primary-background white">
-          <p>Registration information is verified before we pay our members. Please be sure to use fully accurate information.</p>
-        </div>
-        <os-form-input class="os-form-input" type="text" controlName="firstName" placeholder="First Name" [form]="f"></os-form-input>
-        <os-form-input class="os-form-input" type="text" controlName="lastName" placeholder="Last Name" [form]="f"></os-form-input>
-        <os-form-input class="os-form-input" type="text" controlName="address" placeholder="Street Address (No PO Box Allowed)" [form]="f"></os-form-input>
-        <os-form-input class="os-form-input" type="text" controlName="city" placeholder="City" [form]="f"></os-form-input>
-        <os-form-input class="os-form-input" type="text" controlName="State" placeholder="State" [form]="f"></os-form-input>
-        <os-form-input class="os-form-input" type="text" controlName="zipCode" placeholder="Zip Code" [form]="f"></os-form-input>
-        <select-input [optionValues]="countryIds$ | async" [optionLabels]="countryNames$ | async" [controlName]="'country'" [form]="f"
-          fullWidth="true" [placeholder]="'Select Country'">
-        </select-input>
-        <os-form-input class="os-form-input" type="text" controlName="phone" placeholder="Phone Number" [form]="f"></os-form-input>
-        <mat-form-field style="width: 100%">
-          <input matInput formControlName="birthday" [matDatepicker]="picker" [min]="minDate" [max]="maxDate" placeholder="Date of Birth: MM/DD/YYYY">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker touchUi="true" #picker></mat-datepicker>
-        </mat-form-field>
-        <div>
-          <select-input *ngIf="showPrizes" class="receive-prize" fullWidth="true" [optionValues]="prizeIds$ | async" [optionLabels]="prizeNames$ | async"
-            placeholder="How would you like to receive your prize?" [controlName]="'selectedPrize'" [form]="f">
+        <div *ngIf="step === 2" @fade>
+          <mat-card-subtitle>Step 2: Enter Account Details</mat-card-subtitle>
+          <div id="registration-text" class="primary-background white">
+            <p>Registration information is verified before we pay our members. Please be sure to use fully accurate information.</p>
+          </div>
+          <os-form-input class="os-form-input" type="text" controlName="firstName" placeholder="First Name" [form]="f"></os-form-input>
+          <os-form-input class="os-form-input" type="text" controlName="lastName" placeholder="Last Name" [form]="f"></os-form-input>
+          <os-form-input class="os-form-input" type="text" controlName="address" placeholder="Street Address (No PO Box Allowed)" [form]="f"></os-form-input>
+          <os-form-input class="os-form-input" type="text" controlName="city" placeholder="City" [form]="f"></os-form-input>
+          <os-form-input class="os-form-input" type="text" controlName="State" placeholder="State" [form]="f"></os-form-input>
+          <os-form-input class="os-form-input" type="text" controlName="zipCode" placeholder="Zip Code" [form]="f"></os-form-input>
+          <select-input [optionValues]="countryIds$ | async" [optionLabels]="countryNames$ | async" [controlName]="'country'" [form]="f"
+            fullWidth="true" [placeholder]="'Select Country'">
           </select-input>
+          <os-form-input class="os-form-input" type="text" controlName="phone" placeholder="Phone Number" [form]="f"></os-form-input>
+          <mat-form-field style="width: 100%">
+            <input matInput formControlName="birthday" [matDatepicker]="picker" [min]="minDate" [max]="maxDate" placeholder="Date of Birth: MM/DD/YYYY">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker touchUi="true" #picker></mat-datepicker>
+          </mat-form-field>
+          <div>
+            <select-input *ngIf="showPrizes" class="receive-prize" fullWidth="true" [optionValues]="prizeIds$ | async" [optionLabels]="prizeNames$ | async"
+              placeholder="How would you like to receive your prize?" [controlName]="'selectedPrize'" [form]="f">
+            </select-input>
+          </div>
+          <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address (optional)'"
+            [controlName]="'paypal'" [form]="f">
+          </os-form-input>
+          <div class="os-agree-checkbox">
+            <p class="explainer">In order to be eligible to earn money on Level Rewards, you have to "Level Up." After you Level Up, you can then
+              share your referral link and earn $5 per level your referrals complete. The maximum amount you can earn per
+              referral is based on your own level. In order to Level Up, members must complete trial offers and surveys from
+              3rd party advertisers. Membership to Level Rewards is free, but each trial or survey has its own requirements
+              with applicable terms and conditions.</p>
+            <mat-checkbox color="primary" formControlName="agree" type="checkbox">I understand how to get paid using this site.</mat-checkbox>
+            <mat-checkbox color="primary" formControlName="agree2" type="checkbox">I know that only 1 account per household is allowed.</mat-checkbox>
+            <mat-checkbox color="primary" formControlName="agree3" type="checkbox">I agree to all of the
+              <a routerLink="../terms-and-conditions">Terms and Conditions</a> of this site.
+            </mat-checkbox>
+          </div>
         </div>
-        <os-form-input *ngIf="f.get('selectedPrize').value === '1468679688287'" [placeholder]="'PayPal Email Address (optional)'"
-          [controlName]="'paypal'" [form]="f">
-        </os-form-input>
-        <div class="os-agree-checkbox">
-          <p class="explainer">In order to be eligible to earn money on Level Rewards, you have to "Level Up." After you Level Up, you can then
-            share your referral link and earn $5 per level your referrals complete. The maximum amount you can earn per referral
-            is based on your own level. In order to Level Up, members must complete trial offers and surveys from 3rd party
-            advertisers. Membership to Level Rewards is free, but each trial or survey has its own requirements with applicable
-            terms and conditions.</p>
-          <mat-checkbox color="primary" formControlName="agree" type="checkbox">I understand how to get paid using this site.</mat-checkbox>
-          <mat-checkbox color="primary" formControlName="agree2" type="checkbox">I know that only 1 account per household is allowed.</mat-checkbox>
-          <mat-checkbox color="primary" formControlName="agree3" type="checkbox">I agree to all of the
-            <a routerLink="../terms-and-conditions">Terms and Conditions</a> of this site.
-          </mat-checkbox>
+        <ng-container *ngIf="!invalidCountry">
+          <button *ngIf="step === 1" class="white" mat-raised-button color="primary" type="button" [disabled]="invalidCountry" (click)="step = 2; scrollToTop()">Next</button>
+          <button *ngIf="step === 2" class="white" mat-raised-button color="primary" type="submit" [disabled]="!f.valid || (loading$ | async) || invalidCountry">Register</button>
+        </ng-container>
+        <div class="warn invalid-country-text" *ngIf="invalidCountry">
+          <p>Your country is not supported</p>
+          <p>Available to US, UK, Canada and Australia residents only.</p>
+          <p class="proxy-warn">Please note that attempting to get around country restrictions by using a VPN or proxy to register or complete
+            offers will lead to your account being placed on hold or closed after account verification.</p>
         </div>
-      </div>
-      <ng-container *ngIf="!invalidCountry">
-        <button *ngIf="step === 1" class="white" mat-raised-button color="primary" type="button" [disabled]="invalidCountry" (click)="step = 2; scrollToTop()">Next</button>
-        <button *ngIf="step === 2" class="white" mat-raised-button color="primary" type="submit" [disabled]="!f.valid || (loading$ | async) || invalidCountry">Register</button>
-      </ng-container>
-      <div class="warn invalid-country-text" *ngIf="invalidCountry">
-        <p>Your country is not supported</p>
-        <p>Available to US, UK, Canada and Australia residents only.</p>
-        <p class="proxy-warn">Please note that attempting to get around country restrictions by using a VPN or proxy to register or complete offers
-          will lead to your account being placed on hold or closed after account verification.</p>
-      </div>
-      <ng-container *ngIf="!invalidCountry">
-        <p class="go-back" *ngIf="step === 2" (click)="step = 1">
-          <a>Go Back to Step 1</a>
-        </p>
-        <p id="referred-by" *ngIf="f.get('referredBy').value">
-          You are being referred by: {{f.get('referredBy').value}}
-        </p>
-      </ng-container>
-    </form>
-  </mat-card>
-  <os-footer *ngIf="showElements"></os-footer>
+        <ng-container *ngIf="!invalidCountry">
+          <p class="go-back" *ngIf="step === 2" (click)="step = 1">
+            <a>Go Back to Step 1</a>
+          </p>
+          <p id="referred-by" *ngIf="f.get('referredBy').value">
+            You are being referred by: {{f.get('referredBy').value}}
+          </p>
+        </ng-container>
+      </form>
+    </mat-card>
+  </div>
 </mat-card>

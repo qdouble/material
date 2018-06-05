@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { CustomPipesModule } from '../../pipes';
-import { FooterModule } from '../footer';
 import { MATERIAL_MODULES } from '../../material.modules';
 import { PagesModule } from '../../components/pages';
 
@@ -19,7 +18,6 @@ import { routes } from './offers.routing';
   imports: [
     CommonModule,
     CustomPipesModule,
-    FooterModule,
     FormsModule,
     MATERIAL_MODULES,
     PagesModule,

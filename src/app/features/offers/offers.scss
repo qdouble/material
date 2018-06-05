@@ -7,6 +7,11 @@ a:link {
   margin-top: 10px;
 }
 
+.bonus-explainer {
+  font-size: 16px !important;
+  margin: 5px 0 6px !important;
+}
+
 .countdown {
   text-align: center;
 }
@@ -34,17 +39,19 @@ a:link {
   }
   button {
     margin-bottom: 5px;
+    max-width: 100%;
   }
 }
 
 .referral-link {
   max-width: 540px;
-  margin: 0 auto 14px auto;
+  margin: 16px auto 14px auto !important;
   text-align: center;
+  font-size: 16px !important;
   mat-card-title {
     font-size: 17px;
     margin-bottom: 4px;
-    color: #558B2F;
+    color: #558b2f;
   }
   mat-card-subtitle {
     font-size: 12px;
@@ -55,7 +62,7 @@ a:link {
   }
   #fb-post-btn {
     text-align: center;
-    background: #3B5998;
+    background: #3b5998;
     color: white !important;
     font-weight: 700;
   }
@@ -82,6 +89,7 @@ mat-slide-toggle {
 
 #offers-page {
   overflow: hidden;
+  padding: 0 10px;
 }
 
 .os-offer-page-header {
@@ -113,10 +121,10 @@ mat-slide-toggle {
     width: 90%;
     margin-left: 3px;
   }
-  @media screen and (min-width:656px) {
+  @media screen and (min-width: 656px) {
     width: 556px;
   }
-  @media screen and (min-width:960px) {
+  @media screen and (min-width: 960px) {
     width: 862px;
   }
   @media screen and (min-width: 1264px) {
@@ -208,6 +216,10 @@ os-offer-rows {
   }
 }
 
+.os-page-container {
+  max-width: 1300px;
+}
+
 .os-title-card {
   max-width: 90%;
   font-size: 18px;
@@ -250,6 +262,10 @@ mat-progress-circle {
   margin-left: 50%;
   transform: translateX(-50%);
   @media screen and (min-width: 600px) {
-    width: 100%;
+    width: 110%;
   }
+}
+
+.welcome-title {
+  margin-top: 4px;
 }

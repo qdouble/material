@@ -4,12 +4,11 @@ import { RouterModule } from '@angular/router';
 
 import { MATERIAL_MODULES } from '../../material.modules';
 import { FAQ } from './faq';
-import { FooterModule } from '../footer';
 
 import { routes } from './faq.routing';
 
 @NgModule({
-  imports: [CommonModule, FooterModule, MATERIAL_MODULES, RouterModule.forChild(routes)],
+  imports: [CommonModule, MATERIAL_MODULES, RouterModule.forChild(routes)],
   declarations: [FAQ]
 })
 export class FAQModule {}

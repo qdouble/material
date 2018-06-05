@@ -1,23 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-
+import { filter, takeUntil } from 'rxjs/operators';
+import * as offerActions from '../../../actions/offer';
+import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
 import { openInNewTab } from '../../../helper/open-in-new-tab';
-
-import * as fromStore from '../../../reducers';
 import { Credit } from '../../../models/credit';
 import { Offer } from '../../../models/offer';
-import * as offerActions from '../../../actions/offer';
+import { GetIPInfoResponse } from '../../../models/ui';
 import { User } from '../../../models/user';
 import { UserAgent } from '../../../models/user-agent';
-
-import { ConfirmDialog } from '../../../dialogs/confirm.dialog';
+import * as fromStore from '../../../reducers';
 import { getAge } from '../../../utilities/get-age';
-import { GetIPInfoResponse } from '../../../models/ui';
-import { takeUntil, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'os-offer-details',
@@ -55,9 +52,6 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
   ) {}
 
   ngOnInit() {
-    typeof document !== 'undefined' && document.getElementById('os-toolbar')
-      ? document.getElementById('os-toolbar').scrollIntoView()
-      : {}; // tslint:disable-line
     this.credits$ = this.store.pipe(select(fromStore.getUserCreditCollection));
     this.route.params.forEach(param => {
       let id = param['id'];
@@ -80,7 +74,10 @@ export class OfferDetailsComponent implements OnDestroy, OnInit {
           }
         });
         this.credits$
-          .pipe(takeUntil(this.destroyed$), filter(c => c !== null && c !== undefined))
+          .pipe(
+            takeUntil(this.destroyed$),
+            filter(c => c !== null && c !== undefined)
+          )
           .subscribe(credits => {
             if (o) {
               this.alreadyCompleted = !!credits.find(c => c.offerId === o.id);

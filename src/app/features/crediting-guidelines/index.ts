@@ -1,14 +1,12 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatCardModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
-
-import { MATERIAL_MODULES } from '../../material.modules';
-
-import { routes } from './crediting-guidelines.routing';
 import { CreditingGuidelines } from './crediting-guidelines';
+import { routes } from './crediting-guidelines.routing';
 
 @NgModule({
-  imports: [CommonModule, MATERIAL_MODULES, RouterModule.forChild(routes)],
+  imports: [CommonModule, MatCardModule, RouterModule.forChild(routes)],
   declarations: [CreditingGuidelines]
 })
 export class CreditingGuidelinesModule {}

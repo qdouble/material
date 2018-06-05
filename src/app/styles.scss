@@ -3,10 +3,11 @@
 /* This file is for importing 3rd party styles  */
 
 @import 'variables';
-@import '@angular/material/theming';
+@import '~@angular/material/theming';
 // Plus imports for other components in your app.
 // Include the base styles for Angular Material core. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
+
 @include mat-core();
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -21,6 +22,7 @@ $theme: mat-light-theme($primary, $accent, $warn);
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($theme);
+
 @media only screen and (min-width: 800px) {
   mat-sidenav.mat-sidenav-opened,
   mat-sidenav.mat-sidenav-opening {
@@ -36,20 +38,66 @@ $theme: mat-light-theme($primary, $accent, $warn);
   line-height: $size;
 }
 
+.mat-list .mat-list-item.mat-2-line,
+.mat-list .mat-list-option.mat-2-line,
+.mat-nav-list .mat-list-item.mat-2-line,
+.mat-nav-list .mat-list-option.mat-2-line,
+.mat-selection-list .mat-list-item.mat-2-line,
+.mat-selection-list .mat-list-option.mat-2-line {
+  height: 56px !important;
+}
+
 .mat-button-toggle-group {
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.09),
     0 1px 5px 0 rgba(0, 0, 0, 0.05) !important;
 }
 
+mat-card {
+  color: #363636;
+}
+
 mat-card.os-section-card,
 mat-card.os-message-card {
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.09), 0px 1px 1px 0px rgba(0, 0, 0, 0.07),
-    0px 1px 3px 0px rgba(0, 0, 0, 0.09) !important;
+    0px 1px 3px 0px rgba(0, 0, 0, 0.15) !important;
+}
+
+.mat-checkbox-label {
+  white-space: normal;
 }
 
 .mat-raised-button:not([class*='mat-elevation-z']) {
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.08), 0 2px 2px 0 rgba(0, 0, 0, 0.01),
     0 1px 5px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+.mat-sidenav-container,
+.os-page-container,
+.os-page-container-vh {
+  background: #fcfcfc;
+}
+
+.mat-toolbar {
+  background: #fff;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+  height: 48px !important;
+}
+
+.mat-list .mat-list-item,
+.mat-nav-list .mat-list-item,
+.mat-selection-list .mat-list-item {
+  color: #fff !important;
+}
+
+.mat-drawer {
+  background: mat-color($primary) !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: rgba(113, 113, 113, 0.42);
 }
 
 .accent {
@@ -120,7 +168,7 @@ mat-card.os-message-card {
   display: table;
 }
 
-@media screen and (max-width: 580px) {
+@media screen and (max-width: 599px) {
   .table {
     display: block;
   }

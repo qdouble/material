@@ -54,15 +54,37 @@ export class SWAndPushService {
     });
   }
 
-  registerServiceWorker() {
+  registerServiceWorkers(fileNames: string[]) {
+    fileNames.forEach(name => {
+      navigator.serviceWorker
+        .register(name)
+        .then(swReg => {
+          log('Cache Service Worker is registered', swReg);
+          this.swRegistration = swReg;
+        })
+        .catch(err => {
+          console.error('Cache Service Worker Error', err);
+        });
+    });
+  }
+
+  unregisterServiceWorkers(fileNames: string[]) {
     navigator.serviceWorker
-      .register('service-worker.js')
-      .then(swReg => {
-        log('Cache Service Worker is registered', swReg);
-        this.swRegistration = swReg;
+      .getRegistrations()
+      .then(function(registrations) {
+        for (let registration of registrations) {
+          if (registration && registration.active && registration.active.scriptURL) {
+            fileNames.forEach(name => {
+              if (registration.active.scriptURL.includes(name)) {
+                registration.unregister();
+                console.log(`unregistering service worker "${name}"`);
+              }
+            });
+          }
+        }
       })
-      .catch(error => {
-        console.error('Cache Service Worker Error', error);
+      .catch(err => {
+        console.error('Unregister Service Worker Error', err);
       });
   }
 }

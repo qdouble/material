@@ -5,6 +5,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material';
 @Component({
   selector: 'os-proof-snackbar',
   template: `
+  <div class="os-proof-snackbar-content" (click)="ref.dismissWithAction()">
     <img *ngIf="data.type === 'join' " src="{{dev ? '/assets/images/' : '/images/'}}google-static-maps/{{data?.map}}">
     <div *ngIf="data.type === 'level'" class="level-image" [style.background]="'url(' + levelImage + ')'"></div>
     <div *ngIf=" data.type === 'join' " class="proof-text-box">
@@ -17,7 +18,9 @@ import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material';
         <div>Reached Level {{data.level}} = <b>{{'$' + (data.level * 5)}}</b> max/referral!</div>
         <time>{{data.createdAt | timeAgoRecent }}</time>
     </div>
-    <button mat-icon-button (click)="ref.dismissWithAction()"><mat-icon>close</mat-icon></button>
+    <button mat-icon-button><mat-icon>close</mat-icon></button>
+  </div>
+
     ` // You may also use a HTML file
 })
 export class ProofSnackbarComponent {

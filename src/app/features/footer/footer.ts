@@ -3,18 +3,18 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'os-footer',
   template: `
-  <mat-card-footer>
-    <div class="footer-content">
-    </div>
-    <a [routerLink]="['/terms-and-conditions']">Terms and Conditions</a> |
-    <a [routerLink]="['/privacy-policy']">Privacy Policy</a> |
-    <a [routerLink]="['/crediting-guidelines']">Crediting Guidelines</a>
-  </mat-card-footer>
+    <footer>
+      <div class="footer-content">
+        <a [routerLink]="['/terms-and-conditions']">Terms and Conditions</a> |
+        <a [routerLink]="['/privacy-policy']">Privacy Policy</a> |
+        <a [routerLink]="['/crediting-guidelines']">Crediting Guidelines</a>
+      </div>
+    </footer>
   `,
   styles: [
     `
-      mat-card-footer {
-        text-align: center;
+      footer {
+        width: 100%;
       }
       a {
         font-size: 11px;
@@ -22,7 +22,12 @@ import { Component } from '@angular/core';
         color: #547a29;
       }
       .footer-content {
-        padding-top: 15px;
+        padding: 20px;
+        text-align: center;
+      }
+      #bottom {
+        display: block;
+        height: 20px;
       }
     `
   ]

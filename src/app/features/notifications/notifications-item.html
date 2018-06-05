@@ -1,4 +1,4 @@
-<div *ngIf="notification" class="notify-item" [style.background]="notification.read ? 'white' : '#ededed'">
+<div *ngIf="notification" class="notify-item" [style.background]="notification.read ? 'white' : '#f7f7f7'">
   <span class="notify-clickable" [routerLink]="notification.routerLink" (click)="!notification.read ? markNotificationsAsRead.emit({ids: [notification.id], read: true }) : null">
     <div class="notify-image">
       <mat-icon class="notify-ico">{{notification.ico}}</mat-icon>

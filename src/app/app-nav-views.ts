@@ -6,17 +6,17 @@ export const views: Object[] = [
     loggedIn: false
   },
   {
-    name: 'Login',
-    icon: 'input',
-    link: ['login'],
-    loggedIn: false
-  },
-  {
     name: 'Register',
     icon: 'subtitles',
     link: ['register'],
     loggedIn: false
   },
+  // {
+  //   name: 'Login',
+  //   icon: 'input',
+  //   link: ['login'],
+  //   loggedIn: false
+  // },
   {
     name: 'FAQ',
     icon: 'beenhere',

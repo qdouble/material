@@ -8,12 +8,8 @@ p {
   li:before {
     content: '✔';
     margin-left: -1em;
-    margin-right: .100em;
+    margin-right: 0.1em;
   }
-}
-
-.os-cg-container {
-  padding: 24px;
 }
 
 .match {

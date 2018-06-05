@@ -4,9 +4,10 @@ import { RouterModule } from '@angular/router';
 
 import { routes } from './terms-and-conditions.routing';
 import { TermsAndConditions } from './terms-and-conditions';
+import { MatCardModule } from '@angular/material';
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  imports: [CommonModule, MatCardModule, RouterModule.forChild(routes)],
   declarations: [TermsAndConditions]
 })
 export class TermsAndConditionsModule {}

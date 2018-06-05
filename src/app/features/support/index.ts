@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 
 import { CustomPipesModule } from '../../pipes';
 
-import { FooterModule } from '../footer';
 import { MATERIAL_MODULES } from '../../material.modules';
 import { SelectInputModule } from '../../components/input-fields/select-input';
 import { TextareaInputModule } from '../../components/input-fields/textarea-input';
@@ -24,7 +23,6 @@ import { routes } from './support.routing';
   imports: [
     CommonModule,
     CustomPipesModule,
-    FooterModule,
     ReactiveFormsModule,
     MATERIAL_MODULES,
     RouterModule.forChild(routes),

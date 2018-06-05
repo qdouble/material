@@ -24,7 +24,7 @@ select-input {
 
 @media screen and (max-width: 465px) {
   :host /deep/ .mat-checkbox-layout .mat-checkbox-label {
-    line-height: 14px;
+    line-height: 20px;
   }
 }
 
@@ -39,17 +39,17 @@ select-input {
 }
 
 .os-form-container {
-  // border-top: 5px solid $primary-color;
   margin-bottom: 50px;
-}
-
-.os-title-card {
-  max-width: 500px;
 }
 
 #referred-by {
   margin-top: 15px;
   margin-bottom: -5px;
+}
+
+.register-form-container {
+  max-width: 640px;
+  margin: 0 auto;
 }
 
 .register-top-image-container {
@@ -80,7 +80,6 @@ select-input {
   }
 }
 
-.register-page-container {
-  box-shadow: none;
+.os-page-container {
   min-height: 854px;
 }

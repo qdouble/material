@@ -18,7 +18,6 @@ import {
 import { RouterModule } from '@angular/router';
 
 import { FormInputModule } from '../../components/input-fields/form-input';
-import { FooterModule } from '../footer';
 
 import { ReferralsTable } from './common/referrals-table';
 import { SelectedPrizeModule } from './common/selected-prize';
@@ -30,7 +29,6 @@ import { Status } from './status';
     CommonModule,
     FlexLayoutModule,
     FormInputModule,
-    FooterModule,
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,

@@ -7,6 +7,8 @@ export interface Credit {
   creditValue: number;
   active: boolean;
   unconfirmed?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface GetCreditResponse extends GenericResponse {

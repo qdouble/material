@@ -1,26 +1,23 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
-import { Store, select } from '@ngrx/store';
-import { FacebookService, UIResponse, UIParams } from 'ngx-facebook';
-import { Observable, Subject, combineLatest } from 'rxjs';
-import { take, takeUntil, map, filter } from 'rxjs/operators';
-
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
+import { select, Store } from '@ngrx/store';
+import { FacebookService, UIParams, UIResponse } from 'ngx-facebook';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
+import * as prizeActions from '../../actions/prize';
+import * as userActions from '../../actions/user';
 import { ConfirmDialog } from '../../dialogs/confirm.dialog';
 import { combineSort } from '../../helper/combine-sort';
-import { log } from '../../services/constants';
-
-import * as fromStore from '../../reducers';
 import { Credit } from '../../models/credit';
 import { Prize } from '../../models/prize';
 import { Referral } from '../../models/referral';
-import { User } from '../../models/user';
-
-import { ReferralsTable } from './common/referrals-table';
-import * as prizeActions from '../../actions/prize';
-import * as userActions from '../../actions/user';
 import { SortModel } from '../../models/ui';
+import { User } from '../../models/user';
+import * as fromStore from '../../reducers';
+import { log } from '../../services/constants';
+import { ReferralsTable } from './common/referrals-table';
 
 @Component({
   selector: 'os-status',
@@ -139,9 +136,6 @@ export class Status implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    typeof document !== 'undefined' && document.getElementById('os-toolbar')
-      ? document.getElementById('os-toolbar').scrollIntoView()
-      : {}; // tslint:disable-line
     this.selectedReferralIds$ = this.store.pipe(select(fromStore.getSelectedReferralIds));
     this.selectedReferralIds$
       .pipe(takeUntil(this.destroyed$))

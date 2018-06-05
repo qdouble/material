@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Store, select } from '@ngrx/store';
-import { Observable, ReplaySubject, combineLatest, of } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { combineLatest, Observable, of, ReplaySubject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-
 import { combineSort } from '../../helper/combine-sort';
-
 import * as fromStore from '../../reducers';
-import { CreditRequest } from './credit-request.model';
-import { Ticket } from './ticket.model';
 import * as creditRequestActions from './credit-request.actions';
+import { CreditRequest } from './credit-request.model';
 import * as ticketActions from './ticket.actions';
+import { Ticket } from './ticket.model';
 
 @Component({
   selector: 'os-support',
@@ -54,9 +52,6 @@ export class Support implements OnInit {
     this.closedTickets$ = combineLatest(this.tickets$, of(true), showClosed);
   }
   ngOnInit() {
-    typeof document !== 'undefined' && document.getElementById('os-toolbar')
-      ? document.getElementById('os-toolbar').scrollIntoView()
-      : {}; // tslint:disable-line
     this.route.params.subscribe(params => {
       if (params['report']) {
         this.ticketSubject = `I'd like to report the person who referred me`;

@@ -9,7 +9,7 @@
     </mat-card>
   </div>
 </mat-card>
-<mat-card *ngIf="!hideOrders" class="os-page-container os-section-card" @fade>
+<div *ngIf="!hideOrders" class="os-page-container os-section-card" @fade>
   <mat-card class="step-title os-title-card primary-background">Request Payment</mat-card>
   <mat-card id="place-order" class="os-form-container os-section-card">
     <ng-container *ngIf="user?.orderPending">
@@ -113,5 +113,4 @@
     <os-orders-table [loaded]="ordersLoaded$ | async" [orders]="orders$ | async">
     </os-orders-table>
   </mat-card>
-  <os-footer></os-footer>
-</mat-card>
+</div>

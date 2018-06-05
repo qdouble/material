@@ -35,7 +35,7 @@ export interface Offer {
   minTimeToCredit?: number;
   minTimeToCreditType?: string;
   maxTimeToCredit?: number;
-  maxTimeToCreditType?: number;
+  maxTimeToCreditType?: string;
   displayYoutube?: boolean;
   youtubeID?: string;
   restrictDevices?: boolean;
@@ -47,6 +47,7 @@ export interface Offer {
   mac?: boolean;
   popularityRank?: number;
   popularityRank2?: number;
+  allowCreditRequests: boolean;
   availableCountryCodes?: string[];
   availableCountryNames?: string[];
   createdAt?: string;

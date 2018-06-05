@@ -6,39 +6,39 @@
 
 import {
   DEV_PORT,
-  PROD_PORT,
-  UNIVERSAL_PORT,
-  EXCLUDE_SOURCE_MAPS,
-  HOST,
-  USE_DEV_SERVER_PROXY,
   DEV_SERVER_PROXY_CONFIG,
   DEV_SERVER_WATCH_OPTIONS,
   DEV_SOURCE_MAPS,
-  PROD_SOURCE_MAPS,
-  STORE_DEV_TOOLS,
-  MY_COPY_FOLDERS,
-  MY_VENDOR_DLLS,
+  EXCLUDE_SOURCE_MAPS,
+  HOST,
   MY_CLIENT_PLUGINS,
   MY_CLIENT_PRODUCTION_PLUGINS,
   MY_CLIENT_RULES,
+  MY_COPY_FOLDERS,
+  MY_VENDOR_DLLS,
+  PROD_PORT,
+  PROD_SOURCE_MAPS,
   SHOW_WEBPACK_BUNDLE_ANALYZER,
-  SW_RUNTIME_CACHING
+  STORE_DEV_TOOLS,
+  SW_RUNTIME_CACHING,
+  UNIVERSAL_PORT,
+  USE_DEV_SERVER_PROXY
 } from './constants';
 
 const webpack = require('webpack');
 
+const { CheckerPlugin } = require('awesome-typescript-loader');
+const { getAotPlugin } = require('./webpack.aot');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { CheckerPlugin } = require('awesome-typescript-loader');
+const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const ScriptExtPlugin = require('script-ext-html-webpack-plugin');
-const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
+const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpackMerge = require('webpack-merge');
-const { getAotPlugin } = require('./webpack.aot');
 
 const { hasProcessFlag, root, testDll } = require('./helpers.js');
 const EVENT = process.env.npm_lifecycle_event || '';
@@ -124,7 +124,7 @@ const COPY_FOLDERS = [
   { from: 'src/assets', to: 'assets' },
   { from: 'node_modules/hammerjs/hammer.min.js' },
   { from: 'node_modules/hammerjs/hammer.min.js.map' },
-  { from: 'src/app/styles.css', to: 'styles.css' },
+  { from: 'node_modules/@angular/material/prebuilt-themes/indigo-pink.css' },
   ...MY_COPY_FOLDERS
 ];
 
@@ -217,7 +217,16 @@ const commonConfig = (function webpackConfig(): WebpackConfig {
   } else {
     config.plugins.push(
       new CopyWebpackPlugin(COPY_FOLDERS, { ignore: ['*dist_root/*'] }),
-      new CopyWebpackPlugin([{ from: 'src/assets/dist_root' }])
+      new CopyWebpackPlugin([{ from: 'src/assets/dist_root' }]),
+      new SWPrecacheWebpackPlugin({
+        cacheId: 'my-project-cache',
+        filename: 'service-worker.js',
+        maximumFileSizeToCacheInBytes: 4194304,
+        navigateFallback: 'index.html',
+        runtimeCaching: SW_RUNTIME_CACHING
+        // minify: true,
+        // importScripts: ['sw-push.js']
+      })
     );
   }
 
@@ -230,15 +239,6 @@ const commonConfig = (function webpackConfig(): WebpackConfig {
         test: /\.js$|\.html$/,
         threshold: 10240,
         minRatio: 0.8
-      }),
-      new SWPrecacheWebpackPlugin({
-        cacheId: 'my-project-cache',
-        filename: 'service-worker.js',
-        maximumFileSizeToCacheInBytes: 4194304,
-        navigateFallback: 'index.html',
-        runtimeCaching: SW_RUNTIME_CACHING
-        // minify: true,
-        // importScripts: ['sw-push.js']
       }),
       ...MY_CLIENT_PRODUCTION_PLUGINS
     );

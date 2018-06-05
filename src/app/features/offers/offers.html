@@ -51,7 +51,7 @@
         </ng-container>
       </ng-container>
     </div>
-    <div *ngIf="loggedIn && userLevel < 5 && !(newEqualTrue$ | async) && timeRemaining && timeRemaining.hours > 0" class="referral-link">
+    <div class="referral-link" *ngIf="loggedIn && userLevel < 5 && !(newEqualTrue$ | async) && timeRemaining && timeRemaining.hours > 0">
       <mat-card-title>
         <b [ngClass]="{'accent': (testShowRef$ | async)}">Get to Level 5 On Your First Day and Receive a Bonus Level Up!</b>
       </mat-card-title>
@@ -74,8 +74,8 @@
       </div>
     </div>
     <div *ngIf="userLevel >= 1 && !(newEqualTrue$ | async)" class="referral-link">
-      <mat-card-title>Welcome Back, {{firstName$ | async}}!</mat-card-title>
-      <mat-card-title *ngIf="userLevel > 5">
+      <mat-card-title class="welcome-title">Welcome Back, {{firstName$ | async}}!</mat-card-title>
+      <mat-card-title class="bonus-explainer" *ngIf="userLevel > 5">
         <div class="accent">
           <b>If Any of Your Referrals Get to Level 5 on Their First Day, They Will Receive a Free Bonus Level Which You Will
             Get Paid For!</b>
@@ -136,6 +136,5 @@
         is sent. If we detect fraudulent activity, an account may be held indefinitely or suspended. Please try the advertisers
         offers to the fullest and abide by our terms and conditions. </p>
     </mat-card>
-    <os-footer></os-footer>
   </ng-container>
 </mat-card>
