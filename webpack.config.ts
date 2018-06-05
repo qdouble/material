@@ -243,7 +243,7 @@ const commonConfig = (function webpackConfig(): WebpackConfig {
       }),
       ...MY_CLIENT_PRODUCTION_PLUGINS
     );
-    if (!E2E && !WATCH && !UNIVERSAL && SHOW_WEBPACK_BUNDLE_ANALYZER) {
+    if (!E2E && !WATCH && !UNIVERSAL && !PUBLISH && SHOW_WEBPACK_BUNDLE_ANALYZER) {
       config.plugins.push(new BundleAnalyzerPlugin({ analyzerPort: 5000 }));
     }
   }
