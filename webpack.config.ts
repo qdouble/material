@@ -125,6 +125,7 @@ const COPY_FOLDERS = [
   { from: 'node_modules/hammerjs/hammer.min.js' },
   { from: 'node_modules/hammerjs/hammer.min.js.map' },
   { from: 'node_modules/@angular/material/prebuilt-themes/indigo-pink.css' },
+  { from: 'src/app/material-custom-theme.css' },
   ...MY_COPY_FOLDERS
 ];
 

@@ -1,13 +1,4 @@
-// @import '../../../../styles';
-// :host {
-//   .contact-icon {
-//     &mat-icon {
-//       @include md-icon-size(14px);
-//     }
-//   }
-// }
 :host /deep/ .mat-icon.contact-icon {
-  // @include md-icon-size(14px);
   font-size: 20px;
   height: 20px;
   width: 20px;

@@ -28,6 +28,7 @@ npm-debug.log
 /compiled/
 .awcache/
 /src/app/styles.css
+/src/app/material-custom-theme.css
 ts-node
 /**/*.ngfactory.ts
 /**/*.css.ts

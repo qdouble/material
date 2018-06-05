@@ -1,3 +1,14 @@
+@import '~@angular/material/theming';
+// Copy the palettes from your selected theme
+$app-primary: mat-palette($mat-light-green);
+$app-accent: mat-palette($mat-amber, 700, A100, A700);
+$app-warn: mat-palette($mat-red);
+
+// Create your Sass color vars (will be available in all the project)
+$primary: mat-color($app-primary);
+$accent: mat-color($app-accent);
+$warn: mat-color($app-warn);
+
 $primary-font: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 $break-small: 320px;
 $break-mobile: 800px;

@@ -3,25 +3,6 @@
 /* This file is for importing 3rd party styles  */
 
 @import 'variables';
-@import '~@angular/material/theming';
-// Plus imports for other components in your app.
-// Include the base styles for Angular Material core. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-
-@include mat-core();
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue.
-$primary: mat-palette($mat-light-green);
-$accent: mat-palette($mat-amber, 700, A100, A700);
-// The warn palette is optional (defaults to red).
-$warn: mat-palette($mat-red);
-// Create the theme object (a Sass map containing all of the palettes).
-$theme: mat-light-theme($primary, $accent, $warn);
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include angular-material-theme($theme);
 
 @media only screen and (min-width: 800px) {
   mat-sidenav.mat-sidenav-opened,
@@ -93,7 +74,7 @@ mat-card.os-message-card {
 }
 
 .mat-drawer {
-  background: mat-color($primary) !important;
+  background: $primary !important;
 }
 
 .mat-form-field-appearance-legacy .mat-form-field-underline {
@@ -101,11 +82,11 @@ mat-card.os-message-card {
 }
 
 .accent {
-  color: mat-color($accent);
+  color: $accent;
 }
 
 .accent-background {
-  background: mat-color($accent);
+  background: $accent;
 }
 
 .accent-medium {
@@ -117,23 +98,23 @@ mat-card.os-message-card {
 }
 
 .primary {
-  color: mat-color($primary);
+  color: $primary;
 }
 
 .primary-background {
-  background: mat-color($primary);
+  background: $primary;
 }
 
 .warn {
-  color: mat-color($warn);
+  color: $warn;
 }
 
 .warn-background {
-  background: mat-color($warn) !important;
+  background: $warn !important;
 }
 
 .warn-text {
-  color: mat-color($warn);
+  color: $warn;
   font-size: 75%;
 }
 
@@ -186,15 +167,15 @@ mat-card.os-message-card {
 .row.header {
   font-weight: 900;
   color: #ffffff;
-  background: mat-color($primary);
+  background: $primary;
 }
 
 .row.green {
-  background: mat-color($primary);
+  background: $primary;
 }
 
 .row.red {
-  background: mat-color($warn);
+  background: $warn;
 }
 
 .row.gray {
