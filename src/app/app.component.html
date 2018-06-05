@@ -43,7 +43,7 @@
             </a>
           </div>
         </div>
-        <ng-container *ngIf="!(onAdminLoginPage$ | async)">
+        <ng-container>
           <div class="os-toolbar-buttons">
             <span class="notifications" osClickOutside (clickOutside)="showNotifications = false">
               <ng-container *ngIf="loggedIn">
