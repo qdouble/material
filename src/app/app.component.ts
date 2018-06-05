@@ -1,18 +1,19 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import {
+  MatButton,
   MatDialog,
   MatDialogConfig,
   MatDialogRef,
+  MatSidenav,
   MatSnackBar,
   MatSnackBarConfig,
   MatSnackBarHorizontalPosition,
   MatSnackBarRef,
   MatSnackBarVerticalPosition,
-  MatSidenav,
-  MatButton,
   MatToolbar
 } from '@angular/material';
-import { ActivatedRoute, NavigationEnd, Router, NavigationStart } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { interval, Observable, Subject, timer } from 'rxjs';
 import { filter, retry, take, takeUntil } from 'rxjs/operators';
@@ -39,26 +40,37 @@ import { ScriptService } from './script.service';
 import { log, MOBILE, SERVICE_WORKER_SUPPORT } from './services/constants';
 import { SWAndPushService } from './services/sw-and-push';
 import { ProofSnackbarComponent } from './snackbars/proof.snackbar.component';
-import { validateUserName } from './validators';
 import { scrollToTop } from './utilities/scroll-to-top';
-import { trigger, transition, animate, keyframes, style } from '@angular/animations';
+import { validateUserName } from './validators';
 
 @Component({
   selector: 'my-app',
-  styleUrls: ['styles.scss', 'main.scss', './app.component.scss'],
+  styleUrls: ['./app.component.scss'],
   templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('fadeStartEnd', [
+      state(
+        'start',
+        style({
+          opacity: 0
+        })
+      ),
+      state(
+        'end',
+        style({
+          opacity: 1
+        })
+      ),
       transition('start => end', [
         animate(
-          `2s`,
+          `300ms`,
           keyframes([style({ opacity: 0, offset: 0 }), style({ opacity: 1, offset: 1.0 })])
         )
       ]),
       transition('end => start', [
         animate(
-          `2s`,
+          `1s`,
           keyframes([style({ opacity: 1, offset: 0 }), style({ opacity: 0, offset: 1.0 })])
         )
       ])
@@ -116,7 +128,7 @@ export class AppComponent implements OnInit {
   loaded: boolean;
   loggedIn: boolean;
   loginChecked: boolean;
-  navigationPhase: 'start' | 'end';
+  navigationPhase: 'start' | 'end' = 'start';
   notifications$: Observable<Notification[]>;
   notify$: Observable<Notify[]>;
   onAdminLoginPage: boolean;
@@ -130,6 +142,7 @@ export class AppComponent implements OnInit {
   referredBy: string;
   scripts$: Observable<Script[]>;
   scriptsRequested: boolean;
+  showFooter: boolean;
   showLevelBadge$: Observable<number>;
   showNotifications = false;
   showStatus: boolean;
@@ -426,6 +439,9 @@ export class AppComponent implements OnInit {
         this.openProofSnackBar(this.loggedIn);
       });
     }
+    setTimeout(() => {
+      this.showFooter = true;
+    }, 20000);
   }
 
   initDispatches() {

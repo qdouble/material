@@ -124,7 +124,7 @@
           </div>
         </ng-container>
         <router-outlet (activate)="activateEvent($event)" (deactivate)="deactivateEvent($event)"></router-outlet>
-        <os-footer [@fadeStartEnd]="navigationPhase"></os-footer>
+        <os-footer [hidden]="!showFooter" [@fadeStartEnd]="navigationPhase"></os-footer>
       </div>
     </div>
   </mat-sidenav-container>
