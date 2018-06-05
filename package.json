@@ -41,7 +41,7 @@
     "clean:dll": "npm run rimraf -- dll",
     "clean:compile": "npm run rimraf -- \"compiled\" ",
     "clean:publish": "npm run rimraf -- \"/var/www/html/*.*\" \"/var/www/html/assets\" ",
-    "clean:publish:test": "npm run rimraf -- \"/var/www/test/*.*\" \"/var/www/test/assets\" ",
+    "clean:publish:test": "npm run rimraf -- \"/var/www/html/test/*.*\" \"/var/www/html/test/assets\" ",
     "prodserver": "node prodserver",
     "publish": "npm run build:aot:prod:publish",
     "publish:noclean": "npm run build:aot:prod:publish:noclean",

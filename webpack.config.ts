@@ -313,7 +313,7 @@ const clientConfig = (function webpackConfig(): WebpackConfig {
 
   if (!DLL) {
     config.output = {
-      path: PUBLISH ? (!TEST ? '/var/www/html' : '/var/www/test') : root('dist'),
+      path: PUBLISH ? (!TEST ? '/var/www/html' : '/var/www/html/test') : root('dist'),
       filename: !PROD ? '[name].bundle.js' : '[name].[chunkhash].bundle.js',
       sourceMapFilename: !PROD ? '[name].bundle.map' : '[name].[chunkhash].bundle.map',
       chunkFilename: !PROD ? '[id].chunk.js' : '[id].[chunkhash].chunk.js'
