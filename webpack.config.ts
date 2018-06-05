@@ -314,9 +314,9 @@ const clientConfig = (function webpackConfig(): WebpackConfig {
   if (!DLL) {
     config.output = {
       path: PUBLISH ? (!TEST ? '/var/www/html' : '/var/www/test') : root('dist'),
-      filename: !PROD ? '[name].bundle.js' : '[name].[md5:contenthash:hex:20].bundle.js',
-      sourceMapFilename: !PROD ? '[name].bundle.map' : '[name].[md5:contenthash:hex:20].bundle.map',
-      chunkFilename: !PROD ? '[id].chunk.js' : '[id].[md5:contenthash:hex:20].chunk.js'
+      filename: !PROD ? '[name].bundle.js' : '[name].[chunkhash].bundle.js',
+      sourceMapFilename: !PROD ? '[name].bundle.map' : '[name].[chunkhash].bundle.map',
+      chunkFilename: !PROD ? '[id].chunk.js' : '[id].[chunkhash].chunk.js'
     };
   } else {
     config.output = {
