@@ -7,7 +7,12 @@
   <meta charset='utf-8'>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-  <base href="/">
+  <base href="/" id="baseHref">
+  <script>
+    (function () {
+      document.getElementById('baseHref').href = '/' + window.location.pathname.split('/')[1] + "/";
+    })();
+  </script>
   <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" />
   <link rel="stylesheet" href="preloader.css" />
