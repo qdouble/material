@@ -126,7 +126,7 @@ export class AppComponent implements OnInit {
   ipInfo$: Observable<GetIPInfoResponse>;
   latestVersion$: Observable<string>;
   loaded: boolean;
-  loggedIn: boolean;
+  loggedIn: boolean | null;
   loginChecked: boolean;
   navigationPhase: 'start' | 'end' = 'start';
   notifications$: Observable<Notification[]>;
@@ -137,7 +137,7 @@ export class AppComponent implements OnInit {
   proofCount = 0;
   proofDismissedWithAction: boolean;
   proofs: SocialProof[];
-  proofSnackBar: MatSnackBarRef<ProofSnackbarComponent>;
+  proofSnackBar: MatSnackBarRef<ProofSnackbarComponent> | undefined;
   pushNotifications$: Observable<PushNotification>;
   referredBy: string;
   scripts$: Observable<Script[]>;
@@ -146,7 +146,7 @@ export class AppComponent implements OnInit {
   showLevelBadge$: Observable<number>;
   showNotifications = false;
   showStatus: boolean;
-  snackRefs = [];
+  snackRefs: MatSnackBarRef<any>[] = [];
   socialProofs$: Observable<SocialProof[]>;
   socialProofSettings: SocialProofSettings;
   socialProofSettings$: Observable<SocialProofSettings>;
@@ -155,13 +155,13 @@ export class AppComponent implements OnInit {
   unreadNotificationPendingTotal$: Observable<number>;
   unreadNotificationTotal$: Observable<number>;
   updatedAt: string;
-  userActive$: Observable<boolean>;
-  userFirstName$: Observable<string>;
+  userActive$: Observable<boolean | undefined>;
+  userFirstName$: Observable<string | undefined>;
   userId = '';
   userLastUpdate$: Observable<string>;
   userLoaded$: Observable<boolean>;
   userLoading$: Observable<boolean>;
-  userLoggedIn$: Observable<boolean>;
+  userLoggedIn$: Observable<boolean | null>;
   userLoginChecked$: Observable<boolean>;
   userReferredBy$: Observable<string | null>;
   userReferrerBlocked$: Observable<boolean>;
