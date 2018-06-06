@@ -1,27 +1,25 @@
-/* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { Action } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { map, switchMap, catchError } from 'rxjs/operators';
-
-import { NotificationService } from '../services/notification';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import {
   DeleteAllNotificationsFail,
   DeleteAllNotificationsSuccess,
   DeleteNotifications,
   DeleteNotificationsFail,
   DeleteNotificationsSuccess,
-  NotificationActionTypes,
+  GetNotifications,
+  GetNotificationsFail,
+  GetNotificationsSuccess,
   MarkAllAsReadFail,
   MarkAllAsReadSuccess,
   MarkNotificationsAsRead,
   MarkNotificationsAsReadFail,
   MarkNotificationsAsReadSuccess,
-  GetNotificationsSuccess,
-  GetNotificationsFail,
-  GetNotifications
+  NotificationActionTypes
 } from '../actions/notification';
+import { NotificationService } from '../services/notification';
 
 @Injectable()
 export class NotificationEffects {
@@ -31,12 +29,10 @@ export class NotificationEffects {
   deleteAllNotifications$: Observable<Action> = this.actions$.pipe(
     ofType(NotificationActionTypes.DeleteAllNotifications),
     switchMap(() =>
-      this.notificationService
-        .deleteAllNotifications()
-        .pipe(
-          map(res => new DeleteAllNotificationsSuccess(res)),
-          catchError(err => of(new DeleteAllNotificationsFail(err)))
-        )
+      this.notificationService.deleteAllNotifications().pipe(
+        map(res => new DeleteAllNotificationsSuccess(res)),
+        catchError(err => of(new DeleteAllNotificationsFail(err)))
+      )
     )
   );
 
@@ -45,12 +41,10 @@ export class NotificationEffects {
     ofType(NotificationActionTypes.DeleteNotifications),
     map((action: DeleteNotifications) => action.payload),
     switchMap(ids =>
-      this.notificationService
-        .deleteNotifications(ids)
-        .pipe(
-          map(res => new DeleteNotificationsSuccess(res)),
-          catchError(err => of(new DeleteNotificationsFail(err)))
-        )
+      this.notificationService.deleteNotifications(ids).pipe(
+        map(res => new DeleteNotificationsSuccess(res)),
+        catchError(err => of(new DeleteNotificationsFail(err)))
+      )
     )
   );
 
@@ -59,12 +53,10 @@ export class NotificationEffects {
     ofType(NotificationActionTypes.GetNotifications),
     map((action: GetNotifications) => action.payload),
     switchMap(query =>
-      this.notificationService
-        .getNotifications(query)
-        .pipe(
-          map(res => new GetNotificationsSuccess(res)),
-          catchError(err => of(new GetNotificationsFail(err)))
-        )
+      this.notificationService.getNotifications(query).pipe(
+        map(res => new GetNotificationsSuccess(res)),
+        catchError(err => of(new GetNotificationsFail(err)))
+      )
     )
   );
 
@@ -72,12 +64,10 @@ export class NotificationEffects {
   markAllAsRead$: Observable<Action> = this.actions$.pipe(
     ofType(NotificationActionTypes.MarkAllAsRead),
     switchMap(query =>
-      this.notificationService
-        .markAllAsRead()
-        .pipe(
-          map(res => new MarkAllAsReadSuccess(res)),
-          catchError(err => of(new MarkAllAsReadFail(err)))
-        )
+      this.notificationService.markAllAsRead().pipe(
+        map(res => new MarkAllAsReadSuccess(res)),
+        catchError(err => of(new MarkAllAsReadFail(err)))
+      )
     )
   );
 
@@ -86,12 +76,10 @@ export class NotificationEffects {
     ofType(NotificationActionTypes.MarkNotificationsAsRead),
     map((action: MarkNotificationsAsRead) => action.payload),
     switchMap(mark =>
-      this.notificationService
-        .markNotificationsAsRead(mark)
-        .pipe(
-          map(res => new MarkNotificationsAsReadSuccess(res)),
-          catchError(err => of(new MarkNotificationsAsReadFail(err)))
-        )
+      this.notificationService.markNotificationsAsRead(mark).pipe(
+        map(res => new MarkNotificationsAsReadSuccess(res)),
+        catchError(err => of(new MarkNotificationsAsReadFail(err)))
+      )
     )
   );
 }

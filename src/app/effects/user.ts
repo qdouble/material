@@ -1,12 +1,8 @@
-/* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store, Action } from '@ngrx/store';
-import { Observable, concat, of } from 'rxjs';
-import { tap, map, mergeMap, switchMap, catchError } from 'rxjs/operators';
-
-import { AppState } from '../reducers';
-
+import { Action, Store } from '@ngrx/store';
+import { concat, Observable, of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { SetNotificationUnreadTotal } from '../actions/notification';
 import { AddNotify } from '../actions/notify';
 import { ClearOffers } from '../actions/offer';
@@ -34,14 +30,14 @@ import {
   ForgotPassword,
   ForgotPasswordFail,
   ForgotPasswordSuccess,
-  HideReferrals,
-  HideReferralsFail,
-  HideReferralsSuccess,
   GetProfileFail,
   GetProfileSuccess,
   GetReferral,
   GetReferralFail,
   GetReferralSuccess,
+  HideReferrals,
+  HideReferralsFail,
+  HideReferralsSuccess,
   Login,
   LoginFail,
   LoginSuccess,
@@ -67,6 +63,7 @@ import {
   UpdateProfileSuccess,
   UserActionTypes
 } from '../actions/user';
+import { AppState } from '../reducers';
 import { UserService } from '../services/user';
 
 @Injectable()
@@ -105,12 +102,10 @@ export class UserEffects {
     ofType(UserActionTypes.ChangeSelectedPrize),
     map((action: ChangeSelectedPrize) => action.payload),
     switchMap(id =>
-      this.userService
-        .changeSelectedPrize(id)
-        .pipe(
-          map(res => new ChangeSelectedPrizeSuccess(res)),
-          catchError(err => concat(of(new ChangeSelectedPrizeFail(err)), of(new AddNotify(err))))
-        )
+      this.userService.changeSelectedPrize(id).pipe(
+        map(res => new ChangeSelectedPrizeSuccess(res)),
+        catchError(err => concat(of(new ChangeSelectedPrizeFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -118,12 +113,10 @@ export class UserEffects {
   checkIfUserUpdated$: Observable<Action> = this.actions$.pipe(
     ofType(UserActionTypes.CheckIfUserUpdated),
     switchMap(() =>
-      this.userService
-        .checkIfUserUpdated()
-        .pipe(
-          map(res => new CheckIfUserUpdatedSuccess(res)),
-          catchError(err => of(new CheckIfUserUpdatedFail(err)))
-        )
+      this.userService.checkIfUserUpdated().pipe(
+        map(res => new CheckIfUserUpdatedSuccess(res)),
+        catchError(err => of(new CheckIfUserUpdatedFail(err)))
+      )
     )
   );
 
@@ -132,12 +125,10 @@ export class UserEffects {
     ofType(UserActionTypes.CheckIPMatch),
     map((action: CheckIPMatch) => action.payload),
     switchMap(sponsor =>
-      this.userService
-        .checkIPMatch(sponsor)
-        .pipe(
-          map(res => new CheckIPMatchSuccess(res)),
-          catchError(err => of(new CheckIPMatchFail(err)))
-        )
+      this.userService.checkIPMatch(sponsor).pipe(
+        map(res => new CheckIPMatchSuccess(res)),
+        catchError(err => of(new CheckIPMatchFail(err)))
+      )
     )
   );
 
@@ -145,12 +136,10 @@ export class UserEffects {
   checkLoggedIn$: Observable<Action> = this.actions$.pipe(
     ofType(UserActionTypes.CheckLoggedIn),
     switchMap(() =>
-      this.userService
-        .checkLoggedIn()
-        .pipe(
-          map(res => new CheckLoggedInSuccess(res)),
-          catchError(err => concat(of(new CheckLoggedInFail(err)), of(new AddNotify(err))))
-        )
+      this.userService.checkLoggedIn().pipe(
+        map(res => new CheckLoggedInSuccess(res)),
+        catchError(err => concat(of(new CheckLoggedInFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -159,12 +148,10 @@ export class UserEffects {
     ofType(UserActionTypes.CheckReferrerUsername),
     map((action: CheckReferrerUsername) => action.payload),
     switchMap(username =>
-      this.userService
-        .checkReferrerUsername(username)
-        .pipe(
-          map(res => new CheckReferrerUsernameSuccess(res)),
-          catchError(err => of(new CheckReferrerUsernameFail(err)))
-        )
+      this.userService.checkReferrerUsername(username).pipe(
+        map(res => new CheckReferrerUsernameSuccess(res)),
+        catchError(err => of(new CheckReferrerUsernameFail(err)))
+      )
     )
   );
 
@@ -172,12 +159,10 @@ export class UserEffects {
   dismissProfileChanges$: Observable<Action> = this.actions$.pipe(
     ofType(UserActionTypes.DismissProfileChanges),
     switchMap(() =>
-      this.userService
-        .dismissProfileChanges()
-        .pipe(
-          map(res => new DismissProfileChangesSuccess(res)),
-          catchError(err => concat(of(new DismissProfileChangesFail(err)), of(new AddNotify(err))))
-        )
+      this.userService.dismissProfileChanges().pipe(
+        map(res => new DismissProfileChangesSuccess(res)),
+        catchError(err => concat(of(new DismissProfileChangesFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -209,12 +194,10 @@ export class UserEffects {
     ofType(UserActionTypes.HideReferrals),
     map((action: HideReferrals) => <{ ids: string[]; hide: boolean }>action.payload),
     switchMap(hideRefs =>
-      this.userService
-        .hideReferrals(hideRefs)
-        .pipe(
-          map(res => new HideReferralsSuccess(res)),
-          catchError(err => of(new HideReferralsFail(err)))
-        )
+      this.userService.hideReferrals(hideRefs).pipe(
+        map(res => new HideReferralsSuccess(res)),
+        catchError(err => of(new HideReferralsFail(err)))
+      )
     )
   );
 
@@ -222,14 +205,12 @@ export class UserEffects {
   getProfile$: Observable<Action> = this.actions$.pipe(
     ofType(UserActionTypes.GetProfile),
     switchMap(() =>
-      this.userService
-        .getProfile()
-        .pipe(
-          mergeMap(res =>
-            concat(of(new SetNotificationUnreadTotal(res)), of(new GetProfileSuccess(res)))
-          ),
-          catchError(err => of(new GetProfileFail(err)))
-        )
+      this.userService.getProfile().pipe(
+        mergeMap(res =>
+          concat(of(new SetNotificationUnreadTotal(res)), of(new GetProfileSuccess(res)))
+        ),
+        catchError(err => of(new GetProfileFail(err)))
+      )
     )
   );
 
@@ -238,12 +219,10 @@ export class UserEffects {
     ofType(UserActionTypes.GetReferral),
     map((action: GetReferral) => action.payload),
     switchMap(id =>
-      this.userService
-        .getReferral(id)
-        .pipe(
-          map(res => new GetReferralSuccess(res)),
-          catchError(err => concat(of(new GetReferralFail(err)), of(new AddNotify(err))))
-        )
+      this.userService.getReferral(id).pipe(
+        map(res => new GetReferralSuccess(res)),
+        catchError(err => concat(of(new GetReferralFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -285,13 +264,11 @@ export class UserEffects {
   logout$: Observable<Action> = this.actions$.pipe(
     ofType(UserActionTypes.Logout),
     switchMap(() =>
-      this.userService
-        .logout()
-        .pipe(
-          map(() => new LogoutSuccess()),
-          tap(() => this.store.dispatch(new Go({ path: ['/'] }))),
-          catchError(err => concat(of(new LogoutFail(err)), of(new AddNotify(err))))
-        )
+      this.userService.logout().pipe(
+        map(() => new LogoutSuccess()),
+        tap(() => this.store.dispatch(new Go({ path: ['/'] }))),
+        catchError(err => concat(of(new LogoutFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -349,12 +326,10 @@ export class UserEffects {
     ofType(UserActionTypes.RemoveReferrals),
     map((action: RemoveReferrals) => action.payload),
     switchMap(ids =>
-      this.userService
-        .removeReferrals(ids)
-        .pipe(
-          mergeMap(res => of(new RemoveReferralsSuccess(res))),
-          catchError(err => of(new HideReferralsFail(err)))
-        )
+      this.userService.removeReferrals(ids).pipe(
+        mergeMap(res => of(new RemoveReferralsSuccess(res))),
+        catchError(err => of(new HideReferralsFail(err)))
+      )
     )
   );
 
@@ -363,18 +338,16 @@ export class UserEffects {
     ofType(UserActionTypes.ResetPassword),
     map((action: ResetPassword) => action.payload),
     switchMap(email =>
-      this.userService
-        .resetPassword(email)
-        .pipe(
-          mergeMap(res => concat(of(new ResetPasswordSuccess(res)), of(new AddNotify(res)))),
-          tap(
-            res =>
-              res.payload.redirectTo
-                ? this.store.dispatch(new Go({ path: [res.payload.redirectTo] }))
-                : null
-          ),
-          catchError(err => concat(of(new ResetPasswordFail(err)), of(new AddNotify(err))))
-        )
+      this.userService.resetPassword(email).pipe(
+        mergeMap(res => concat(of(new ResetPasswordSuccess(res)), of(new AddNotify(res)))),
+        tap(
+          res =>
+            res.payload.redirectTo
+              ? this.store.dispatch(new Go({ path: [res.payload.redirectTo] }))
+              : null
+        ),
+        catchError(err => concat(of(new ResetPasswordFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -383,14 +356,12 @@ export class UserEffects {
     ofType(UserActionTypes.SetSponsor),
     map((action: SetSponsor) => action.payload),
     switchMap(sponsor =>
-      this.userService
-        .setSponsor(sponsor)
-        .pipe(
-          mergeMap(res =>
-            concat(of(new SetSponsorSuccess(res)), of(res['message'] ? new AddNotify(res) : null))
-          ),
-          catchError(err => concat(of(new SetSponsorFail(err)), of(new AddNotify(err))))
-        )
+      this.userService.setSponsor(sponsor).pipe(
+        mergeMap(res =>
+          concat(of(new SetSponsorSuccess(res)), of(res['message'] ? new AddNotify(res) : null))
+        ),
+        catchError(err => concat(of(new SetSponsorFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 
@@ -399,12 +370,10 @@ export class UserEffects {
     ofType(UserActionTypes.UpdateProfile),
     map((action: UpdateProfile) => action.payload),
     switchMap(user =>
-      this.userService
-        .updateProfile(user)
-        .pipe(
-          mergeMap(res => concat(of(new UpdateProfileSuccess(res)), of(new AddNotify(res)))),
-          catchError(err => concat(of(new UpdateProfileFail(err)), of(new AddNotify(err))))
-        )
+      this.userService.updateProfile(user).pipe(
+        mergeMap(res => concat(of(new UpdateProfileSuccess(res)), of(new AddNotify(res)))),
+        catchError(err => concat(of(new UpdateProfileFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 }

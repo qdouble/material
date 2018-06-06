@@ -1,21 +1,19 @@
-/* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { concat, Observable, of } from 'rxjs';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Store, Action } from '@ngrx/store';
-import { tap, map, switchMap, catchError } from 'rxjs/operators';
-
-import { AppState } from '../reducers';
+import { Action, Store } from '@ngrx/store';
+import { concat, Observable, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AddNotify } from '../actions/notify';
 import {
   GetOrdersFail,
   GetOrdersSuccess,
+  OrderActionTypes,
   PlaceOrder,
   PlaceOrderFail,
-  PlaceOrderSuccess,
-  OrderActionTypes
+  PlaceOrderSuccess
 } from '../actions/order';
 import { SetOrderPending } from '../actions/user';
+import { AppState } from '../reducers';
 import { OrderService } from '../services/order';
 
 @Injectable()
@@ -30,12 +28,10 @@ export class OrderEffects {
   getOrders$: Observable<Action> = this.actions$.pipe(
     ofType(OrderActionTypes.GetOrders),
     switchMap(() =>
-      this.orderService
-        .getOrders()
-        .pipe(
-          map(res => new GetOrdersSuccess(res)),
-          catchError(err => concat(of(new GetOrdersFail(err)), of(new AddNotify(err))))
-        )
+      this.orderService.getOrders().pipe(
+        map(res => new GetOrdersSuccess(res)),
+        catchError(err => concat(of(new GetOrdersFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 

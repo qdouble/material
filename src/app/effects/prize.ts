@@ -1,13 +1,11 @@
-/* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { Action } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable, concat, of } from 'rxjs';
-import { map, switchMap, catchError } from 'rxjs/operators';
-
+import { Action } from '@ngrx/store';
+import { concat, Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { AddNotify } from '../actions/notify';
-import { PrizeService } from '../services/prize';
 import { GetPrizesFail, GetPrizesSuccess, PrizeActionTypes } from '../actions/prize';
+import { PrizeService } from '../services/prize';
 
 @Injectable()
 export class PrizeEffects {
@@ -17,12 +15,10 @@ export class PrizeEffects {
   getPrizes$: Observable<Action> = this.actions$.pipe(
     ofType(PrizeActionTypes.GetPrizes),
     switchMap(email =>
-      this.prizeService
-        .getPrizes()
-        .pipe(
-          map(res => new GetPrizesSuccess(res)),
-          catchError(err => concat(of(new GetPrizesFail(err)), of(new AddNotify(err))))
-        )
+      this.prizeService.getPrizes().pipe(
+        map(res => new GetPrizesSuccess(res)),
+        catchError(err => concat(of(new GetPrizesFail(err)), of(new AddNotify(err))))
+      )
     )
   );
 }

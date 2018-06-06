@@ -1,35 +1,33 @@
-/* tslint:disable: member-ordering */
 import { Injectable } from '@angular/core';
-import { Action } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { concat, Observable, of } from 'rxjs';
-import { map, mergeMap, switchMap, catchError } from 'rxjs/operators';
-
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { AddNotify } from '../actions/notify';
 import {
   AddInvalidCountry,
-  AddInvalidCountrySuccess,
   AddInvalidCountryFail,
+  AddInvalidCountrySuccess,
   AddUserIDToSocket,
   AddUserIDToSocketFail,
   AddUserIDToSocketSuccess,
   ContactUs,
   ContactUsFail,
   ContactUsSuccess,
+  GetIPInfo,
+  GetIPInfoFail,
+  GetIPInfoSuccess,
+  GetScriptsToLoadSuccess,
+  GetSocialProof,
+  GetSocialProofFail,
+  GetSocialProofSettingsFail,
+  GetSocialProofSettingsSuccess,
+  GetSocialProofSuccess,
   GetVersionFail,
   GetVersionSuccess,
-  UIActionTypes,
-  GetSocialProofSuccess,
-  GetSocialProofFail,
-  GetIPInfoSuccess,
-  GetIPInfoFail,
-  GetIPInfo,
-  GetScriptsToLoadSuccess,
-  GetSocialProofSettingsSuccess,
-  GetSocialProofSettingsFail,
-  GetSocialProof
+  UIActionTypes
 } from '../actions/ui';
 import { UIService } from '../services/ui';
-import { AddNotify } from '../actions/notify';
 
 @Injectable()
 export class UIEffects {
