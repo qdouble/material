@@ -324,6 +324,7 @@ export class AppComponent implements OnInit {
 
     this.route.queryParams
       .pipe(
+        filter(param => param !== undefined),
         filter(param => param['ref'] !== undefined),
         take(1)
       )
@@ -377,7 +378,9 @@ export class AppComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         this.navigationPhase = 'end';
         log('ROUTER EVENTS', event.url);
-        this.showStatus = event.url.startsWith('/offers');
+        if (event.url) {
+          this.showStatus = event.url.startsWith('/offers');
+        }
         this.showNotifications = false;
       }
     });
