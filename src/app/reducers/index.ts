@@ -509,7 +509,7 @@ export const getUserReferrals = createSelector(getUserState, fromUser.getReferra
 export const getUserReferralCollection = createSelector(
   getUserReferrals,
   getUserReferralIds,
-  (referrals, ids) => ids.map(id => referrals[id])
+  (referrals, ids) => ids.filter(id => referrals[id].active === true).map(id => referrals[id])
 );
 
 export const getUserResetEmailSent = createSelector(getUserState, fromUser.getResetEmailSent);
