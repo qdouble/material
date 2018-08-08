@@ -1,0 +1,84 @@
+/* This file is for setting global styles  */
+
+@import 'styles';
+.os-div-section {
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.09), 0px 1px 1px 0px rgba(0, 0, 0, 0.07),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.09);
+}
+
+.os-form-container {
+  position: relative;
+  margin: 0 auto; // border-bottom: 5px solid $primary-color;
+  overflow: scroll;
+  @media screen and (min-width: 500px) {
+    overflow: hidden;
+  }
+}
+
+.os-form-input {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.os-message-card {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px !important;
+  text-align: center;
+}
+
+.os-page-container-vh {
+  height: -moz-calc(100vh - 64px - 48px);
+  height: -webkit-calc(100vh - 64px -48px);
+  height: calc(100vh - 64px - 48px);
+  min-height: 100%;
+  box-shadow: none !important;
+}
+
+.os-page-container {
+  height: 100%;
+  padding: 24px;
+  min-height: -moz-calc(100vh - 64px - 48px);
+  min-height: -webkit-calc(100vh - 64px -48px);
+  min-height: calc(100vh - 64px - 48px);
+  box-shadow: none !important;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+:host mat-card.os-section-card {
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.09), 0px 1px 1px 0px rgba(0, 0, 0, 0.07),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.09);
+}
+
+.os-title-card {
+  font-size: 20px;
+  margin: 0 auto 2px;
+  color: white;
+  white-space: nowrap;
+  padding: 14px 24px !important;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.03), 0px 1px 1px 0px rgba(0, 0, 0, 0.03),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.05) !important;
+}
+
+.flex-row-container {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.checkbox-note {
+  font-size: 12px;
+  margin-top: -5px;
+  margin-bottom: 5px;
+}
+
+.center {
+  text-align: center !important;
+}
+
+.center-div {
+  margin: 0 auto;
+}

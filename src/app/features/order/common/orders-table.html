@@ -1,0 +1,36 @@
+<div class="os-table-container">
+  <div class="table">
+    <div class="row header">
+      <div class="cell hide-prize">Prize</div>
+      <div class="cell nowrap hide-amount">Paid</div>
+      <div class="cell nowrap">Order On</div>
+      <div class="cell nowrap hide-updated">Updated At</div>
+      <div class="cell">Status</div>
+    </div>
+    <ng-container *ngFor="let order of orders">
+      <div class="row">
+        <div class="cell nowrap hide-prize">
+          {{order.selectedPrizeName | slice:0:12}}
+        </div>
+        <div class="cell nowrap hide-amount">
+          {{ order.amountPaid ? '$' + (order.amountPaid | number: '1.2-2') : 'N/A'}}
+        </div>
+        <div class="cell nowrap">
+          <span [matTooltip]="(order.createdAt | date: 'medium')" tooltip-position="after">
+            {{order.createdAt | date: 'mediumDate' }}
+          </span>
+        </div>
+        <div class="cell nowrap hide-updated">
+          <span [matTooltip]="(order.updatedAt | date: 'medium')" tooltip-position="after">
+            <span class="short-date">{{order.updatedAt | date: 'shortDate' }}</span>
+            <span class="medium-date">{{order.updatedAt | date: 'mediumDate' }}</span>
+            <span class="long-date">{{order.updatedAt | date: 'short' }}</span>
+          </span>
+        </div>
+        <div class="cell nowrap last-cell" [matTooltip]="order.processStatus">
+          <span>{{order.processStatus | slice: 0:10 }}</span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

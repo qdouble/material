@@ -1,0 +1,140 @@
+.completed {
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: -25px;
+  margin-right: 10px;
+  font-style: italic;
+  color: #79b03b;
+}
+
+.featured-offer {
+  position: absolute;
+}
+
+.description {
+  font-size: 79%;
+}
+
+.lower-offer-body {
+  outline: none;
+  cursor: pointer;
+}
+
+mat-card {
+  padding-top: 52px;
+  outline: none;
+}
+
+mat-card-title {
+  color: #464645;
+  margin-top: -2px;
+}
+
+mat-checkbox {
+  position: absolute;
+  right: 6px;
+  top: 4px;
+  z-index: 2;
+}
+
+.new-bounding {
+  position: absolute;
+  top: 2px;
+  width: 82%;
+  z-index: 1;
+}
+
+.new {
+  width: 88px;
+  margin: 0 auto;
+  @media screen and (max-width: 340px) {
+    width: 80px;
+    margin-top: 2px;
+  }
+}
+
+.unlocked {
+  position: absolute;
+  bottom: 5px;
+  color: #79b03b;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.offer-face {
+  height: 244px;
+  width: 250px;
+  display: inline-block;
+  margin: 3px;
+  background: #fcfcfc;
+  @media screen and (max-width: 807px) {
+    width: 100%;
+  }
+}
+
+.offer-face-s-closed {
+  width: 250px;
+  display: inline-block;
+  margin-top: 5px;
+  margin-right: 5px;
+  @media screen and (max-width: 656px) {
+    width: 100%;
+    margin-left: -15px;
+    margin-top: 5px;
+  }
+}
+
+mat-card-content {
+  padding-top: 15px;
+}
+
+.os-mat-card-level {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  text-align: center;
+  line-height: 15px;
+  font-size: 10px;
+  color: #464645;
+  :nth-child(2) {
+    font-size: 19px;
+  }
+}
+
+.offer-card-image {
+  cursor: pointer;
+  @media screen and (min-width: 808px) {
+    width: 250px;
+    height: 100px;
+  }
+}
+
+.offer-card-image-s-closed {
+  cursor: pointer;
+  @media screen and (min-width: 655px) {
+    width: 250px;
+    height: 100px;
+  }
+}
+
+.offer-card-image img {
+  width: 50px;
+}
+
+.popularity-rank {
+  position: absolute;
+  top: 22px;
+  right: -1px;
+  width: 110px;
+  b {
+    position: absolute;
+    color: white;
+    top: 8px;
+    left: 87px;
+  }
+}
+
+.view-offer-btn {
+  position: relative;
+  bottom: 0px;
+}

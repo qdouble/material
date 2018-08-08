@@ -1,0 +1,79 @@
+:host {
+  padding: 0px; // Clear padding on parent page card
+}
+
+.containerRow {
+  margin: 25px auto;
+}
+
+.containerX {
+  max-width: 1500px;
+  text-align: center;
+  margin: 0 auto;
+  #welcome-img,
+  .main-images {
+    width: 75%;
+    max-width: 330px;
+    margin-top: 10px;
+  }
+  .os-welcome {
+    margin-bottom: 8px;
+    h1 {
+      color: #8bc34a;
+      font-size: 38px;
+      line-height: 0.4;
+      font-weight: 600;
+    }
+    p {
+      font-size: 15px;
+      color: #939393;
+      margin-top: 3px;
+    }
+    .sectionContainer {
+      padding: 10px;
+    }
+    .view-btns {
+      width: 75%;
+      max-width: 330px;
+    }
+  }
+  .os-sign-up {
+    img {
+      max-width: 330px;
+      width: 75%;
+    }
+    #or-marker {
+      margin: 6px 0 6px 0;
+    }
+  }
+}
+
+.container-separator {
+  width: 100%;
+  height: 6px;
+  background: #f8f8f8;
+}
+
+.disclaimer-text {
+  color: #ababab;
+  padding: 60px;
+  font-size: 12px;
+}
+
+.full-image {
+  max-width: 330px;
+  width: 90%;
+}
+
+os-footer {
+  margin: 0 auto;
+}
+
+.sectionContainer {
+  padding: 10px;
+  p {
+    margin: 0 auto;
+    max-width: 510px;
+    padding: 14px 0 14px 0;
+  }
+}

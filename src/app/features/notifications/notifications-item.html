@@ -1,0 +1,16 @@
+<div *ngIf="notification" class="notify-item" [style.background]="notification.read ? 'white' : '#f7f7f7'">
+  <span class="notify-clickable" [routerLink]="notification.routerLink" (click)="!notification.read ? markNotificationsAsRead.emit({ids: [notification.id], read: true }) : null">
+    <div class="notify-image">
+      <mat-icon class="notify-ico">{{notification.ico}}</mat-icon>
+    </div>
+    <div class="notify-message">{{notification?.message}}</div>
+    <div class="notify-timestamp">{{notification?.createdAt | timeAgo }}</div>
+  </span>
+  <mat-icon *ngIf="notification.read" class="notify-radio" (click)="markNotificationsAsRead.emit({ids: [notification.id], read: false })">
+    radio_button_checked
+  </mat-icon>
+  <mat-icon *ngIf="!notification.read" class="notify-radio" (click)="markNotificationsAsRead.emit({ids: [notification.id], read: true })">
+    radio_button_unchecked
+  </mat-icon>
+  <mat-icon class="notify-close" (click)="deleteNotifications.emit([notification.id])">close</mat-icon>
+</div>

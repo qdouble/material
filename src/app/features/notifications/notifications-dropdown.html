@@ -1,0 +1,8 @@
+<div class="notify-dropdown">
+  <os-notifications-item *ngFor="let notification of sortedNotifications$ | async" [notification]="notification" (deleteNotifications)="deleteNotifications($event)"
+    (markNotificationsAsRead)="markNotificationsAsRead($event)">
+  </os-notifications-item>
+  <div class="no-notifications" *ngIf="!(sortedNotifications$ | async)?.length">
+    -- You Have No Notifications --
+  </div>
+</div>

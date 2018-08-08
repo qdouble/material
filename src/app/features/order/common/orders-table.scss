@@ -1,0 +1,41 @@
+@media screen and (max-width: 319px) {
+  .hide-amount {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 510px) {
+  .hide-prize,
+    {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 413px) {
+  .hide-updated {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 560px) {
+  .short-date {
+    display: none;
+  }
+}
+
+.medium-date {
+  display: none;
+  @media screen and (min-width: 560px) {
+    display: inline;
+  }
+  @media screen and (min-width: 620px) {
+    display: none;
+  }
+}
+
+.long-date {
+  display: none;
+  @media screen and (min-width: 620px) {
+    display: inline;
+  }
+}

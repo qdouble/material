@@ -1,0 +1,84 @@
+:host /deep/ .mat-icon.contact-icon {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+}
+
+.close-button {
+  margin-top: 5px;
+  width: 100%;
+}
+
+.mat-icon-button {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.icon-button-shadow {
+  box-shadow: 2px 3px 3px -1.1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.2),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.017);
+}
+
+.close-button {
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0), 0px 2px 2px -1px rgba(0, 0, 0, 0.1),
+    1px 1px 5px 0px rgba(0, 0, 0, 0.12);
+}
+
+a[href^='tel:'],
+a[href^='mailto:'] {
+  color: #8bc34a; // text-decoration: none;
+  position: relative;
+  top: -2px !important;
+}
+
+// .referral-email {
+//   margin: -1px 0 0px -3px;
+// }
+.referral-phone {
+  // margin: -4px 0 -6px -2px;
+  margin-top: 2px;
+}
+
+.referral-email,
+.referral-phone {
+  white-space: nowrap;
+  span {
+    position: relative;
+    top: -8px;
+    left: 5px;
+  }
+}
+
+// .icon-button {
+//   mat-icon {
+//     position: relative;
+//     top: 7px;
+//   }
+// }
+.name-col {
+  width: 70%;
+}
+
+.value-col {
+  width: 30%;
+}
+
+.referral-details {
+  border-bottom: 1px solid #ffe1ad;
+  border-top: 1px solid #ffe1ad;
+  color: #5b8a24;
+}
+
+.referral-details-container {
+  font-size: 14px;
+}
+
+.table {
+  margin: 5px 0 5px;
+}
+
+.table-container {
+  max-height: 150px;
+  overflow: scroll;
+}

@@ -1,0 +1,67 @@
+button {
+  width: 20px;
+  min-width: 20px;
+  @media screen and (min-width: 640px) {
+    min-width: 84px;
+  }
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 419px) {
+  .hide-submitted {
+    display: none;
+  }
+}
+
+.short-date {
+  @media screen and (min-width: 496px) {
+    display: none;
+  }
+}
+
+.long-date {
+  display: none;
+  @media screen and (min-width: 496px) {
+    display: inline;
+  }
+  @media screen and (min-width: 568px) {
+    display: none;
+  }
+}
+
+.full-date {
+  display: none;
+  @media screen and (min-width: 568px) {
+    display: inline;
+  }
+}
+
+.short-name {
+  @media screen and (min-width: 350px) {
+    display: none;
+  }
+  @media screen and (min-width: 420px) {
+    display: inline;
+  }
+  @media screen and (min-width: 460px) {
+    display: none;
+  }
+}
+
+.long-name {
+  display: none;
+  @media screen and (min-width: 350px) {
+    display: inline;
+  }
+  @media screen and (min-width: 420px) {
+    display: none;
+  }
+  @media screen and (min-width: 460px) {
+    display: inline;
+  }
+}
+
+.view-credit-request-btn {
+  display: block;
+  width: 50px;
+}

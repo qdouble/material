@@ -1,0 +1,39 @@
+#minimum {
+  margin: -16px 0 11px;
+  font-size: 13px;
+}
+
+#selected-prize {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 225px;
+  height: 150px;
+}
+
+mat-card-content {
+  text-align: center;
+  p {
+    margin: 0;
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+}
+
+#selected-prize img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 100%;
+  max-height: 150px;
+}
+
+#selectedPrizeDrop {
+  display: block;
+  margin-bottom: 15px;
+}
+
+:host>>>select-input .form-group {
+  display: block;
+}

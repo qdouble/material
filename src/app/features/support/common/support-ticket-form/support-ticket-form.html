@@ -1,0 +1,50 @@
+<mat-card>
+  <mat-card-actions>
+    <button mat-button (click)="ticket.readByUser ? markTicketAsRead.emit({id: ticket.id, mark: false}) : markTicketAsRead.emit({id: ticket.id, mark: true})">{{ticket?.readByUser ? 'MARK AS UNREAD' : 'MARK AS READ'}}</button>
+    <button mat-button [color]="ticket?.closed ? 'primary' : 'accent'" (click)="ticket.closed ? closeTicket.emit({id: ticket.id, close: false}) : closeTicket.emit({id: ticket.id, close: true})">{{ticket?.closed ? 'REOPEN TICKET' : 'CLOSE TICKET'}}</button>
+  </mat-card-actions>
+  <mat-card-title>Subject: {{ticket?.subject}}</mat-card-title>
+  <mat-card-subtitle>
+    <div>Ticket Opened: {{ticket?.createdAt | date: 'medium'}}</div>
+    <div>Last Entry: {{ticket?.lastEntry | date: 'medium'}}</div>
+    <div>Entries: {{ticket?.entries}}</div>
+  </mat-card-subtitle>
+  <mat-card-title>{{ticket?.adminOrigin ? 'Admin Message' : 'Your Question'}}:</mat-card-title>
+  <mat-card-content>
+    <pre>{{ticket?.question}}</pre>
+  </mat-card-content>
+</mat-card>
+<mat-card *ngFor="let entry of ticket?.messages" #message [style.background]="entry.adminName ? '#fafafa': 'white' ">
+  <mat-card-subtitle>
+    <div *ngIf="entry?.adminName">Admin: {{entry.adminName}}</div>
+    <div *ngIf="!entry?.adminName">From: Me</div>
+    <div>Sent: {{entry?.id | date: 'medium'}}</div>
+  </mat-card-subtitle>
+  <mat-card-content>
+    <os-support-ticket-message #ticketMessage [ticketMessage]="entry" [editing]="message['editing']" [save]="message['save']"
+      (editMessage)="editMessage.emit($event)">
+    </os-support-ticket-message>
+  </mat-card-content>
+  <mat-card-actions>
+    <button *ngIf="message['editing']" color="warn" mat-button (click)="message['editing'] = false; ticketMessage.cancelUpdate()">CANCEL</button>
+    <button *ngIf="message['editing']" color="primary" mat-button (click)="message['editing'] = false; ticketMessage.sendValue()"
+      [disabled]="loading">SAVE</button>
+  </mat-card-actions>
+</mat-card>
+<mat-card>
+  <mat-card-title>
+    Reply
+  </mat-card-title>
+  <mat-card-content>
+    <div id="reply"></div>
+    <form [formGroup]="f">
+      <mat-form-field>
+        <textarea minlength="2" matInput placeholder="Response Message" rows="6" formControlName="message"></textarea>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button color="warn" mat-button (click)="f.get('message').setValue('')">CLEAR</button>
+    <button color="primary" mat-button (click)="fSubmit()" [disabled]="addingTicketMessageObs | async">SEND REPLY</button>
+  </mat-card-actions>
+</mat-card>

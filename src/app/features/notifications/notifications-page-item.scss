@@ -1,0 +1,70 @@
+@import '../../variables';
+.notify-clickable {
+  cursor: pointer;
+}
+
+.notify-close {
+  position: absolute;
+  top: 36px;
+  right: -9px;
+  font-size: 16px;
+  color: #a3b78d;
+  cursor: pointer;
+}
+
+.notify-ico {
+  font-size: 33px;
+  color: $primary-color;
+}
+
+.notify-item:focus {
+  outline: none !important;
+}
+
+.notify-item {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  margin-bottom: 2px;
+  font-size: 13px;
+  overflow: hidden;
+  border-bottom: 2px solid #8bc34a;
+  background: #f7f7f7;
+}
+
+.notify-image {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  overflow: hidden;
+}
+
+.notify-message {
+  position: absolute;
+  top: 0px;
+  left: 58px;
+  white-space: normal;
+  max-height: 36px;
+  overflow: hidden;
+  line-height: 1.4;
+  width: 80%;
+  @media screen and (max-width: 500px) {
+    width: 75%;
+  }
+}
+
+.notify-radio {
+  position: absolute;
+  top: 4px;
+  right: -9px;
+  font-size: 16px;
+  color: #a3b78d;
+  cursor: pointer;
+}
+
+.notify-timestamp {
+  position: absolute;
+  top: 36px;
+  left: 58px;
+  font-size: 10px;
+}

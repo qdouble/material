@@ -1,0 +1,377 @@
+/* styles.css will be extracted to main dist folder and is imported in index.html */
+
+/* This file is for importing 3rd party styles  */
+
+@import 'variables';
+
+@media only screen and (min-width: 800px) {
+  mat-sidenav.mat-sidenav-opened,
+  mat-sidenav.mat-sidenav-opening {
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.08), 0px 1px 1px 0px rgba(0, 0, 0, 0.07),
+      0px 1px 3px 0px rgba(0, 0, 0, 0.14) !important;
+  }
+}
+
+@mixin md-icon-size($size: 24px) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+  line-height: $size;
+}
+
+.mat-flat-button.mat-primary,
+.mat-raised-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary {
+  color: #fff;
+}
+
+.mat-list .mat-list-item.mat-2-line,
+.mat-list .mat-list-option.mat-2-line,
+.mat-nav-list .mat-list-item.mat-2-line,
+.mat-nav-list .mat-list-option.mat-2-line,
+.mat-selection-list .mat-list-item.mat-2-line,
+.mat-selection-list .mat-list-option.mat-2-line {
+  height: 56px !important;
+}
+
+.mat-button-toggle-group {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.09),
+    0 1px 5px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+mat-card {
+  color: #363636;
+}
+
+mat-card.os-section-card,
+mat-card.os-message-card {
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.09), 0px 1px 1px 0px rgba(0, 0, 0, 0.07),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.15) !important;
+}
+
+.mat-checkbox-label {
+  white-space: normal;
+}
+
+.mat-raised-button:not([class*='mat-elevation-z']) {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.08), 0 2px 2px 0 rgba(0, 0, 0, 0.01),
+    0 1px 5px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+.mat-sidenav-container,
+.os-page-container,
+.os-page-container-vh {
+  background: #fcfcfc;
+}
+
+.mat-toolbar {
+  background: #fff;
+}
+
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+  height: 48px !important;
+}
+
+.mat-list .mat-list-item,
+.mat-nav-list .mat-list-item,
+.mat-selection-list .mat-list-item {
+  color: #fff;
+}
+
+.mat-drawer {
+  background: $primary;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: rgba(113, 113, 113, 0.42);
+}
+
+.accent {
+  color: $accent;
+}
+
+.accent-background {
+  background: $accent;
+}
+
+.accent-medium {
+  color: #ffc107;
+}
+
+.accent-medium-background {
+  background: #ffc107;
+}
+
+.primary {
+  color: $primary;
+}
+
+.primary-background {
+  background: $primary;
+}
+
+.warn {
+  color: $warn;
+}
+
+.warn-background {
+  background: $warn !important;
+}
+
+.warn-text {
+  color: $warn;
+  font-size: 75%;
+}
+
+.white {
+  color: white !important;
+}
+
+.transparent {
+  background: transparent;
+}
+
+.white-background {
+  background: white;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.table {
+  margin: 0 0 40px 0;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  display: table;
+}
+
+@media screen and (max-width: 599px) {
+  .table {
+    display: block;
+  }
+}
+
+.row {
+  display: table-row;
+  background: #fff;
+}
+
+.row:nth-of-type(odd) {
+  background: #f7f7f7;
+}
+
+.row.header {
+  font-weight: 900;
+  color: #ffffff;
+  background: $primary;
+}
+
+.row.green {
+  background: $primary;
+}
+
+.row.red {
+  background: $warn;
+}
+
+.row.gray {
+  background: #c5c5c5;
+}
+
+.cell {
+  padding: 6px 12px;
+  display: table-cell;
+}
+
+.last-cell {
+  width: 100%;
+}
+
+@media screen and (max-width: 580px) {
+  .cell {
+    padding: 2px 8px;
+  }
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: $primary-font;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+pre {
+  font-family: $primary-font;
+  font-size: 14px;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+/**
+  * Basic styles from Material Design Lite for HTML elements
+  */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+h1 small,
+h2 small,
+h3 small,
+h4 small,
+h5 small,
+h6 small {
+  font-family: $primary-font;
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  opacity: 0.54;
+  font-size: 0.6em;
+}
+
+h1 {
+  font-family: $primary-font;
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+h2 {
+  font-family: $primary-font;
+  font-size: 45px;
+  font-weight: 400;
+  line-height: 48px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+h3 {
+  font-family: $primary-font;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 40px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+h4 {
+  font-family: $primary-font;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  -moz-osx-font-smoothing: grayscale;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+h5 {
+  font-family: $primary-font;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+h6 {
+  font-family: $primary-font;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.04em;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+p {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  margin-bottom: 0;
+}
+
+a {
+  font-weight: 500;
+}
+
+blockquote {
+  font-family: $primary-font;
+  position: relative;
+  font-size: 24px;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+}
+
+blockquote:before {
+  position: absolute;
+  left: -0.5em;
+  content: '“';
+}
+
+blockquote:after {
+  content: '”';
+  margin-left: -0.05em;
+}
+
+mark {
+  background-color: #f4ff81;
+}
+
+dt {
+  font-weight: 700;
+}
+
+address {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  font-style: normal;
+}
+
+ul,
+ol {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0;
+}

@@ -1,0 +1,23 @@
+<form *ngIf="loaded" [formGroup]="form" (ngSubmit)="placeOrder.emit()">
+  <os-form-input class="os-form-input" placeholder="First Name" controlName="firstName" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="Last Name" controlName="lastName" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="Address" controlName="address" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="City" controlName="city" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="State" controlName="State" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="Zip Code" controlName="zipCode" [form]="form"></os-form-input>
+  <os-form-input class="os-form-input" placeholder="Email Address" controlName="email" [form]="form"></os-form-input>
+  <ng-container *ngIf="needBankInfo">
+    <mat-checkbox *ngIf="user.savedAccountNum" formControlName="useSavedBank" color="primary">Use Saved Bank Info (Account ending with {{user.savedAccountNum}})</mat-checkbox>
+    <ng-container *ngIf="!form.get('useSavedBank').value">
+      <os-form-input class="os-form-input" placeholder="Bank Name" controlName="bankName" [form]="form"></os-form-input>
+      <select-input [placeholder]="'Account Type'" [optionValues]="accountTypes" [optionLabels]="accountTypes" [controlName]="'accountType'"
+        [form]="form">
+      </select-input>
+      <os-form-input class="os-form-input" placeholder="Routing Number" controlName="routingNumber" [form]="form"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="Account Number" controlName="accountNumber" [form]="form"></os-form-input>
+    </ng-container>
+  </ng-container>
+  <os-form-input *ngIf="!needBankInfo" class="os-form-input" placeholder="PayPal Email Address" controlName="paypal" [form]="form"></os-form-input>
+  <div class="warn warn-message" *ngIf="needPaypalEmail">PayPal Account Email Needed</div>
+  <button mat-raised-button type="submit" color="primary" class="white" [disabled]="form.invalid || placing || needPaypalEmail">REQUEST PAYMENT</button>
+</form>

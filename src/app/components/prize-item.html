@@ -1,0 +1,7 @@
+<span class="prize-item">
+  <img [src]="prize.imageUrl" [alt]="prize.name">
+  <br> {{prize.name}}
+  <br>
+  <input type="radio" [formControl]="form.get('selectedPrize')" [value]="prize.id">
+  <br>
+</span>

@@ -1,0 +1,11 @@
+<div id="selected-prize">
+  <img *ngIf="prize?.imageUrl" [src]="changePrize ? prizes[selectedPrizeValues.indexOf(form.get('selectedPrize').value)]?.imageUrl : prize?.imageUrl">
+</div>
+<mat-card-content>
+  <p *ngIf="!changePrize">{{ prize?.name }}</p>
+  <select-input *ngIf="changePrize && selectedPrizeValues.length > 0" id="selectedPrizeDrop" controlName="selectedPrize" [optionValues]="selectedPrizeValues"
+    [optionLabels]="selectedPrizeLabels" width="150px" [center]="true" [form]="form"></select-input>
+  <p id="minimum" *ngIf="prize?.name === 'Bank Transfer'">($10 Minimum Cash Out)</p>
+  <button *ngIf="changePrize" mat-raised-button color="warn" (click)="cancelPrizeChange.emit()">CANCEL</button>
+  <button mat-raised-button color="primary" class="white" (click)="changeSelectedPrize.emit()">{{changePrize ? 'SAVE' : 'CHANGE PRIZE'}}</button>
+</mat-card-content>

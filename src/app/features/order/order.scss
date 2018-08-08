@@ -1,0 +1,75 @@
+@import '../../variables';
+a {
+  color: #456321;
+}
+
+.earnings {
+  margin-bottom: 10px;
+  .cell {
+    width: 50%;
+  }
+  @media screen and (max-width: 580px) {
+    .table {
+      display: table;
+    }
+  }
+  .row .cell {
+    font-size: 14px;
+  }
+}
+
+.join-fb {
+  text-align: center;
+  margin-bottom: 10px;
+  img {
+    margin-right: 4px;
+  }
+  button {
+    margin-bottom: 5px;
+    max-width: 100%;
+    font-size: 13px;
+    margin: 0 auto;
+  }
+}
+
+.hold-container {
+  // max-width: 600px;
+  margin: 0 auto;
+}
+
+.order-status,
+#congrats-card,
+#please-be-sure-card {
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.order-status,
+.os-message-card {
+  p {
+    text-align: left;
+  }
+}
+
+mat-card-subtitle {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.os-form-container {
+  // max-width: 550px; // border-top: 5px solid $primary-color;
+}
+
+.os-page-container {
+  max-width: 690px;
+  margin: 0 auto;
+}
+
+#place-order {
+  margin-bottom: 10px;
+}
+
+.step-title {
+  // max-width: 552px;
+}

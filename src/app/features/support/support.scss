@@ -1,0 +1,51 @@
+@import '../../variables';
+a {
+  text-decoration: none;
+}
+
+#credit-request-tab {
+  max-width: 643px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+mat-card-title {
+  color: $primary;
+}
+
+.os-support-tickets-table-container {
+  h4 {
+    text-align: center;
+  }
+}
+
+.os-support-section {
+  width: 100%;
+}
+
+.os-new-support-ticket-container {
+  width: 96%;
+}
+
+.os-support-ticket-section {
+  width: 90%;
+  max-width: 615px;
+  margin: 0 auto 15px;
+  overflow: scroll;
+}
+
+.os-new-support-ticket {
+  margin-right: 5px;
+  width: 90%;
+  max-width: 615px;
+  margin: 0 auto;
+}
+
+.os-support-tickets-card {
+  margin: 5px auto 5px;
+  width: 578px;
+}
+
+.os-title-card {
+  max-width: 615px;
+}

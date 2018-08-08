@@ -1,0 +1,85 @@
+@import '../../variables';
+a {
+  color: #74a838;
+}
+
+.explainer {
+  color: #545454;
+  margin-bottom: 15px;
+  text-align: justify;
+}
+
+mat-card-title {
+  color: $primary-color-x-dark;
+}
+
+mat-input {
+  color: $primary-color-x-dark;
+}
+
+select-input {
+  display: block;
+  margin: 15px auto 15px;
+}
+
+@media screen and (max-width: 465px) {
+  :host /deep/ .mat-checkbox-layout .mat-checkbox-label {
+    line-height: 20px;
+  }
+}
+
+.go-back {
+  margin-top: 14px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.os-agree-checkbox {
+  margin: 5px auto 15px;
+}
+
+.os-form-container {
+  margin-bottom: 50px;
+}
+
+#referred-by {
+  margin-top: 15px;
+  margin-bottom: -5px;
+}
+
+.register-form-container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.register-top-image-container {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  #register-top-image {
+    height: 101%;
+    width: 160%;
+    @media screen and (min-width: 600px) {
+      width: 100%;
+    }
+  }
+  form {
+    height: 101%;
+  }
+}
+
+#registration-text {
+  padding: 10px;
+  margin-bottom: 15px;
+  p {
+    font-size: 13px;
+  }
+}
+
+.os-page-container {
+  min-height: 854px;
+}

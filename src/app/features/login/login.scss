@@ -1,0 +1,42 @@
+@import '../../variables';
+mat-card-title {
+  color: $primary-color-x-dark;
+}
+
+mat-input {
+  color: $primary-color-x-dark;
+}
+
+button {
+  color: white !important;
+}
+
+.os-login-form-container {
+  position: relative;
+  top: 30%;
+  -webkit-transform: translateY(-30%);
+  -ms-transform: translateY(-30%);
+  transform: translateY(-30%);
+  max-width: 375px;
+  margin: 0 auto;
+}
+
+.os-login-form {
+  padding: 13px 24px 38px;
+}
+
+.os-page-container-vh {
+  box-shadow: none;
+}
+
+:host /deep/ .mat-input-element {
+  font-size: 16px;
+}
+
+p {
+  font-size: 12px;
+  position: absolute;
+  right: 12px;
+  color: #638a36;
+  cursor: pointer;
+}

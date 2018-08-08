@@ -1,0 +1,23 @@
+p {
+  margin-left: 15px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.missing-credit {
+  list-style: none;
+  margin: -6px 0 0 20px;
+  li:before {
+    content: '✔';
+    margin-left: -1em;
+    margin-right: 0.1em;
+  }
+}
+
+.mat-card-subtitle {
+  font-size: 16px !important;
+  text-align: center;
+}

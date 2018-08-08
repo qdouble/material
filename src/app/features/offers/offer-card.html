@@ -1,0 +1,32 @@
+<mat-card class="os-section-card" [ngClass]="{'offer-face': sideNavOpen, 'offer-face-s-closed': !sideNavOpen }" *ngIf="!(offer.hideToUnQualifiedUsers && qualificationLevel > 0 && hideToUnqualified)">
+  <mat-card-subtitle *ngIf="showingAvailable">
+    <ng-content select="[offer-card-feature]"></ng-content>
+    <mat-checkbox *ngIf="addUp" color="primary" (change)="checkOffer.emit({id: offerId, creditValue: creditValue, checked: $event.checked})"></mat-checkbox>
+  </mat-card-subtitle>
+  <div class="new-bounding" *ngIf="isNew && showingAvailable">
+    <div class="new">
+      <img src="assets/svg/new-offer-element.svg">
+    </div>
+  </div>
+  <span class="unlocked" *ngIf="offer.hideToUnQualifiedUsers && qualificationLevel > 0">Only Available for Members on Level {{qualificationLevel}}+</span>
+  <div class="lower-offer-body" (click)="goToOfferDetails.emit(offer)">
+    <mat-card-title>
+      <ng-content select="[offer-card-name]"></ng-content>
+      <ng-content select="[offer-card-subtitle]"></ng-content>
+    </mat-card-title>
+    <div [ngClass]="{'offer-card-image': sideNavOpen, 'offer-card-image-s-closed': !sideNavOpen }">
+      <ng-content select="[offer-card-image]" mat-card-image></ng-content>
+    </div>
+    <mat-card-content style="height: 60px;">
+      <div>Credit Value:
+        <ng-content select="[offer-card-value]"></ng-content>
+      </div>
+      <div>Cost:
+        <ng-content select="[offer-card-cost]"></ng-content>
+      </div>
+      <div>Credits:
+        <ng-content select="[offer-card-credits]"></ng-content>
+      </div>
+    </mat-card-content>
+  </div>
+</mat-card>

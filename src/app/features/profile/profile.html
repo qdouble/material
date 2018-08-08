@@ -1,0 +1,95 @@
+<mat-card *ngIf="hideProfile" class="os-page-container">
+  <div class="hold-container">
+    <mat-card class="os-message-card warn-background white">
+      <h5>Your Account is on Hold</h5>
+      <h6>
+        <em>{{user.holdReason}}</em>
+      </h6>
+      <pre>{{user.holdMessage}}</pre>
+    </mat-card>
+  </div>
+</mat-card>
+
+<mat-card *ngIf="!hideProfile" class="os-page-container" @fade>
+  <mat-card class="os-title-card primary-background">Profile</mat-card>
+  <mat-card class="os-form-container os-section-card">
+    <mat-card *ngIf="(loaded$ | async) && (user$ | async).profilePending" id="profile-pending" class="accent-medium-background">
+      <mat-card-content>
+        <h6>Your Profile Changes are Pending Approval</h6>
+        <p>You must either wait for admin approval before making further changes or you can dismiss pending changes.</p>
+        <p>
+          <em>*If you changed your password, the password change was applied immediately.</em>
+        </p>
+        <button mat-raised-button color="warn" (click)="dismissProfileChanges()">DISMISS PENDING CHANGES</button>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="viewPending = !viewPending">{{ viewPending ? 'HIDE PENDING CHANGES' : 'VIEW PENDING CHANGES' }}</button>
+      </mat-card-actions>
+      <mat-card-content id="pending-changes" *ngIf="viewPending">
+        <p>First Name: {{ pendingProfile?.firstName }}</p>
+        <p>Last Name: {{ pendingProfile?.lastName }}</p>
+        <p>Username: {{ pendingProfile?.username }}</p>
+        <p>Email: {{ pendingProfile?.email }}</p>
+        <p>Address: {{ pendingProfile?.address }}</p>
+        <p>City: {{ pendingProfile?.city }}</p>
+        <p>State: {{ pendingProfile?.State }}</p>
+        <p>Zip Code: {{ pendingProfile?.zipCode }}</p>
+        <p>Phone: {{ pendingProfile?.phone }}</p>
+        <p>PayPal: {{ pendingProfile?.paypal }}</p>
+        <p>Birthday: {{ pendingProfile?.birthday }}</p>
+      </mat-card-content>
+    </mat-card>
+    <form *ngIf="(loaded$ | async) && !(user$ | async).profilePending" [formGroup]="f" (ngSubmit)="submitForm()" autocomplete="off">
+      <os-form-input class="os-form-input" placeholder="First Name" controlName="firstName" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="Last Name" controlName="lastName" [form]="f"></os-form-input>
+      <ng-container *ngIf="(f.get('firstName').value !== initialFormValue.firstName || f.get('lastName').value !== initialFormValue.lastName)">
+        <div class="checkbox-note accent">*Name changes will be manually reviewed/approved by Admin</div>
+      </ng-container>
+      <os-form-input class="os-form-input" placeholder="Username" controlName="username" [form]="f"></os-form-input>
+      <ng-container *ngIf="f.get('username').value !== initialFormValue.username">
+        <div class="checkbox-note accent">*Username changes will be manually reviewed/approved by Admin</div>
+      </ng-container>
+      <os-form-input class="os-form-input" placeholder="Email Address" controlName="email" [form]="f"></os-form-input>
+      <ng-container *ngIf="f.get('email').value !== initialFormValue.email">
+        <os-form-input class="os-form-input" placeholder="Confirm Email Address" controlName="confirmEmail" [form]="f"></os-form-input>
+        <div class="checkbox-note accent">*Email changes will be manually reviewed/approved by Admin</div>
+        <div [hidden]="!f.hasError('compareEmail')" class="warn-text">
+          Emails do not match.
+        </div>
+      </ng-container>
+      <os-form-input class="os-form-input" placeholder="Address" controlName="address" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="City" controlName="city" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="State" controlName="State" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="Zip Code" controlName="zipCode" [form]="f"></os-form-input>
+      <select-input placeholder="Country" fullWidth="true" [optionValues]="countryIds$ | async" [optionLabels]="countryNames$ | async"
+        [controlName]="'country'" [form]="f">
+      </select-input>
+      <os-form-input class="os-form-input" placeholder="Phone Number" controlName="phone" [form]="f"></os-form-input>
+      <os-form-input class="os-form-input" placeholder="PayPal Email Address" controlName="paypal" [form]="f"></os-form-input>
+      <mat-checkbox style="margin-bottom: 5px;" #changePassword color="primary">Change Password</mat-checkbox>
+      <ng-container *ngIf="changePassword.checked">
+        <os-form-input class="os-form-input" placeholder="Change Password" controlName="password2" type="password" autocomplete="off"
+          [form]="f"></os-form-input>
+        <os-form-input class="os-form-input" placeholder="Confirm New Password" controlName="confirmPassword" type="password" autocomplete="off"
+          [form]="f"></os-form-input>
+        <div [hidden]="!f.hasError('comparePassword')" class="warn-text">
+          Passwords do not match.
+        </div>
+      </ng-container>
+      <mat-form-field style="width: 100%; margin-top: 10px;">
+        <input matInput formControlName="birthday" [matDatepicker]="picker" [min]="minDate" [max]="maxDate" placeholder="Date of Birth: MM/DD/YYYY">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi="true" #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-checkbox color="primary" class="os-form-input" formControlName="receiveEmailNotifications">Receive Email Notifications</mat-checkbox>
+      <div class="os-notification-types" style="margin-left: 30px;" *ngIf="f.get('receiveEmailNotifications').value">
+        <mat-checkbox color="primary" class="os-form-input" formControlName="receiveUpdateNotifications">Receive Update Notifications</mat-checkbox>
+        <mat-checkbox color="primary" class="os-form-input" formControlName="receiveAdminMessages">Receive Admin Messages</mat-checkbox>
+        <mat-checkbox color="primary" class="os-form-input" formControlName="receiveSponsorMessages">Receive Sponsor Messages</mat-checkbox>
+        <mat-checkbox color="primary" class="os-form-input" formControlName="receiveReferralMessages">Receive Referrals Messages</mat-checkbox>
+        <mat-checkbox color="primary" class="os-form-input" formControlName="optOutOfMassEmails">Opt out of Of Mass Emails</mat-checkbox>
+      </div>
+      <button mat-raised-button type="submit" color="primary" class="white" [disabled]="f.invalid || (f.value | json) === (initialFormValue | json )">Update Profile</button>
+    </form>
+  </mat-card>
+</mat-card>

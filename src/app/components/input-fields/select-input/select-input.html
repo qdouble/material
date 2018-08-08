@@ -1,0 +1,11 @@
+<mat-form-field *ngIf="optionValues?.length > 0" [ngClass]="{'full-width': fullWidth, 'center-div': center }" [ngStyle]="{'width': width}">
+  <mat-select [placeholder]="placeholder" [formControl]="dynamicControl">
+    <mat-option #myOption *ngFor="let option of optionValues; let i = index" [value]="option">
+      {{optionLabels[i]}}
+    </mat-option>
+  </mat-select>
+  <button *ngIf="submit" type="submit" [disabled]="!form.valid">{{submit}}</button>
+</mat-form-field>
+<div *ngIf="help">
+  <em>{{help}}</em>
+</div>

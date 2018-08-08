@@ -1,0 +1,15 @@
+form {
+  display: block;
+  :nth-child(1) {
+    margin-top: 15px;
+  }
+  button {
+    margin: 0 auto;
+    display: block;
+  }
+}
+
+.warn-message {
+  margin-top: -16px;
+  font-size: 11px;
+}

@@ -1,0 +1,33 @@
+@import '../../../variables';
+mat-form-field {
+  width: 100%;
+}
+
+.back-button {
+  margin-bottom: 20px;
+}
+
+.credit-request-details {
+  margin-bottom: 30px;
+}
+
+.os-new-support-ticket {
+  margin-right: 5px;
+  width: 90%;
+  max-width: 615px;
+  margin: 0 auto;
+  border-bottom: 5px solid $primary;
+}
+
+#request-card-instructions {
+  text-align: justify;
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+
+select-input {
+  display: block;
+  margin-bottom: 6px;
+  width: 400px;
+  max-width: 90%;
+}

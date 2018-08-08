@@ -1,0 +1,31 @@
+<div class="os-table-container">
+  <div class="table">
+    <div class="row header">
+      <div class="cell" style="padding-left: 8px; padding-right: 3px; vertical-align: bottom" id="unread-header"></div>
+      <div class="cell hide-date" (click)="sortBy.emit('createdAt')" id="opened-header">Opened</div>
+      <div class="cell" (click)="sortBy.emit('subject')" id="subject-header">Subject</div>
+      <div class="cell" id="actions-header"></div>
+    </div>
+    <div class="row" *ngFor="let ticket of tickets; trackBy: trackById">
+      <div class="cell nowrap unread-cell">
+        <mat-icon *ngIf="!ticket?.readByUser" style="font-size: 18px; color: #4CAF50">brightness_1</mat-icon>
+      </div>
+      <div class="cell nowrap hide-date">
+        <span class="short-date">{{ticket.createdAt | date: 'shortDate'}}</span>
+        <span class="medium-date">{{ticket.createdAt | date: 'MMM d h:mm a'}}</span>
+        <span class="long-date">{{ticket.createdAt | date: 'longDate'}}</span>
+        <span class="full-date">{{ticket.createdAt | date: 'fullDate'}}</span>
+      </div>
+      <div class="cell nowrap">
+        <span class="short-subject" matTooltip="{{ticket.subject}}">{{ticket.subject | slice:0:10 }}</span>
+        <span class="long-subject" matTooltip="{{ticket.subject}}">{{ticket.subject | slice:0:18 }}</span>
+      </div>
+      <div class="cell nowrap last-cell center">
+        <button class="view-tickets-btn white" mat-raised-button color="primary" type="button" [routerLink]="['view-ticket', { id: ticket.id } ]">VIEW({{ticket.entries}})</button>
+        <button class="close-ticket-btn white" mat-raised-button [color]="ticket.closed ? 'primary' : 'accent'" type="button" (click)="ticket?.closed ? closeTicket.emit({id: ticket.id, close: false}) : closeTicket.emit({id: ticket.id, close: true})">
+          {{ticket.closed ? 'REOPEN' : 'CLOSE'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

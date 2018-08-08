@@ -1,0 +1,125 @@
+a:link {
+  color: #5a822b;
+}
+
+#announcements-section {
+  h5 {
+    text-align: center;
+    font-size: 18px;
+  }
+  p {
+    text-align: justify;
+  }
+}
+
+#current-status-section {
+  p {
+    margin-bottom: 0px;
+  }
+  button {
+    margin-top: 5px;
+  }
+}
+
+.hide-status {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#fb-post-btn {
+  text-align: center;
+  background: #3b5998;
+  color: white !important;
+  font-weight: 700;
+}
+
+.landing-disclaimer p {
+  font-size: 11px;
+  text-align: justify !important;
+}
+
+.landing-disclaimer a {
+  text-align: center;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.l-links {
+  white-space: nowrap;
+  overflow: scroll;
+  text-align: center;
+}
+
+.link-rules ul li.warn {
+  text-align: left !important;
+}
+
+mat-card {
+  margin-bottom: 5px;
+}
+
+mat-slide-toggle {
+  display: table;
+  margin: 10px auto;
+}
+
+.os-page-container {
+  box-shadow: none;
+  max-width: 690px;
+  margin: 0 auto;
+}
+
+.os-status-page-section {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.os-div-section {
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.09), 0px 1px 1px 0px rgba(0, 0, 0, 0.07),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.09);
+}
+
+#referral-link-section {
+  mat-card-content {
+    :nth-child(1) {
+      text-align: center;
+    }
+    :nth-child(2) {
+      text-align: justify;
+    }
+  }
+}
+
+.referral-links {
+  text-align: center;
+  overflow: none;
+  @media screen and (max-width: 600px) {
+    overflow: auto;
+  }
+  a {
+    white-space: nowrap !important;
+  }
+}
+
+#referrals-table-section {
+  overflow: scroll;
+}
+
+.share-buttons {
+  text-align: center !important;
+  margin: 5px;
+}
+
+.switch-sponsor {
+  color: #4f792a;
+  cursor: pointer;
+}
+
+.table {
+  margin: 5px 0 10px 0;
+}
+
+.third-party {
+  text-align: center;
+  padding: 6px !important;
+}

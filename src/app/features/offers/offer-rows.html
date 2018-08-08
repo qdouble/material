@@ -1,0 +1,74 @@
+<div [ngClass]="{'os-offer-card-container': sideNavOpen, 
+    'os-offer-card-container-s-closed': !sideNavOpen }">
+  <os-offer-card *ngFor="let offer of offers; trackBy: trackById" [ngClass]="{'os-offer-card': sideNavOpen, 
+    'os-offer-card-s-closed': !sideNavOpen }" [addUp]="addUp" [creditTotal]="creditTotal" [creditedOfferIds]="creditedOfferIds"
+    [hideLevel]="((creditTotal + offer?.creditValue) | floor) === (creditTotal | floor)" [hideToUnqualified]="hideToUnqualified"
+    [loggedIn]="loggedIn" [offerId]="offer?.id" [offer]="offer" [qualificationLevel]="offer?.qualificationLevel" [creditValue]="offer?.creditValue"
+    [showingAvailable]="showingAvailable" [sideNavOpen]="sideNavOpen" (checkOffer)="checkOffer?.emit($event)" (goToOfferDetails)="goToOfferDetails.emit($event)">
+    <div [style.visibility]="offer?.featured ? 'visible': 'hidden'" class="offer-card-feature" offer-card-feature>
+      <img src="assets/svg/featured-offer-element2.svg">
+    </div>
+    <div class="offer-card-image-container" offer-card-image>
+      <img class="os-offer-card-image" [src]="publish ? 'https://levelrewards.com/images/offer-images/' + offer?.filename : (offer?.directImageURL?.length > 1 ? offer?.directImageURL : offer?.imageURL)"
+        [alt]="offer?.displayName">
+    </div>
+    <div [ngClass]="{'offer-card-name': true, 'shrink-name': (offer?.displayName?.length > 18), 'shrink-name-2': (offer?.displayName?.length > 24) }"
+      offer-card-name>
+      {{ offer?.displayName }}
+    </div>
+    <div [ngClass]="{'offer-card-subtitle': true, 'shrink-subtitle': (offer?.subTitle?.length > 35) }" offer-card-subtitle>
+      {{ offer?.subTitle?.length > 1 ? offer?.subTitle : '&#8239;' }}
+    </div>
+    <span class="offer-card-value" offer-card-value>
+      <ng-container *ngIf="!offer?.varies || (offer?.varies && offer?.versions?.length && !offer.versions[0].bonus)">{{ offer?.creditValue | number: '1.2-2' }}</ng-container>
+      <ng-container *ngIf="offer?.varies && offer?.versions?.length  && offer.versions[0].bonus ">
+        <b>({{offer.creditValue + offer.versions[0].creditValue | number: '1.2-2'}})*</b>
+        <div>
+          <i>* {{offer.creditValue | number: '1.2-2' }} Free Trial + {{offer.versions[0].creditValue | number: '1.2-2' }} Paid
+            Sub Bonus</i>
+        </div>
+      </ng-container>
+    </span>
+    <span class="offer-card-cost" offer-card-cost>
+      <span *ngIf="offer?.costToUser > 0 && offer?.costToUser < 1000">
+        {{offer?.costToUser | currency:'USD':symbol:'1.2-2'}}
+        <span *ngIf="offer?.noCardRequired">(No Credit Card Required)</span>
+      </span>
+      <span *ngIf="offer?.costToUser === 0">
+        <b [ngClass]="{ 'dark-green': offer?.costToUser === 0}">Free
+          <span *ngIf="offer?.noCardRequired">(No Credit Card Required)</span>
+        </b>
+      </span>
+      <span *ngIf="offer?.costToUser === 1000">
+        <b [ngClass]="{ 'dark-green': offer?.costToUser === 0}">Varies
+          <span *ngIf="offer?.noCardRequired">(No Credit Card Required)</span>
+        </b>
+      </span>
+    </span>
+    <span class="offer-card-credits" offer-card-credits>
+      <span *ngIf="offer?.minTimeToCredit === 0 && offer?.maxTimeToCredit === 0">
+        <em>Quickly</em>
+      </span>
+      <span *ngIf="!(offer?.minTimeToCredit === 0 && offer?.maxTimeToCredit === 0)">
+        <span *ngIf="offer?.minTimeToCredit > 0">
+          {{offer?.minTimeToCredit}}
+          <span *ngIf="offer?.maxTimeToCredit > 0 && 
+            offer?.minTimeToCreditType !== offer?.maxTimeToCreditType">
+            {{' ' + offer?.minTimeToCreditType | singleSafe }}
+          </span>
+        </span>
+        <span *ngIf="offer?.minTimeToCredit <= 0 && offer?.maxTimeToCredit > 0">
+          Within
+        </span>
+        <span *ngIf="offer?.minTimeToCredit > 0 && offer?.maxTimeToCredit > 0"> - </span>
+        <span *ngIf="offer?.maxTimeToCredit > 0">
+          {{offer?.maxTimeToCredit + ' ' + offer?.maxTimeToCreditType | singleSafe}}
+        </span>
+      </span>
+    </span>
+    <span class="offer-card-level" offer-card-level>
+      {{offer?.creditValue + creditTotal | floor }}
+    </span>
+    <span class="offer-card-earn" offer-card-earn>{{(offer?.creditValue + creditTotal) * 5 | earnPerReferral}}</span>
+  </os-offer-card>
+</div>

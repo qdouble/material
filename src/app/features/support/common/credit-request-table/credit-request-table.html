@@ -1,0 +1,27 @@
+<div class="os-table-container">
+  <div class="table">
+    <div class="row header">
+      <div class="cell nowrap hide-submitted">Submitted On</div>
+      <div class="cell nowrap">Offer Name</div>
+      <div class="cell nowrap">Status</div>
+      <div class="cell"></div>
+    </div>
+    <div class="row" *ngFor="let creditRequest of creditRequests; trackBy: trackById">
+      <div class="cell nowrap hide-submitted">
+        <span class="short-date">{{creditRequest.createdAt | date: 'shortDate'}}</span>
+        <span class="long-date">{{creditRequest.createdAt | date: 'longDate'}}</span>
+        <span class="full-date">{{creditRequest.createdAt | date: 'fullDate'}}</span>
+      </div>
+      <div class="cell nowrap">
+        <span class="short-name">{{creditRequest.offerName | slice:0:10 }}</span>
+        <span class="long-name">{{creditRequest.offerName | slice:0:20 }}</span>
+      </div>
+      <div class="cell nowrap">
+        <span>{{creditRequest.status | slice:0:9 }}</span>
+      </div>
+      <div class="cell last-cell nowrap">
+        <button class="view-credit-request-btn white" mat-raised-button color="primary" type="button" [routerLink]="['credit-request', { id: creditRequest.id } ]">VIEW</button>
+      </div>
+    </div>
+  </div>
+</div>
