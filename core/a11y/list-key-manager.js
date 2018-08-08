@@ -13,17 +13,26 @@ export var ListKeyManager = (function () {
     /**
      * Turns on focus wrapping mode, which ensures that the focus will wrap to
      * the other end of list when there are no more items in the given direction.
+     *
+     * @returns The ListKeyManager that the method was called on.
      */
     ListKeyManager.prototype.withFocusWrap = function () {
         this._wrap = true;
         return this;
     };
-    /** Sets the focus of the list to the item at the index specified. */
+    /**
+     * Sets the focus of the list to the item at the index specified.
+     *
+     * @param index The index of the item to be focused.
+     */
     ListKeyManager.prototype.setFocus = function (index) {
         this._focusedItemIndex = index;
         this._items.toArray()[index].focus();
     };
-    /** Sets the focus properly depending on the key event passed in. */
+    /**
+     * Sets the focus depending on the key event passed in.
+     * @param event Keyboard event to be used for determining which element to focus.
+     */
     ListKeyManager.prototype.onKeydown = function (event) {
         switch (event.keyCode) {
             case DOWN_ARROW:
@@ -71,6 +80,13 @@ export var ListKeyManager = (function () {
         enumerable: true,
         configurable: true
     });
+    /**
+     * Allows setting of the focusedItemIndex without focusing the item.
+     * @param index The new focusedItemIndex.
+     */
+    ListKeyManager.prototype.updateFocusedItemIndex = function (index) {
+        this._focusedItemIndex = index;
+    };
     Object.defineProperty(ListKeyManager.prototype, "tabOut", {
         /**
          * Observable that emits any time the TAB key is pressed, so components can react

@@ -33,14 +33,17 @@ export var MdTabNavBar = (function () {
     ], MdTabNavBar.prototype, "_inkBar", void 0);
     MdTabNavBar = __decorate([
         Component({selector: '[md-tab-nav-bar], [mat-tab-nav-bar]',
-            template: "<ng-content></ng-content> <md-ink-bar></md-ink-bar> ",
-            styles: ["[md-tab-nav-bar] { overflow: hidden; position: relative; display: flex; flex-direction: row; flex-shrink: 0; } [md-tab-link] { line-height: 48px; height: 48px; padding: 0 12px; font-size: 14px; font-family: Roboto, \"Helvetica Neue\", sans-serif; font-weight: 500; cursor: pointer; box-sizing: border-box; color: currentColor; opacity: 0.6; min-width: 160px; text-align: center; text-decoration: none; position: relative; overflow: hidden; } [md-tab-link]:focus { outline: none; opacity: 1; } @media (max-width: 600px) { [md-tab-link] { min-width: 72px; } } md-ink-bar { position: absolute; bottom: 0; height: 2px; transition: 500ms cubic-bezier(0.35, 0, 0.25, 1); } /*# sourceMappingURL=tab-nav-bar.css.map */ "],
+            template: "<ng-content></ng-content><md-ink-bar></md-ink-bar>",
+            styles: ["[md-tab-link],[md-tab-nav-bar]{position:relative;overflow:hidden}[md-tab-nav-bar]{display:flex;flex-direction:row;flex-shrink:0}[md-tab-link]{line-height:48px;height:48px;padding:0 12px;font-size:14px;font-family:Roboto,\"Helvetica Neue\",sans-serif;font-weight:500;cursor:pointer;box-sizing:border-box;color:currentColor;opacity:.6;min-width:160px;text-align:center;text-decoration:none}[md-tab-link]:focus{outline:0;opacity:1}@media (max-width:600px){[md-tab-link]{min-width:72px}}md-ink-bar{position:absolute;bottom:0;height:2px;transition:.5s cubic-bezier(.35,0,.25,1)}"],
             encapsulation: ViewEncapsulation.None,
         }), 
         __metadata('design:paramtypes', [])
     ], MdTabNavBar);
     return MdTabNavBar;
 }());
+/**
+ * Link inside of a `md-tab-nav-bar`.
+ */
 export var MdTabLink = (function () {
     function MdTabLink(_mdTabNavBar, _element) {
         this._mdTabNavBar = _mdTabNavBar;
@@ -48,9 +51,8 @@ export var MdTabLink = (function () {
         this._isActive = false;
     }
     Object.defineProperty(MdTabLink.prototype, "active", {
-        get: function () {
-            return this._isActive;
-        },
+        /** Whether the link is active. */
+        get: function () { return this._isActive; },
         set: function (value) {
             this._isActive = value;
             if (value) {
@@ -83,8 +85,9 @@ export var MdTabLinkRipple = (function (_super) {
         this._element = _element;
         this._ngZone = _ngZone;
     }
-    // In certain cases the parent destroy handler
-    // may not get called. See Angular issue #11606.
+    /**
+     * In certain cases the parent destroy handler may not get called. See Angular issue #11606.
+     */
     MdTabLinkRipple.prototype.ngOnDestroy = function () {
         _super.prototype.ngOnDestroy.call(this);
     };

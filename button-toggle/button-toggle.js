@@ -13,10 +13,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 import { NgModule, Component, ContentChildren, Directive, ElementRef, Renderer, EventEmitter, HostBinding, Input, Optional, Output, QueryList, ViewChild, ViewEncapsulation, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
-import { MdUniqueSelectionDispatcher, coerceBooleanProperty, DefaultStyleCompatibilityModeModule } from '../core';
+import { UniqueSelectionDispatcher, coerceBooleanProperty, DefaultStyleCompatibilityModeModule } from '../core';
 /**
  * Provider Expression that allows md-button-toggle-group to register as a ControlValueAccessor.
  * This allows it to support [(ngModel)].
+ * @docs-private
  */
 export var MD_BUTTON_TOGGLE_GROUP_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
@@ -24,7 +25,7 @@ export var MD_BUTTON_TOGGLE_GROUP_VALUE_ACCESSOR = {
     multi: true
 };
 var _uniqueIdCounter = 0;
-/** A simple change event emitted by either MdButtonToggle or MdButtonToggleGroup. */
+/** Change event object emitted by MdButtonToggle. */
 export var MdButtonToggleChange = (function () {
     function MdButtonToggleChange() {
     }
@@ -68,6 +69,7 @@ export var MdButtonToggleGroup = (function () {
         this._isInitialized = true;
     };
     Object.defineProperty(MdButtonToggleGroup.prototype, "name", {
+        /** `name` attribute for the underlying `input` element. */
         get: function () {
             return this._name;
         },
@@ -79,6 +81,7 @@ export var MdButtonToggleGroup = (function () {
         configurable: true
     });
     Object.defineProperty(MdButtonToggleGroup.prototype, "disabled", {
+        /** Whether the toggle group is disabled. */
         get: function () {
             return this._disabled;
         },
@@ -89,6 +92,7 @@ export var MdButtonToggleGroup = (function () {
         configurable: true
     });
     Object.defineProperty(MdButtonToggleGroup.prototype, "vertical", {
+        /** Whether the toggle group is vertical. */
         get: function () {
             return this._vertical;
         },
@@ -99,6 +103,7 @@ export var MdButtonToggleGroup = (function () {
         configurable: true
     });
     Object.defineProperty(MdButtonToggleGroup.prototype, "value", {
+        /** Value of the toggle group. */
         get: function () {
             return this._value;
         },
@@ -117,6 +122,7 @@ export var MdButtonToggleGroup = (function () {
         configurable: true
     });
     Object.defineProperty(MdButtonToggleGroup.prototype, "selected", {
+        /** Whether the toggle group is selected. */
         get: function () {
             return this._selected;
         },
@@ -163,15 +169,26 @@ export var MdButtonToggleGroup = (function () {
         this._controlValueAccessorChangeFn(event.value);
         this._change.emit(event);
     };
-    /** Implemented as part of ControlValueAccessor. */
+    /**
+     * Sets the model value. Implemented as part of ControlValueAccessor.
+     * @param value Value to be set to the model.
+     */
     MdButtonToggleGroup.prototype.writeValue = function (value) {
         this.value = value;
     };
-    /** Implemented as part of ControlValueAccessor. */
+    /**
+     * Registers a callback that will be triggered when the value has changed.
+     * Implemented as part of ControlValueAccessor.
+     * @param fn On change callback function.
+     */
     MdButtonToggleGroup.prototype.registerOnChange = function (fn) {
         this._controlValueAccessorChangeFn = fn;
     };
-    /** Implemented as part of ControlValueAccessor. */
+    /**
+     * Registers a callback that will be triggered when the control has been touched.
+     * Implemented as part of ControlValueAccessor.
+     * @param fn On touch callback function.
+     */
     MdButtonToggleGroup.prototype.registerOnTouched = function (fn) {
         this.onTouched = fn;
     };
@@ -226,6 +243,7 @@ export var MdButtonToggleGroupMultiple = (function () {
         this._vertical = false;
     }
     Object.defineProperty(MdButtonToggleGroupMultiple.prototype, "disabled", {
+        /** Whether the toggle group is disabled. */
         get: function () {
             return this._disabled;
         },
@@ -236,6 +254,7 @@ export var MdButtonToggleGroupMultiple = (function () {
         configurable: true
     });
     Object.defineProperty(MdButtonToggleGroupMultiple.prototype, "vertical", {
+        /** Whether the toggle group is vertical. */
         get: function () {
             return this._vertical;
         },
@@ -265,6 +284,7 @@ export var MdButtonToggleGroupMultiple = (function () {
     ], MdButtonToggleGroupMultiple);
     return MdButtonToggleGroupMultiple;
 }());
+/** Single button inside of a toggle group. */
 export var MdButtonToggle = (function () {
     function MdButtonToggle(toggleGroup, toggleGroupMultiple, buttonToggleDispatcher, _renderer) {
         var _this = this;
@@ -315,6 +335,7 @@ export var MdButtonToggle = (function () {
         }
     };
     Object.defineProperty(MdButtonToggle.prototype, "inputId", {
+        /** Unique ID for the underlying `input` element. */
         get: function () {
             return this.id + "-input";
         },
@@ -322,6 +343,7 @@ export var MdButtonToggle = (function () {
         configurable: true
     });
     Object.defineProperty(MdButtonToggle.prototype, "checked", {
+        /** Whether the button is checked. */
         get: function () {
             return this._checked;
         },
@@ -364,6 +386,7 @@ export var MdButtonToggle = (function () {
         this._change.emit(event);
     };
     Object.defineProperty(MdButtonToggle.prototype, "disabled", {
+        /** Whether the button is disabled. */
         get: function () {
             return this._disabled || (this.buttonToggleGroup != null && this.buttonToggleGroup.disabled) ||
                 (this.buttonToggleGroupMultiple != null && this.buttonToggleGroupMultiple.disabled);
@@ -404,6 +427,7 @@ export var MdButtonToggle = (function () {
         // Preventing bubbling for the second event will solve that issue.
         event.stopPropagation();
     };
+    /** Focuses the button. */
     MdButtonToggle.prototype.focus = function () {
         this._renderer.invokeElementMethod(this._inputElement.nativeElement, 'focus');
     };
@@ -440,13 +464,13 @@ export var MdButtonToggle = (function () {
     ], MdButtonToggle.prototype, "disabled", null);
     MdButtonToggle = __decorate([
         Component({selector: 'md-button-toggle',
-            template: "<label [attr.for]=\"inputId\" class=\"md-button-toggle-label\"> <input #input class=\"md-button-toggle-input md-visually-hidden\" [type]=\"_type\" [id]=\"inputId\" [checked]=\"checked\" [disabled]=\"disabled\" [name]=\"name\" (change)=\"_onInputChange($event)\" (click)=\"_onInputClick($event)\"> <div class=\"md-button-toggle-label-content\"> <ng-content></ng-content> </div> </label> ",
-            styles: ["md-button-toggle-group { box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); position: relative; display: inline-flex; flex-direction: row; border-radius: 2px; cursor: pointer; white-space: nowrap; } .md-button-toggle-vertical { flex-direction: column; } .md-button-toggle-vertical .md-button-toggle-label-content { display: block; } .md-button-toggle-disabled .md-button-toggle-label-content { cursor: default; } md-button-toggle { white-space: nowrap; } .md-button-toggle-label-content { display: inline-block; line-height: 36px; padding: 0 16px; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .md-button-toggle-label-content > * { vertical-align: middle; } /*# sourceMappingURL=button-toggle.css.map */ "],
+            template: "<label [attr.for]=\"inputId\" class=\"md-button-toggle-label\"><input #input class=\"md-button-toggle-input cdk-visually-hidden\" [type]=\"_type\" [id]=\"inputId\" [checked]=\"checked\" [disabled]=\"disabled\" [name]=\"name\" (change)=\"_onInputChange($event)\" (click)=\"_onInputClick($event)\"><div class=\"md-button-toggle-label-content\"><ng-content></ng-content></div></label>",
+            styles: ["md-button-toggle-group{box-shadow:0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);position:relative;display:inline-flex;flex-direction:row;border-radius:2px;cursor:pointer;white-space:nowrap}.md-button-toggle-vertical{flex-direction:column}.md-button-toggle-vertical .md-button-toggle-label-content{display:block}.md-button-toggle-disabled .md-button-toggle-label-content{cursor:default}md-button-toggle{white-space:nowrap}.md-button-toggle-label-content{display:inline-block;line-height:36px;padding:0 16px;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.md-button-toggle-label-content>*{vertical-align:middle}"],
             encapsulation: ViewEncapsulation.None,
         }),
         __param(0, Optional()),
         __param(1, Optional()), 
-        __metadata('design:paramtypes', [MdButtonToggleGroup, MdButtonToggleGroupMultiple, MdUniqueSelectionDispatcher, Renderer])
+        __metadata('design:paramtypes', [MdButtonToggleGroup, MdButtonToggleGroupMultiple, UniqueSelectionDispatcher, Renderer])
     ], MdButtonToggle);
     return MdButtonToggle;
 }());
@@ -456,7 +480,7 @@ export var MdButtonToggleModule = (function () {
     MdButtonToggleModule.forRoot = function () {
         return {
             ngModule: MdButtonToggleModule,
-            providers: [MdUniqueSelectionDispatcher]
+            providers: [UniqueSelectionDispatcher]
         };
     };
     MdButtonToggleModule = __decorate([

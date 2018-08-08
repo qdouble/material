@@ -3,7 +3,8 @@
 @import 'style/elevation';
 @import 'overlay/overlay';
 @import 'ripple/ripple';
-
+@import 'option/option';
+@import 'option/option-theme';
 
 // Mixin that renders all of the core styles that are not theme-dependent.
 @mixin md-core() {
@@ -17,11 +18,13 @@
   }
 
   @include md-ripple();
-  @include md-a11y();
-  @include md-overlay();
+  @include md-option();
+  @include cdk-a11y();
+  @include cdk-overlay();
 }
 
 // Mixin that renders all of the core styles that depend on the theme.
 @mixin md-core-theme($theme) {
   @include md-ripple-theme($theme);
+  @include md-option-theme($theme);
 }

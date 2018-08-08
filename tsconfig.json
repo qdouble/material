@@ -12,20 +12,19 @@
     "skipDefaultLibCheck": true,
     "pretty": true,
     "sourceMap": true,
-    "typeRoots": ["node_modules/@types"]
-  },
-  "exclude": [
-    "node_modules",
-    "compiled",
-    "e2e/**/*.ts",
-    "src/server.ts",
-    "src/server.aot.ts",
-    "src/main.browser.aot.ts"
-  ],
-  "awesomeTypescriptLoaderOptions": {
-    "useWebpackText": true,
-    "forkChecker": true,
-    "useCache": true
+    "target": "es5",
+    "inlineSources": true,
+    "stripInternal": false,
+    "baseUrl": "",
+    "paths": {
+    },
+    "typeRoots": [
+      "../../node_modules/@types/!(node)"
+    ],
+    "types": [
+      "jasmine",
+      "rx/rx.all"
+    ]
   },
   "compileOnSave": false,
   "buildOnSave": false,
